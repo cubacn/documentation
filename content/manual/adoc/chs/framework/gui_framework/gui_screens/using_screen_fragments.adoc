@@ -72,7 +72,7 @@ include::{sourcesdir}/gui/screens/address_host_2.java[]
 
 [WARNING]
 ====
-别忘了在用编程的方式创建 fragmennt 之后需要使用 `init()` 方法进行初始化。如果 fragment 带有参数，可以在调用 `init()` 之前使用 public setters 进行设置。之后，fragment 控制器的 `InitEvent` 和 `AfterInitEvent` 处理方法里面可以访问到这些参数。
+别忘了在用编程的方式创建 fragment 之后需要使用 `init()` 方法进行初始化。如果 fragment 带有参数，可以在调用 `init()` 之前使用 public setters 进行设置。之后，fragment 控制器的 `InitEvent` 和 `AfterInitEvent` 处理方法里面可以访问到这些参数。
 ====
 
 --
