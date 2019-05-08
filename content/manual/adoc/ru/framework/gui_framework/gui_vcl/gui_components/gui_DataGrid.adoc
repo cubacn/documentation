@@ -67,7 +67,7 @@ image::gui_dataGrid_2.png[align="center"]
 [[gui_DataGrid_resizable]]
 * `resizable` - необязательный атрибут, определяет, может ли пользователь изменять размер колонки.
 
-[[gui_DataGrid_sortable,sortable]]
+[[gui_DataGrid_column_sortable,sortable]]
 * `sortable` - необязательный атрибут, позволяющий запретить сортировку колонки. Вступает в действие, если атрибут `sortable` всего `DataGrid` установлен в `true` (что имеет место по умолчанию).
 
 * `width` - необязательный атрибут, отвечает за изначальную ширину колонки. Может принимать только числовые значения в пикселах.
@@ -273,6 +273,9 @@ image::gui_dataGrid_10.png[align="center"]
 ----
 include::{sourcesdir}/gui_vcl/datagrid_detailsGenerator.java[]
 ----
+
+<1> – Смотрите описание метода `createCloseButton` в классе https://demo.cuba-platform.com/sampler/open?screen=datagrid-detailsgenerator[DataGridDetailsGeneratorSample].
+<2> – Смотрите описание метода `getContent` в классе https://demo.cuba-platform.com/sampler/open?screen=datagrid-detailsgenerator[DataGridDetailsGeneratorSample].
 
 Результат:
 
@@ -534,7 +537,7 @@ image::gui_dataGrid_12.png[align="center"]
 <<gui_DataGrid_minimumWidth,minimumWidth>> -
 <<gui_DataGrid_property,property>> -
 <<gui_DataGrid_resizable,resizable>> -
-<<gui_DataGrid_sortable,sortable>> -
+<<gui_DataGrid_column_sortable,sortable>> -
 <<gui_attr_width,width>>
 
 Элементы column::

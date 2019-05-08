@@ -37,6 +37,8 @@ This document highlights major changes in CUBA Platform and Studio version {revn
 
 === All Resolved Issues
 
+* {githubissueslog}/release_7.0.5.md[Platform 7.0.5 Resolved Issues]
+* {githubissueslog}/release_7.0.4.md[Platform 7.0.4 Resolved Issues]
 * {githubissueslog}/release_7.0.3.md[Platform 7.0.3 Resolved Issues]
 * {githubissueslog}/release_7.0.2.md[Platform 7.0.2 Resolved Issues]
 * {githubissueslog}/release_7.0.1.md[Platform 7.0.1 Resolved Issues]
@@ -84,6 +86,8 @@ public class MyProjectTestContainer extends TestContainer {
 . Deprecated methods `addListener` and `removeListener` of `Instance` have been removed. Use `addPropertyChangeListener` and `removePropertyChangeListener` instead.
 
 . All `addSomeListener` and `removeSomeListener` methods in UI components now receive `Consumer<E>` where `E` is a type of event object. If you use those methods with a lambda parameter then your code will not require migration. If you implement one of the old listener interfaces (e.g. ValueChangeListener) with a standalone class you will need to implement `Consumer<E>` (e.g. ValueChangeEvent) instead. See https://github.com/cuba-platform/cuba/issues/1108[GitHub issue] for details.
+
+. Regular screens cannot be used in the `frame` element anymore. Previously, such usage generated a warning in the server log. Now only frames/fragments with controllers inherited from `AbstractFrame` or `ScreenFragment` can be used as frames inside another screens.
 
 . `WebWindowManager` class has been replaced with `WebScreens`. If you have extended `WebWindowManager` in your code you will need to migrate your improvements manually.
 
@@ -153,6 +157,8 @@ charts: `com.haulmont.charts.web.toolkit.ui.ChartsWidgetSet` changed to `com.hau
 . Removed `multiSelect` attribute of the `TwinColumn` UI component.
 
 . `TextArea` and `ResizableTextArea` are now different UI components with own XML elements: `<textArea>` and `<resizableTextArea>`. The `<textArea>` element still has `resizableDirection` and `resizable` attributes for backward compatibility, but if you inject the component with `resizable="true"` in a controller, the type of the field must be `ResizableTextArea`, otherwise you will get `ClassCastException`.
+
+. A password storage format for the `cuba.rest.client.secret` application property has been changed. The password encoder should be defined and the default property value is now `{noop}secret` instead of `secret`. If you explicitly defined the `cuba.rest.client.secret` property value in your project you should change its value according to the new format (add `{noop}` before the value. See https://github.com/cuba-platform/cuba/issues/1065#issuecomment-411357276[GitHub issue] for details.
 
 [[premium_addons]]
 === Former Premium Add-ons
