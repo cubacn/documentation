@@ -17,22 +17,25 @@ image::app_components_sample.png[align="center"]
 
 * *Root package* - `com.company.customers`
 
-. 编辑 *Project properties*，在 *Advanced* 标签页上将 *Module prefix* 设置为 `cust`。
+. 打开 *Project properties* 窗口，在 *Main* 标签页上将 *Module prefix* 设置为 `cust`。
 
-. 创建至少有 `name` 属性的 `Customer` 实体。切换到 *Instance name* 标签页，并将 `name` 添加到 Name Pattern 属性。
+. 创建至少有 `name` 属性的 `Customer` 实体。在 *Instance name* 字段，设置 <<namePattern_annotation,name pattern>> 属性。
 +
 [WARNING]
 ====
 如果组件包含 `@MappedSuperclass` 持久化类，请确保它们在同一个项目中有后代实体（即使用 `@Entity` 注解）。否则，这些基类将无法被正确增强（enhanced），并无法在应用程序中使用它们。
 ====
 
-. 生成 DB 脚本并为 `Customer` 实体创建标准界面： `cust$Customer.browse` 和 `cust$Customer.edit`。之后，转到主菜单设计器并将 `application` 菜单项重命名为 `customerManagement`。
+. 生成 DB 脚本并为 `Customer` 实体创建标准界面：`cust_Customer.browse` 和 `cust_Customer.edit`。
+. 切换到菜单编辑器（menu designer），将 `application-cust` 菜单项更名为 `customerManagement`。然后，打开 *Main Message Pack* 部分的 `messages.properties`，为新的 `customerManagement` 设置标题。
+. 通过点击主菜单 *CUBA > Advanced > App Component Descriptor* 生成 <<app-component.xml,组件描述文件>> `app-component.xml`。
+. 测试客户管理功能：
 
-. 单击 *CUBA > Advanced* 菜单中的 *App Component Descriptor* 链接。单击 *OK* 保存生成的描述。
+* 主菜单选择 *CUBA > Create Database*。
+* 启动应用程序：点击主工具栏 `CUBA Application` 配置旁边的调试按钮。
+* 浏览器打开 `++http://localhost:8080/cust++`。
 
-. 测试 Customer Management 功能： *CUBA > Create Database*，*CUBA > Start Application Server*，然后在 Web 浏览器中打开 `++http://localhost:8080/cust++`。
-
-. 通过执行 *CUBA > Advanced > Install App Component* 菜单命令将应用程序组件安装到本地 Maven 仓库中。
+. 通过点击 *CUBA > Advanced > Install App Component* 菜单项将应用程序组件安装到本地 Maven 仓库中。
 
 创建 Sales 应用程序::
 
@@ -44,15 +47,18 @@ image::app_components_sample.png[align="center"]
 
 * *Root package* - `com.company.sales`
 
-. 编辑 *Project properties*，并在 *Repositories* 部分中将本地 Maven 仓库添加到仓库列表。
+. 打开 *Project properties* 窗口，并在 *Repositories* 部分中将本地 Maven 仓库添加到仓库列表。
 
-. 在 *App components* 面板上单击 *Custom components* 旁边的加号按钮。在 *Custom application component* 对话框中，在 *Registered project* 下拉列表中选择 `customers` 项目。该列表包含在 Studio 中注册的具有 `app-component.xml` 描述的所有项目。单击对话框中的 *OK*。客户管理组件的 Maven 坐标将显示在自定义组件列表中。单击 *OK* 保存项目属性。
+. 在 *App components* 面板上单击 *Custom components* 旁边的加号按钮。在 *Custom application component* 对话框中，输入客户管理组件的 Maven 坐标，比如，`com.company.customers:cust-global:0.1-SNAPSHOT`。点击 *OK* 按钮保存项目属性设置。如果 Studio 建议更改 Gradle 脚本，同意即可。
 
 . 创建 `Order` 实体并添加 `date` 和 `amount` 属性。然后添加 `customer` 属性，与 `Customer` 实体多对一关联 - Customer 在 *Type* 下拉列表中可用。
 
 . 生成 DB 脚本并为 `Order` 实体创建标准界面。在创建标准界面时，先创建一个包含 `customer` 属性的 `order-with-customer` 视图，并将该视图用于界面展示。
 
-. 测试应用程序功能：*CUBA > Create Database*，*CUBA > Start Application Server*，然后在 Web 浏览器中打开 `++http://localhost:8080/app++`。该应用程序将包含两个顶级菜单项： *Customer Management* 和 *Application* 以及相应的功能。
+. 测试应用程序功能：
+* 在主菜单选择 *CUBA > Create Database*。
+* 启动应用程序：点击主工具栏 `CUBA Application` 配置旁边的调试按钮。
+* 浏览器打开 `++http://localhost:8080/cust++`。应用程序将包含两个顶层菜单：*Customer Management* 和 *Application*，并都带有相应的功能。
 
 修改客户管理组件::
 
@@ -60,19 +66,23 @@ image::app_components_sample.png[align="center"]
 
 . 在 Studio 中打开 `customers` 项目。
 
-. 编辑 `Customer` 实体并添加 `address` 属性。保存实体时，选择浏览和编辑界面以包含新属性。
+. 编辑 `Customer` 实体并添加 `address` 属性。在浏览和编辑界面都需要包含此属性。
 
 . 生成数据库脚本 - 将创建更新表的脚本。保存脚本。
 
-. 测试组件中的更改：*CUBA > Update Database*，*CUBA > Start Application Server*，然后在 Web 浏览器中打开 `++http://localhost:8080/cust++`。
+. 测试组件中的更改：
+* 在主菜单选择 *CUBA > Update Database*。
+* 启动应用程序：点击主工具栏 `CUBA Application` 配置旁边的调试按钮。
+* 浏览器打开 `++http://localhost:8080/cust++`。
 
-. 通过执行 *CUBA > Advanced > Install App Component* 菜单命令将应用程序组件重新安装到本地 Maven 仓库中。
+. 通过执行 *CUBA > Advanced > Install App Component* 菜单项将应用程序组件重新安装到本地 Maven 仓库中。
 
 . 关闭 Studio 中的 `sales` 项目（如果已打开）并再次打开它。这是在 Studio 中下载新组件源代码所必须的。
 
-. 执行 *CUBA > Build Tasks > Clean*，然后执行 *CUBA > Build Tasks > Assemble* 菜单命令。
+. 点击 *CUBA > Build Tasks > Clean*，然后再点击 *CUBA > Build Tasks > Assemble* 菜单项。
 
-. 执行 *CUBA > Update Database* - 将执行客户管理组件的更新脚本。
+. 点击主菜单 *CUBA > Update Database* - 会执行客户管理组件的更新脚本。
 
-. 执行 *CUBA > Start Application Server* 并在 Web 浏览器中打开 `++http://localhost:8080/app++` - 该应用程序将包含 `Customer` 实体和带有新属性 `address` 的界面。
+. 启动应用程序：点击主工具栏 `CUBA Application` 配置旁边的调试按钮。
 
+. 浏览器打开 `++http://localhost:8080/app++` 应用程序会有包含新 `address` 属性的 `Customer` 实体以及界面。

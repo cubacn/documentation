@@ -79,23 +79,52 @@ include::{sourcesdir}/gui_vcl/textfield_2.xml[]
 
 [[gui_TextField_datatype]]
 * 如果文本控件没有连接到任何实体属性 (即，未设置数据容器和属性名称)，可以使用 `datatype` 属性设置数据类型，数据类型用来格式化控件值。`datatype` 属性值可以是应用程序元数据中注册的任何数据类型 – 见 <<datatype>>。通常，`TextField` 使用下面的数据类型：
++
+--
+* `decimal`
 
-** `decimal`
+* `double`
 
-** `double`
+* `int`
 
-** `int`
-
-** `long`
+* `long`
+--
++
+如果该字段有 `datatype` 属性，并且用户输入了一个错误的值，则会显示默认的转换错误消息。
 +
 下面是一个数据类型是 `Integer` 的文本控件示例。
+
 +
 [source, xml]
 ----
 include::{sourcesdir}/gui_vcl/textfield_3.xml[]
----- 
+----
 +
-如果用户输入的字符不能解析为整数，当该控件失去焦点时，应用程序将显示错误消息并将控件的值恢复为之前的值。
+如果用户输入的字符不能解析为整数，当该控件失去焦点时，应用程序将显示错误消息。
++
+
+image::gui_datatype_default_message.png[align="center"]
++
+默认的消息是在<<main_message_pack,主语言包>>中定义的，有这样的模板：`databinding.conversion.error.<type>`，比如：
++
+[source, properties]
+----
+databinding.conversion.error.int = Must be Integer
+----
+
+[[gui_TextField_conversionErrorMessage]]
+* 可以在界面 XML 描述中声明式的定义自己的类型转换错误消息，使用 `conversionErrorMessage` 属性：
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/textfield_11.xml[]
+----
+或者在界面控制器中通过便层的方式创建：
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/textfield_12.java[]
+----
 
 * 可以为文本控件分配一个验证器 - 实现了 `Field.Validator`  接口的类。在 `datatype` 对输入的字符格式进行验证后，验证器进行进一步的验证。例如，要创建一个正整数输入控件，需要创建一个验证器类：
 
@@ -192,6 +221,7 @@ textField 的属性 ::
 <<gui_TextField_caseConversion,caseConversion>> -
 <<gui_attr_contextHelpText,contextHelpText>> -
 <<gui_attr_contextHelpTextHtmlEnabled,contextHelpTextHtmlEnabled>> -
+<<gui_TextField_conversionErrorMessage,conversionErrorMessage>> -
 <<gui_attr_css,css>> -
 <<gui_attr_dataContainer,dataContainer>> -
 <<gui_attr_datasource,datasource>> -

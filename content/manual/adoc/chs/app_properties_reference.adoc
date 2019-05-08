@@ -1350,9 +1350,9 @@ cuba.rest.client.id::
 cuba.rest.client.secret::
 +
 --
-定义 REST API 客户端的密码。客户端，在这里，并不是说平台的用户，而是一个使用 <<rest_api_v2,>> 的应用（某些 web portal 或者手机 app）。使用客户端用户名密码做访问 REST API token 端点的基本认证。
+定义 REST API 客户端的密码。客户端，在这里，并不是说平台的用户，而是一个使用 <<rest_api_v2,>> 的应用（某些 web portal 或者手机 app）。使用客户端用户名密码做访问 REST API token 端点的基本认证。应用程序属性的值需要在具体的密码值（比如 `secret`）之前包含一个 `PasswordEncoder` 的标识符（比如 `{noop}`）。
 
-默认值： `secret`
+默认值： `{noop}secret`
 
 可以在 Web 客户端和 Web Portal blocks 使用。
 --

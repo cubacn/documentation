@@ -5,7 +5,7 @@
 
 [WARNING]
 ====
-这是遗留版本 API。对于 v.7.0 的新 API，请参阅<<screen_controllers>>。
+这是历史版本 API。对于 v.7.0 的新 API，请参阅<<screen_controllers>>。
 ====
 
 界面控制器是一个 Java 或者 Groovy 的类，链接到一个<<screen_xml,界面 XML 描述>>并且包含界面初始化以及事件处理逻辑。

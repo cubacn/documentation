@@ -5,7 +5,7 @@
 
 [WARNING]
 ====
-This section will be updated before release 7.0
+参阅 <<url_history_navigation>> 部分，这里描述了 URL 和应用程序界面映射的更多功能。
 ====
 
 Web 客户端<<app_tiers,block>>允许通过 URL 中提供的命令打开应用程序界面。如果浏览器没有已登录用户的会话信息，则应用程序将首先显示登录界面，在身份验证成功后进入应用程序主窗口，同时打开请求的界面。

@@ -5,23 +5,38 @@
 
 实体日志内容可以在 *Administration > Entity Log* 上的专用界面上查看。
 
-除此之外，也能在其它应用程序界面访问实体更改日志，只要加载 `EntityLogItem` 集合及其关联的 `EntityLogAttr` 实例到数据源，再创建连接到这些数据源的可视化组件。例如：
+除此之外，也能在其它应用程序界面访问实体更改日志，只要加载 `EntityLogItem` 集合及其关联的 `EntityLogAttr` 实例到数据容器，再创建连接到这些数据容器的可视化组件。
 
+下面的例子展示了 `Customer` 实体界面的 XML 描述片段，这里有一个带有实体日志内容的标签页。
+
+.customer-edit.xml 代码片段
 [source, xml]
 ----
 include::{sourcesdir}/features/entity_log.xml[]
 ----
 
+看看 `Customer` 界面控制器：
+
+.Customer 界面控制器代码片段
+[source, java]
+----
+include::{sourcesdir}/features/entity_log_controller.java[]
+----
+
+注意该界面并没有 `@LoadDataBeforeShow` 注解，因为加载数据是显式触发的。
+
+<1> − `onBeforeShow` 方法在界面展示前加载数据。
+<2> − 在 `customerDc` 容器的 `ItemChangeEvent` 处理器中，为依赖的加载器设置了参数并触发加载。
+
 要显示本地化的值，启用日志记录的属性应包含<<localizedValue_annotation,@LocalizedValue>>注解。有此注解时，日志记录机制将填写 `EntityLogAttr.messagesPack` 字段，从而上面示例中的表格可以使用 `locValue` 列代替 `value` 列来显示本地化值：
 
 [source, xml]
 ----
-<table id="logAttrTable" width="100%" height="100%">
+<table id="attrTable" width="100%" height="200px" dataContainer="logAttrDc">
   <columns>
       <column id="name"/>
       <column id="locValue"/>
   </columns>
-  <rows datasource="logAttrDs"/>
 </table>
 ----
 

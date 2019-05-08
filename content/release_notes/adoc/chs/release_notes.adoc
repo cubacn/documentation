@@ -37,6 +37,8 @@
 
 === 所有解决的问题
 
+* {githubissueslog}/release_7.0.5.md[平台 7.0.5 解决的问题]
+* {githubissueslog}/release_7.0.4.md[平台 7.0.4 解决的问题]
 * {githubissueslog}/release_7.0.3.md[平台 7.0.3 解决的问题]
 * {githubissueslog}/release_7.0.2.md[平台 7.0.2 解决的问题]
 * {githubissueslog}/release_7.0.1.md[平台 7.0.1 解决的问题]
@@ -86,6 +88,8 @@ public class MyProjectTestContainer extends TestContainer {
 
 . UI组件中的所有 `addSomeListener` 和 `removeSomeListener` 方法现在都接收 `Consumer<E>` 类型的参数，其中 `E` 是一种事件对象。如果你的代码中使用这些方法时是以 lambda 表达式作为参数，那么你的代码不需要修改。如果使用单独的类实现一个旧的监听器接口（例如ValueChangeListener），则需要实现 `Consumer<E>` 接口（例如ValueChangeEvent）。有关细节请参阅 https://github.com/cuba-platform/cuba/issues/1108[GitHub issue]。
 
+. 普通界面不能在 `frame` 元素中使用了。之前，这样使用会在服务器日志中出现警告。现在只有继承自 `AbstractFrame` 或者 `ScreenFragment` 的 frames/fragments 在其它界面中作为 frame 使用。
+
 . `WebWindowManager` 类已被 `WebScreens` 取代。如果你在代码中扩展了 `WebWindowManager` ，则需要手动迁移。
 
 . `Component` 的 `isVisible` 和 `isEnabled` 方法的行为已经改变。现在，方法仅返回组件本身的 visibility / enabled 值，而不考虑父容器的值。引入了新的 `isVisibleRecursive` 和 `isEnabledRecursive` 方法。
@@ -121,7 +125,7 @@ charts：`com.haulmont.charts.web.toolkit.ui.ChartsWidgetSet` 已更改为 `com.
 
 . Window 的  `caption` 和 `description` 属性不支持 FreeMarker 模板。现在，从 XML 描述加载的属性值被视为简单的字符串值。 如果要在这些属性中使用模板，可在界面控制器手动调用 `com.haulmont.cuba.core.global.TemplateHelper` 方法。
 
-. 使用 `class` 属性在 `screens.xml` 文件中定义的界面不再支持 `Runnable` 接口。 只能注册继承了 `Screen` 类的 UI 控制器。原来的行为被认为具有危险性，因为打开这样一个界面的调用者从 `openWindow` 调用接收到 `null`。???? 这些界面必须更改：你可以将它们转换为 Spring bean，或者如果你只需要通过菜单调用它们 - 使用菜单项的 `class` 属性。
+. 使用 `class` 属性在 `screens.xml` 文件中定义的界面不再支持 `Runnable` 接口。 只能注册继承了 `Screen` 类的 UI 控制器。原来的行为被认为具有危险性，因为打开这样一个界面的调用者从 `openWindow` 调用接收到 `null`。 这些界面必须更改：你可以将它们转换为 Spring bean，或者如果你只需要通过菜单调用它们 - 使用菜单项的 `class` 属性。
 
 . 界面代理支持已被删除并且没有替代方案。 你可以使用 `DeviceInfoProvider` bean 获取 `DeviceInfo`，并为每种设备类型创建不同的界面或在界面中根据设备类型使用不同的 fragment。
 
@@ -131,7 +135,7 @@ charts：`com.haulmont.charts.web.toolkit.ui.ChartsWidgetSet` 已更改为 `com.
 
 . `ComponentPalette` 已被删除。 如果你的应用程序组件提供UI组件，请结合 `cuba.web.componentsConfig` 应用程序属性使用标准机制。
 
-. `ObjectsCache` 类以被作为遗留且非公开功能移除。
+. `ObjectsCache` 类以被作为历史版本且移除了非公开功能。
 
 . 图表组件的 `com.haulmont.charts.gui.amcharts.model.data` 包中不推荐使用的类已被删除。 使用 `com.haulmont.charts.gui.data` 包的数据项类。
 
@@ -149,11 +153,13 @@ charts：`com.haulmont.charts.web.toolkit.ui.ChartsWidgetSet` 已更改为 `com.
 
 . `BaseAction` 不再隐式设置标题（使用 id 作为消息键）。 现在必须明确设置。
 
-. `WidgetsTree` UI 组件已被作为遗留且非公开功能移除。
+. `WidgetsTree` UI 组件已被作为历史版本参数且移除了非公开功能。
 
 . 删除了 `TwinColumn` UI 组件的 `multiSelect` 属性。
 
 . `TextArea` 和 `ResizableTextArea` 现在是具有各自 XML 元素的不同 UI 组件： `<textArea>` 和 `<resizableTextArea>`。 为了向后兼容， `<textArea>` 元素仍然具有 `resizableDirection` 和 `resizable` 属性，但是如果要在控制器中注入组件并使用 `resizable ="true"` ，则该字段的类型必须是 `ResizableTextArea`， 否则会产生 `ClassCastException`。
+
+. `cuba.rest.client.secret` 应用程序属性定义的密码存储格式有改变。需要定义密码的加密方法，默认的属性值现在是 `{noop}secret` 而不是 `secret`。如果在项目中显式定义了 `cuba.rest.client.secret` 属性值的话，需要按照新的格式进行修改（在值之前添加 `{noop}`。参阅 https://github.com/cuba-platform/cuba/issues/1065#issuecomment-411357276[GitHub issue] 了解细节。）
 
 [[premium_addons]]
 === 以前的 Premium 扩展组件

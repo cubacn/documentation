@@ -10,13 +10,11 @@
 ----
 . 按照 {studio_man_url}/index.html[CUBA Studio 用户手册] 中 {studio_man_url}/open_project.html[打开已有项目] 部分的描述打开 Library 项目。
 
-. 在 CUBA Studio中打开 *Project Properties* 编辑器：点击 *CUBA* -> *Project Properties* 主菜单项。在 *App components* 列表中添加 *fts* 应用程序组件。当 Studio 建议重新创建 Gradle 脚本时，确认就可以。
-
-. 装配项目：在 Studio 主菜单点击 *CUBA* -> *Build Tasks* -> *Assemble*。这一步会下载所有需要的依赖库，然后会在项目模块的 `build` 子目录组装项目工件。
+. 在 CUBA Studio中打开 *Project Properties* 编辑器：点击 *CUBA* -> *Project Properties* 主菜单项。在 *App components* 列表中添加 *fts* 应用程序组件。当 Studio 建议重新创建 Gradle 脚本时，确认即可。Studio 将会下载需要的源代码和二进制 {main_man_url}/glossary.html#artifact[工件] 。如果项目没有自动同步 Gradle 文件，可以点击 *Gradle* 工具窗口的 image:refresh_button.png[] 按钮手动同步。
 
 . 在本地 *HyperSQL* 服务创建数据库：在主菜单点击 *CUBA* -> *Create database*。
 
-. 按照 {studio_man_url}/index.html[CUBA Studio 用户手册] 中 {studio_man_url}/start_app.html[启动应用程序] 部分的描述启用该应用。
+. 启动应用程序：点击主工具栏中 `CUBA Application` 配置旁边的 image:run_button.png[] 按钮。可以使用 CUBA 项目树中 *Runs at...* 部分的链接直接在 Studio 中通过浏览器打开应用程序。
 
 . 打开 *library* 应用程序。
 +

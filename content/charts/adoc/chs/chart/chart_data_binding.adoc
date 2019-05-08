@@ -39,12 +39,22 @@ include::{sourcesdir}/chart/SimpleDataItem_example.java[]
 
 * `ContainerDataProvider` 用于给 `Chart` 组件分配一个 {main_man_url}/gui_collection_container.html[CollectionContainer]。 
 +
+假设我们有数据容器和数据加载器用来加载 `TransportCount` 实例。下面是界面 XML 描述的片段：
++
+[source, xml]
+----
+include::{sourcesdir}/chart/containerDataProvider_example.xml[]
+----
++
+界面控制器定义了 `onInit()` 方法，设置了 `stackedArea` 图表的 data provider。Data provider 是基于 `transportCountsDc` 数据容器。
+
++
 [source, java]
 ----
 include::{sourcesdir}/chart/ContainerDataProvider_example.java[]
 ----
 +
-这种方式需要一个实体来表示图表数据。如果应用程序数据模型中已经存在这样的实体，并且图表数据是要显示为表格时，这种方式可能就比较方便。
+这种方式需要一个实体来表示图表数据。如果应用程序数据模型中已经存在这样的一个实体，并且图表数据是要显示为表格时，这种方式可能就比较方便。
 
 `DataProvider` 的实例被传递给图表(chart configuration)配置的 `setDataProvider()` 方法。 这种提供图表数据的方法是最通用的，但它需要在界面控制器中创建 `DataProvider` 或 `DataItem` 的实例。
 

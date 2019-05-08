@@ -3,11 +3,57 @@
 [[template_html]]
 ==== HTML 模板
 
-HTML 模板在 `.html` 文件（无 `BOM` 的 `UTF-8` 编码）中定义。可以使用 https://github.com/flyingsaucerproject/flyingsaucer[Flying Saucer] 库的 HTML/CSS 功能，其主要指南参考 http://flyingsaucerproject.github.io/flyingsaucer/r8/guide/users-guide-R8.html 。
+HTML 模板在 `.html` 文件（无 `BOM` 的 `UTF-8` 编码）中定义。可以使用 https://github.com/flyingsaucerproject/flyingsaucer[Flying Saucer] 库的 HTML/CSS 功能；其主要指南参考 http://flyingsaucerproject.github.io/flyingsaucer/r8/guide/users-guide-R8.html 。
 
 要控制页面尺寸、页眉和页脚，请使用特殊的 CSS 规则和属性。可以在<<example_html,示例报表>>中找到每页都显示页面/页脚的报表示例。
 
-FreeMarker 标签用于放置数据（FreeMarker 文档可从 https://freemarker.apache.org/docs/ 获取）。
+有两种方法可以在模板中放入数据：
+
+* 使用 FreeMarker 标签。
+* 使用 Groovy 模板引擎。
+
+默认情况下，报表向导会生成带有 FreeMarker 标签的 HTML 模板。
+
+在模板编辑器中使用 *Template type* 单选按钮切换这两种方法。
+
+.HTML 模板编辑器
+image::html_template_editor.png[align="center"]
+
+Groovy 模板引擎::
++
+--
+
+可以将 HTML 报表模板作为 Groovy 模板进行预处理，将使用 http://docs.groovy-lang.org/latest/html/api/groovy/text/GStringTemplateEngine.html[GStringTemplateEngine] 来处理模板。
+
+模板引擎使用 JSP 格式的 `<% %>` 脚本和 `<%= %>` 表达式语法或者 `GString` 格式的表达式。`out` 变量用来绑定模板将要被写入的 writer。因此，如果定义没有问题的话，模板可以使用任何 Groovy 代码。`GStringTemplateEngine` 能访问：
+
+* 外部参数：`BandName.fields.ParamName`；
+* 区域：`BandName.bands.ChildBandName`；
+* 字段：`BandName.fields.FieldName`。
+
+方便起见，也可以使用变量，例如：
+
+[source, html]
+----
+<% def headerRow = Root.bands.HeaderRow %>
+<p>Date: ${headerRow.fields.reportDate}</p>
+----
+
+下面是一个模板的示例，输出单一用户的报表。
+
+[source, html]
+----
+include::{sourcesdir}/examples_grooveEngine1.html[]
+----
+
+可以在<<example_html_groovy_template,报表示例>>部分找到使用 Groovy 模板的示例。
+--
+
+FreeMarker::
++
+--
+
+FreeMarker 文档可以参阅 https://freemarker.apache.org/docs/ 。
 
 FreeMarker 文档模型的结构如下：
 
@@ -91,8 +137,11 @@ include::{sourcesdir}/examples_html_10.html[]
 ----
 include::{sourcesdir}/examples_html_11.html[]
 ----
+--
 
-*嵌入图片*
+嵌入图片::
++
+--
 
 目前，CUBA 报表扩展不提供类似于 DOCX/XLSX 报表将图片插入 HTML 报表的方法。图片仍然可以使用 `img` 标签并在 `src` 属性中指定图片链接的方式嵌入。有两种方法可以将图片添加到 HTML 报表中：
 
@@ -111,13 +160,16 @@ include::{sourcesdir}/examples_html_11.html[]
 ----
 <img alt="SomePicture.png" src="data:image/png;base64,iVBORw0K ..... AcEP9PwxD0hNKK1FCAAAAAElFTkSuQmCC"/>
 ----
+--
 
-*内联编辑器*
+内联编辑器::
++
+--
 
 HTML 模板支持内联编辑器。可以直接在 *Template editor* 窗口中编辑模板，无需重新上传模板文件即可查看更改。
 
 .HTML 内联编辑器
 image::html_report_editor.png[align="center"]
-
+--
 include::template_html/html_to_pdf.adoc[]
 

@@ -10,7 +10,7 @@
 * 根包：`com.company.bpmdemo`
 
 [start=2]
-. 在 CUBA Studio 中打开 *Project Properties* 编辑器：在主菜单项中点击 *CUBA > Project Properties*。在 *App components* 列表中添加 *bpm* 应用程序组件。当 Studio 建议重新创建 Gradle 脚本时，点击确认。Studio 会下载需要的源码和二进制 {main_man_url}/glossary.html#artifact[工件] 。也可以使用 *Build* 工具窗口的 image:refresh_button.png[] 按钮启动 Gradle 同步。
+. 在 CUBA Studio 中打开 *Project Properties* 编辑器：在主菜单项中点击 *CUBA > Project Properties*。在 *App components* 列表中添加 *bpm* 应用程序组件。当 Studio 建议重新创建 Gradle 脚本时，点击确认。Studio 会下载需要的源码和二进制 {main_man_url}/glossary.html#artifact[工件] 。如果项目没有自动同步 Gradle 文件，可以点击 *Gradle* 工具窗口的 image:refresh_button.png[] 按钮手动同步。
 
 . 在本地 *HyperSQL* 服务创建数据库：主菜单选择 *CUBA* > *Create database*。默认数据库名与项目空间名称相同。
 

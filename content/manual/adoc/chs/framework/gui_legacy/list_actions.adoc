@@ -1,7 +1,7 @@
 :sourcesdir: ../../../../source
 
 [[list_actions]]
-==== 集合的标准行为（遗留版本）
+==== 集合的标准行为（历史版本）
 
 对于 `ListComponent` 的继承者们（<<gui_Table,Table>>，<<gui_GroupTable,GroupTable>>，<<gui_TreeTable,TreeTable>> 和 <<gui_Tree,Tree>>），标准的行为是通过 `ListActionType` 枚举类型来定义的；这些操作的实现类在 `com.haulmont.cuba.gui.components.actions` 包。
 
