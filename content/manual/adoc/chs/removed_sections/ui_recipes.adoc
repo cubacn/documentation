@@ -1,0 +1,4 @@
+[[ui_recipes]]
+=== 使用通用 UI
+
+参阅 <<gui_framework>>。

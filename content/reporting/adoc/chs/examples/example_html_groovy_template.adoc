@@ -1,0 +1,68 @@
+:sourcesdir: ../../../source
+
+[[example_html_groovy_template]]
+=== 使用 Groovy 模板引擎的 HTML 报表
+
+该示例是基于 *Library* 应用程序，其源码可以在 https://github.com/cuba-platform/sample-library-cuba7[GitHub] 找到。我们创建一个报表展示选中城市的图书出版物。输出格式是 HTML。
+
+. 使用 JPQL 数据集创建报表：
++
+.报表数据结构
+image::html_groovy_template_structure.png[align="center"]
+
++
+`BookPublications` 区域用来输出图书出版物列表，使用如下 JPQL 查询语句：
++
+[source, sql]
+.BookPublications 数据集
+----
+include::{sourcesdir}/bookPublications_example_groovy_html.jpql[]
+----
++
+这个查询使用了外部的报表参数 - `city`。该参数是 *Entity* 类型；但是，在 JPQL 查询语句中可以直接用来跟实体标识符进行比较；后台会自动做转换。
+
+. 报表参数描述：
++
+在 *Parameters and Formats* 标签页声明了一个报表外部参数 – `City`：
++
+.报表参数
+image::html_groovy_template_parameter.png[align="center"]
+当运行报表时，用户必须输入该参数。城市的选择会通过 `library$Town.browse` 界面进行，这个界面在应用程序内是可用的。
+
+. 创建一个报表模板
++
+*Templates* 标签页定义了一个 HTML 模板，使用 FreeMarker 标签默认生成。
++
+使用下面内容创建新的 HTML 文件：
++
+[source, html]
+.PublicationsTemplate
+----
+include::{sourcesdir}/PublicationsTemplate.html[]
+----
++
+输入参数的值用来生成报表标题：`${Root.fields.city.name}`。
++
+`bookPublications` 变量定义如下：
++
+[source, groovy]
+----
+<% def bookPublications = Root.bands.BookPublications.fields %>
+----
++
+该变量在表格体中用来显示报表字段。
++
+[source, groovy]
+----
+<% bookPublications.title.eachWithIndex{elem, index -> out << "<tr><td> ${bookPublications.book[index]} </td><td> ${bookPublications.publisher[index]} </td></tr>"}%>
+----
++
+上传新的模板，然后选择 HTML 输出类型，在 *Template type* 单选按钮组选择 *Groovy template* 并设置为默认：
++
+.报表模板编辑器
+image::publicationsTemplate_editor.png[align="center"]
+
+运行模板，确保其工作正常：
+
+.报表结果
+image::publications_report.png[align="center"]
