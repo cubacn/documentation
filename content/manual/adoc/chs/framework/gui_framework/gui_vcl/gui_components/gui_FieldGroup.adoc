@@ -11,7 +11,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.0/com/haulmont/cuba/gui/components/FieldGroup.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/FieldGroup.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -20,6 +20,11 @@
 image::gui_fieldGroup.png[align="center"]
 
 该组件对应的 XML 名称： `fieldGroup`
+
+[WARNING]
+====
+`FieldGroup` 只能在基于<<gui_legacy,历史 API>> 的界面中使用。当前 API 中通过 <<gui_Form,Form>> 组件提供类似功能。
+====
 
 下面这个例子展示了在 XML 中定义一组字段的情况：
 

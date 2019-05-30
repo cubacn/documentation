@@ -11,7 +11,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.0/com/haulmont/cuba/gui/components/RelatedEntities.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/RelatedEntities.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 `RelatedEntities` 组件是一个弹窗按钮，其中包含了与表格中显示的实体相关的实体类的下拉列表。当用户选择了所需的实体类，就会打开一个新的浏览界面，其中包含与初始表格中选择的实体实例关联的实体实例。

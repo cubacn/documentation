@@ -3,7 +3,12 @@
 [[entityChangedEvent]]
 ==== EntityChangedEvent
 
-`EntityChangedEvent` 是一个 Spring 的 `ApplicationEvent` 事件，会在实体保存到数据库时从中间层发送该事件。可以在事务中或者事务完成后处理该事件（使用 https://docs.spring.io/spring/docs/current/spring-framework-reference/data-access.html#transaction-event[@TransactionalEventListener] ）。只有实体使用了 `@PublishEntityChangedEvents` 注解，才会发送该事件。
+`EntityChangedEvent` 是一个 Spring 的 `ApplicationEvent` 事件，会在实体保存到数据库时从中间层发送该事件。可以在事务中或者事务完成后处理该事件（使用 https://docs.spring.io/spring/docs/current/spring-framework-reference/data-access.html#transaction-event[@TransactionalEventListener] ）。
+
+[TIP]
+=====
+只会为使用了 `@PublishEntityChangedEvents` 注解的实体发送该事件。如果实体需要监听 `EntityChangedEvent` 事件，别忘了为实体添加该注解。
+=====
 
 `EntityChangedEvent` 不包含更改的实体本身，而只包含了其 id。还有，`getOldValue(attributeName)` 方法也只会返回引用的 id 而不是对象。所以如果需要的话，开发者可以使用合适的视图或者其它参数重新加载实体。
 
@@ -25,7 +30,21 @@ include::{sourcesdir}/middleware/entityChangedEvent_usage_1.java[]
 
 如果在当前事务中处理 `EntityChangedEvent`，可以使用 <<transactionalDataManager,TransactionalDataManager>> 从数据库获取更改实体的当前状态。如果在事务提交之后的监听器中，可以使用 `DataManager` 来创建新事务并加载数据。
 
-[TIP]
-=====
-别忘了为需要监听 `EntityChangedEvent` 事件的实体添加 `@PublishEntityChangedEvents` 注解。
-=====
+下面是使用 `EntityChangedEvent` 更新关联实体的示例。
+
+假设根据 https://www.cuba-platform.com/learn/quickstart/studio/part3/#chapter0[快速开始-Sales应用程序] ，我们有 `Order`、`OrderLine` 和 `Product` 实体。但是 `Product` 还有额外的 `special` 布尔类型属性，并且 `Order` 有 `numberOfSpecialProducts` 整型属性，该属性需要根据每次从 `Order` 中添加或者删除 `OrderLine` 时重新计算。
+
+创建下面带有 `@EventListener` 方法的类，此方法会在事务提交之前， `OrderLine` 实体发生改变时调用。
+
+[source,java]
+----
+include::{sourcesdir}/middleware/entityChangedEvent_usage_2.java[]
+----
+<1> - 如果没有删除 `OrderLine`，我们可以使用 id 从数据库加载。
+<2> - `event.getEntityId()` 方法返回更改的 `OrderLine` id。
+<3> - 使用包含 `OrderLine` 并带有其关联 `Order` 的视图。试图必须包含 `Order.numberOfSpecialProducts` 属性，因为我们之后会更新这个值。
+<4> - 从加载的 `OrderLine` 中获取 `Order`。
+<5> - 如果 `OrderLine` 已经被删除了，则不能从数据库加载，但是 `event.getChanges()` 方法会返回实体的所有属性，也包含了关联实体的 id。所以我们可以用 id 从中获取关联的 `Order`。
+<6> - 为给定的 `Order` 加载所有的 `OrderLine` 实例，使用 `Product.special` 进行过滤并对它们进行计数。视图必须包含 `OrderLine` 以及关联的 `Product`。
+<7> - 改变了属性之后再保存 `Order`。
+

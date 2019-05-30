@@ -5,13 +5,19 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="https://demo.cuba-platform.com/dashboard" class="live-demo-btn" target="_blank">LIVE DEMO</a>
+    <a href="https://demo.cuba-platform.com/dashboard" class="live-demo-btn" target="_blank">DEMO APP</a>
 </div>
 ++++
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.0/com/haulmont/cuba/gui/components/CssLayout.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="https://demo.cuba-platform.com/sampler/open?screen=responsive-csslayout" class="live-demo-btn" target="_blank">DEMO</a>
+</div>
+++++
+
+++++
+<div class="manual-live-demo-container">
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/CssLayout.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 

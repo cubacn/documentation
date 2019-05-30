@@ -11,7 +11,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.0/com/haulmont/cuba/gui/components/PickerField.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/PickerField.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -65,7 +65,7 @@ include::{sourcesdir}/gui_vcl/pickerfield_3.java[]
 include::{sourcesdir}/gui_vcl/pickerfield_4.java[]
 ---- 
 +
-可以在编程时使用相应的组件事件来对标准操作进行参数化。比如，可以通过如下方式设置特定的查找界面 ID：
+可以通过订阅 `ActionPerformedEvent` 事件来自定义标准操作的行为并提供自定义的实现。比如，可以通过如下方式使用特定的查找界面：
 +
 [source, java]
 ----

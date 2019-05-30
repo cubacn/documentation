@@ -13,17 +13,17 @@
 :sectlinks:
 :sectanchors:
 :lang: en
-:revnumber: 7.0
+:revnumber: 7.1
 :version-label: Version
 :revremark: Copyright (c) 2019 Haulmont
 :youtrack: https://youtrack.cuba-platform.com
-:manual: https://doc.cuba-platform.com/manual-{revnumber}
-:studio: https://doc.cuba-platform.com/studio
-:manual_app_props: https://doc.cuba-platform.com/manual-{revnumber}/app_properties_reference.html#
-:reporting: https://doc.cuba-platform.com/reporting-{revnumber}
-:charts: https://doc.cuba-platform.com/charts-{revnumber}
-:bpm: https://doc.cuba-platform.com/bpm-{revnumber}
-:githubissueslog: https://github.com/cuba-platform/documentation/blob/master/content/release_notes/issues
+:manual: https://doc.cuba-platform.cn/manual-{revnumber}-chs
+:studio: https://doc.cuba-platform.cn/studio-chs
+:manual_app_props: https://doc.cuba-platform.cn/manual-{revnumber}-chs/app_properties_reference.html#
+:reporting: https://doc.cuba-platform.cn/reporting-{revnumber}-chs
+:charts: https://doc.cuba-platform.cn/charts-{revnumber}-chs
+:bpm: https://doc.cuba-platform.cn/bpm-{revnumber}-chs
+:githubissueslog: https://github.cn/cuba-platform/documentation/blob/master/content/release_notes/issues
 
 :!sectnums:
 

@@ -4,7 +4,7 @@
 ====== CachingFacadeMBean
 
 
-`CachingFacadeMBean` 提供了在 http://files.cuba-platform.com/javadoc/cuba/7.0/com/haulmont/cuba/core/jmx/CachingFacadeMBean.html[中间件] 和 http://files.cuba-platform.com/javadoc/cuba/7.0/com/haulmont/cuba/web/jmx/CachingFacadeMBean.html[Web 客户端] 模块中清除各种缓存的方法。
+`CachingFacadeMBean` 提供了在 http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/jmx/CachingFacadeMBean.html[中间件] 和 http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/web/jmx/CachingFacadeMBean.html[Web 客户端] 模块中清除各种缓存的方法。
 
 
 JMX 对象名: `app-core.cuba:type=CachingFacade` 和 `app.cuba:type=CachingFacade`

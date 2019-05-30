@@ -3,7 +3,7 @@
 [[persistenceManagerMBean]]
 ====== PersistenceManagerMBean
 
-http://files.cuba-platform.com/javadoc/cuba/7.0/com/haulmont/cuba/core/jmx/PersistenceManagerMBean.html[PersistenceManagerMBean] 提供以下功能：
+http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/jmx/PersistenceManagerMBean.html[PersistenceManagerMBean] 提供以下功能：
 
 * 管理<<entity_statistics,实体统计信息>>机制。
 

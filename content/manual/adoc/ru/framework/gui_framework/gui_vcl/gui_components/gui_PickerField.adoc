@@ -11,7 +11,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.0/com/haulmont/cuba/gui/components/PickerField.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/PickerField.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -64,7 +64,7 @@ include::{sourcesdir}/gui_vcl/pickerfield_3.java[]
 include::{sourcesdir}/gui_vcl/pickerfield_4.java[]
 ----
 +
-Стандартные действия можно параметризовать в соответствующих событиях компонента в контроллере. Например, так можно задать специфический экран выбора:
+Поведение стандартных действий можно кастомизировать, если подписаться на событие `ActionPerformedEvent` и предоставить собственную реализацию действия. Например, так можно задать специфический экран выбора:
 +
 [source, java]
 ----

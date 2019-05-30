@@ -33,7 +33,7 @@ cpk-pentaho5-7.1.0.0-12.jar
 ====
 --
 
-. 访问 http://licensing.meteorite.bi 并且注册一个新账号。验证了账号之后，创建一个公司，并且为公司生成一个社区版许可：
+. 访问 `++http://licensing.meteorite.bi++` 并且注册一个新账号。验证了账号之后，创建一个公司，并且为公司生成一个社区版许可：
 +
 --
 * 登录系统点击 CREATE NEW LICENSE 按钮。
