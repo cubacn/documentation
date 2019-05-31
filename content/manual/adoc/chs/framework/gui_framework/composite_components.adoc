@@ -1,0 +1,171 @@
+:sourcesdir: ../../../../source
+
+[[composite_components]]
+==== 组合组件
+
+组合组件是由其他多个组件组合的组件。跟界面 fragment 类似，组合组件也是一种可重用组件，能复用展示布局和逻辑。下列情况我们建议使用组合组件：
+
+* 组件功能可以使用现存的通用 UI 组件以组合的方式来实现。如果需要非标准功能，可以封装 Vaadin 组件或者 JavaScript 库来创建<<own_components,自定义组件>>，或者使用<<jsComponent>>。
+* 组件相对比较简单，并不会加载或者保存数据。否则的话，考虑创建<<using_screen_fragments,界面 fragment>>。
+
+组合组件的类必须继承 `CompositeComponent` 基类。组合组件必须以一个单一组件为内部组件树的基础 - 称为根组件。根组件可以通过 `CompositeComponent.getComposition()` 方法获取。
+
+内部组件通常在 XML 描述中通过声明式的方式创建。因此，组件类必须要有 `@CompositeDescriptor` 注解，用来指定相应描述文件的路径。如果注解值不是以 `/` 开头的话，会从组件类的包内加载该文件。
+
+另外，内部组件树也可以在 `CreateEvent` 监听器内通过编程的方式创建。
+
+当框架完成组件的初始化之后，会发出 `CreateEvent` 事件。此时，如果组件使用了 XML 描述，则会进行加载并通过 `getComposition()` 方法返回根组件。这个事件可以用来添加更多的任何组件初始化，或者用来创建内部组件（不使用XML）。
+
+下面我们示范如何创建 Stepper （步进）组件，并通过点击控件旁边的上下按钮来编辑输入框的整数值。
+
+. <<composite_components_xml,组件布局描述>>
+
+. <<composite_components_class,组件实现类>>
+
+. <<composite_components_loader,组件加载器>>
+
+. <<composite_components_registration,注册组件>>
+
+. <<composite_components_xsd,组件 XSD>>
+
+. <<composite_components_usage,使用组件>>
+
+. <<composite_components_style,自定义样式>>
+
+我们假设项目的包结构以 `com/company/demo` 为基础。
+
+[[composite_components_xml]]
+组件布局描述::
++
+--
+在 `web` 模块创建带有组件布局的 XML 描述文件 `com/company/demo/web/components/stepper/stepper-component.xml`：
+
+[source, xml]
+----
+include::{sourcesdir}/gui/composite/composite_xml.xml[]
+----
+
+<1> - XSD 定义了组件描述的内容
+<2> - 单一的根组件
+<3> - 任何数量的内部组件
+--
+
+[[composite_components_class]]
+组件实现类::
++
+--
+在同一个包内创建组件的实现类:
+
+[source, java]
+----
+include::{sourcesdir}/gui/composite/composite_class.java[]
+----
+
+<1> - `@CompositeDescriptor` 注解指定了组件布局的描述文件路径，这个文件也在同一包内。
+<2> - 组件类继承了 `CompositeComponent`，使用根组件的类型作为参数。
+<3> - 组件实现了 `Field<Integer>` 接口，因为组件要用来展示和编辑一个整数值。
+<4> - 一组带有默认方法的借口，实现了标准通用 UI 组件的功能。
+<5> - 组件名称，用来在 `ui-component.xml` 文件内注册组件，以便框架识别。
+<6> - 包含引用内部组件的字段。
+<7> - 组件的属性，定义单击一次上/下按钮能改变的值。具有公共 getter/setter，并能在界面 XML 中设置。
+<8> - 组件初始化在 `CreateEvent` 监听器内完成。
+--
+
+[[composite_components_loader]]
+组件加载器::
++
+--
+创建组件加载器，当组件在界面 XML 描述中使用的时候需要用加载器进行初始化：
+
+[source, java]
+----
+include::{sourcesdir}/gui/composite/composite_loader.java[]
+----
+
+<1> - 加载器累必须使用组件的类作为参数继承 `AbstractComponentLoader`。由于我们的组件实现了 `Field`，所以可以用更具体的 `AbstractFieldLoader` 作为基类。
+<2> - 使用组件名称创建组件。
+<3> - 如果在 XML 中设置了 `step` 属性，则进行加载。
+--
+
+[[composite_components_registration]]
+注册组件::
++
+--
+为了在框架中注册组件及其加载器，在 `web` 模块创建 `com/company/demo/ui-component.xml` 文件：
+
+[source, xml]
+----
+include::{sourcesdir}/gui/composite/composite_registration.xml[]
+----
+
+在 `com/company/demo/web-app.properties` 中添加下列属性：
+
+[source, properties]
+----
+cuba.web.componentsConfig = +com/company/demo/ui-component.xml
+----
+
+现在框架能识别应用程序界面 XML 中包含的新组件了。
+--
+
+[[composite_components_xsd]]
+组件 XSD::
++
+--
+如果需要在界面 XML 描述中使用组件，则 XSD 是必须的。在 `web` 模块的 `com/company/demo/ui-component.xsd` 文件定义：
+
+[source, xml]
+----
+include::{sourcesdir}/gui/composite/composite_xsd.xsd[]
+----
+
+<1> - 继承所有基本的字段属性。
+<2> - 为 `step` 定义属性。
+--
+
+[[composite_components_usage]]
+使用组件::
++
+下面的示例展示了如何在界面中使用该组件：
+
+--
+[source, xml]
+----
+include::{sourcesdir}/gui/composite/composite_usage.xml[]
+----
+
+<1> - 命名空间引用了组件的 XSD。
+<2> - 组合组件连接到实体的 `limit` 属性。
+--
+
+[[composite_components_style]]
+自定义样式::
++
+--
+现在我们使用一些自定义的样式让组件变得更好看一些。
+
+首先，将根组件改为 <<gui_CssLayout,CssLayout>> 并为内部组件分配样式名。除了项目中定义的自定义样式（见下面）外，下面这些预定义的样式也会使用： {sampler_url}/open?screen=styles-containers[v-component-group] ， {sampler_url}/open?screen=styles-button[icon-only] 。
+
+[source, xml]
+----
+include::{sourcesdir}/gui/composite/composite_xml_cssLayout.xml[]
+----
+
+相应的调整一下组件的类：
+
+[source, java]
+----
+include::{sourcesdir}/gui/composite/composite_class_cssLayout.java[]
+----
+
+生成主题扩展（参阅 {studio_man_url}/#generic_ui_themes[这里] 了解如何在 Studio 中操作）并在 `modules/web/themes/hover/com.company.demo/hover-ext.scss` 文件添加如下代码：
+
+[source, css]
+----
+include::{sourcesdir}/gui/composite/composite_class_css.css[]
+----
+
+重启应用程序服务并打开界面。带有我们组合步进组件的表单如下：
+
+image::gui_composite/stepper_final.png[align="center"]
+--

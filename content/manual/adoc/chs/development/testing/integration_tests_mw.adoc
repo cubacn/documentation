@@ -3,11 +3,11 @@
 [[integration_tests_mw]]
 ==== 中间件集成测试
 
-在中间件层，可以创建运行在具有完整功能的 Spring 容器里的测试用例，而且可以连接数据库。在这些测试类里面，可以运行中间件里面各细分层的代码，比如从 ORM 层到 Service 层。
+中间件继承测试运行在具有完整功能的 Spring 容器里，而且可以连接数据库。在这些测试类里面，可以运行中间件里面各细分层的代码，比如从 ORM 层到 Service 层。
 
-首先，在 *core* 模块跟 `src` 目录平级创建 `test` 目录。然后在 Studio 里面重新创建 IDE 项目文件，以便在 IDE 里面运行测试。
+为了在测试中配置和启动中间件 Spring 容器，需要在项目中创建 `com.haulmont.cuba.testsupport.TestContainer` 的子类，并且在测试用例中使用其实例作为 JUnit Rule。
 
-平台自有的 `TestContainer` 类可以用来作为项目里面测试容器的基类。在 *core* 模块的 `test` 目录创建一个 `TestContainer` 类的子类，然后在这个子类的构造方法里面，重新定义加载 <<app_components, 应用程序组件>>和 <<app_properties_files, 应用程序属性>>以及测试数据库连接的参数，示例：
+下面是容器类和<<quick_start>>中提到的 Sales 项目的一个集成测试的示例。所有的类必须在 `core` 模块的 `test` 目录。
 
 [source, java]
 ----
@@ -25,23 +25,14 @@ include::{sourcesdir}/development/testing_11.properties[]
 
 [source, groovy]
 ----
-include::{sourcesdir}/development/testing_4.java[]
+include::{sourcesdir}/development/testing_4.groovy[]
 ----
 
 这个测试容器应当在测试类里面作为 `@ClassRule` 注解指定的 JUnit 规则（rule）：
-
+    
 [source, java]
 ----
 include::{sourcesdir}/development/testing_5.java[]
-----
-
-在上面的例子中，测试容器只初始化了一次，但是可以给这个类所有的测试方法使用，等他们执行完之后就销毁了。
-
-容器的初始化需要一些时间，有没有办法只创建一个测试容器但是给好几个测试类使用呢？可以通过创建一个通用的测试容器单例：
-
-[source, java]
-----
-include::{sourcesdir}/development/testing_6.java[]
 ----
 
 在测试类里使用：

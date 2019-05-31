@@ -3,9 +3,18 @@
 [[testing]]
 === 测试
 
-本章节介绍 CUBA 应用程序在不同层（layers）的测试方法。
+CUBA 应用程序可以使用众所周知的方式进行测试：单元测试、集成测试、以及界面 UI 测试。
 
-include::testing/unit_tests.adoc[]
+单元测试非常适合测试封装在特定类中以及与应用程序基础设施松耦合的业务逻辑。只需要在项目的 `global`、`core` 或 `web` 模块中创建 `test` 目录，然后就可以编写 JUnit 测试用例了。如果需要模拟数据，可以添加最喜欢的 mocking 框架，或者 CUBA 已经使用的 link:http://jmockit.github.io/[JMockit] 。Mocking 框架的依赖需要添加到 `build.gradle`，放在 JUnit 之前：
+
+[source, groovy]
+----
+include::{sourcesdir}/development/testing_jmockit_dep.groovy[]
+----
+
+集成测试运行在 Spring 容器中，所以可以用来测试应用程序的各个方面，包括与数据库和 UI 界面的交互。本章节介绍如何在中间层和 web 层创建集成测试。
+
+对于 UI 测试，我们推荐使用 https://github.com/cuba-platform/masquerade[Masquerade] 库，其为测试 CUBA 应用程序提供了一组非常有用的抽象。可以参阅 GitHub 上的 README 和 Wiki。
 
 include::testing/integration_tests_mw.adoc[]
 

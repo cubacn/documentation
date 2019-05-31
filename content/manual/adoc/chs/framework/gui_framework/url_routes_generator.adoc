@@ -1,0 +1,65 @@
+:sourcesdir: ../../../../source
+
+[[url_routes_generator]]
+==== URL 路由生成器
+
+有时候，需要使用合适的 URL 通过 email 发给用户或者展示给用户。生成 URL 最简单的方法就是使用 URL 路由生成器。
+
+URL 路由生成器提供 API 用来生成 URL 链接：
+
+* 实体实例编辑界面的链接。
+* 带界面 id 或者界面类的界面链接。
+* 带参数的界面链接。
+
+使用 `UrlRouting` bean 的 `getRouteGenerator()` 方法可以获得一个 `RouteGenerator` 的实例。`RouteGenerator` 提供 API 用来为带有可选 URL 参数的界面生成路由。其具有下列方法：
+
+* `getRoute(String screenId)` – 返回指定 `screenId` 的界面路由，示例：
++
+[source, java]
+----
+include::{sourcesdir}/gui/url_route_generation1.java[]
+----
++
+结果：
++
+`route = "http://host:port/context/#main/users"`
+
+* `getRoute(Class<? extends Screen> screenClass)` – 返回指定 `screenClass` 的界面路由，示例：
++
+[source, java]
+----
+include::{sourcesdir}/gui/url_route_generation2.java[]
+----
++
+The result:
++
+`route = "http://host:port/context/#main/users"`
+
+* `getEditorRoute(Entity entity)` – 返回指定 `entity` 的默认编辑界面的路由，示例：
++
+[source, java]
+----
+include::{sourcesdir}/gui/url_route_generation3.java[]
+----
++
+The result:
++
+`route == "http://host:port/context/#main/users/edit?id=30h1cre6v1893s9hyzyd438zwk"`
+
+* `getEditorRoute(Entity entity, Class<? extends Screen> screenClass)` – 生成指定 `screenClass` 和 `entity` 的编辑界面路由。
+* `getRoute(Class<? extends Screen> screenClass, Map<String, String> urlParams)` – 生成指定 `screenClass` 和 `urlParams` 的界面路由。
+
+[[url_route_generation_example]]
+URL 路由生成器示例::
+
+假设我们有 `Customer` 实体，带有标准的界面并注册了路由。
+我们在 `CustomerBrowse` 添加一个按钮用来为选择的实体生成带有某些参数的链接。按钮调用 `generateRoute` 方法：
+
+[source, java]
+----
+include::{sourcesdir}/gui/url_route_generation.java[]
+----
+
+生成的路由结果:
+
+image::url_generate_route.png[align="center"]

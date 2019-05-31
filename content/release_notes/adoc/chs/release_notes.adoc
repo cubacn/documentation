@@ -1,4 +1,4 @@
-= CUBA Platform and Studio Release Notes
+= CUBA Platform Release Notes
 :toc: left
 :toc-title: 目录
 :toclevels: 6
@@ -30,240 +30,45 @@
 [[overview]]
 == 概述
 
-本文档重点介绍 CUBA 平台和 Studio 各版本的主要变化。
+本文档重点介绍 CUBA 平台版本 {revnumber} 的主要变化。
 
-[[platform]]
-== 平台
+== 所有解决的问题
+// * {githubissueslog}/release_7.0.1.md[平台 7.0.1 解决的问题]
 
-=== 所有解决的问题
+[[breaking_changes]]
+== Breaking Changes
 
-* {githubissueslog}/release_7.0.5.md[平台 7.0.5 解决的问题]
-* {githubissueslog}/release_7.0.4.md[平台 7.0.4 解决的问题]
-* {githubissueslog}/release_7.0.3.md[平台 7.0.3 解决的问题]
-* {githubissueslog}/release_7.0.2.md[平台 7.0.2 解决的问题]
-* {githubissueslog}/release_7.0.1.md[平台 7.0.1 解决的问题]
-
-[[known_issues]]
-=== 已知问题和限制
-
-. CUBA 7.0 不再支持桌面客户端。 如果你的项目依赖 Desktop 模块，则不能将项目迁移到此版本。
-
-. UI 界面的热部署机制仅限于已有界面的更改。 在应用程序运行时创建的新界面，不会被热部署。 有关详细信息，请参阅 https://github.com/cuba-platform/cuba/issues/1509(GitHub issue)。
-
-. `Tree` UI组件已使用 `TreeDataGrid` 重写。 现在它没有边框和填充，看起来与旧的 `Tree` 不同。
-
-[[platform_breaking_changes]]
-=== 不兼容的更改
-
-. 不再支持 Internet Explorer 8-10 。支持的Web浏览器有：Chrome、Firefox 45+、Safari 4.1+、Internet Explorer 11、Microsoft Edge。
-
-. 不再需要生成 IntelliJ IDEA 或 Eclipse 项目文件(`IDEA` 和 `Eclipse` Gradle 任务）。
-+
-框架不使用  `idea` 或 `eclipse` Gradle插件，必须使用IDE提供的机制导入项目。在最简单的情况下，只需将 `build.gradle` 文件作为项目打开。有关详细说明，请参阅 {studio}/open_project.html[Studio 用户向导]。
-. CUBA 和附加组件(BPM、Charts、Fts、Reports)的配置文件已从 classpath 根目录移动到相应应用程序组件的根包。例如，`/cuba persistence.xml` 变为 `/com/haulmont/cuba/persistence.xml`。这些更改不会影响正确配置的应用程序项目，有一种情况除外：在测试容器中，存在对 `test app.properties` 文件的引用，该文件现在位于 `com/haulmont/cuba/testsupport/test app.properties`。因此，如果使用中间件集成测试，需要修改测试容器类并替换引用：
-
-
-+
-[source, java]
-----
-public class MyProjectTestContainer extends TestContainer {
-
-    public MyProjectTestContainer() {
-        super();
-        // ...
-        appPropertiesFiles = Arrays.asList(
-                "com/company/myproject/app.properties",
-                "com/haulmont/cuba/testsupport/test-app.properties");
-----
-
-. 已删除对旧的 `commons-lang` 库的依赖，平台依赖于新的 `commons-lang3` 库。可以修改用法以适应 `commons-lang3` （只需将 java 导入更改为 `org.apache.commons.lang3` 包）或添加显式依赖 `compile('commons-lang:commons-lang:2.6')` 到 `build.gradle` 中的全局模块。
-
-. 已删除对 `groovy-all` 包的依赖项。现在，框架只依赖于 `groovy`、`groovy-templates` 和 `groovy-sql` 模块。可根据需要将所需的 groovy 模块添加到项目依赖中。
-
-. 已删除对 MyBatis 和 `com.haulmont.cuba.core.sys.mybatis.UUIDTypeHandler` 类的依赖。如果项目中需要 MyBatis，请参阅 {manual}/mybatis.html[与 MyBatis 集成]章节。
-
-. 已从 `Component` 中提取出接口 `Component.Container` 、`Component.HasValue`、`Component.HasFormatter` 等，并移动到 `com.haulmont.cuba.gui.components` 包中。详情请参阅 https://github.com/cuba-platform/cuba/issues/925[GitHub issue] 。必须修改对这些接口的导入，例如，直接使用 `com.haulmont.cuba.gui.components.HasValue` 代替 `com.haulmont.cuba.gui.components.component.HasValue` 。
-
-. 已删除弃用的方法：`Instance` 的 `addListener` 和 `removeListener` 方法 。请改用 `addPropertyChangeListener` 和 `removePropertyChangeListener` 方法。
-
-. UI组件中的所有 `addSomeListener` 和 `removeSomeListener` 方法现在都接收 `Consumer<E>` 类型的参数，其中 `E` 是一种事件对象。如果你的代码中使用这些方法时是以 lambda 表达式作为参数，那么你的代码不需要修改。如果使用单独的类实现一个旧的监听器接口（例如ValueChangeListener），则需要实现 `Consumer<E>` 接口（例如ValueChangeEvent）。有关细节请参阅 https://github.com/cuba-platform/cuba/issues/1108[GitHub issue]。
-
-. 普通界面不能在 `frame` 元素中使用了。之前，这样使用会在服务器日志中出现警告。现在只有继承自 `AbstractFrame` 或者 `ScreenFragment` 的 frames/fragments 在其它界面中作为 frame 使用。
-
-. `WebWindowManager` 类已被 `WebScreens` 取代。如果你在代码中扩展了 `WebWindowManager` ，则需要手动迁移。
-
-. `Component` 的 `isVisible` 和 `isEnabled` 方法的行为已经改变。现在，方法仅返回组件本身的 visibility / enabled 值，而不考虑父容器的值。引入了新的 `isVisibleRecursive` 和 `isEnabledRecursive` 方法。
-
-. 接口 `HasValue` 现在具有类型参数 `V` - UI组件的相应值的类型。使用无类型UI组件的旧代码，例如 `TextField` 或 `LookupField` 可能会被破坏。可以在UI组件的 `TYPE_DEFAULT` 常量中找到默认类型。例如（这里 `TextField` 的默认类型 `String`）：
-+
-[source, java]
-----
-TypeToken<TextField<String>> TYPE_DEFAULT = new TypeToken<TextField<String>>(){};
-----
-+
-强烈建议显式设置UI组件的类型参数，甚至默认的类型参数也应设置。 例如：
-+
-[source, java]
-----
-@Inject
-protected LookupField<User> userField;
-@Inject
-protected TextField<Long> countField;
-@Inject
-protected Label<String> defaultTypedLabel;
-----
-
-. 方法 `HasValue.getValue()` 不再支持返回值的自动转换。 你应该手动转换值或使用类型化的UI组件，例如: `TextField<String>`。
-
-. Widget 集合的位置已更改。 如果项目中有 `web-toolkit` 模块，则需要更改 `AppWidgetSet.gwt.xml` 文件中对 widget 集合的引用：
-+
-cuba: `com.haulmont.cuba.web.toolkit.ui.WidgetSet` 更改为 `com.haulmont.cuba.web.widgets.WidgetSet`。
-+
-charts：`com.haulmont.charts.web.toolkit.ui.ChartsWidgetSet` 已更改为 `com.haulmont.charts.web.widgets.ChartsWidgetSet`。
-
-. 默认情况下，在第一页渲染时不再加载 JQuery。 如果需要JQuery，请将 `jquery.js` 显式添加到 UI 组件类的依赖项中。
-
-. Window 的  `caption` 和 `description` 属性不支持 FreeMarker 模板。现在，从 XML 描述加载的属性值被视为简单的字符串值。 如果要在这些属性中使用模板，可在界面控制器手动调用 `com.haulmont.cuba.core.global.TemplateHelper` 方法。
-
-. 使用 `class` 属性在 `screens.xml` 文件中定义的界面不再支持 `Runnable` 接口。 只能注册继承了 `Screen` 类的 UI 控制器。原来的行为被认为具有危险性，因为打开这样一个界面的调用者从 `openWindow` 调用接收到 `null`。 这些界面必须更改：你可以将它们转换为 Spring bean，或者如果你只需要通过菜单调用它们 - 使用菜单项的 `class` 属性。
-
-. 界面代理支持已被删除并且没有替代方案。 你可以使用 `DeviceInfoProvider` bean 获取 `DeviceInfo`，并为每种设备类型创建不同的界面或在界面中根据设备类型使用不同的 fragment。
-
-. 旧的 Havana UI 主题完全在 Halo 主题的基础上被重新实现。如果你扩展了 Havana ，则需要相应地迁移 SCSS 样式。有关详细信息，请参阅 https://github.com/cuba-platform/cuba/issues/1067[GitHub问题]。
-
-. `TextArea` 的属性 `wordwrap` 已重命名为 `wordWrap`。 在界面 XML 中仍然有效，但 `wordwrap` 已从 XSD 中删除，不应再使用。
-
-. `ComponentPalette` 已被删除。 如果你的应用程序组件提供UI组件，请结合 `cuba.web.componentsConfig` 应用程序属性使用标准机制。
-
-. `ObjectsCache` 类以被作为历史版本且移除了非公开功能。
-
-. 图表组件的 `com.haulmont.charts.gui.amcharts.model.data` 包中不推荐使用的类已被删除。 使用 `com.haulmont.charts.gui.data` 包的数据项类。
-
-. 图表 UI 调色板 - `ChartComponentPalette` 类已被删除。 使用标准的应用程序组件机制或明确地将 `charts-web-components.xml` 包含到 `cuba.web.componentsConfig` 应用程序属性中。 如果你没有使用 `ChartComponentPalette`，则不需要迁移操作。
-
-. 类 `com.haulmont.cuba.core.app.DataServiceQueryBuilder` 已重命名为 `RdbmsQueryBuilder`。
-
-. `com.haulmont.cuba.gui.components.RowsCount.BeforeRefreshEvent` 不再引用数据源。
-
-. 即使 UI 组件的值为空，也会触发UI组件的验证器。
-
-. 如果已经定义了自己的密码加密模块（不是SHA1），请在所有模块的 `app.properties` 文件中设置 `cuba.legacyPasswordEncryptionModule = <你的加密模块>` 。 这对于对数据库中 `SEC_USER.PASSWORD_ENCRYPTION` 字段为空的已有用户进行身份验证是必要的。
-
-. 默认情况下，UI组件 `description` 属性不会作为 HTML 标记处理。 这可以通过设置 `descriptionAsHtml = true` 来改变这个行为。
-
-. `BaseAction` 不再隐式设置标题（使用 id 作为消息键）。 现在必须明确设置。
-
-. `WidgetsTree` UI 组件已被作为历史版本参数且移除了非公开功能。
-
-. 删除了 `TwinColumn` UI 组件的 `multiSelect` 属性。
-
-. `TextArea` 和 `ResizableTextArea` 现在是具有各自 XML 元素的不同 UI 组件： `<textArea>` 和 `<resizableTextArea>`。 为了向后兼容， `<textArea>` 元素仍然具有 `resizableDirection` 和 `resizable` 属性，但是如果要在控制器中注入组件并使用 `resizable ="true"` ，则该字段的类型必须是 `ResizableTextArea`， 否则会产生 `ClassCastException`。
-
-. `cuba.rest.client.secret` 应用程序属性定义的密码存储格式有改变。需要定义密码的加密方法，默认的属性值现在是 `{noop}secret` 而不是 `secret`。如果在项目中显式定义了 `cuba.rest.client.secret` 属性值的话，需要按照新的格式进行修改（在值之前添加 `{noop}`。参阅 https://github.com/cuba-platform/cuba/issues/1065#issuecomment-411357276[GitHub issue] 了解细节。）
-
-[[premium_addons]]
-=== 以前的 Premium 扩展组件
-
-以前的 Premium 扩展组件（BPM、图表、全文搜索、报表）自 7.0 版开始都免费并开源。源码项目已迁移到 GitHub:
-
-* https://github.com/cuba-platform/bpm
-* https://github.com/cuba-platform/charts
-* https://github.com/cuba-platform/fts
-* https://github.com/cuba-platform/reports
-
-扩展组件 7.0 版的二进制工件发布在主仓库中：https://dl.bintray.com/cuba-platform/main 和 https://repo.cuba-platform.com/content/groups/work，所有，没有必要在你的 `build.gradle` 文件中添加 premium 仓库来使用这些扩展。
 
 [[gui]]
-=== 通用 UI
+== 通用 UI
+* Now you can create new visual components by combining existing ones, see {manual}/composite_components.html[Composite Components].
 
-. 通用 UI 瑞在使用 Vaadin 8 。
+* The framework now provides infrastructure for writing integration tests on the web tier for testing UI in full-functioning Spring container, see {manual}/integration_tests_client.html[Web Integration Tests].
 
-. 新的 API:
-* 新的 {manual}/gui_screens.html[界面 API] 。
-* 新的 {manual}/standard_actions.html[标准操作] 。
-* 新的 {manual}/gui_dialogs.html[对话框] 和 {manual}/gui_notifications.html[通知] API。
-* 新的代替数据源的 {manual}/gui_data.html[数据组件] 。
-+
-旧的 screen API 、标准操作和数据源被为了向后兼容依然保留。
-
-. 新的UI组件 -  {manual}/gui_Form.html[Form] 、 {manual}/gui_TreeDataGrid.html[TreeDataGrid] 、 {manual}/gui_RadioButtonGroup.html[RadioButtonGroup] 、 {manual}/gui_CheckBoxGroup.html[CheckBoxGroup]。
-
-. 实现了 {manual}/jsComponent.html[JavaScriptComponent] - 集成 JavaScript UI 组件的简单方法。
-
-. 实现了 `HasValue` 接口的数据感知 UI 组件提供类型化的API。 现在你可以使用这些组件：`LookupField<User>`、`TextField<Integer>`、`DateField<LocalDate>` 等。
-
-. 引入新的 UI 组件工厂 - `UiComponents` bean 。
-
-. 实现了 {manual}/url_history_navigation.html[浏览器 URL 历史及导航]。
-
-. 为 `Window` 实现了单独的 `BeforeCloseEvent` 事件，在此事件中可获取 `CloseOriginType` 。
-
-. 所有 UI 组件现在都支持 {manual}/gui_attributes.html#gui_attr_contextHelpText[上下文帮助]。
-
-. 所有 UI 组件事件都具有 `userOriginated` 属性，这个属性表示此事件是在客户端由用户交互触发还是在服务器端以编程方式触发。
-
-. 在界面XML中可以使用 {manual}/gui_attributes.html#gui_attr_css[CSS]属性设置 UI 组件的 CSS 样式。
-
-. `Button` 支持 `ClickEvent`，可用于响应按钮点击，不需要定义操作(action)。
-
-=== IDP 单点登录
-
-IDP 功能已被提取到 https://github.com/cuba-platform/idp-addon[独立的应用程序组件]，必须显式添加到项目。
 
 [[misc]]
-=== 其它
+== 其它
 
-. Java 8 、9、10 和 11 可用于构建和运行应用程序。
-
-. 在实体名称中，建议使用下划线而不是 "$" 来分隔命名空间和类，例如 `sales_Customer`。
-
-. BCrypt 算法用于新创建的用户的密码散列。请参阅 {manual_app_props}cuba.passwordEncryptionModule[cuba.passwordEncryptionModule] 应用程序属性。
-
-. 客户端 block 的 `LoginPasswordLoginProvider` 以明文的方式将用户密码发送到中间件（即，不像先前版本那样进行散列）。请参阅 {manual_app_props}cuba.checkPasswordOnClient[cuba.checkPasswordOnClient] 应用程序属性。
-
-. Web 客户端异常处理器使用了新的基类，请参阅 {manual}/exceptionHandlers.html[处理客户端层的异常]。 原来的类已被标识为弃用并保留，以便向后兼容。
 
 [[upd_dep]]
-=== 更新的依赖
+== 更新的依赖
 
 核心框架:
 
 ----
-com.google.guava = 26.0-jre
-com.sun.mail/javax.mail = 1.6.0
-com.vaadin = 8.6.4-2-cuba
-de.javakaffee/kryo-serializers = 0.42
-javax/javaee-api = 8.0
-org.codehaus.groovy = 2.5.4
-org.dom4j/dom4j = 2.1.0
-org.eclipse.persistence/org.eclipse.persistence.jpa = 2.7.3-1-cuba
-org.eclipse.persistence/org.eclipse.persistence.oracle = 2.7.3
-org.freemarker/freemarker = 2.3.23
-org.glassfish/javax.el = 3.0.1-b10
-org.hibernate.validator/hibernate-validator = 6.0.13.Final
-org.javassist/javassist = 3.24.0-GA
-org.jmockit/jmockit = 1.39
-org.springframework = 5.1.2.RELEASE
-org.springframework.security = 5.1.1.RELEASE
-org.springframework.security.oauth/spring-security-oauth2 = 2.3.4.RELEASE
-org.webjars.bower/jquery-file-upload = 9.22.0.cuba.0
-org.webjars/jquery = 3.3.1
+
 ----
 
 全文搜索扩展：
 ----
-org.apache.lucene = 7.5.0
+
 ----
 
 报表扩展：
 
 ----
-com.haulmont.yarg = 2.1.3
+
 ----
 
 [[studio]]
 == Studio
-
-所有 Studio 功能都迁移到了 IntelliJ IDEA 的插件。 新的插件支持基于 CUBA 6.10 和7.0 的项目，因此你可以在新的 Studio 中打开现有项目并将其迁移到新的框架版本。有关详细信息，请参阅 {studio}[CUBA Studio 用户指南]。
-
-如果你在基于 CUBA 6.10 的项目中需要的 premium 扩展组件（报表、BPM 等），并且你订阅了 premium 扩展组件，则应在 `~/.gradle/gradle.properties` 中设置 premium 仓库访问凭据，参阅 {manual}/access_to_repo.html#access_to_premium_repo[文档]。 Studio 不会将凭据传递给Gradle。

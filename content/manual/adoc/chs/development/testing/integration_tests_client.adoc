@@ -1,10 +1,64 @@
 :sourcesdir: ../../../../source
 
 [[integration_tests_client]]
-==== 客户端层集成测试
+==== Web 集成测试
 
-[WARNING]
-====
-很快更新。
-====
+Web 集成测试运行在 Web 客户端 block 的 Spring 容器中。测试容器独立于中间件工作，因为框架会自动为所有中间件服务创建桩代码。测试基础设施由 `com.haulmont.cuba.web.testsupport` 及其内部包的下列类组成：
+
+* `TestContainer` - Spring 容器的包装器，用来作为项目特定容器的基类。
+* `TestServiceProxy` - 为中间件服务提供默认的桩代码。该类可以用来注册为特定用例 mock 的服务，参考其 `mock()` 静态方法。
+* `DataServiceProxy` - `DataManager` 的默认桩代码。其包含一个 `commit()` 方法的实现，能模拟真正的数据存储的行为：能让新实体 detach，增加实体版本，等等。加载方法返回 null 和空集合。
+* `TestUiEnvironment` - 提供一组方法用来配置和获取 `TestContainer。该类的实例在测试中需要作为 JUnit Rule 来使用。
+* `TestEntityFactory` - 测试中为方便创建实体实例的工厂。可以通过 `TestContainer` 获取工厂。
+
+尽管框架为服务提供了默认桩代码，但是在测试中也许需要自己创建服务的 mock。要创建 mock，可以使用任何 mocking 框架，通过添加其为依赖即可，如<<testing,上节>>所说。服务的 mock 均使用 `TestServiceProxy.mock()` 方法注册。
+
+[[integration_tests_client_container]]
+Web 集成测试容器示例::
++
+--
+在 `web` 模块创建 `test` 目录。然后在 `test` 目录合适的包内创建项目的测试容器类：
+
+[source, java]
+----
+include::{sourcesdir}/development/web_testing_container.java[]
+----
+--
+
+[[integration_tests_client_ex1]]
+UI 界面测试示例::
++
+--
+下面是 Web 集成测试的示例，在一些用户操作之后检查了编辑实体的状态。
+
+[source, java]
+----
+include::{sourcesdir}/development/web_testing_ex1.java[]
+----
+<1> - 定义带共享容器和带有 `admin` 的用户会话存根的测试环境。
+<2> - 创建 `new` 状态的实体实例。
+<3> - 从环境获取 `Screens` 基础设施对象。
+<4> - 打开主界面，打开应用程序界面必须的步骤。
+<5> - 创建、初始化并打开实体编辑界面。
+<6> - 获取 `Button` 组件。
+<7> - 创建一个点击事件，并以调用控制器方法的方式响应点击操作。
+--
+
+[[integration_tests_client_ex2]]
+测试在界面加载数据的示例::
++
+--
+下面是一个 web 集成测试的示例，检查加载数据的正确性。
+
+[source, java]
+----
+include::{sourcesdir}/development/web_testing_ex2.java[]
+----
+<1> - 使用 JMockit framework 定义数据服务 mock。
+<2> - 定义 mock 行为。
+<3> - 注册 mock。
+<4> - 创建 `detached` 状态的实体实例。
+<5> - 测试完成后移除 mock。
+<6> - 获取数据容器。
+--
 
