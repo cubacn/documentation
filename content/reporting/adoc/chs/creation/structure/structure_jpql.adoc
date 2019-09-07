@@ -19,5 +19,5 @@ JPQL 查询自动支持软删除并仅返回未删除的记录。
 
 还可以通过选中报表区编辑界面下方的 *Preprocess query as Groovy template* 复选框来激活<<query_preprocessing,查询预处理>>。
 
-默认情况下，JPQL 查询使用映射到主数据库的实体。如果要查询 {main_man_url}/data_store.html[额外数据存储] 中的实体，请在 *Data store* 字段中设置其名称。
+默认情况下，JPQL 查询使用映射到主数据库的实体。如果要查询 {main_man_url}/data_store.html[附加数据存储] 中的实体，请在 *Data store* 字段中设置其名称。
 

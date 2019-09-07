@@ -1,6 +1,6 @@
-= CUBA Platform Release Notes
+= CUBA 平台发行说明
 :toc: left
-:toc-title: 目录
+:toc-title: Table of contents
 :toclevels: 6
 :sectnumlevels: 6
 :stylesheet: cuba.css
@@ -12,51 +12,52 @@
 :doctype: book
 :sectlinks:
 :sectanchors:
-:lang: en
+:lang: zh
 :revnumber: 7.1
 :version-label: Version
 :revremark: Copyright (c) 2019 Haulmont
 :youtrack: https://youtrack.cuba-platform.com
-:manual: https://doc.cuba-platform.cn/manual-{revnumber}-chs
+:manual: https://doc.cuba-platform.cn/manual-{revnumber}
 :restapi: https://doc.cuba-platform.cn/restapi-{revnumber}
-:studio: https://doc.cuba-platform.cn/studio-chs
-:manual_app_props: https://doc.cuba-platform.cn/manual-{revnumber}-chs/app_properties_reference.html#
-:reporting: https://doc.cuba-platform.cn/reporting-{revnumber}-chs
-:charts: https://doc.cuba-platform.cn/charts-{revnumber}-chs
-:bpm: https://doc.cuba-platform.cn/bpm-{revnumber}-chs
-:githubissueslog: https://github.cn/cuba-platform/documentation/blob/master/content/release_notes/issues
+:studio: https://doc.cuba-platform.cn/studio
+:manual_app_props: https://doc.cuba-platform.cn/manual-{revnumber}/app_properties_reference.html#
+:reporting: https://doc.cuba-platform.cn/reporting-{revnumber}
+:charts: https://doc.cuba-platform.cn/charts-{revnumber}
+:bpm: https://doc.cuba-platform.cn/bpm-{revnumber}
+:githubissueslog: https://github.com/cuba-platform/documentation/blob/master/content/release_notes/issues
 
 :!sectnums:
 
 [[overview]]
-== 概述
+== 概要
 
-本文档重点介绍 CUBA 平台版本 {revnumber} 的主要变化。
+该文档列出了 CUBA 平台版本 {revnumber} 的主要改动。
 
 == 所有解决的问题
-// * {githubissueslog}/release_7.0.1.md[平台 7.0.1 解决的问题]
+
+* {githubissueslog}/release_7.1.0.md[Platform 7.1.0 解决的问题]
 
 [[breaking_changes]]
 == 破坏性改动
 
-. `PERIOD` column of the `SYS_SCHEDULED_TASK` table has been renamed to `PERIOD_`. If you create scheduled tasks in the database initialization scripts, fix the scripts to use the new column name.
+. `SYS_SCHEDULED_TASK` 表的 `PERIOD` 字段重命名为 `PERIOD_`。如果您在数据库初始化脚本中创建定时任务，需要修改脚本使用新的列名。
 
-. Removed previously deprecated `LoginService` and `LoginWorker` classes. Use corresponding methods of `AuthenticationService` and `TrustedClientService`:
-** `LoginService.login()` -> `AuthenticationService.login()` with `LoginPasswordCredentials`
-** `LoginService.loginTrusted()` -> `AuthenticationService.login()` with `TrustedClientCredentials`
-** `LoginService.loginByRememberMe()` -> `AuthenticationService.login()` with `RememberMeCredentials`
-** `LoginService.loginByRememberMe()` -> `AuthenticationService.login()` with `RememberMeCredentials`
+. 删除了之前已经废弃的 `LoginService` 和 `LoginWorker` 类。使用 `AuthenticationService` 和 `TrustedClientService` 中的相应方法：
+** `LoginService.login()` -> `AuthenticationService.login()` 使用 `LoginPasswordCredentials`
+** `LoginService.loginTrusted()` -> `AuthenticationService.login()` 使用 `TrustedClientCredentials`
+** `LoginService.loginByRememberMe()` -> `AuthenticationService.login()` 使用 `RememberMeCredentials`
+** `LoginService.loginByRememberMe()` -> `AuthenticationService.login()` 使用 `RememberMeCredentials`
 ** `LoginService.substituteUser()` -> `AuthenticationService.substituteUser()`
 ** `LoginService.getSession()` -> `TrustedClientService.findSession()`
 ** `LoginService.getSystemSession()` -> `TrustedClientService.getSystemSession()`
 
-. Removed previously deprecated `CubaAuthProvider` interface, its implementations and `cuba.web.externalAuthentication` and `cuba.web.externalAuthenticationProviderClass` application properties. Use events, `LoginProvider` and `HttpRequestFilter` as explained in the {manual}/web_login.html[documentation].
+. 删除了之前已经废弃的 `CubaAuthProvider` 接口、该接口的实现类以及 `cuba.web.externalAuthentication` 和 `cuba.web.externalAuthenticationProviderClass` 应用程序属性。按照 {manual}/web_login.html[文档] 的描述使用事件、`LoginProvider` 和 `HttpRequestFilter`。
 
-. In `Table` and `GroupTable` interfaces, removed previously deprecated methods that manipulate with columns:
+. 在 `Table` 和 `GroupTable` 接口中，删除了之前已经废弃的操作列的方法：
 +
 [source, java]
 ----
-// removed from Table
+// 从 Table 删除
 void setColumnCaption(String columnId, String caption);
 void setColumnCaption(Table.Column column, String caption);
 void setColumnDescription(String columnId, String description);
@@ -79,14 +80,14 @@ void setColumnCaptionAsHtml(Table.Column column, boolean captionAsHtml);
 boolean getColumnCaptionAsHtml(String columnId);
 boolean getColumnCaptionAsHtml(Table.Column column);
 
-// removed from GroupTable
+// 从 GroupTable 删除
 boolean getColumnGroupAllowed(String columnId);
 void setColumnGroupAllowed(String columnId, boolean allowed);
 boolean getColumnGroupAllowed(Table.Column column);
 void setColumnGroupAllowed(Table.Column column, boolean allowed);
 ----
 +
-Instead of the removed methods, use the following approach:
+作为删除方法的替代方案，使用以下方法：
 +
 [source, java]
 ----
@@ -94,15 +95,15 @@ Table.Column<Foo> numberColumn = fooTable.getColumn("number"); // get Column obj
 numberColumn.setCaption("Num"); // invoke Column's methods
 ----
 
-. `DataContext.PostCommitEvent` is now sent _after_ merging of committed entities back to the screen's data context, see the https://github.com/cuba-platform/cuba/issues/1981[corresponding issue].
+. `DataContext.PostCommitEvent` 现在是在合并提交的实体回界面的数据上下文 _之后_ 才触发，参阅 https://github.com/cuba-platform/cuba/issues/1981[相应问题] 。
 
-. The REST API functionality has been moved to the https://github.com/cuba-platform/restapi[REST API] add-on, see its {restapi}[documentation]. The Studio migration procedure includes the add-on in the project if the project contains some REST configuration files or Frontend UI module. Otherwise, the REST servlet and filter are removed from `web.xml` of the `web` module.
+. REST API 功能已经迁移到 https://github.com/cuba-platform/restapi[REST API] 扩展，参阅其 {restapi}[文档] 。Studio 迁移程序会自动在项目中包含该扩展，如果项目带有一些 REST 配置文件或者使用了 Frontend UI 模块。否则，会从 `web` 模块的 `web.xml` 中删除 REST servlet 和 filter。
 
-. The legacy REST API v1 functionality has been moved to the https://github.com/cuba-platform/jpawebapi[JPA Web API] add-on. Studio does not provide any automatic migration, so use the installation instructions in README if you need this functionality in the project.
+. 由于 REST API 迁移到了扩展里面，web 客户端的 {manual}/health_check_url.html[健康检查] URL改到了 `/dispatch/health`，比如 `\http://localhost:8080/app/dispatch/health`。如果在项目中包含了 REST API 扩展，则在 web 和 portal block 还会跟之前版本一样，有 `/rest/health` API 端点。portal 模块现在有了它自己的健康检查端点。
 
-. Due to moving REST API to the add-on, {manual}/health_check_url.html[health check] URL for web client has changed to `/dispatch/health`, for example `\http://localhost:8080/app/dispatch/health`. If you include the REST API add-on in the project, you will have `/rest/health` endpoints for both web and portal blocks as in previous versions. The portal module has no its own health check endpoint.
+. 遗留的 REST API v1 功能已经迁移到 https://github.com/cuba-platform/jpawebapi[JPA Web API] 扩展。Studio 并不提供任何自动的迁移过程，所以如果项目中需要该功能，请使用 README 中的安装向导。
 
-. _Application Log_ and _History_ menu items have been removed from the default main menu. If you need them, add the following elements to `web-menu.xml` of your project:
+. _Application Log - 应用程序日志_ 和 _History - 界面历史_ 菜单项已经从默认的主菜单中删除。如果您还需要，在项目的 `web-menu.xml` 中添加如下元素：
 +
 [source, xml]
 ----
@@ -112,67 +113,78 @@ numberColumn.setCaption("Num"); // invoke Column's methods
 
 [[gui]]
 == 通用 UI
-. Now you can create new visual components by combining existing ones, see {manual}/composite_components.html[Composite Components].
 
-. The concept of non-visual components has been generalized and made extendable, see {manual}/gui_facets.html[Non-Visual Components]. Along with {manual}/gui_Timer.html[Timer], the framework now provides new useful non-visual components: {manual}/gui_ClipboardTrigger.html[ClipboardTrigger] and `DataLoadCoordinator`.
+. 现在可以通过组合已存在的可视化组件来创造新的可视化组件了，参阅 {manual}/composite_components.html[组合组件] 。
 
-. The {manual}/gui_DataLoadCoordinator.html[DataLoadCoordinator] component is designed for declarative linking of data loaders to data containers, visual components and screen events. You can use this component instead of writing event handlers in Java.
+. 非可视化组件的概念已经归纳出来并且支持扩展，参阅 {manual}/gui_facets.html[非可视化组件] 。除了 {manual}/gui_Timer.html[Timer] 之外，框架提供了新的非可视化组件：{manual}/gui_ClipboardTrigger.html[ClipboardTrigger] 和 `DataLoadCoordinator`。
 
-. The {manual}/gui_Form.html[Form] component can now contain generic fields defined with the `field` element. The framework will choose an appropriate visual component on the basis of the corresponding entity attribute and existing component generation strategies.
+. {manual}/gui_DataLoadCoordinator.html[DataLoadCoordinator] 组件设计用来声明式的将数据加载器和数据容器、可视化组件、界面事件进行连接。可以使用该组件而不必再 Java 代码中写事件处理器了。
 
-. Introduced {manual}/gui_dialogs.html#gui_input_dialog[input dialog] which allows you to construct input forms using API. It can be used instead of creating screens for trivial data input.
+. {manual}/gui_Form.html[Form - 表单] 组件现在可以包含使用 `field` 元素定义的通用的字段了。框架会根据对应的实体属性和已有的组件生成策略选择合适的可视化组件。
 
-. Now you can make some screens of your application available to non-authenticated users, see {manual}/gui_anonymous_access.html[Anonymous Access to Screens].
+. 引入了 {manual}/gui_dialogs.html#gui_input_dialog[输入对话框] ，可以使用 API 构建输入表单。可以用这个替换输入数据的界面。
 
-. Standard login and main screens have been reworked using the new screens API, see details in {manual}/gui_root_screens.html[Root Screens]. The main screen has the layout with side menu, so it is used by default for new projects. For projects, migrated from previous versions of the framework, the Studio migration procedure adds the following application properties to `web-app.properties`:
+. 现在可以将应用程序的部分界面开放给非认证用户，参阅 {manual}/gui_anonymous_access.html[匿名访问界面] 。
+
+. 标准的登录界面和主窗口已经用新的界面 API 重写了，细节参阅 {manual}/gui_root_screens.html[Root Screens] 。主界面布局带有侧边菜单栏，所以新项目会默认使用这个。对于从之前版本框架迁移过来的项目，Studio 迁移程序会在 `web-app.properties` 中添加以下应用程序属性：
 +
 ----
 cuba.web.loginScreenId = loginWindow
 cuba.web.mainScreenId = mainWindow
 ----
 +
-It ensures the migrated project uses the legacy login and main screens. If you want to switch to the new screens, remove these properties.
+这可以保证迁移过来的项目仍旧使用旧版的登录页和主界面。如果需要切换到新界面，可以删除这些应用程序属性。
 
-. Logout button shown on the standard main screen has been replaced with the `UserActionsButton` component. If the user is not authenticated, the component allows the user to go to login screen; when authenticated, the component provides actions to show the *Settings* screen or to log out.
+. 标准主界面上的登出按钮已经使用 `UserActionsButton` 组件进行了替换。如果用户未认证，该组件允许用户跳转到登录界面；当用户完成认证后，该组件提供显示 *Settings - 配置* 界面和登出的操作。
 
-. If a screen controller has public setters to accept parameters, they can be passed from the main menu, see {manual}/menu.xml.html#menu.xml_screen_properties[menu.xml].
+. 可以为应用程序界面生成 URL 了，参阅 {manual}/url_routes_generator.html[URL 路由生成器] 。
 
-. If a screen fragment controller has public setters to accept parameters, they can be specified in the host screen XML, see {manual}/using_screen_fragments.html#using_screen_fragment_params[Passing parameters to fragments].
+. 如果一个界面控制器有公共的 setters 用来接收参数，则可以从主菜单传递参数，参阅 {manual}/menu.xml.html#menu.xml_screen_properties[menu.xml] 。
 
-. Screen fragments now send attach/detach lifecycle event when a fragment is added/removed to the host screen, see {manual}/screen_fragment_events.html[ScreenFragment Events]. Also, when a fragment is created programmatically, you don't need to invoke its `init()` method anymore, because all fragment's lifecycle events will be sent automatically when the fragment is added to a screen.
+. 如果一个界面片段控制器有公共的 setters 用来接收参数，则可以在父界面的 XML 中设置，参阅 {manual}/using_screen_fragments.html#using_screen_fragment_params[给界面片段传递参数] 。
 
-. Sorting of UI tables by entity attributes can now be {manual}/gui_data_comp_sort.html[customized].
+. 当界面片段被添加/移除到父界面时，可以触发 attach/detach 生命周期事件，参阅 {manual}/screen_fragment_events.html[ScreenFragment 事件] 。另外，当用编程的方式创建界面片段时，不在需要手动调用 `init()` 方法了，因为片段的生命周期事件会在片段被添加到界面时自动触发。
 
-. Added `PreLoadEvent` and `PostLoadEvent` to {manual}/gui_data_loaders.html[Data Loaders].
+. UI 表格的实体属性排序可以 {manual}/gui_data_comp_sort.html[自定义] 了。
 
-. In order to simplify migration from version 6 of the framework, we have restored the undocumented ability to use legacy API screens as frames. It is now supported for subclasses of `AbstractWindow`, `AbstractLookup` and `EntityCombinedScreen` (`AbstractEditor` is not supported). The `init()` method of the screen is invoked, `ready()` is not, as before.
+. 为 {manual}/gui_data_loaders.html[Data Loaders] 添加了 `PreLoadEvent` 和 `PostLoadEvent` 事件。
 
-. The framework now provides infrastructure for writing integration tests on the web tier for testing UI in full-functioning Spring container, see {manual}/integration_tests_client.html[Web Integration Tests].
+. 引入了 `DynamicAttributesPanel` 可视化组件，设计用来在基于新 API 的界面中显示带有动态属性的 {manual}/categorized_entity.html[分类的实体] 。
 
+. `Table` 组件的列现在有 {manual}/gui_Table.html#gui_Table_column_expandRatio[expandRatio] 属性。
+
+. 通用过滤器现在可以在改变了条件或者其它参数时，不需要按搜索按钮马上生效。你可以使用过滤器的 {manual}/gui_Filter.html#gui_filter_immediately[applyImmediately] 属性或者全局的 {manual_app_props}cuba.gui.genericFilterApplyImmediately[cuba.gui.genericFilterApplyImmediately] 应用程序属性来控制该功能。Studio 迁移过程会默认设置该值为 `false`，以保持现有系统的用户体验不变。
+
+. {manual}/html_attributes.html[HtmlAttributes] 的功能已经扩展，现在可以操控嵌套的 HTML 元素了。
+
+. 为了简化从框架的 6 版本迁移的难度，我们恢复了之前没有文档的使用遗留 API 界面作为 frame 的功能。现在支持 `AbstractWindow`、`AbstractLookup` 和 `EntityCombinedScreen`（`AbstractEditor` 不支持）的子类了。界面的 `init()` 方法会自动调用，而 `ready()` 不会，跟之前一样。
+
+. 框架现在提供了基础设施，以便在 web 层写集成测试，用来在全功能的 Spring 容器中测试 UI，参阅 {manual}/integration_tests_client.html[Web 集成测试] 。
 
 [[misc]]
-== 其它
+== 其他
 
-. The framework now performs some startup checks of your environment and data model:
-* A warning is logged in case of the following environment problems:
-** Java version is lower than 8,
-** {manual}/work_dir.html[work] or {manual}/temp_dir.html[temp] directories have no read/write access,
-** unable to connect to the main data store (additional data stores are checked if you set the {manual_app_props}cuba.checkConnectionToAdditionalDataStoresOnStartup[cuba.checkConnectionToAdditionalDataStoresOnStartup] app property to `true`),
-** there is no `SEC_USER` table in the main data store;
-* If a local attribute is annotated with `@Basic(fetch = FetchType.LAZY)`, the fetch type is switched to `EAGER` and a warning is logged;
-* If a reference attribute is annotated with `@ManyToOne(fetch = FetchType.EAGER)` (or a similar reference annotation with `EAGER` fetch type), the fetch type is switched to `LAZY` and a warning is logged;
-* If an entity is not properly enhanced, an exception is thrown and the application doesn't start at all. If you have any trouble with this check, set the `cuba.disableEntityEnhancementCheck` application property to `false` to disable it.
+. 动态属性的功能显著加强了，包括：一种新的类型 - fixed-point number；自定义验证；自动计算和依赖属性。参阅 {manual}/dynamic_attributes_mgmt.html[管理动态属性] 了解细节。
 
-. Introduced {manual}/entityPersistingEvent.html[EntityPersistingEvent] which can be used to initialize attributes of a new entity instance before persisting it in the database.
+. 框架现在带有一些启动时对运行环境和数据模型的检查：
+* 如果有下面的环境问题，日志会记录一个警告：
+** Java 版本低于 8
+** {manual}/work_dir.html[work] 或者 {manual}/temp_dir.html[temp] 目录没有读写权限
+** 无法连接到主数据存储（如果设置 {manual_app_props}cuba.checkConnectionToAdditionalDataStoresOnStartup[cuba.checkConnectionToAdditionalDataStoresOnStartup] 应用程序属性为 `true`，也会检查附加数据存储）
+** 主数据存储中没有 `SEC_USER` 表
+* 如果一个本地属性使用了 `@Basic(fetch = FetchType.LAZY)` 注解，读取类型换成 `EAGER` 会记录一个警告
+* 如果一个引用属性使用了 `@ManyToOne(fetch = FetchType.EAGER)`（或者类似引用注解使用了 `EAGER` 读取类型），读取类型切换成 `LAZY` 会记录一个警告
+* 如果一个实体没有正确加强，会抛出异常，应用程序不会启动。如果有任何关于这点的疑问，可以设置 `cuba.disableEntityEnhancementCheck` 为 `false` 禁用该功能
 
-. `DataManager` can now perform {manual}/bean_validation_running.html#bean_validation_in_DataManager[bean validation] of saved entity instances. Use {manual}/app_properties_reference.html#cuba.dataManagerBeanValidation[cuba.dataManagerBeanValidation] property to control whether the validation is performed by default.
+. 引入了 {manual}/entityPersistingEvent.html[EntityPersistingEvent] ，可以用来在新实体持久化到数据库之前初始化其属性。
+
+. `DataManager` 现在可以为保存的实体实例执行 {manual}/bean_validation_running.html#bean_validation_in_DataManager[bean 验证]。使用 {manual}/app_properties_reference.html#cuba.dataManagerBeanValidation[cuba.dataManagerBeanValidation] 属性来控制是否默认执行验证。
 +
-When you upgrade an existing project to CUBA 7.1, the Studio migration procedure sets this property to `false` to switch off the validation.
+当升级一个现有项目至 7.1，Studio 迁移程序会设置该属性为 `false` 以关闭验证。
 
-. `DataManager` now uses `_base` view by default (previously it was `_local`). So when you execute a request without specifying a view, like
-`dataManager.load(Person.class).id(someId).one()`, you will get the result entity with fetched local attributes and attributes specified in `@NamePattern`. If `@NamePattern` contains reference attributes, more data will be fetched than before.
+. `DataManager` 现在默认使用 `_base` 视图（之前是 `_local`）。所以，如果在执行请求时未指定视图，比如 `dataManager.load(Person.class).id(someId).one()`，将会获取到实体的本地属性和 `@NamePattern` 中指定的属性。如果 `@NamePattern` 包含引用属性，则会比之前获取更多的数据。
 
-. Introduced `LoadContext.setIds()` method which accepts a collection of entity identifiers. It is used by `DataManager.loadList()` method in higher priority than passed query or single id. The fluent interface also has methods accepting multiple ids:
+. 引入了 `LoadContext.setIds()` 方法，接收实体标识符的集合。该方法被 `DataManager.loadList()` 方法以更高的优先级使用，相比传递的查询语句和单一 id 来说。流式接口也有接收多个 id 的方法：
 +
 [source,java]
 ----
@@ -182,14 +194,14 @@ List<UUID> idList = Arrays.asList(customer1Id, customer2Id);
 dataManager.load(Customer.class).ids(idList).list();
 ----
 
-. `@JmxBean` annotation can be used for registration of a {manual}/jmx_beans_creation.html[JMX bean] instead of registering it in `spring.xml`.
+. `@JmxBean` 注解可以用来注册 {manual}/jmx_beans_creation.html[JMX bean] ，而不需要在 `spring.xml` 文件中注册了。
 
-. {manual}/query.html#query_hints[Query hints] can be used for database-specific optimization of query execution. Hints can be passed to `Query` and `LoadContext`.
+. {manual}/query.html#query_hints[查询提示] 可以用来针对数据库特性对查询语句做优化。提示可以传递给 `Query` 和 `LoadContext`。
 
 [[upd_dep]]
-== 更新的依赖
+== 依赖更新
 
-核心框架:
+核心框架：
 ----
 com.google.guava/guava = 27.1-jre
 com.microsoft.sqlserver/mssql-jdbc = 7.2.1.jre8
@@ -222,6 +234,3 @@ org.spockframework/spock-core = 1.3-groovy-2.5
 ----
 com.haulmont.yarg = 2.1.5
 ----
-
-[[studio]]
-== Studio

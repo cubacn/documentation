@@ -179,7 +179,7 @@ cuba.bruteForceProtection.maxLoginAttemptsNumber::
 cuba.checkConnectionToAdditionalDataStoresOnStartup::
 +
 --
-如果设置为 `true`，框架会在应用程序启动时检查所有额外数据存储的连接。如果连接失败，日志会记录失败消息。注意，这种检查会使得启动过程变慢。
+如果设置为 `true`，框架会在应用程序启动时检查所有附加数据存储的连接。如果连接失败，日志会记录失败消息。注意，这种检查会使得启动过程变慢。
 
 默认值： `false`
 

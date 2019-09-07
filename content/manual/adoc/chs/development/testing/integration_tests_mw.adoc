@@ -74,10 +74,10 @@ include::{sourcesdir}/development/testing_9.java[]
 --
 
 [[integration_tests_mw_data_store]]
-额外数据存储::
+附加数据存储::
 +
 --
-如果项目使用了<<data_store,额外数据存储>>，需要在测试容器里创建相应的 JDBC 数据源。比如，如果有名为 `mydb` 的数据存储，而且是 PostgreSQL 的数据库，则需要在测试容器中添加如下代码：
+如果项目使用了<<data_store,附加数据存储>>，需要在测试容器里创建相应的 JDBC 数据源。比如，如果有名为 `mydb` 的数据存储，而且是 PostgreSQL 的数据库，则需要在测试容器中添加如下代码：
 
 [source, java]
 ----

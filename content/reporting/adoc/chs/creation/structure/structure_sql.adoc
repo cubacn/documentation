@@ -29,7 +29,7 @@ where u.group_id = ${group.groupId}
 SQL 查询中应手动包含条件以过滤掉软删除的记录。
 ====
 
-默认情况下，SQL 查询在主数据库上执行。如果要查询 {main_man_url}/data_store.html[额外数据存储]，请在 *Data store* 字段中设置其名称。
+默认情况下，SQL 查询在主数据库上执行。如果要查询 {main_man_url}/data_store.html[附加数据存储]，请在 *Data store* 字段中设置其名称。
 
 [[query_preprocessing]]
 报表带区中的查询预处理::
