@@ -40,6 +40,13 @@ include::{sourcesdir}/gui/data_loaders/loader_3.java[]
 
 在上面的例子中，`customersDl` 加载器会使用 `customersDlLoadDelegate()` 方法来加载 `Customer` 实体列表。此方法接收 `LoadContext` 参数，加载器会按照它的参数（查询语句、过滤器等等）来创建这个参数。在这个例子中，数据加载是通过 `DataManager` 来完成的，这个实现跟标准加载器的实现一样高效，但是好处是可以使用自定义的服务或者可以在加载完实体之后做其它的事情。
 
+可以通过监听 `PreLoadEvent` 和 `PostLoadEvent` 事件，在加载之前或之后添加一些业务逻辑：
+
+[source, java]
+----
+include::{sourcesdir}/gui/data_loaders/loader_5.java[]
+----
+
 一个加载器也可以通过编程的方式创建和配置，示例：
 
 [source, java]

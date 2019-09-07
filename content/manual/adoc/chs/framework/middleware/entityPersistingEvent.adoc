@@ -1,0 +1,13 @@
+:sourcesdir: ../../../../source
+
+[[entityPersistingEvent]]
+==== EntityPersistingEvent
+
+`EntityPersistingEvent` 是 Spring 的 `ApplicationEvent`，是框架在中间层 _新实体_ 保存到数据库之前触发的事件。在触发事件的时候，存在一个活动的数据库事务。
+
+`EntityChangedEvent` 可以用来在写入数据库之前初始化实体属性：
+
+[source,java]
+----
+include::{sourcesdir}/middleware/entityPersistingEvent_usage_1.java[]
+----

@@ -331,5 +331,10 @@
 
 [[trackEditScreenHistory_annotation]]
 @TrackEditScreenHistory::
-表示系统将会保存<<screen_edit,编辑界面>>的打开历史记录，并能够通过 *Help > History* 主菜单项在 `sec$ScreenHistory.browse` 界面上显示。
+表示系统将会保存<<screen_edit,编辑界面>>的打开历史记录，并能够在 `sec$ScreenHistory.browse` 展示。界面可以使用下面的 <<menu.xml,web-menu.xml>> 元素添加到主菜单：
+[source, xml]
+----
+<item id="sec$ScreenHistory.browse" insertAfter="settings"/>
+----
+
 

@@ -3,7 +3,7 @@
 [[chart_report]]
 === 带图表输出的报表
 
-使用报表向导，可以使用跟创建其他类型的报表一样的方式创建带<<template_chart,图表输出>>的报表。唯一的不同是在向导中完成了报表之后需要配置图表模板。
+使用报表向导，可以使用跟创建其它类型的报表一样的方式创建带<<template_chart,图表输出>>的报表。唯一的不同是在向导中完成了报表之后需要配置图表模板。
 
 该示例程序是基于 *petclinic - 宠物诊所* 应用程序，源码可以在 https://github.com/cuba-platform/cuba-petclinic[GitHub] 找到。
 

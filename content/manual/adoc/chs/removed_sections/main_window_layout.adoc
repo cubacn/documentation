@@ -1,0 +1,4 @@
+[[main_window_layout]]
+=== 主窗口布局
+
+参阅 <<gui_root_screens>>。

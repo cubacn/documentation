@@ -7,109 +7,668 @@
 
 [WARNING]
 ====
-验证和输入检查是需要区分开来的，输入检查是说：假设一个文本组件（比如，<<gui_TextField,TextField>>）的数据类型设置的不是字符串（这种情况可能出现在绑定实体属性或者手动设置控件的 `datatype` ），那么这个组件会阻止用户输入不符合它定义的数据类型的值。当这个组件失去焦点时或者用户按了回车，这个组件会显示之前正确的值。
+验证和输入检查是需要区分开来的，输入检查是说：假设一个文本组件（比如，<<gui_TextField,TextField>>）的数据类型设置的不是字符串（这种情况可能出现在绑定实体属性或者手动设置控件的 `datatype` ），那么这个组件会阻止用户输入不符合它定义的数据类型的值。当这个组件失去焦点时或者用户按了 *回车*，会显示验证错误信息。
 
-验证不会在输入同时或者失去焦点时马上反馈，而是会在组件的 `validate()` 方法调用的时候。也就是说这个组件（还有这个组件关联的实体属性）暂时会包含一个可能并不符合验证规则的值。但是这没关系，因为需要验证的字段一般都会在<<screen_edit,编辑界面>>，所有的字段提交前会自动调用验证方法。如果组件不在一个编辑界面，那么这个组件的 `validate()` 方法需要在界面控制器显式的调用。
+验证不会在输入同时或者失去焦点时马上反馈，而是会在组件的 `validate()` 方法调用的时候。也就是说这个组件（还有这个组件关联的实体属性）暂时会包含一个可能并不符合验证规则的值。但是这没关系，因为需要验证的字段一般都会在编辑界面，所有的字段提交前会自动调用验证方法。如果组件不在一个编辑界面，那么这个组件的 `validate()` 方法需要在界面控制器显式的调用。
 ====
 
-在界面的 XML 描述中，组件的验证器可以在嵌套的 `validator` 元素中定义。`validator` 元素可以有这些属性：
+CUBA 框架包含了一组最常用的验证器实现，可以直接在项目中使用：
 
-* `script` − Groovy 脚本的路径。这个脚本用来做验证。
+* <<gui_validator_DecimalMaxValidator, DecimalMaxValidator>>
 
-* `class` − 实现了 `Field.Validator` 接口的 Java 类名。
+* <<gui_validator_DecimalMinValidator, DecimalMinValidator>>
 
-Groovy 验证脚本和标准 Java 验证器类，位置在 `com.haulmont.cuba.gui.components.validators` 包，支持 `message` 属性，用来定义验证失败时显示的消息。这个属性的值可以是包含消息内容的字符串或者一个当前界面<<message_packs,语言消息包>>内的一个消息键名。比如：
+* <<gui_validator_DigitsValidator, DigitsValidator>>
 
-[source, xml]
-----
-include::{sourcesdir}/gui_vcl/validator_1.xml[]
-----
+* <<gui_validator_FutureOrPresentValidator, FutureOrPresentValidator>>
 
-[source, properties]
-----
-include::{sourcesdir}/gui_vcl/validator_1.properties[]
----- 
+* <<gui_validator_FutureValidator, FutureValidator>>
 
-可以通过 CUBA Studio 添加验证器。下面是给 `fieldGroup` 组件添加验证器的例子：
+* <<gui_validator_MaxValidator, MaxValidator>>
+
+* <<gui_validator_MinValidator, MinValidator>>
+
+* <<gui_validator_NegativeOrZeroValidator, NegativeOrZeroValidator>>
+
+* <<gui_validator_NegativeValidator, NegativeValidator>>
+
+* <<gui_validator_NotBlankValidator, NotBlankValidator>>
+
+* <<gui_validator_NotEmptyValidator, NotEmptyValidator>>
+
+* <<gui_validator_NotNullValidator, NotNullValidator>>
+
+* <<gui_validator_PastOrPresentValidator, PastOrPresentValidator>>
+
+* <<gui_validator_PastValidator, PastValidator>>
+
+* <<gui_validator_PositiveOrZeroValidator, PositiveOrZeroValidator>>
+
+* <<gui_validator_PositiveValidator, PositiveValidator>>
+
+* <<gui_validator_RegexpValidator, RegexpValidator>>
+
+* <<gui_validator_SizeValidator, SizeValidator>>
+
+在界面的 XML 描述中，组件的验证器可以在嵌套的 `validators` 元素中定义。
+
+可以通过 CUBA Studio 添加验证器。下面是给 `TextField` 组件添加验证器的例子：
 
 image::gui_validator.png[align="center"]
 
-验证机制是按如下方式确定的：
+每个验证器都是一个 `Prototype Bean`，如果希望在 Java 代码中使用验证器，需要通过 `BeanLocator` 来获取。
 
-* 如果 `script` 属性的值没有设置，并且 `validator` 元素也没有包含 Groovy 表达式的文本，系统会使用 `class` 属性定义的类来进行验证。
-+
-[source, xml]
-----
-include::{sourcesdir}/gui_vcl/validator_6.xml[]
-----
+有些验证器在错误消息中使用了 Groovy 字符串。这样的话，可以给错误消息传递参数（比如，`$value`）。这些参数会考虑用户的 locale 配置。
 
-* 如果 `validator` 元素包含了文本，那这个文本会被当作 Groovy 表达式通过 <<scripting,Scripting>> 来执行。
-+
-[source, xml]
-----
-include::{sourcesdir}/gui_vcl/validator_5.xml[]
-----
+你可以使用自定义的 Java 类作为验证器，自定义类需要实现 `Consumer` 接口。
 
-* 否则，系统会使用 <<scripting,Scripting>> 来运行定义在 `script` 里的 Groovy 脚本。
-+
-[source, xml]
-----
-include::{sourcesdir}/gui_vcl/validator_7.xml[]
-----
-
-变量 `value` 会被传入 Groovy 表达式或者脚本，这个值包含了可视化组件中用户输入的值。表达式或者脚本需要返回一个 `boolean` 值： `true` 表示验证通过，`false` 表示没通过。
-
-如果使用 Java 类作为验证器，这个类要么有一个不带任何参数的默认构造函数，要么有带有如下参数组合的构造函数：
-
-* `org.dom4j.Element`, `String` – 这个构造函数会接收验证器的 XML 元素和界面消息包的名字。
-
-* `org.dom4j.Element` – 这个构造函数会接收验证器的 XML 元素。
+在界面的 XML 描述中，自定义的验证器可以在嵌套的 `validator` 元素中定义。
 
 [TIP]
 ====
-如果验证器是用内部类的方式实现的，这个类需要是 `static` 的，名字用 "$" 跟外部类分隔，比如：
+如果验证器是作为内部类实现的话，则需要使用 `static` 进行声明，然后在 XML 中类名用 "$" 分隔，示例：
 
 `<validator class="com.sample.sales.gui.AddressEdit$ZipValidator"/>`
 ====
 
-平台已经包含了一组常用的验证器实现（参考 `com.haulmont.cuba.gui.components.validators` 包），可以在项目里使用：
+给组件设置验证类的方法除了 XML 描述之外，也可以使用编程的方式 - 使用组件的 `addValidator()` 方法添加验证器的实例。
 
-* `DateValidator - 日期验证`
-
-* `DoubleValidator - 双浮点数验证`
-
-* `EmailValidator - 邮件地址验证`
-
-* `IntegerValidator - 整数类型验证`
-
-* `LongValidator - 长整型验证`
-
-* `PatternValidator - 正则模式验证`
-
-* `ScriptValidator - 脚本验证`
-
-* `StringValidator - 字符串类型验证`
-
-验证器不仅可以通过嵌套的 XML 配置给组件，也可以通过编程的方式 - 通过提交一个验证器实例给组件的 `addValidator()` 方法。
-
-下面的例子就是以编程方式创建了一个邮编的验证器类：
+创建验证邮编的验证器类：
 
 [source, java]
 ----
 include::{sourcesdir}/gui_vcl/validator_2.java[]
----- 
+----
 
-下面例子演示在 <<gui_FieldGroup,FieldGroup>> 组件使用邮编验证器和标准的正则模式验证器：
+在<<gui_TextField,TextField>>组件中使用邮编验证器的示例：
 
 [source, xml]
 ----
 include::{sourcesdir}/gui_vcl/validator_3.xml[]
 ---- 
 
-这个是在界面控制器中以编程方式设置验证器：
+在界面控制器用编程的方式设置验证器：
 
 [source, java]
 ----
 include::{sourcesdir}/gui_vcl/validator_4.java[]
+----
+
+下面我们看看框架预定义的这些验证器。
+
+[[gui_validator_DecimalMaxValidator]]
+DecimalMaxValidator::
++
+检查值必须小于等于指定的最大值。
+支持的类型：`BigDecimal`、`BigInteger`、`Long`、`Integer` 以及使用当前 locale 表示 `BigDecimal` 的 `String` 类型。
++
+它有如下属性：
++
+--
+* `value` − 最大值（必须）；
+* `inclusive` − 当设置成 `true` 时，值必须小于或等于指定的最大值。默认值是 `true`。
+* `message` − 自定义的消息，用于在验证失败时展示给用户。该消息可以包含 `$value` 和 `$max` 关键字，用于格式化输出。
+--
++
+默认消息键值：
++
+--
+* `validation.constraints.decimalMaxInclusive`
+* `validation.constraints.decimalMax`
+--
++
+XML 描述中用法：
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/validatorDecimalMax.xml[]
+----
+Java 代码用法：
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/validatorDecimalMax.java[]
+----
+
+[[gui_validator_DecimalMinValidator]]
+DecimalMinValidator::
++
+检查值必须大于等于指定的最小值。
+支持的类型：`BigDecimal`、`BigInteger`、`Long`、`Integer` 以及使用当前 locale 表示 `BigDecimal` 的 `String` 类型。
++
+它有如下属性：
++
+--
+* `value` − 最小值（必须）；
+* `inclusive` − 当设置成 `true` 时，值必须大于或等于指定的最小值。默认值是 `true`。
+* `message` − 自定义的消息，用于在验证失败时展示给用户。该消息可以包含 `$value` 和 `$min` 关键字，用于格式化输出。
+--
++
+默认消息键值：
++
+--
+* `validation.constraints.decimalMinInclusive`
+* `validation.constraints.decimalMin`
+--
++
+XML 描述中用法：
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/validatorDecimalMin.xml[]
+----
+Java 代码用法：
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/validatorDecimalMin.java[]
+----
+
+[[gui_validator_DigitsValidator]]
+DigitsValidator::
+
+检查值必须是一个指定范围内的数字。
+支持的类型：`BigDecimal`、`BigInteger`、`Long`、`Integer` 以及使用当前 locale 表示 `BigDecimal` 的 `String` 类型。
++
+它有如下属性：
++
+--
+* `integer` − 整数部分数字的个数（必须）；
+* `fraction` − 小数部分数字的个数（必须）；
+* `message` − 自定义的消息，用于在验证失败时展示给用户。该消息可以包含 `$value`、`$integer` 和 `$fraction` 关键字，用于格式化输出。
+--
++
+默认消息键值：
++
+--
+* `validation.constraints.digits`
+--
++
+XML 描述中用法：
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/validatorDigitsValidator.xml[]
+----
+Java 代码用法：
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/validatorDigitsValidator.java[]
+----
+
+[[gui_validator_FutureOrPresentValidator]]
+FutureOrPresentValidator::
++
+检查日期或时间是否在将来或者现在。它不使用 Groovy 字符串，所以没有参数可用于消息格式化。
+支持的类型：`java.util.Date`、`LocalDate`、`LocalDateTime`、`LocalTime`、`OffsetDateTime`、`OffsetTime`。
++
+它有如下属性：
++
+--
+* `checkSeconds` − 当设置成 `true` 时，验证器需要使用秒和毫秒比较日期或者时间。默认值是 `false`。
+* `message` − 自定义的消息，用于在验证失败时展示给用户。
+--
++
+默认消息键值：
++
+--
+* `validation.constraints.futureOrPresent`
+--
++
+XML 描述中用法：
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/validatorFutureOrPresent.xml[]
+----
+Java 代码用法：
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/validatorFutureOrPresent.java[]
+----
+
+[[gui_validator_FutureValidator]]
+FutureValidator::
++
+它验证时间或者日期必须在将来。它不使用 Groovy 字符串，所以没有参数可用于消息格式化。
+支持的类型：`java.util.Date`、`LocalDate`、`LocalDateTime`、`LocalTime`、`OffsetDateTime`、`OffsetTime`。
++
+它有如下属性：
++
+--
+* `checkSeconds` − 当设置成 `true` 时，验证器需要使用秒和毫秒比较日期或者时间。默认值是 `false`。
+* `message` − 自定义的消息，用于在验证失败时展示给用户。
+--
++
+默认消息键值：
++
+--
+* `validation.constraints.future`
+--
++
+XML 描述中用法：
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/validatorFuture.xml[]
+----
+Java 代码用法：
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/validatorFuture.java[]
+----
+
+[[gui_validator_MaxValidator]]
+MaxValidator::
++
+检查值必须小于或等于指定的最大值。
+支持的类型：`BigDecimal`、`BigInteger`、`Long`、`Integer`。
++
+它有如下属性：
++
+--
+* `value` − 最大值（必须）；
+* `message` − 自定义的消息，用于在验证失败时展示给用户。该消息可以包含 `$value` 和 `$max` 关键字，用于格式化输出。
+--
++
+默认消息键值：
++
+--
+* `validation.constraints.max`
+--
++
+XML 描述中用法：
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/validatorMax.xml[]
+----
+Java 代码用法：
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/validatorMax.java[]
+----
+
+[[gui_validator_MinValidator]]
+MinValidator::
++
+检查值必须大于等于指定的最小值。
+支持的类型：`BigDecimal`、`BigInteger`、`Long`、`Integer`。
++
+它有如下属性：
++
+--
+* `value` − 最小值（必须）；
+* `message` − 自定义的消息，用于在验证失败时展示给用户。该消息可以包含 `$value` 和 `$min` 关键字，用于格式化输出。
+--
++
+默认消息键值：
++
+--
+* `validation.constraints.min`
+--
++
+XML 描述中用法：
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/validatorMin.xml[]
+----
+Java 代码用法：
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/validatorMin.java[]
+----
+
+[[gui_validator_NegativeOrZeroValidator]]
+NegativeOrZeroValidator::
++
+检查值必须小于等于 0。
+支持的类型：`BigDecimal`、`BigInteger`、`Long`、`Integer`、`Double`、`Float`。
++
+它有如下属性：
++
+--
+* `message` − 自定义的消息，用于在验证失败时展示给用户。该消息可以包含 `$value` 关键字，用于格式化输出。注意，`Float` 并没有它自己的数据类型，不会使用用户的 locale 进行格式化。
+--
++
+默认消息键值：
++
+--
+* `validation.constraints.negativeOrZero`
+--
++
+XML 描述中用法：
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/validatorNegativeOrZero.xml[]
+----
+Java 代码用法：
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/validatorNegativeOrZero.java[]
+----
+
+[[gui_validator_NegativeValidator]]
+NegativeValidator::
++
+检查值必须小于 0。
+支持的类型：`BigDecimal`、`BigInteger`、`Long`、`Integer`、`Double`、`Float`。
++
+它有如下属性：
++
+--
+* `message` − 自定义的消息，用于在验证失败时展示给用户。该消息可以包含 `$value` 关键字，用于格式化输出。注意，`Float` 并没有它自己的数据类型，不会使用用户的 locale 进行格式化。
+--
++
+默认消息键值：
++
+--
+* `validation.constraints.negative`
+--
++
+XML 描述中用法：
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/validatorNegative.xml[]
+----
+Java 代码用法：
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/validatorNegative.java[]
+----
+
+[[gui_validator_NotBlankValidator]]
+NotBlankValidator::
++
+检查值至少包含一个非空字符。它不使用 Groovy 字符串，所以没有参数可用于消息格式化。
+支持的类型：`String`。
++
+它有如下属性：
++
+--
+* `message` − 自定义的消息，用于在验证失败时展示给用户。
+--
++
+默认消息键值：
++
+--
+* `validation.constraints.notBlank`
+--
++
+XML 描述中用法：
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/validatorNotBlank.xml[]
+----
+Java 代码用法：
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/validatorNotBlank.java[]
+----
+
+[[gui_validator_NotEmptyValidator]]
+NotEmptyValidator::
++
+检查值不是 `null` 也非空。
+支持的类型：`Collection` 和 `String`。
++
+它有如下属性：
++
+--
+* `message` − 自定义的消息，用于在验证失败时展示给用户。该消息可以包含 `$value` 关键字，用于格式化输出，只对 `String` 类型有效。
+--
++
+默认消息键值：
++
+--
+* `validation.constraints.notEmpty`
+--
++
+XML 描述中用法：
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/validatorNotBlank.xml[]
+----
+Java 代码用法：
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/validatorNotBlank.java[]
+----
+
+[[gui_validator_NotNullValidator]]
+NotNullValidator::
++
+检查值不是 `null`。它不使用 Groovy 字符串，所以没有参数可用于消息格式化。
++
+它有如下属性：
++
+--
+* `message` − 自定义的消息，用于在验证失败时展示给用户。
+--
++
+默认消息键值：
++
+--
+* `validation.constraints.notNull`
+--
++
+XML 描述中用法：
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/validatorNotNull.xml[]
+----
+Java 代码用法：
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/validatorNotNull.java[]
+----
+
+[[gui_validator_PastOrPresentValidator]]
+PastOrPresentValidator::
++
+检查时间或者日期在过去或者现在。它不使用 Groovy 字符串，所以没有参数可用于消息格式化。
+支持的类型：`java.util.Date`、`LocalDate`、`LocalDateTime`、`LocalTime`、`OffsetDateTime`、`OffsetTime`。
++
+它有如下属性：
++
+--
+* `checkSeconds` − 当设置为 `ture` 时，验证器需要使用秒和毫秒比较日期或者时间。默认值是 `false`。
+* `message` − 自定义的消息，用于在验证失败时展示给用户。
+--
++
+默认消息键值：
++
+--
+* `validation.constraints.pastOrPresent`
+--
++
+XML 描述中用法：
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/validatorPastOrPresent.xml[]
+----
+Java 代码用法：
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/validatorPastOrPresent.java[]
+----
+
+[[gui_validator_PastValidator]]
+PastValidator::
++
+检查时间或者日期在过去。它不使用 Groovy 字符串，所以没有参数可用于消息格式化。
+支持的类型：`java.util.Date`、`LocalDate`、`LocalDateTime`、`LocalTime`、`OffsetDateTime`、`OffsetTime`。
++
+它有如下属性：
++
+--
+* `checkSeconds` − 当设置为 `ture` 时，验证器需要使用秒和毫秒比较日期或者时间。默认值是 `false`。
+* `message` − 自定义的消息，用于在验证失败时展示给用户。
+--
++
+默认消息键值：
++
+--
+* `validation.constraints.past`
+--
++
+XML 描述中用法：
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/validatorPastOrPresent.xml[]
+----
+Java 代码用法：
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/validatorPastOrPresent.java[]
+---- 
+
+[[gui_validator_PositiveOrZeroValidator]]
+PositiveOrZeroValidator::
++
+检查值必须大于等于 0。
+支持的类型：`BigDecimal`、`BigInteger`、`Long`、`Integer`、`Double`、`Float`。
++
+它有如下属性：
++
+--
+* `message` − 自定义的消息，用于在验证失败时展示给用户。该消息可以包含 `$value` 关键字，用于格式化输出。注意，`Float` 并没有它自己的数据类型，不会使用用户的 locale 进行格式化。
+--
++
+默认消息键值：
++
+--
+* `validation.constraints.positiveOrZero`
+--
++
+XML 描述中用法：
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/validatorPositiveOrZero.xml[]
+----
+Java 代码用法：
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/validatorPositiveOrZero.java[]
+----
+
+[[gui_validator_PositiveValidator]]
+PositiveValidator::
++
+检查值必须严格大于 0。
+支持的类型：`BigDecimal`、`BigInteger`、`Long`、`Integer`、`Double`、`Float`。
++
+它有如下属性：
++
+--
+* `message` − 自定义的消息，用于在验证失败时展示给用户。该消息可以包含 `$value` 关键字，用于格式化输出。注意，`Float` 并没有它自己的数据类型，不会使用用户的 locale 进行格式化。
+--
++
+默认消息键值：
++
+--
+* `validation.constraints.positive`
+--
++
+XML 描述中用法：
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/validatorPositive.xml[]
+----
+Java 代码用法：
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/validatorPositive.java[]
+----
+
+
+[[gui_validator_RegexpValidator]]
+RegexpValidator::
++
+检查 `String` 的值是否能匹配提供的正则表达式。
+支持的类型：`String`。
++
+它有如下属性：
++
+--
+* `regexp` − 一个用于匹配的正则表达式（必须）；
+* `message` − 自定义的消息，用于在验证失败时展示给用户。该消息可以包含 `$value` 关键字，用于格式化输出。
+--
++
+默认消息键值：
++
+--
+* `validation.constraints.regexp`
+--
++
+XML 描述中用法：
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/validatorRegexp.xml[]
+----
+Java 代码用法：
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/validatorRegexp.java[]
+----
+
+[[gui_validator_SizeValidator]]
+SizeValidator::
++
+检查值在一定范围内。
+支持的类型：`Collection` 和 `String`。
++
+它有如下属性：
++
+--
+* `min` − 最小值（不包含），不能小于 0。默认值是 0；
+* `max` − 最大值（不包含），不能小于 0。默认值是 `Integer.MAX_VALUE`；
+* `message` − 自定义的消息，用于在验证失败时展示给用户。该消息可以包含 `$value`（只对 `String` 类型有效），`$min`、`$max` 关键字，用于格式化输出。
+--
++
+默认消息键值：
++
+--
+* `validation.constraints.collectionSizeRange`
+* `validation.constraints.sizeRange`
+--
++
+XML 描述中用法：
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/validatorSize.xml[]
+----
+Java 代码用法：
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/validatorSize.java[]
 ---- 
 

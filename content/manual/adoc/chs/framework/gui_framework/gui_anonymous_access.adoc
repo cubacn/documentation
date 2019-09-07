@@ -1,0 +1,62 @@
+:sourcesdir: ../../../../source
+
+[[gui_anonymous_access]]
+==== 匿名访问界面
+
+默认情况下，匿名（未认证）用户会话只能访问登录界面。通过扩展登录界面，可以在界面上添加任何信息，甚至添加 `WorkArea` 组件，然后便能在该组件内为匿名用户打开其它界面。但是一旦用户登录了，所有在匿名模式下打开的界面都会关闭。
+
+有时也许我们需要将某些应用程序的界面呈现给用户而无论用户是否进行登录认证。比如下面这个需求：
+
+* 当用户打开应用程序，他们能看见 *欢迎* 界面.
+* 还有一个 *信息* 界面，提供公共访问的信息。*信息* 界面必须在最高层的界面窗口展示，比如，不带主菜单和其它主窗口的控制。
+* 用户可以从 *欢迎* 界面或者直接通过浏览器输入 URL 打开 *信息* 界面。
+* 还有，用户需要能从 *欢迎* 界面跳转到登录界面并以认证用户的身份继续在系统里操作。
+
+下面我们看看实现步骤。
+
+. 创建 *信息* 界面并使用 `@Route` 注解其控制器类，提供能使用链接方式打开的功能：
++
+--
+[source, xml]
+----
+include::{sourcesdir}/gui/anonymous_access/info_screen_1.xml[]
+----
+
+[source, java]
+----
+include::{sourcesdir}/gui/anonymous_access/info_screen_1.java[]
+----
+<1> - 指定该界面的地址。当该界面在最高层打开的时候，地址栏会显示类似 `++http://localhost:8080/app/#info++` 的地址。
+--
+
+. 在项目中扩展默认的主界面，以实现需要的 *欢迎* 界面。在 Studio 的界面创建向导中使用 *Main screen ...* 中的一种作为模板，然后在 `initialLayout` 元素中添加一些组件，示例：
++
+--
+[source, xml]
+----
+include::{sourcesdir}/gui/anonymous_access/main_screen_1.xml[]
+----
+
+[source, java]
+----
+include::{sourcesdir}/gui/anonymous_access/main_screen_1.java[]
+----
+<1> - 创建 `信息界面` 并且在用户点击按钮时在根窗口打开。
+--
+
+. 为了实现在用户进入应用程时打开 *欢迎* 界面而非登录界面，需要在 `web-app.properties` 文件添加以下属性：
++
+--
+[source, properties]
+----
+include::{sourcesdir}/gui/anonymous_access/web-app.properties[]
+----
+--
+
+. 为匿名用户启用 *信息* 界面：启动应用程序，打开 *Administration - 管理 > Roles - 角色*，为 *Anonymous* 角色配置访问 *信息* 界面的权限。
+
+最后，当用户打开应用程序时，他们能看到 *欢迎* 界面：
+
+image:gui_anonymous_access/welcome_screen.png[]
+
+用户不需要认证也能打开 *信息* 界面，或者点击登录按钮访问应用程序的安全部分。

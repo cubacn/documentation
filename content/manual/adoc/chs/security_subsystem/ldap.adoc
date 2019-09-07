@@ -15,11 +15,11 @@ CUBA 应用程序可以跟 LDAP 集成以便提供以下便利：
 
 基于 CUBA 的应用程序通过 `LdapLoginProvider` bean 来跟 LDAP 交互。
 
-可以用 <<jespa,>> 章节描述的 *Jespa* 类库和相应的 `CubaAuthProvider` 来启用跟活动目录（Active Directory）的进一步集成，包括使用 Windows 域用户的单点登录。
+可以用 <<jespa,>> 章节描述的 *Jespa* 类库和相应的 `LoginProvider` 来启用跟活动目录（Active Directory）的进一步集成，包括使用 Windows 域用户的单点登录。
 
 可以通过自定义的 `LoginProvider`，`HttpRequestFilter` 或者 <<web_login, Web 登录规范>>描述的事件来实现自定义的登录机制。
 
-还有，可以为 REST API 客户端启用 LDAP 认证：<<rest_api_v2_ldap,REST API 使用 LDAP 做认证>>。
+还有，可以为 REST API 客户端启用 LDAP 认证：{rest_man_url}#rest_api_v2_ldap[REST API 使用 LDAP 做认证] 。
 
 include::ldap/ldap_basic.adoc[]
 

@@ -1,0 +1,28 @@
+:sourcesdir: ../../../../source
+
+[[gui_facets]]
+==== 非可视化组件
+
+界面还可以包含定义在 XML 描述中 `facets` 元素内的非可视化组件。CUBA 框架提供以下非可视化组件：
+
+* <<gui_Timer,Timer - 定时器>>
+* <<gui_ClipboardTrigger,ClipboardTrigger - 剪切板触发器>>
+* <<gui_DataLoadCoordinator,DataLoadCoordinator - >>
+
+应用程序或者扩展组件可以提供其自有的非可视化组件。可以按照下面的步骤创建自定义的 facet:
+
+. 创建接口，继承自 `com.haulmont.cuba.gui.components.Facet`。
+
+. 创建基于 `com.haulmont.cuba.web.gui.WebAbstractFacet` 的实现类。
+
+. 创建 Spring Bean，实现 `com.haulmont.cuba.gui.xml.FacetProvider` 接口，使用你定义的 facet 作为参数。
+
+. 创建能在界面 XML 中使用的 XSD。
+
+框架中的 `ClipboardTrigger`，`WebClipboardTrigger` 和 `ClipboardTriggerFacetProvider`，这三个类可以作为 facet 的示范参考。
+
+include::gui_facets/gui_Timer.adoc[]
+
+include::gui_facets/gui_ClipboardTrigger.adoc[]
+
+include::gui_facets/gui_DataLoadCoordinator.adoc[]

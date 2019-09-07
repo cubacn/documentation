@@ -44,9 +44,41 @@ include::{sourcesdir}/gui_vcl/tableIconProvider_1.java[]
 [[gui_Table_columns]]
 * `columns` – 定义表格列的必须元素。
 +
+--
+[[gui_Table_columns_includeAll]]
+** `includeAll` – `includeAll` – 加载 <<gui_data_containers,dataContainer>> 或 <<datasources,datasource>> 中定义的 <<views,view>> 的所有属性。
++
+在下面的例子中，我们显示了 `customersDc` 中使用视图的所有属性。如果视图包含系统属性，也同样会显示。
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/gui_Table_columns_includeAll.xml[]
+----
++
+如果实体的视图包含引用属性，该属性会按照其<<namePattern_annotation,实例名称>>进行展示。如果需要展示一个特别的属性，则需要在视图和 `column` 元素中定义：
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/gui_Table_columns_includeAll_related.xml[]
+----
++
+如果未指定视图，`includeAll` 会加载给定实体及其祖先的所有属性。
+
+[[gui_Table_columns_exclude]]
+** `exclude` – 英文逗号分隔的属性列表，这些属性不会被加载到表格。
++
+在下面的例子中，我们会显示除了 `name` 和 `order` 之外的所有属性：
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/gui_Table_columns_exclude.xml[]
+----
+--
++
 每个列都在嵌套的 `column` 元素中描述，`column` 元素具有以下属性：
 +
 --
+
 [[gui_Table_column_id]]
 ** `id` − 必须属性，包含列中要显示的实体属性的名称。可以是来自数据容器的实体的属性，也可以是关联实体的属性（使用 "." 来指定属性在对象关系图中的路径）。例如：
 +
@@ -60,6 +92,9 @@ include::{sourcesdir}/gui_vcl/tableId_1.xml[]
 
 [[gui_Table_column_collapsed]]
 ** `collapsed` − 可选属性；当设置为 `true` 时默认隐藏列。当表格的 `columnControlVisible` 属性不是 `false` 时，用户可以通过表格右上角的菜单中的按钮 image:gui_table_columnControl.png[] 控制列的可见性。默认情况下，`collapsed` 是 `false`。
+
+[[gui_Table_column_expandRatio]]
+** `expandRatio` − 可选属性；指定每列的延展比例。比例值需大于或等于 0。如果至少有一列设置了该值，则会忽略其它隐式的值，只考虑显式设置的值。如果同时设置了<<gui_Table_column_width,width>>和 `expandRatio`，应用程序会出错。
 
 [[gui_Table_column_width]]
 ** `width` − 可选属性，控制默认列宽。只能是以像素为单位的数值。
@@ -161,6 +196,8 @@ include::{sourcesdir}/gui_vcl/tableSortable_1.xml[]
 如果列引用了非持久化实体属性，则数据排序将根据 `@MetaProperty` 注解的 `related()` 参数中定义的属性执行。如果未指定相关属性，则仅仅在内存中对当前页的数据进行排序。
 +
 如果表格链接到一个嵌套的<<gui_property_containers,属性容器>>，这个属性容器包含相关实体的集合。这个集合属性必须是有序类型（`List` 或 `LinkedHashSet`）才能使表格支持排序。如果属性的类型为 `Set`，则 `sortable` 属性不起作用，并且用户无法对表格进行排序。
++
+如果需要，也可以提供<<gui_data_comp_sort,自定义的排序实现>>。
 
 [[gui_Table_presentations]]
 * `presentations` 属性控制<<gui_presentations,展示设置>>。默认情况下，该值为 `false`。如果属性值为 `true`，则会在表格的右上角添加相应的图标 image:gui_presentation.png[]。
@@ -326,9 +363,8 @@ include::{sourcesdir}/gui_vcl/tableColumnGenerator_1.java[]
 ---- 
 
 在上面的示例中，表中 `color` 列中的所有单元格都显示了 <<gui_LookupPickerField,LookupPickerField>> 组件。组件应将它的值保存到相应的行中的实体的 `color` 属性中。
-////
-为此，`getItemDatasource()` 方法用于从表中获取当前实体实例的数据源，并将其传递给 `LookupPickerField` 组件。
-////
+
+`getInstanceContainer()` 方法返回带有当前实体的容器，只能在绑定组件（创建于生成表格单元格时）和数据的时候使用。
 
 如果要显示动态文本，请使用特殊类 `Table.PlainTextCell` 而不是 <<gui_Label,Label>> 组件。它将简化渲染过程并使表格运行更快。
 
@@ -433,6 +469,8 @@ include::{sourcesdir}/gui_vcl/table_addPrintable_2.java[]
 如果找到此操作，并且操作具有 `enabled=true` 属性，则执行该操作。
 --
 
+`Table` 的展示可以使用带 `$cuba-table-*` 前缀的 SCSS 变量进行自定义。可以在创建一个 <<web_theme_extension,主题扩展>> 或者一个 <<web_theme_creation,自定义主题>> 之后在可视化编辑器里修改这些变量的值。
+
 '''
 
 table 的属性::
@@ -475,6 +513,10 @@ table 的元素::
 <<gui_Table_rows,rows>> -
 <<gui_Table_rowsCount,rowsCount>>
 
+<<gui_Table_columns,columns>> 元素的属性::
+<<gui_Table_columns_includeAll, includeAll>> -
+<<gui_Table_columns_exclude, exclude>>
+
 <<gui_Table_columns,column>> 元素的属性::
 <<gui_Table_column_align,align>> -
 <<gui_Table_column_caption,caption>> -
@@ -482,6 +524,7 @@ table 的元素::
 <<gui_Table_column_collapsed,collapsed>> -
 <<gui_DateField_dateFormat,dateFormat>> -
 <<gui_Table_column_editable,editable>> -
+<<gui_Table_column_expandRatio,expandRatio>> -
 <<gui_Table_column_generator,generator>> -
 <<gui_Table_column_id,id>> -
 <<gui_Table_column_link,link>> -

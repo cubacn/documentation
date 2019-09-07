@@ -3,7 +3,13 @@
 [[composite_components]]
 ==== 组合组件
 
-组合组件是由其他多个组件组合的组件。跟界面 fragment 类似，组合组件也是一种可重用组件，能复用展示布局和逻辑。下列情况我们建议使用组合组件：
+++++
+<div class="manual-live-demo-container">
+    <a href="https://demo.cuba-platform.cn/sampler/open?screen=composite-component" class="live-demo-btn" target="_blank">在线示例</a>
+</div>
+++++
+
+组合组件是由其它多个组件组合的组件。跟界面 fragment 类似，组合组件也是一种可重用组件，能复用展示布局和逻辑。下列情况我们建议使用组合组件：
 
 * 组件功能可以使用现存的通用 UI 组件以组合的方式来实现。如果需要非标准功能，可以封装 Vaadin 组件或者 JavaScript 库来创建<<own_components,自定义组件>>，或者使用<<jsComponent>>。
 * 组件相对比较简单，并不会加载或者保存数据。否则的话，考虑创建<<using_screen_fragments,界面 fragment>>。

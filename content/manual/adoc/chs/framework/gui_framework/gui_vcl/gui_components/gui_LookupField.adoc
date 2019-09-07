@@ -21,7 +21,7 @@ image::gui_lookupField.png[align="center"]
 
 该组件的 XML 名称是： `lookupField`
 
-. 使用 `LookupField` 下拉框最简单的例子是从实体属性中选择枚举值。比如，`Role` 角色实体中有 `type` 属性，为枚举类型。用户可以通过 `LookupField` 下拉框控件编辑该属性：
+* 使用 `LookupField` 下拉框最简单的例子是从实体属性中选择枚举值。比如，`Role` 角色实体中有 `type` 属性，为枚举类型。用户可以通过 `LookupField` 下拉框控件编辑该属性：
 +
 [source, xml]
 ----
@@ -30,7 +30,7 @@ include::{sourcesdir}/gui_vcl/lookupfield_1.xml[]
 +
 在上面的例子中，使用 `roleDc` <<gui_data_containers,数据容器>>选择 `Role` 实体数据。`lookupField` 下拉框组件中，数据容器的连接通过 <<gui_attr_dataContainer,dataContainer>> 属性定义，实体属性的名称定义在 <<gui_attr_property,property>> 属性中。此时，这个属性为枚举类型，控件的下拉列表中会显示所有枚举值的<<enum_localization,本地化名称>>。
 
-. 类似的，`LookupField` 下拉框也可以用来选择实体实例。<<gui_attr_optionsContainer,选项容器>>属性可以用来创建一系列选项：
+* 类似的，`LookupField` 下拉框也可以用来选择实体实例。<<gui_attr_optionsContainer,选项容器>>属性可以用来创建一系列选项：
 +
 [source, xml]
 ----
@@ -41,7 +41,15 @@ include::{sourcesdir}/gui_vcl/lookupfield_2.xml[]
 +
 <<gui_attr_captionProperty,captionProperty>>定义显示到下拉框的实体属性值，而非实例名称，这样可以设置下拉列表的文字值。
 
-. 选项列表还可以通过 `setOptionsList()`，`setOptionsMap()` 和 `setOptionsEnum()` 设置，也可以在 XML 描述中通过 `optionsContainer` 或者 `optionsDatasource` 属性设置。
+[[gui_LookupField_setOptionCaptionProvider]]
+* 使用 `setOptionCaptionProvider()` 方法可以为 `LookupField` 组件显示的字符串选项名定义标题：
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/gui_lookupField_OptionCaptionProvider.java[]
+----
+
+* 选项列表还可以通过 `setOptionsList()`，`setOptionsMap()` 和 `setOptionsEnum()` 设置，也可以在 XML 描述中通过 `optionsContainer` 或者 `optionsDatasource` 属性设置。
 +
 --
 [[gui_LookupField_setOptionsList]]
@@ -74,6 +82,10 @@ include::{sourcesdir}/gui_vcl/lookupfield_5.java[]
 [[gui_LookupField_setOptionsEnum]]
 * `setOptionsEnum()` 需要枚举类做为参数。下拉列表会显示枚举值的本地化名称，组件的值则为枚举值。
 --
+
+[[gui_LookupField_PopupWidth]]
+
+* `setPopupWidth()` 可以设置下拉列表的宽度，宽度用字符串格式传递给该方法。使用相对单位（比如，`"50%"`）可以设置下拉列表的宽度是针对于 `LookupField` 本身的相对值。默认情况下，该宽度设置为 `null`，下拉列表的宽度为了适应显示内容的宽度而可以大于组件的宽度。通过设置该值为 `"100%"`，可以使得下拉列表的宽度等于 `LookupField` 的宽度。
 
 [[gui_LookupField_OptionsStyleProvider]]
 * 通过 `setOptionStyleProvider()` 可以为组件显示的不同的选项设置分别的 style name：
@@ -111,6 +123,14 @@ image::gui_lookupField_2.png[align="center"]
 
      height="25px"
      width="25px">
+----
+
+[[gui_LookupField_setOptionImageProvider]]
+* `setOptionImageProvider()` 方法可以定义 `LookupField` 组件显示的选项图片。该方法设置一个接收<<gui_Image_ResourceType,资源类型>>参数的函数。
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/gui_lookupField_OptionImageProvider.java[]
 ----
 
 * 如果 `LookupField` 下拉框组件非<<gui_attr_required,required>>，并且对应的实体属性也非必须，下拉选项会包含一个空行。如果选择了空行，组件值为 `null`. 使用 <<gui_attr_nullName,nullName>> 属性设置在“空行”上显示的文本。以下为一个示例：
@@ -258,10 +278,13 @@ API::
 <<gui_api_isModified,isModified>> -
 <<gui_api_contextHelp,setContextHelpIconClickHandler>> -
 <<gui_LookupField_setFilterPredicate,setFilterPredicate>> -
+<<gui_LookupField_setOptionCaptionProvider,setOptionCaptionProvider>> -
+<<gui_LookupField_setOptionImageProvider, setOptionImageProvider>> -
 <<gui_LookupField_setOptionsEnum,setOptionsEnum>> -
 <<gui_LookupField_setOptionsList,setOptionsList>> -
 <<gui_LookupField_setOptionsMap,setOptionsMap>> -
-<<gui_LookupField_OptionsStyleProvider,setOptionsStyleProvider>>
+<<gui_LookupField_OptionsStyleProvider,setOptionsStyleProvider>> -
+<<gui_LookupField_PopupWidth,setPopupWidth>>
 
 '''
 

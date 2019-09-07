@@ -105,6 +105,16 @@ include::{sourcesdir}/gui_vcl/pickerfield_8.xml[]
 ====
 可以在 `PickerField` 中使用键盘快捷键，有关详细信息，请参阅<<shortcuts,快捷键>>。
 
+[[gui_PickerField_iconProvider]]
+* `PickerField` 组件可以在左边有一个图标。下面的例子在界面控制器中使用 `setOptionIconProvider()` 提供的方法。`"cancel"` 图标会在字段值是 `null` 的时候显示，而 `"chain"` 图标会在其它情况显示。
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/pickerfield_9.java[]
+----
++
+image::gui_pickerField_icon.png[align="center"]
+
 '''
 
 pickerField 的属性::
@@ -144,7 +154,9 @@ API::
 <<gui_api_commit,commit>> -
 <<gui_api_discard,discard>> -
 <<gui_api_isModified,isModified>> -
-<<gui_api_contextHelp,setContextHelpIconClickHandler>>
+<<gui_api_contextHelp,setContextHelpIconClickHandler>> -
+<<gui_LookupField_setOptionCaptionProvider,setOptionCaptionProvider>> -
+<<gui_PickerField_iconProvider, setOptionIconProvider>>
 
 '''
 

@@ -91,6 +91,52 @@ include::{sourcesdir}/deployment/log_dir_1.xml[]
 ----
 --
 
+设置部署时应用程序属性::
++
+--
+可以在部署环境设置应用程序属性，设置一些在应用程序构建时无法提供的属性设置（比如处于安全考虑）。下面的例子使用命名为 "sample" 模块前缀为 "app" 的项目进行展示。
+
+1) 修改所有项目中 web 应用程序的 `web.xml` 文件。修改 `appPropertiesConfig` servlet 上下文参数值的第三行。用下面的格式配置 `local.app.properties` 的路径，使用应用程序主目录的相对目录：
+[source,plain]
+----
+"file:${app.home}/web-application-name/conf/local.app.properties"
+----
+比如，对于 `app-core` 模块，需要修改 `modules/core/web/WEB-INF/web.xml` 文件，并将 `appPropertiesConfig` 设置为以下内容：
+[source, xml]
+----
+include::{sourcesdir}/deployment/uberjar-local-app-context-param.xml[]
+----
+
+2) 在应用程序主目录创建 `local.app.properties` 文件，并设置必要的值：
+[source,plain]
+----
+admin@server:/opt/app_home$ cat app/conf/local.app.properties
+cuba.web.loginDialogDefaultUser=<disabled>
+cuba.web.loginDialogDefaultPassword=<disabled>
+
+admin@server:/opt/app_home$ cat app-core/conf/local.app.properties
+cuba.userSessionExpirationTimeoutSec = 7200
+----
+
+3) 保证在启动应用程序时设置了正确的主目录：
+[source,plain]
+----
+java -Dapp.home=/opt/app_home -jar app.jar
+----
+
+4) 检查启动日志。应该能看到下面这几行，每个 web 应用程序一行：
+[source,plain]
+----
+14:49:44.875 INFO  c.h.c.c.s.AbstractWebAppContextLoader   - Loading
+app properties from file:/opt/app_home/app-core/conf/local.app.properties
+...
+14:49:49.339 INFO  c.h.c.c.s.AbstractWebAppContextLoader   - Loading
+app properties from file:/opt/app_home/app/conf/local.app.properties
+...
+----
+
+--
+
 停止应用程序::
 +
 --

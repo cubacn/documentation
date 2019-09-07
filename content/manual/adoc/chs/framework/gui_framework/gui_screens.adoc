@@ -1,13 +1,15 @@
 :sourcesdir: ../../../../source
 
 [[gui_screens]]
-==== 界面
+==== 界面和界面片段（Fragments）
 
-界面(Screen)是通用 UI 的主要部分。它由可视化组件、数据容器和其它非可视化组件组成。界面可以显示在应用程序主窗口的标签页中，也可以显示为模式对话框。
+界面(Screen)是通用 UI 的主要部分。它由可视化组件、数据容器和非可视化组件组成。界面可以显示在应用程序主窗口的标签页中，也可以显示为模式对话框。
 
 界面的主要组成部分是称作<<screen_controllers,控制器>>的 Java 或 Groovy 类。界面的布局通常在称作<<screen_descriptors,界面描述>>的 XML 文件中定义。
 
 要显示一个界面，框架会创建一个可视化组件 `Window` 的新实例，将窗口与界面控制器连接起来，并将界面布局组件作为窗口的子组件加载。最终，界面的窗口将被添加到应用程序主窗口中。
+
+界面片段（fragment）是另一种 UI 构成组件，可以用作界面的一部分或者使用在别的界面片段中。界面片段跟界面本质上非常相似，只不过界面片段有特殊的生命周期；另外在组件树中，片段会作为 `Fragment` 可视化组件而非 `Window`。界面片段也有控制器和 XML 描述。
 
 include::gui_screens/screen_controllers.adoc[]
 
@@ -18,3 +20,5 @@ include::gui_screens/opening_screens.adoc[]
 include::gui_screens/using_screen_fragments.adoc[]
 
 include::gui_screens/screen_mixins.adoc[]
+
+include::gui_screens/gui_root_screens.adoc[]

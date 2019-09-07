@@ -1,0 +1,50 @@
+:sourcesdir: ../../../../../../source
+
+[[gui_data_comp_sort]]
+====== 自定义排序
+
+UI table 中按照实体属性排序的功能是通过 `CollectionContainerSorter` 实现的，需要为 <<gui_collection_container,CollectionContainer>> 设置该排序器。标准的实现是，如果数据在一页以内能显示，则在内存做数据排序，否则会使用合适的 "order by" 语句发送数据库的请求。"order by" 语句是中间层的 `JpqlSortExpressionProvider` bean创建的。
+
+有些实体属性需要一个特殊的排序实现。下面我们用个例子解释一下如何自定义排序：假设有 `Foo` 实体带有 `String` 类型的 `number` 属性，但是我们知道该属性其实是只保存数字。所以我们希望排序的顺序是 `1, 2, 3, 10, 11`。但是，默认的排序行为会产生这样的结果：`1, 10, 11, 2, 3`。
+
+首先，在 `web` 模块创建一个 `CollectionContainerSorter` 类的子类，在内存进行排序：
+
+[source, java]
+----
+include::{sourcesdir}/gui/data_comp/data_comp_sort_1.java[]
+----
+
+如果有几个界面需要这个自定义的排序，可以在界面中实例化 `CustomCollectionContainerSorter`：
+
+[source, java]
+----
+include::{sourcesdir}/gui/data_comp/data_comp_sort_2.java[]
+----
+
+如果排序器定义了一些全局的行为，则可以创建自定义的工厂在系统级别实例化该排序器：
+
+[source, java]
+----
+include::{sourcesdir}/gui/data_comp/data_comp_sort_3.java[]
+----
+
+然后在 `web-spring.xml` 注册该工厂以替换默认工厂：
+
+[source, xml]
+----
+include::{sourcesdir}/gui/data_comp/data_comp_sort_4.xml[]
+----
+
+现在我们在 `core` 模块为数据库级别的排序创建我们自己定义的 `JpqlSortExpressionProvider` 实现：
+
+[source, java]
+----
+include::{sourcesdir}/gui/data_comp/data_comp_sort_5.java[]
+----
+
+在 `spring.xml` 注册此 expression provider，覆盖默认：
+
+[source, xml]
+----
+include::{sourcesdir}/gui/data_comp/data_comp_sort_6.xml[]
+----

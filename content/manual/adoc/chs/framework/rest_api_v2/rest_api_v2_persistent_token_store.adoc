@@ -1,9 +1,0 @@
-:sourcesdir: ../../../../source
-
-[[rest_api_v2_persistent_token_store]]
-==== 令牌存储持久化
-
-默认情况下，OAuth 令牌只是保存在内存。如果需要在数据库保存这些令牌，设置 <<cuba.rest.storeTokensInDb,cuba.rest.storeTokensInDb>> 应用程序属性为 `true`。这个属性的值是保存在数据库的，因此可以在系统界面 *Administration > Application Properties* 修改这个值。
-
-数据库中保存的过期令牌需要定期清理。这个定时任务的时间安排 cron 表达式通过 <<cuba.rest.deleteExpiredTokensCron,cuba.rest.deleteExpiredTokensCron>> 定义。
-

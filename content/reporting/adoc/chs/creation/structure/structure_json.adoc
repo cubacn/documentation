@@ -46,3 +46,15 @@ include::{sourcesdir}/json.json[]
 
 有关 JsonPath 表达式的更多详细信息，请参阅 http://goessner.net/articles/JsonPath/ 。
 
+[WARNING]
+====
+报表输出的字段如果是 `Date`、`DateTime` 或 `Time` 数据类型，则不支持 `java.text.SimpleDateFormat` 定义的格式。如果要设置正确的格式，需要写一个 Groovy 脚本。
+
+如需这么做，可以切换到报表编辑器的 **Parameters and Formats** 标签页并打开<<formatters,formatter>>编辑器。比如，对于 `bookPublication.dateTime` 字段，Groovy 脚本如下：
+
+[source, groovy]
+----
+include::{sourcesdir}/formatter_for_dates.groovy[]
+----
+====
+

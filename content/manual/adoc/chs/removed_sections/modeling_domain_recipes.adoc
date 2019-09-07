@@ -1,0 +1,12 @@
+[[modeling_domain_recipes]]
+=== 模型问题域
+
+参阅以下向导：
+
+* https://www.cuba-platform.com/guides/data-modelling-many-to-many-association[数据模型：多对多关联]
+
+* https://www.cuba-platform.com/guides/data-modelling-entity-inheritance[数据模型：实体继承]
+
+* https://www.cuba-platform.com/guides/data-modelling-composition[数据模型：组合]
+
+* https://www.cuba-platform.com/guides/initial-entity-values[为实体实例设置初始值]

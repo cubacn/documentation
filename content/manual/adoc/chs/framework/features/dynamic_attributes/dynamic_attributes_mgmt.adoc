@@ -3,15 +3,13 @@
 [[dynamic_attributes_mgmt]]
 ===== 管理动态属性
 
-管理属性类别和描述是通过 *Administration>Dynamic Attributes* 菜单中提供的特定界面完成的。
+可以在 *Administration>Dynamic Attributes* 界面管理动态属性。界面的左边有类别列表，右边是属于选中分类的属性。
 
-类别浏览界面显示所有已注册类别的列表。
+如果要给一个实体创建动态属性，首先需要创建一个分类。如果该实体类实现了 `Categorized` 接口，分类编辑器里面的 *Default* 复选框表示该分类会自动选为新实例的类型。如果实体没有实现 `Categorized` 接口，则不会用复选框的值，你可以自己为该实体创建单一类型，或者创建多个类型 - 实体的所有属性都会按照<<dynamic_attributes_visibility,动态属性可见性设置>>展示。
 
-.类别浏览界面
-image::categoryBrowser.png[align="center"]
+在修改了动态属性配置之后，点击分类浏览部分的 *Apply settings* 按钮。改动也可以通过菜单的 *Administration > JMX Console* 调用 `app-core.cuba:type=CachingFacade` JMX bean 的 `clearDynamicAttributesCache()` 方法应用。
 
-
-类别编辑界面可以为实体创建新类别并定义一组动态属性。类别名称和相关实体类型字段是必填字段。*Default* 复选框表示将为实现了 `Categorized` 接口的新实体实例自动选择此类别。
+下面是类别编辑器的界面示例：
 
 .类别编辑界面
 image::categoryEditor.png[align="center"]
@@ -21,64 +19,122 @@ image::categoryEditor.png[align="center"]
 .本地化类别名称
 image::categoryLocalization.png[align="center"]
 
-动态属性编辑界面可以设置属性的名称、系统代码、值类型和默认值。
+[[dynamic_attributes_mgmt_attr_location]]
+在 **Attributes Location** 标签页，可以在 <<categorized_entity,DynamicAttributesPanel>> 内设置每个动态属性的位置。
+
+.设置动态属性的位置
+image::dynamic_attributes_location.png[align="center"]
+
+在 **Columns count** 下拉列表中指定列的数量。如要更改属性的位置，从属性列表拖拽该属性放置到目的行列的位置。也可以添加空的单元格或者更改属性的顺序。做完更改后，点击 **Save configuration** 按钮。
+
+实体编辑器的 `DynamicAttributesPanel` 面板中属性的位置：
+
+image::dynamic_attributes_location_rezult.png[align="center"]
+
+动态属性编辑界面可以设置属性的名称、系统代码、值类型、属性的默认值，以及验证脚本。
 
 .动态属性编辑界面
 image::runtimePropertyEditor.png[align="center"]
 
-对于除 `Boolean` 以外的所有值类型，都有一个 *Width* 字段可用于设置 `FieldGroup` 中的字段宽度（以像素为单位或百分比）。如果 *Width* 字段为空，则假定其值为 100％。
+对于除 `Boolean` 以外的所有值类型，都有一个 *Width* 字段可用于设置 `Form` 中的字段宽度（以像素为单位或百分比）。如果 *Width* 字段为空，则假定其值为 100％。
 
-对于除 `Boolean` 和 `Enumeration` 之外的所有值类型，还有一个 *Is* *collection* 复选框。允许为所选类型创建多值动态属性。
+对于除 `Boolean` 之外的所有值类型，还有一个 *Is collection* 复选框。允许为所选类型创建多值动态属性。
+
+对于所有的数字类型：`Double`、`Fixed-point number`、`Integer` - 可以用下列字段：
+* *Minimum value* – 当输入属性值时，会检查属性值必须大于等于指定的最小值。
+* *Maximum value* – 当输入属性值时，会检查属性值必须小于等于指定的最大值。
+
+对于 `Fixed-point number` 值类型，可以使用 *Number format pattern* 字段设置格式模板。模板按照 https://docs.oracle.com/javase/8/docs/api/java/text/DecimalFormat.html[DecimalFormat] 介绍的规则设置。
+
+对于所有的值类型，可以在 *Validation script* 字段设置脚本用于验证用户输入的值。验证逻辑在 Groovy 脚本中。如果 Groovy 验证失败，脚本应当返回一个错误消息。否则，脚本可以不返回任何值或者返回 `null`。被检查的值在脚本中可以使用 `value` 变量获取。错误消息使用一个 Groovy 字符串；其中可以用 `$value` 关键字来生成格式化的消息。
+
+示例：
+
+[source, groovy]
+----
+include::{sourcesdir}/features/dynamicAttrValidation.groovy[]
+----
+
+对于 `Enumeration` 值类型，通过列表编辑器在 *Enumeration* 字段中定义命名值集合。
+
+.Enumeration 类型的动态属性编辑界面
+image::runtimePropertyEnum.png[align="center"]
+
+每个枚举值可以进行本地化显示设置。
+
+.Enumeration 类型动态属性本地化设置
+image::runtimePropertyEnumLocalization.png[align="center"]
+
+[[dynamic_attributes_lookupField]]
+对于 `String`、`Double`、`Entity`、`Fixed-point number` 和 `Integer` 数据类型，可以使用 *Lookup field* 复选框。如果设置了该复选框，用户可以从下拉列表中选择属性值。可选值列表可在 *Calculated values and options* 标签页<<dynamic_attributes_optionsType,配置>>。`Entity` 数据类型会配置 Where 和 Join 语句。
+
+再看看 *Calculated values and options* 标签页。在 *Attribute depends on* 字段，可以设置当前属性依赖的其它属性。当改变其中一个依赖属性时，则会重新执行计算该属性值的脚本或者执行计算可能值列表的脚本。
+
+计算属性值的 Groovy 脚本通过 *Recalculation value script* 字段设置。脚本必须返回一个新的参数值。脚本会收到下面这些参数：
+
+* `entity` – 编辑的实体；
+* `dynamicAttributes` – 一个 map 映射，`key` – 属性代码，`value` – 动态属性的值。
+
+.值重算脚本
+image::dynamic_attributes_recalculation.png[align="center"]
+
+使用 `dynamicAttributes` map 重算脚本示例：
+
+[source, groovy]
+----
+include::{sourcesdir}/features/dynamicAttrValidationRecalculation.groovy[]
+----
+
+脚本会在属性依赖的其它属性中任何一个发生变化时进行调用。
+
+如果定义了脚本，属性的输入字段将变成不可编辑状态。
+
+重算只能在这些 UI 组件有效：<<gui_Form,Form>>、<<categorized_entity,DynamicAttributesPanel>>。
+
+[[dynamic_attributes_optionsType]]
+
+*Options type* 字段定义选项加载器的类型，如果 *General* 标签页的<<dynamic_attributes_lookupField,查找控件>>复选框选中，则必须选择 *Options type*。如果复选框没有选中，*Options type* 会不可用。
+
+可用的选项加载器类型：Groovy、SQL、JPQL（仅对于 `Entity` 数据类型）。
+
+* Groovy 选项加载器会使用 Groovy 脚本加载值的列表。`entity` 变量会传递给脚本，因此可以在脚本中使用实体的属性（包括动态属性）。`String` 类型的属性脚本示例：
++
+.Groovy 选项加载器的脚本
+image::dynamic_attributes_Groovy_options.png[align="center"]
+
+* SQL 选项加载器使用 SQL 脚本加载选项值。可以在脚本中使用 `${entity}` 变量访问实体。使用 `${entity.<field>}` 访问实体参数，`field` 是实体参数的名称。`+` 前缀可以用来访问实体的动态属性，比如 `${entity.+<field>}`。脚本示例（这里我们访问实体和实体的动态属性 `Categorytype`）：
++
+[source, sql]
+----
+include::{sourcesdir}/features/dynamicAttrSQL_optionsLoader.sql[]
+----
+
+* JPQL 选项加载器只能使用在 `Entity` 类型的动态属性。JPQL 条件通过 *JoinClause* 和 *Where Clause* 字段设置。另外，可以使用 *Constraint Wizard*，能动态创建 JPQL 条件。在 JPQL 参数中可以使用 `{entity}` 和 `{entity.<field>}`。
 
 所有类型的动态属性都支持本地化：
 
 .动态属性本地化
 image::runtimePropertyLocalization.png[align="center"]
 
-对于 `Enumeration` 值类型，通过列表编辑器在 *Enumeration* 字段中定义命名值集合。
-
-.`Enumeration` 类型的动态属性编辑界面
-image::runtimePropertyEnum.png[align="center"]
-
-每个枚举值也可以进行本地化显示设置。
-
-.`Enumeration` 类型动态属性本地化设置
-image::runtimePropertyEnumLocalization.png[align="center"]
-
-动态属性还可以设置可见性，定义在哪些界面中显示。默认情况下，动态属性在任何界面上都是不可见的。
-
+[[dynamic_attributes_visibility]]
+动态属性的可见性::
++
+--
+动态属性还可以设置可见性，定义在哪些界面中显示。默认情况下，动态属性不显示。
 
 .动态属性可见性设置
 image::runtimePropertyVisibility.png[align="center"]
 
-除了界面之外，还可以为属性指定显示组件（比如，可以在界面中，指定多个<<gui_FieldGroup,FieldGroup>>组件显示同一实体的字段）。
+除了界面之外，还可以为属性指定显示组件（比如，可以在界面中，指定多个<<gui_Form,Form>>组件显示同一实体的字段）。
 
-如果该属性在界面上标记为可见，则在界面上用来展示相应实体的所有字段组(FieldGroup)和表格(Table)中会自动显示该属性。
+如果该属性在界面上标记为可见，则在界面上用来展示相应实体的所有表单和表格中会自动显示该属性。
 
 对动态属性的访问也受<<roles,用户角色>>设置的限制。动态属性的安全设置与常规属性的安全设置类似。
 
-要使属性和可见性设置的更改生效，请单击类别浏览界面中的 *Apply settings*。也可以通过在 *Administration>JMX Console* 中调用 `app-core.cuba：type = CachingFacade` 的 JMX bean 的 `clearDynamicAttributesCache()` 方法使更改生效。
+动态属性可以手动添加到界面，给数据加载器添加 `dynamicAttributes="true"` 属性并使用带 `+` 前缀的动态属性代码绑定组件：
 
-通过可见性配置能将动态属性自动添加到界面，如下所示：
-
-image::runtimePropsApplyChanges.png[align="center"]
-
-也可以手动将动态属性添加到界面。操作步骤如下：
-
-* 在界面 XML 描述的 `dsContext` 部分，为加载实体的数据源将 `loadDynamicAttributes` 属性设置为 `true`，例如：
-+
 [source, xml]
 ----
-<dsContext>
-    <datasource id="carDs" class="com.company.sample.entity.Car" view="_local" loadDynamicAttributes="true"/>
-</dsContext>
+include::{sourcesdir}/features/dynamicAttrLoading.xml[]
 ----
-
-
-* 在组件定义的 `property` XML 属性中使用 `+++++` 前缀指定动态属性 code：
-+
-[source, xml]
-----
-<textField id="numberOfSeats" datasource="carDs" property="+numberOfSeats"/>
-----
-
+--

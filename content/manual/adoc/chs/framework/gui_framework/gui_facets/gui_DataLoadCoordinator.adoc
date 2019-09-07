@@ -1,0 +1,55 @@
+:sourcesdir: ../../../../../source
+
+[[gui_DataLoadCoordinator]]
+===== DataLoadCoordinator
+
+++++
+<div class="manual-live-demo-container">
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/DataLoadCoordinator.html" class="api-docs-btn" target="_blank">API 文档</a>
+</div>
+++++
+
+`DataLoadCoordinator` facet 设计用来声明式的将数据加载器和数据容器、可视化组件、界面事件进行连接。其有两种工作模式：
+
+* 自动模式，依赖于使用特定前缀的参数名称。前缀表示产生参数值和更改事件的组件。如果加载器的查询语句中没有参数（尽管在<<gui_data_loader_query_conditions,查询条件>>中可能有参数），则该加载器会在 `界面` 的<<screen_BeforeShowEvent,BeforeShowEvent>>或 `界面片段` 的<<screenFragment_AttachEvent,AttachEvent>>中自动刷新。
++
+默认情况下，数据容器的参数前缀是 `container_`，可视化组件的参数前缀是 `component_`。
+
+* 手动模式，连接通过 facet 或者通过 API 配置。
+
+也可以有半自动模式，有些连接通过显式指定，而其它的则配置为自动模式。
+
+当在界面中使用 `DataLoadCoordinator` 是，界面控制器的 <<LoadDataBeforeShow_annotation,@LoadDataBeforeShow>> 注解将会失去作用，因为数据的加载通过 facet 和自定义的时间处理器（如果有的话）控制。
+
+参阅下面的使用示例。
+
+. 自动配置，`auto` 属性设置为 `true`。
++
+[source, xml]
+----
+include::{sourcesdir}/gui_facets/dataLoadCoordinator_1.xml[]
+----
+<1> - 查询中没有参数，所以 `ownersDl` 加载器会在 `BeforeShowEvent` 触发。
+<2> - `ownersDl` 加载器也会在 `categoryFilterField` 组件值更改的时候触发。
+<3> - `ownersDl` 加载器也会在 `nameFilterField` 组件值更改的时候触发。由于条件使用了 `like` 子句，值会被自动包装在 '(?i)% %' 中，以便提供<<datasource_query_case_insensitive,大小写不敏感查找>>。
+<4> - `petsDl` 加载器会在 `ownersDc` 数据容器内容变化时触发。
+
+. 手动配置，`auto` 属性未设置（或设置为 `false`），嵌套的记录定义了数据加载器会何时触发。
++
+[source, xml]
+----
+include::{sourcesdir}/gui_facets/dataLoadCoordinator_2.xml[]
+----
+<1> - `ownersDl` 加载器会在 `InitEvent` 事件触发。
+<2> - `ownersDl` 加载器会在 `categoryFilterField` 组件值更改的时候触发。
+<3> - `ownersDl` 加载器会在 `nameFilterField` 组件值更改的时候触发。 由于条件使用了 `like` 子句，值会被自动包装在 '(?i)% %' 中，以便提供<<datasource_query_case_insensitive,大小写不敏感查找>>。
+<4> - `petsDl` 加载器会在 `ownersDc` 数据容器内容变化时触发。
+
+. 半自动配置，当 `auto` 属性设置为 `true` 并且也有一些手动配置的触发器，facet 会为所有没有手动配置的加载器做自动配置。
++
+[source, xml]
+----
+include::{sourcesdir}/gui_facets/dataLoadCoordinator_3.xml[]
+----
+<1> - `petsDl` 加载器配置在 `ownersDc` 数据容器内容变化时自动触发。
+<2> - `ownersDl` 为手动配置，在 `InitEvent` 事件触发。

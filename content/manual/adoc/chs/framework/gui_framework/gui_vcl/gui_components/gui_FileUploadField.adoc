@@ -38,7 +38,7 @@ include::{sourcesdir}/gui_vcl/upload_1.xml[]
 ---- 
 
 [[gui_FileUploadField_FileUploadSucceedListener]]
-* 在界面控制器中，需要注入该控件本身，还需要注入 <<file_upload,FileUploadingAPI>> 和 <<dataSupplier,DataSupplier>> 这两个接口。订阅 `InitEvent` 事件并且添加事件监听器，这样可以对文件上传成功或者出错做出相应的操作：
+* 在界面控制器中，需要注入该控件本身，还需要注入 <<file_upload,FileUploadingAPI>> 和 <<dataManager,DataManager>> 这两个接口。订阅 `InitEvent` 事件并且添加事件监听器，这样可以对文件上传成功或者出错做出相应的操作：
 +
 [source, java]
 ----
@@ -56,7 +56,7 @@ include::{sourcesdir}/gui_vcl/upload_2.java[]
 
 `FileUploadingAPI.putFileIntoStorage()` 方法把文件从客户端层的临时存储移动到<<file_storage,文件存储>>。这个方法的参数是临时存储中文件的标识符和对应的 `FileDescriptor` 对象，这两个参数都是由 `FileUploadField` 提供的。
 
-当上传文件到 `FileStorage` 完成后，通过调用 `DataSupplier.commit()` 把 `FileDescriptor` 实例存到数据库。这个方法会返回保存的实体，可以用来赋值给其它实体里关联这个文件的属性。这里只是简单的把 `FileDescriptor` 存到了数据库。从 *Administration > External Files* 界面可以看到这个文件。
+当上传文件到 `FileStorage` 完成后，通过调用 `DataManager.commit()` 把 `FileDescriptor` 实例存到数据库。这个方法会返回保存的实体，可以用来赋值给其它实体里关联这个文件的属性。这里只是简单的把 `FileDescriptor` 存到了数据库。从 *Administration > External Files* 界面可以看到这个文件。
 
 通过 `addFileUploadErrorListener()` 方法添加的监听器会在从客户端上传文件到临时存储出错的时候被调用。
 

@@ -35,7 +35,7 @@ image::list_of_entities_attributes.png[align="center"]
 .报表数据构成
 image::list_of_entities_editor.png[align="center"]
 
-一旦报表被保存，就可以从报表浏览界面运行报表。
+一旦报表被保存，就可以从<<run_common, 通用报表浏览器>>运行报表。
 
 此外，可以添加一个按钮来从书籍条目浏览界面运行报表，可以通过单击出版物浏览界面中的 *Show items* 按钮打开该界面。为此，将书籍实例表格的 `multiselect` 属性设置为 `true`，以便能够为报表指定一组记录，然后添加按钮的源代码：
 

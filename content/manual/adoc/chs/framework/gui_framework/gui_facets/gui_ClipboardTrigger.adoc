@@ -1,0 +1,27 @@
+:sourcesdir: ../../../../../source
+
+[[gui_ClipboardTrigger]]
+===== ClipboardTrigger
+
+++++
+<div class="manual-live-demo-container">
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/ClipboardTrigger.html" class="api-docs-btn" target="_blank">API 文档</a>
+</div>
+++++
+
+`ClipboardTrigger` 是一个非可视化界面组件，可以用来从界面字段中复制内容至系统剪切板。在界面 XML 的 `facets` 元素定义，有如下属性：
+
+* `input` - 文本控件的标识符，必须是 `TextInputField` 的子类，比如 `TextField`，`TextArea` 等。
+* `button` - `Button` 的标识符，点击该按钮可以触发复制的动作。
+
+示例：
+
+[source, xml]
+----
+include::{sourcesdir}/gui_facets/clipboardTrigger_1.xml[]
+----
+
+[source, java]
+----
+include::{sourcesdir}/gui_facets/clipboardTrigger_2.java[]
+----

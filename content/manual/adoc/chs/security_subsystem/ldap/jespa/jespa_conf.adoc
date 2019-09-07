@@ -5,27 +5,20 @@
 
 * 按步骤完成 *Jespa Operator's Manual* 的 *Installation* -> *Step 1: Create the Computer Account for NETLOGON Communication*，参考 link:$$http://www.ioplex.com/support.html$$[http://www.ioplex.com/support.html]。
 
-* 在 <<app_properties_files,local.app.properties>> 文件的 `cuba.web.activeDirectoryDomains` 属性里设置域参数。每个域的描述符应该按照这个格式：`++domain_name|full_domain_name|service_account_name|service_account_password++`。域描述符之间通过分号分隔。
+* 在 <<app_properties_files,local.app.properties>> 文件的 `activeDirectory.domains` 属性里设置域参数。每个域的描述符应该按照这个格式：`++domain_name|full_domain_name|service_account_name|service_account_password++`。域描述符之间通过分号分隔。
 +
 示例：
 +
 [source, properties]
 ----
-cuba.web.activeDirectoryDomains = MYCOMPANY|mycompany.com|JESPA$@MYCOMPANY.COM|password1;TEST|test.com|JESPA$@TEST.COM|password2
+activeDirectory.domains = MYCOMPANY|mycompany.com|JESPA$@MYCOMPANY.COM|password1;TEST|test.com|JESPA$@TEST.COM|password2
 ----
 
-* 启用集成活动目录，通过设置 `local.app.properties` 文件的 `cuba.web.externalAuthentication` 属性：
+* 启用集成活动目录，通过设置 `local.app.properties` 文件的 `activeDirectory.integrationEnabled` 属性：
 +
 [source, properties]
 ----
-cuba.web.externalAuthentication = true
-----
-
-* 配置 Jespa 授权 provider，通过设置 `local.app.properties` 文件的 `cuba.web.externalAuthenticationProviderClass` 属性，这个属性的值是 provider 类的全路径名称（Fully Qualified Name）：
-+
-[source, properties]
-----
-cuba.web.externalAuthenticationProviderClass = com.company.sample.web.JespaAuthProvider
+activeDirectory.integrationEnabled = true
 ----
 
 * 在 `local.app.properties` 文件配置其它的 Jespa 属性（参考 *Jespa Operator's Manual*），示例：

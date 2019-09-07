@@ -8,8 +8,9 @@
 .字段值格式
 image::report_formatter.png[align="center"]
 
-* *Value name* - 带有报表带区前缀的报表字段名称，例如，`Book.name`。
+* *Value name* - 带有报表带区前缀的报表字段名称，例如，`Book.year`。
 * *Format string* - 格式化字符串。对于数字值，根据 `java.text.DecimalFormat` 的规则指定格式，对于日期值 - 根据 `java.text.SimpleDateFormat` 的规则指定格式。
+* *Groovy script* - 复选框。可以使用 Groovy 脚本来格式化参数。使用 `value` 别名，会将当前参数值传递给脚本，可以用来格式化或者转换成需要的格式。Groovy 脚本需要返回字符串类型的新值。
 
 使用格式，可以将图像和 HTML 块插入到文档中。
 

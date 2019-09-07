@@ -302,6 +302,22 @@ order by c.createTs
 [[gui_Filter_editable]]
 * `editable` – 如果这个属性是 `false`，*Edit* 选项会被禁用。
 
+[[gui_filter_immediately]]
+* `applyImmediately` – 设置过滤器何时生效。当设置成 `false` 时，过滤器会使用显式操作模式。此时，过滤器只有在点击 *Search* 按钮时才会生效。当设置成 `true` 时，过滤器会以即时模式工作，每个对于过滤器参数的调整都会立即生效，数据会自动刷新。下面这几个常见的场景过滤器会自动生效：
++
+--
+** 参数字段的值变化之后；
+** 改变条件操作符；
+** 从过滤器移除一个条件；
+** **Show rows** 字段变化；
+** 当在过滤器编辑窗口点击 **OK** 按钮；
+** 在清空所有值之后；
+
+即时模式时，会使用 **Refresh** 按钮而非 **Search** 。
+
+`applyImmediately` 属性的优先级比 <<cuba.gui.genericFilterApplyImmediately,cuba.gui.genericFilterApplyImmediately>> 应用程序属性的优先级高。
+--
+
 [[gui_Filter_manualApplyRequired]]
 * `manualApplyRequired` − 定义过滤器生效的时机。如果这个属性设置的 `false`，这个过滤器（默认或者空）会在界面打开时生效。意味着数据容器会被刷新、与其关联的界面组件（比如表格）会显示数据。如果这个属性设置为 `true`，只有当用户点击 *Search - 搜索* 按钮的时候才会生效。
 +
@@ -351,6 +367,8 @@ image::gui_filter_apply_to.png[align="center"]
 
 [[gui_Filter_FilterEntityChangeListener]]
 * `FilterEntityChangeListener` - 当组件初始化的时候第一次选择过滤器或者之后切换到其它保存的过滤器的时候触发。
+
+`Filter` 的展示可以使用带 `$cuba-filter-*` 前缀的 SCSS 变量进行自定义。可以在创建一个 <<web_theme_extension,主题扩展>> 或者一个 <<web_theme_creation,自定义主题>> 之后在可视化编辑器里修改这些变量的值。
 
 '''
 
@@ -505,7 +523,7 @@ image::gui_filter_sequential.png[align="center"]
 
 `paramName` - 过滤器参数名称。参数名称是显示参数值的组件的一部分。获取组件名称的过程<<gui_Filter_parameter_component_name,上面>>说过了。参数名称放置在组件名称的最后一个 `.` 的后面。比如，如果组件名称是 `component$filter.model_manufacturer90062`，那么参数名称是 `model_manufacturer90062`。
 
-注意不能在界面的 <<abstractFrame,init()>> 方法中使用这些方法，因为过滤器在那时还没有初始化。比较合适的使用过滤器参数的地方是 <<abstractWindow,ready()>> 方法。
+注意不能在界面控制器的 <<screen_InitEvent,InitEvent>> 处理器中使用这些方法，因为过滤器在那时还没有初始化。比较合适的使用过滤器参数的地方是在 <<screen_BeforeShowEvent,BeforeShowEvent>> 处理器中。
 
 [[gui_Filter_fts]]
 *过滤器的全文搜索模式*
@@ -522,7 +540,7 @@ image::gui_filter_fts.png[align="center"]
 
 如果需要过滤器默认就打开全文检索模式，可以设置 <<gui_Filter_defaultMode,defaultMode>> 为 `fts`。
 
-全文检索跟其他任意过滤器条件组合使用：
+全文检索跟其它任意过滤器条件组合使用：
 
 image::book_publication_fts_filter.png[align="center"]
 

@@ -11,7 +11,7 @@
 private Notifications notifications;
 
 @Inject
-private SerialChart serialChart;
+private SerialChart chart;
 ----
 
 然后在 `onInit` 方法的最后添加一个监听器。当图表从 `DataProvider` 接收数据时，可以使用 `getDataItemNN()` 方法来取到点击的条目。在此示例中，`SerialChart` 组件绑定了数据容器，因此应使用另一种方法获取点击的条目：`getEntityNN()`：

@@ -66,7 +66,7 @@ private Integer issueYear;
 
 * `getJavaClass()` – 返回这个数据类型对应的 Java 类型。这个方法有一个默认实现，如果类带了 `@JavaClass` 注解，这个实现会返回此注解的值。
 
-`Datatype` 定义了用来做格式化和解析的两组方法：一组会考虑应用所在的 locale，另一组不会考虑。考虑了 locale 的转换用在用户界面的各个地方，不考虑 locale 的方法用在系统机制中，比如，在 <<rest_api_v2,REST API>> 的序列化时。
+`Datatype` 定义了用来做格式化和解析的两组方法：一组会考虑应用所在的 locale，另一组不会考虑。考虑了 locale 的转换用在用户界面的各个地方，不考虑 locale 的方法用在系统机制中，比如，在 {rest_man_url}[REST API] 的序列化时。
 
 使用忽略 locale 的解析需要在代码中写死或者在 `metadata.xml` 文件注册数据类型时显式指定。
 

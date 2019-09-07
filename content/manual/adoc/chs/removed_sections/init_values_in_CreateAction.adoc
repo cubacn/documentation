@@ -1,0 +1,4 @@
+[[init_values_in_CreateAction]]
+=== 使用创建操作做初始化
+
+See https://www.cuba-platform.com/guides/initial-entity-values[为实体实例设置初始值] guide.

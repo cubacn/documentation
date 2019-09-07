@@ -48,6 +48,8 @@ include::{sourcesdir}/gui_vcl/checkbox_3.xml[]
 
 从这个例子可以看出，这个界面包含了一个关联 `Customer` 实体的 `customerDs` <<gui_data_containers,数据容器>>，Customer 实体具有 `active` 属性。`checkBox` 的 `dataContainer` 属性需要指向一个数据容器；`property` 属性需要指向实体中需要展示到复选框控件的字段名字，这个字段必须要是 `Boolean` 类型。如果这个值是 `null`，那么复选框是默认为非选中状态。
 
+`CheckBox` 的展示可以使用带 `$cuba-checkbox-*` 前缀的 SCSS 变量进行自定义。可以在创建一个 <<web_theme_extension,主题扩展>> 或者一个 <<web_theme_creation,自定义主题>> 之后在可视化编辑器里修改这些变量的值。
+
 '''
 
 复选框组件的属性::

@@ -18,12 +18,22 @@
 定义依赖::
 +
 --
-可以为该组件定义一个依赖列表（`js` 、 `css`）。可以使用下面的格式定义依赖：
+可以为该组件定义一个依赖列表（JavaScript、CSS）。依赖可以从以下源获取：
 
 * <<using_webjars,WebJar 资源>> - 以 `webjar://` 开头。
 * VAADIN 目录下的文件 - 以 `vaadin://` 开头。
+* Web 资源 - 以 `http://` 或 `https://` 开头。
 
-示例：
+如果依赖的类型不能从扩展中得知，需要在 XML 的 `type` 属性中指定类型或者传递 `DependencyType` 枚举值给 `addDependency()` 方法。
+
+在 XML 中定义依赖的示例：
+
+[source, xml]
+----
+include::{sourcesdir}/gui/js_component/jsComponent_1.xml[]
+----
+
+以编程方式添加依赖的示例：
 
 [source, java]
 ----

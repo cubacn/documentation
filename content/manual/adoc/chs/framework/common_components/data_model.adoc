@@ -28,6 +28,11 @@
 * `java.lang.Long`
 * `java.lang.Double`
 * `java.math.BigDecimal`
+* `java.time.LocalDate`
+* `java.time.LocalTime`
+* `java.time.LocalDateTime`
+* `java.time.OffsetTime`
+* `java.time.OffsetDateTime`
 * `java.util.Date`
 * `java.sql.Date`
 * `java.sql.Time`

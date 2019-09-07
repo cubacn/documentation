@@ -70,9 +70,9 @@ include::{sourcesdir}/bi_shutdown_port.xml[]
 . 在 Pentaho 设置 CUBA 用户的认证：
 +
 --
-* 下载 https://dl.bintray.com/cuba-platform/main/com/haulmont/addon/bi/cuba-bi-pentaho/1.5.0/cuba-bi-pentaho-1.5.0.jar[cuba-bi-pentaho-1.5.0.jar] 然后拷贝到 `$PENTAHO_HOME$/pentaho-server/tomcat/webapps/pentaho/WEB-INF/lib`。
+* 下载 https://dl.bintray.com/cuba-platform/main/com/haulmont/addon/bi/cuba-bi-pentaho/1.6.0/cuba-bi-pentaho-1.6.0.jar[cuba-bi-pentaho-1.6.0.jar] 然后拷贝到 `$PENTAHO_HOME$/pentaho-server/tomcat/webapps/pentaho/WEB-INF/lib`。
 
-* 下载 https://dl.bintray.com/cuba-platform/main/com/haulmont/addon/bi/cuba-bi-pentaho/1.5.0/cuba-bi-pentaho-1.5.0-plugin.zip[cuba-bi-pentaho-1.5.0-plugin.zip]，解压后拷贝 `saiku-cuba-bi` 目录到 `$PENTAHO_HOME/pentaho-server/pentaho-solutions/system`。
+* 下载 https://dl.bintray.com/cuba-platform/main/com/haulmont/addon/bi/cuba-bi-pentaho/1.6.0/cuba-bi-pentaho-1.6.0-plugin.zip[cuba-bi-pentaho-1.6.0-plugin.zip]，解压后拷贝 `saiku-cuba-bi` 目录到 `$PENTAHO_HOME/pentaho-server/pentaho-solutions/system`。
 
 * 在 `$PENTAHO_HOME/pentaho-server/pentaho-solutions/system` 目录创建新文件 `cuba-pentaho-community-authentication.xml`，并添加如下内容：
 +

@@ -43,7 +43,7 @@ http://localhost:8080/app/#main/42
 http://localhost:8080/app/#main/1/users/edit?id=27zy3tj6f47p2e3m4w58vdca9y
 ----
 
-UUID 类型的标识符会使用 https://www.crockford.com/wrmg/base32.html[Base32 Crockford] 进行加密，其他类型则不会加密。
+UUID 类型的标识符会使用 https://www.crockford.com/wrmg/base32.html[Base32 Crockford] 进行加密，其它类型则不会加密。
 
 当没有用户登录的时候，又出于某些原因需要界面路由，则会使用重定向（redirect）参数。假设在地址栏中输入 `app/#main/orders`。当应用程序加载并且显示登录界面之后，地址会变成：`app/#login?redirectTo=orders`。在成功登录之后，才会打开 `orders` 路由对应的界面。
 
@@ -56,3 +56,5 @@ include::url_history_navigation/handling_url_changes.adoc[]
 include::url_history_navigation/url_routing.adoc[]
 
 include::url_history_navigation/url_navigation_api_usage.adoc[]
+
+include::url_history_navigation/url_routes_generator.adoc[]

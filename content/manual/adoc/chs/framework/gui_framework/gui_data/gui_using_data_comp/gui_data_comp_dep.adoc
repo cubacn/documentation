@@ -36,3 +36,8 @@ include::{sourcesdir}/gui/data_comp/data_comp_dep_1.java[]
 <1> 界面控制器类没有 `@LoadDataBeforeShow` 注解，所以加载器不会自动触发。
 <2> 主加载器在 `BeforeShowEvent` 处理器中触发。
 <3> 在主容器的 `ItemChangeEvent` 处理器中，给依赖加载器设置了参数并且触发依赖加载。
+
+[TIP]
+====
+使用 <<gui_DataLoadCoordinator,DataLoadCoordinator>> facet 可以将数据组件通过声明式的方式连接，不需要写 Java 代码。
+====

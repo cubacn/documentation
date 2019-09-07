@@ -46,7 +46,7 @@ image::query_editor.png[align="center"]
 
 在报表编辑器中，可以通过添加新的带区和数据集，以及配置报表模板、本地化和访问权限来创建更复杂的报表。
 
-例如，可以切换到 *Parameters and Formats* 标签页并修改 *Parameters* 列表中的查询参数：使用`Date` 替换标准的 `CreateTs1`。保存更改并关闭报表编辑界面。
+例如，可以切换到 *Parameters and Formats* 标签页并修改 *Parameters* 列表中的查询参数：使用 `Date` 替换标准的 `CreateTs1`。保存更改并关闭报表编辑界面。
 
 .参数和格式标签页
 image::query_parameter_rename.png[align="center"]

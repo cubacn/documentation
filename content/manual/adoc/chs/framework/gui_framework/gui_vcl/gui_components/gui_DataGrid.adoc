@@ -5,7 +5,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="https://demo.cuba-platform.com/sampler/open?screen=datagrid-basic-settings" class="live-demo-btn" target="_blank">在线示例</a>
+    <a href="https://demo.cuba-platform.cn/sampler/open?screen=datagrid-basic-settings" class="live-demo-btn" target="_blank">在线示例</a>
 </div>
 ++++
 
@@ -33,7 +33,40 @@ include::{sourcesdir}/gui_vcl/datagrid.xml[]
 *dataGrid - 数据网格中的元素：*
 
 [[gui_DataGrid_columns]]
-* `columns` - 必要元素，定义数据网格的所有列。其中每一列在单独内嵌的 `column` 元素中定义，每一列的属性包括：
+* `columns` - 必要元素，定义 `DataGrid` 的所有列。`columns` 元素有如下属性：
++
+--
+[[gui_DataGrid_columns_includeAll]]
+** `includeAll` – 加载 <<gui_data_containers,dataContainer>> 或 <<datasources,datasource>> 中定义的 <<views,view>> 的所有属性。
++
+在下面的例子中，我们显示了 `customersDc` 中使用视图的所有属性。如果视图包含系统属性，也同样会显示。
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/gui_dataGrid_columns_includeAll.xml[]
+----
++
+如果实体的视图包含引用属性，该属性会按照其<<namePattern_annotation,实例名称>>进行展示。如果需要展示一个特别的属性，则需要在视图和 `column` 元素中定义：
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/gui_Table_columns_includeAll_related.xml[]
+----
++
+如果未指定视图，`includeAll` 会加载给定实体及其祖先的所有属性。
+
+[[gui_DataGrid_columns_exclude]]
+** `exclude` – 英文逗号分隔的属性列表，这些属性不会被加载到数据网格。
++
+在下面的例子中，我们会显示除了 `name` 和 `order` 之外的所有属性：
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/gui_dataGrid_columns_exclude.xml[]
+----
+--
++
+每一列是在嵌套的 `column` 元素中描述，该元素有如下属性：
 +
 --
 * `id` - 非必须属性，标识一列。如果没有设置，对应的 `property` 值会被用作该列的标识，所以这种时候 `property` 值是必须的。否则会抛出 `GuiDevelopmentException` 异常。如果列是在界面控制器代码中创建的，则 `id` 属性是必须的。
@@ -128,6 +161,9 @@ include::{sourcesdir}/gui_vcl/datagrid_formatter.xml[]
 [[gui_DataGrid_editorCancelCaption]]
 * `editorCancelCaption` - 设置 `DataGrid` 数据网组件编辑器中取消（cancel）按钮的名称。
 
+[[gui_DataGrid_editorCrossFieldValidate]]
+* `editorCrossFieldValidate` - 在<<gui_DataGrid_inline_editor,行内编辑器>>启用跨字段验证。默认为 `true`。
+
 [[gui_DataGrid_editorEnabled]]
 * `editorEnabled` -  启用数据项的行内编辑器。默认为 `false`。如果数据网格组件是跟 <<gui_keyvalue_containers,KeyValueCollectionContainer>> 或者 <<value_datasources,ValueCollectionDatasource>> 绑定的，则该数据是只读的，此时设置 `editorEnabled` 属性便没有意义。
 
@@ -190,11 +226,11 @@ image::gui_dataGrid_3.png[align="center"]
 
 * `scrollToStart()` and `scrollToEnd()` - 将 `DataGrid` 滚动到开头或结尾。
 
-[[gui_DataGrid_setCellStyleProvider]]
-* `setCellStyleProvider()` - 设置 `DataGrid` 单元格的显示样式。
+[[gui_DataGrid_addCellStyleProvider]]
+* `addCellStyleProvider()` - 为 `DataGrid` 单元格添加 style provider。
 
-[[gui_DataGrid_setRowStyleProvider]]
-* `setRowStyleProvider()` - 设置 `DataGrid` 行显示样式。
+[[gui_DataGrid_addRowStyleProvider]]
+* `addRowStyleProvider()` - 为 `DataGrid` 行添加 style provider。
 
 [[gui_DataGrid_setEnterPressAction]]
 * `setEnterPressAction()` - 设置按下 *回车键* 时需要执行的<<gui_Action,操作>>。如果没有定义这种操作，控件会尝试按以下顺序找一个合适的操作：
@@ -275,8 +311,8 @@ image::gui_dataGrid_10.png[align="center"]
 include::{sourcesdir}/gui_vcl/datagrid_detailsGenerator.java[]
 ----
 
-<1> – 参考 https://demo.cuba-platform.com/sampler/open?screen=datagrid-detailsgenerator[DataGridDetailsGeneratorSample] 类中的 `createCloseButton` 方法描述。
-<2> – 参考 https://demo.cuba-platform.com/sampler/open?screen=datagrid-detailsgenerator[DataGridDetailsGeneratorSample] 类中的 `getContent` 方法描述。
+<1> – 参考 https://demo.cuba-platform.com/sampler/open?screen=datagrid-detailsgenerator[DataGridDetailsGeneratorSample] 类中的 `createCloseButton` 方法全部代码。
+<2> – 参考 https://demo.cuba-platform.com/sampler/open?screen=datagrid-detailsgenerator[DataGridDetailsGeneratorSample] 类中的 `getContent` 方法全部代码。
 
 结果如图所示：
 
@@ -289,7 +325,7 @@ image::gui_dataGrid_15.png[align="center"]
 
 行内编辑器对应的方法有:
 
-* `getEditedItemId()` - 返回正在被编辑的数据项的 `id`。
+* `getEditedItem()` - 返回正在被编辑的数据项。
 
 * `isEditorActive()` - 是否正在行内编辑界面编辑某个数据项。
 
@@ -298,6 +334,13 @@ image::gui_dataGrid_15.png[align="center"]
 
 [[gui_DataGrid_edit]]
 * `edit(Entity item)` - 为指定的数据项打开编辑界面。如果数据项在当前界面区域不可见，数据网格会将数据项滚动到可视区域。
+
+[[gui_DataGrid_inlineEditorCrossFieldValidate]]
+`DataGrid` 行内编辑器可以使用<<bean_validation_custom_constraints,实体约束>>（跨字段验证）。如果有验证错误，`DataGrid` 会显示错误消息。开启/禁用该功能或者获取当前状态可以使用下面方法：
+
+* `setEditorCrossFieldValidate(boolean validate)` - 启用、禁用行内编辑器的跨字段验证。默认为 `true`。
+
+* `isEditorCrossFieldValidate()` - 如果行内编辑器的跨字段验证开启，则返回 `true`。
 
 使用以下方法添加/删除行内编辑界面打的监听器：
 
@@ -417,6 +460,8 @@ image::gui_dataGrid_9.png[align="center"]
 
 目前平台支持以下渲染器接口：
 
+* `IconRenderer` - 显示 `CubaIcon` 的渲染器。
+
 * `TextRenderer` - 显示文本。
 
 * `HtmlRenderer` - 显示 HTML 布局。
@@ -480,6 +525,8 @@ include::{sourcesdir}/gui_vcl/datagrid_example_2.java[]
 
 image::gui_dataGrid_12.png[align="center"]
 
+`DataGrid` 的展示可以使用带 `$cuba-datagrid-*` 前缀的 SCSS 变量进行自定义。可以在创建一个 <<web_theme_extension,主题扩展>> 或者一个 <<web_theme_creation,自定义主题>> 之后在可视化编辑器里修改这些变量的值。
+
 '''
 
 DataGrid 的属性列表::
@@ -499,6 +546,7 @@ DataGrid 的属性列表::
 <<gui_attr_descriptionAsHtml,descriptionAsHtml>> -
 <<gui_DataGrid_editorBuffered,editorBuffered>> -
 <<gui_DataGrid_editorCancelCaption,editorCancelCaption>> -
+<<gui_DataGrid_editorCrossFieldValidate,editorCrossFieldValidate>> -
 <<gui_DataGrid_editorEnabled,editorEnabled>> -
 <<gui_DataGrid_editorSaveCaption,editorSaveCaption>> -
 <<gui_attr_enable,enable>> -
@@ -526,6 +574,10 @@ DataGrid 的元素::
 <<gui_DataGrid_columns,columns>> -
 <<gui_DataGrid_rowsCount,rowsCount>>
 
+<<gui_DataGrid_columns,columns>> 元素属性列表::
+<<gui_DataGrid_columns_includeAll, includeAll>> -
+<<gui_DataGrid_columns_exclude, exclude>>
+
 column 元素的属性列表::
 <<gui_attr_caption,caption>> -
 <<gui_DataGrid_collapsed,collapsed>> -
@@ -552,14 +604,15 @@ API::
 <<gui_api_settings,saveSettings>> -
 <<gui_DataGrid_scrollTo,getColumns>> -
 <<gui_DataGrid_setDescriptionProvider,setDescriptionProvider>> -
-<<gui_DataGrid_setCellStyleProvider,setCellStyleProvider>> -
+<<gui_DataGrid_addCellStyleProvider,addCellStyleProvider>> -
 <<gui_DataGrid_setConverter,setConverter>> -
 <<gui_DataGrid_setDetailsGenerator,setDetailsGenerator>> -
+<<gui_DataGrid_inlineEditorCrossFieldValidate,setEditorCrossFieldValidate>> -
 <<gui_DataGrid_setEnterPressAction,setEnterPressAction>> -
 <<gui_DataGrid_setItemClickAction,setItemClickAction>> -
 <<gui_DataGrid_setRenderer,setRenderer>> -
 <<gui_DataGrid_setRowDescriptionProvider,setRowDescriptionProvider>> -
-<<gui_DataGrid_setRowStyleProvider,setRowStyleProvider>> -
+<<gui_DataGrid_addRowStyleProvider,addRowStyleProvider>> -
 <<gui_DataGrid_sort,sort>>
 
 DataGrid 监听器::

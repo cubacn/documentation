@@ -9,6 +9,10 @@
 通过 Studio::
 +
 --
+如果你使用 CUBA Studio 11+ 以上版本，需要使用 **CUBA Add-Ons** 窗口管理扩展，参考 {studio_man_url}/#add_ons[Studio 文档] 。
+
+如果使用的之前版本的 CUBA Studio，按照下面的步骤：
+
 . 编辑 *Project properties* 并在 *App components* 面板上单击 *Custom components* 旁边的加号按钮。
 
 . 从 Marketplace 页面或扩展组件的文档中复制扩展组件的 Maven 坐标，并将其粘贴到坐标输入框中，例如：

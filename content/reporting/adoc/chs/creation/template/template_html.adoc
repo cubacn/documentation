@@ -147,7 +147,7 @@ include::{sourcesdir}/examples_html_11.html[]
 
 * 通过 URL
 +
-图片可以托管在 Tomcat 服务或者其他地方，以便用做本地文件引用。例如，托管在 `deploy\tomcat\webapps\ROOT\images` 文件夹中的图片可以被插入：
+图片可以托管在 Tomcat 服务或者其它地方，以便用做本地文件引用。例如，托管在 `deploy\tomcat\webapps\ROOT\images` 文件夹中的图片可以被插入：
 [source, html]
 ----
 <img src="http://localhost:8080/images/SomeImage.jpg" height="68" width="199" border="0" align="right"/>

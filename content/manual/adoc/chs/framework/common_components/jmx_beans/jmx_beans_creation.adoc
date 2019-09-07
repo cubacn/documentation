@@ -14,6 +14,8 @@ include::{sourcesdir}/common/jmxbean_1.java[]
 
 ** 接口和其方法上可定义注解，通过这些注解来对 JMX Bean 和它提供的操作进行描述。这些描述会显示在使用 JMX 接口的所有工具中，这样可以帮助系统管理员了解接口。
 
+** 可选的 `@JmxBean` 注解用来自动注册类实例至 JMX 服务，按照 `module` 和 `alias` 属性来注册。可以使用这个注解来注册 JMX bean，代替在 <<spring.xml,spring.xml>> 中配置。
+
 ** 可选的 `@JmxRunAsync` 注解用来标识出一个需要长时间执行的操作。当使用内置的 <<jmx_console,JMX console>> 运行此操作时，平台将会显示一个带有无限进度条和 *Cancel* 按钮的对话框。用户可以中断操作并继续使用应用程序。该注解还可以包含 `timeout` 参数，该参数用来设置操作的最长执行时间(以毫秒为单位)，例如：
 +
 [source, java]

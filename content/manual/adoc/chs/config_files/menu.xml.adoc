@@ -89,21 +89,21 @@ shortcut="${sales.menu.customer}"
 
 * `item` 的子元素：
 
-** `param` – 传递到界面<<screen_controller,旧控制器>>的 `init()` 方法的参数。在 `menu.xml` 里配置的参数会覆盖在 <<screen_xml,screens.xml>> 里配置的同名参数。
+[[menu.xml_screen_properties]]
+** `properties` – 定义一组参数用来传递至界面的公共 setter 方法。每个参数在 `property` 元素内定义，使用 `name` 属性与 setter 方法对应，比如，`foo` 字符串对应于 `void setFoo(String value)` 方法。框架会在触发 <<screen_AfterInitEvent,AfterInitEvent>> 和 <<screen_BeforeShowEvent,BeforeShowEvent>> 事件的间隙调用这些 setters。
+
 +
-`param` 的属性：
+`property` 的属性：
 
 *** `name` – 参数名称
 
-*** `value` – 参数值。字符串类型，按照下面的规则可以转成其它类型的对象：
+*** `value` – 非实体属性的参数值。
 
-**** 如果字符串的值是一个实体的标识符，按照 `EntityLoadInfo` 类规定的格式，系统会加载指定的实体实例。
+*** `entityClass` – 实体属性的类。
 
-**** 如果字符串是 `++${some_name}++` 格式的，参数的值会被设置为 `some_name` 应用程序属性的值。
+*** `entityId` – 实体属性的 id。
 
-**** `true` 和 `false` 的字符串会被转化为 `Boolean` 类型的相应值。
-
-**** 其它情况，用字符串本身的值作为参数值。
+*** `entityView` – 可选；用来加载实体属性的视图。
 
 ** `permissions` – 设置一组权限，用户只有满足这些权限才能使用此菜单项。这个机制应当在菜单项需要绑定到特定的权限或者绑定到多个权限时使用。大多数情况下，安全子系统的标准功能应该足以满足根据界面标识符控制菜单可用性的要求。
 +
@@ -129,16 +129,12 @@ shortcut="${sales.menu.customer}"
 
 [source, xml]
 ----
-<menu-config xmlns="http://schemas.haulmont.com/cuba/menu.xsd">
-
-  <menu id="sales" insertBefore="administration">
-      <item id="sales_Customer.lookup"/>
-      <separator/>
-      <item id="sales_Order.lookup"/>
-  </menu>
-
-</menu-config>
+include::{sourcesdir}/config_files/menu_1.xml[]
 ----
+<1> - 以弹出框的方式打开界面。
+<2> - 调用 `setStringParam()` 方法，传递 `some string`。
+<3> - 调用 `setCustomerParam()` 方法，传递使用给定 id 加载的实体实例。
+<4> - 调用 `StandardEditor` 的 `setEntityToEdit()` 方法，传递使用给定 id 和视图加载的实体实例。
 
 [[menu.xml_localized]]
 菜单项的本地化语言名称可以通过这种方式来定义：`menu-config` 前缀加上一个点放到元素标识符前面；这个拼出来的字符串作为<<main_message_pack,主语言包>>的一个键值。示例：

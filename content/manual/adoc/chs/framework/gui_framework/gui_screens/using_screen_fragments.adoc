@@ -1,21 +1,22 @@
 :sourcesdir: ../../../../../source
 
 [[using_screen_fragments]]
-===== 使用界面 Fragments
+===== 使用界面片段
 
-在本章节，介绍如何定义和使用<<screen_controllers,界面 fragments>>。
+在本章节，介绍如何定义和使用<<screen_controllers,界面片段>>。参考<<screen_fragment_events>>了解如何处理界面片段的生命周期事件。
+
 
 '''
 
-<<using_screen_fragment_decl,声明式使用 fragment>>
+<<using_screen_fragment_decl,声明式使用界面片段>>
 
-<<using_screen_fragment_prog,编程式使用 fragment>>
+<<using_screen_fragment_prog,编程式使用界面片段>>
 
-<<using_screen_fragment_data,界面 fragment 中的数据组件>>
+<<using_screen_fragment_params,给界面片段传递参数>>
+
+<<using_screen_fragment_data,界面片段中的数据组件>>
 
 <<using_screen_fragment_provided_data,使用已有的数据容器>>
-
-<<using_screen_fragment_host_events,订阅父界面事件>>
 
 '''
 
@@ -52,7 +53,7 @@ include::{sourcesdir}/gui/screens/address_host_1.xml[]
 编程式使用 fragment::
 +
 --
-<<using_screen_fragment_decl,同一个 fragment>>也可以通过编程的方式添加到界面，需要在 <<screen_InitEvent,InitEvent>> 或 <<screen_AfterInitEvent,AfterInitEvent>> 事件处理器中添加：
+<<using_screen_fragment_decl,同一个片段>>也可以通过编程的方式添加到界面，需要在 <<screen_InitEvent,InitEvent>> 或 <<screen_AfterInitEvent,AfterInitEvent>> 事件处理器中添加：
 
 .host-screen.xml
 [source, xml]
@@ -65,16 +66,40 @@ include::{sourcesdir}/gui/screens/address_host_2.xml[]
 ----
 include::{sourcesdir}/gui/screens/address_host_2.java[]
 ----
-<1> - 注入 `Fragments` bean，用来实例化界面 fragment
-<2> - 用 class 创建 fragment 控制器
-<3> - 初始化界面 fragment
-<4> - 从控制器获取 `Fragment` 可视化组件，并添加到 UI 容器
+<1> - 注入 `Fragments` bean，用来实例化界面片段
+<2> - 用 class 创建片段控制器
+<3> - 从控制器中获取 `Fragment` 可视化组件，并添加到 UI 容器中。
 
 [WARNING]
 ====
-别忘了在用编程的方式创建 fragment 之后需要使用 `init()` 方法进行初始化。如果 fragment 带有参数，可以在调用 `init()` 之前使用 public setters 进行设置。之后，fragment 控制器的 `InitEvent` 和 `AfterInitEvent` 处理方法里面可以访问到这些参数。
+如果该片段有参数，可以在将界面片段添加到界面之前通过公共 setter 方法设置。之后，片段控制器的 `InitEvent` 和 `AfterInitEvent` 处理方法里面可以访问到这些参数。
 ====
 
+--
+
+[[using_screen_fragment_params]]
+给界面片段传递参数::
++
+--
+界面片段控制器可以有公共的 setter 方法用来接收参数，和<<screen_parameters,打开界面>>一样的做法。如果界面片段是使用编程的方式打开，可以显式的调用 setters：
+
+[source, java]
+----
+include::{sourcesdir}/gui/screens/address_host_3.java[]
+----
+<1> - 在将片段添加到界面之前先传递参数。
+
+如果片段是通过 XML 以声明的方式添加到界面，使用 `properties` 元素来传递参数，示例：
+
+[source, xml]
+----
+include::{sourcesdir}/gui/screens/address_host_4.xml[]
+----
+<1> - 传递一个字符串参数给 `setStrParam()` 方法。
+<2> - 传递一个数据容器给 `setDataContainerParam()` 方法。
+<3> - 传递 `TextField` 组件给 `setComponentParam()` 方法。
+
+使用 `value` 属性设置值，用 `ref` 属性指定界面组件的标识符。setters 必须使用合适类型的参数。
 --
 
 [[using_screen_fragment_data]]
@@ -132,16 +157,3 @@ include::{sourcesdir}/gui/screens/address_fragment_3.xml[]
 在包含 `provided="true"` 属性的 XML 元素中，除了 `id` 之外其它所有的属性都会被忽略，但是也可以加上，以便提供设计思路。
 --
 
-[[using_screen_fragment_host_events]]
-订阅父界面事件::
-+
---
-在 fragment 控制器中，可以订阅父界面的事件，需要在注解中为 `target` 属性指定 `PARENT_CONTROLLER` 值，示例：
-
-[source, java]
-----
-include::{sourcesdir}/gui/screens/fragment_screen_events_1.java[]
-----
-
-这个方法可以处理任何事件，包括实体编辑界面发送的 <<screen_InitEntityEvent,InitEntityEvent>> 事件。
---

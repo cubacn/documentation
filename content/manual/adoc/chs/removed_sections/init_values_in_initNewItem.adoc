@@ -1,0 +1,4 @@
+[[init_values_in_initNewItem]]
+=== 使用initNewItem方法
+
+参阅 https://www.cuba-platform.com/guides/initial-entity-values[为实体实例设置初始值] 向导。

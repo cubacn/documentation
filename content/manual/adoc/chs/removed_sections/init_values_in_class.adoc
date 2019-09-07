@@ -1,0 +1,4 @@
+[[init_values_in_class]]
+=== 实体字段初始化
+
+参阅 https://www.cuba-platform.com/guides/initial-entity-values[为实体实例设置初始值] 向导。

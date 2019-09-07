@@ -31,4 +31,4 @@ include::screen_controllers/screen_controller_annotations.adoc[]
 
 include::screen_controllers/screen_controller_events.adoc[]
 
-include::screen_controllers/screen_controller_annotations.adoc[]
+include::screen_controllers/screen_fragment_events.adoc[]

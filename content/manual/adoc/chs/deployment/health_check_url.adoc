@@ -8,13 +8,13 @@
 不同 block 的 URL 路径列表如下：
 
 * Middleware: `/remoting/health`
-* Web Client: `/rest/health`
-* Web Portal: `/rest/health`
+* Web Client: `/dispatch/health`
+* Web Portal: `/rest/health` （需要 {rest_man_url}[REST API 扩展]）
 
 所以对于名称叫 `app` 并且部署在 `++localhost:8080++` 的应用程序，这些 URL 将会是：
 
 * `\http://localhost:8080/app-core/remoting/health`
-* `\http://localhost:8080/app/rest/health`
+* `\http://localhost:8080/app/dispatch/health`
 * `\http://localhost:8080/app-portal/rest/health`
 
 可以使用 <<cuba.healthCheckResponse,cuba.healthCheckResponse>> 应用程序属性将返回的 `ok` 替换成任意字符串。

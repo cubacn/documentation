@@ -5,12 +5,6 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="https://demo.cuba-platform.com/sampler/open?screen=bulk-editor" class="live-demo-btn" target="_blank">在线示例</a>
-</div>
-++++
-
-++++
-<div class="manual-live-demo-container">
     <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/BulkEditor.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
@@ -20,6 +14,11 @@
 image::gui_bulkEdit.png[align="center"]
 
 该组件对应的 XML 名称： `bulkEditor`
+
+[WARNING]
+====
+`BulkEditor` 只能用在使用了<<gui_legacy,遗留 API>>的界面中。最新 API 的类似功能通过<<gui_BulkEditAction,BulkEditAction>>提供。
+====
 
 要使用 `BulkEditor` , 相应的表格或者树组件的 `multiselect`  属性需设置为 `"true"`。
 

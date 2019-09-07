@@ -30,6 +30,19 @@ include::{sourcesdir}/middleware/jpqlquery_1.java[]
 
 还可以使用 `Query` 接口的 `setFlushMode()` 方法显式设置刷新（flush）模式，这样将覆盖上述默认设置。
 
+[[query_hints]]
+查询提示::
++
+--
+使用 `Query.setHint()` 方法可以为生成的 SQL 语句添加 hints - 提示。提示通常用来设置查询语句应如何使用索引或其它数据库特性。框架定义了下面这些常量，可以用来传递给该方法作为提示名称：
+
+* `QueryHints.SQL_HINT` - 提示的值添加在生成的 SQL 语句后面。这里需要提供全部的提示字符串，也包括注释分隔符。
+
+* `QueryHints.MSSQL_RECOMPILE_HINT` - 为 MS SQL Server 数据库添加 `OPTION(RECOMPILE)` SQL 提示。提示的值会被忽略。
+
+当使用<<dataManager,DataManager>>的时候，查询提示可以使用 `LoadContext.setHint()` 方法添加。
+--
+
 include::query/jpql_functions.adoc[]
 
 include::query/query_case_insensitive.adoc[]

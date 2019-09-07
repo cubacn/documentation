@@ -1,0 +1,4 @@
+[[rest_api_v2]]
+=== REST API
+
+REST API 已经迁移到单独的扩展，参阅 {rest_man_url}[文档] 。

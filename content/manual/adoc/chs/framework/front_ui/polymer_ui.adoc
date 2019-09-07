@@ -9,7 +9,7 @@ CUBA 框架 Polymer UI 有如下功能：
 
 * Polymer 构建系统完全整合到基于 Gradle 的项目构建环境，因此所有的构建工具都会自动下载并安装。同时，一旦在项目中创建了 Polymer 模块，它可以由前端工程师使用 Polymer 标准的工具单独进行进一步开发。
 
-* 平台提供了一组 web 组件，可以通过标准 CUBA <<rest_api_v2,REST API>> 跟中间件层通信。<<cuba_web_components,之后>>有这些组件的描述。
+* 平台提供了一组 web 组件，可以通过标准 CUBA {rest_man_url}[REST API] 跟中间件层通信。<<cuba_web_components,之后>>有这些组件的描述。
 
 * 通过 CUBA Studio 可以很容易创建 Polymer 客户端模块并且围绕项目数据模型和中间件服务搭建应用程序 web 组件。Studio 包含一组可扩展的模板用来创建应用级别的组件。
 

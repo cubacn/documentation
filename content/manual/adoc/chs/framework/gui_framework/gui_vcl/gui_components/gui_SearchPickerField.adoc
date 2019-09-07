@@ -19,7 +19,10 @@
 
 image::gui_searchPickerFieldOverlap.png[align="center"]
 
-参阅 <<gui_SuggestionPickerField,SuggestionPickerField>>。
+[WARNING]
+====
+`SearchPickerField` 只能在使用<<gui_legacy,遗留 API>>开发的界面中。当前 API 的类似功能通过<<gui_SuggestionPickerField,SuggestionPickerField>>组件提供。
+====
 
 该组件的 XML 名称： `searchPickerField`
 
@@ -110,7 +113,10 @@ searchPickerField 的预定义样式::
 
 API::
 <<gui_api_addValueChangeListener,addValueChangeListener>> -
-<<gui_api_contextHelp,setContextHelpIconClickHandler>>
+<<gui_api_contextHelp,setContextHelpIconClickHandler>> -
+<<gui_LookupField_setOptionCaptionProvider,setOptionCaptionProvider>> -
+<<gui_LookupField_setOptionImageProvider, setOptionImageProvider>> -
+<<gui_LookupField_PopupWidth,setPopupWidth>>
 
 '''
 

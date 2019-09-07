@@ -32,7 +32,7 @@ include::{sourcesdir}/gui_vcl/textarea_1.xml[]
 `width` 和 `height` 的值优先于 `cols` 和 `rows` 的值。
 
 [[gui_TextArea_wordwrap]]
-* `wordwrap` - 将此属性设置为 `false` 以关闭自动换行。
+* `wordWrap` - 将此属性设置为 `false` 以关闭自动换行。
 +
 `TextArea` 支持在其父 `TextInputField` 接口中定义的 `TextChangeListener`。文本变化事件在输入时按顺序异步处理，不会阻塞输入。
 +
@@ -123,7 +123,7 @@ textArea 的属性::
 <<gui_TextField_trim,trim>> -
 <<gui_attr_visible,visible>> -
 <<gui_attr_width,width>> -
-<<gui_TextArea_wordwrap,wordwrap>>
+<<gui_TextArea_wordwrap,wordWrap>>
 
 textArea 的预定义样式::
 <<gui_textarea_align-center,align-center>> -

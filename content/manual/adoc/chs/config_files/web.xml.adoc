@@ -30,7 +30,7 @@ include::{sourcesdir}/config_files/web_1.xml[]
 include::{sourcesdir}/config_files/web_2.xml[]
 ----
 
-在 `context-param` 元素中，定义了<<app_components,应用程序组件>>列表和<<app_properties_files,应用程序属性文件>>列表。`webResourcesTs` 参数以及在构建时替换的这个参数的值，保证了在网页浏览器中能正确的缓存静态资源。
+在 `context-param` 元素中，定义了<<app_components,应用程序组件>>列表和<<app_properties_files,应用程序属性文件>>列表。
 
 Web 客户端 block 使用 `WebAppContextLoader` 类作为 `ServletContextListener`。
 
@@ -39,7 +39,5 @@ Web 客户端 block 使用 `WebAppContextLoader` 类作为 `ServletContextListen
 `CubaApplicationServlet` 提供了基于 Vaadin 框架实现的<<gui_framework,通用用户界面>>。
 
 `CubaDispatcherServlet` 为 Spring MCV 控制器初始化了一个额外的 Spring context。这个 context 通过 <<dispatcher-spring.xml,>> 文件来配置。
-
-`CubaRestApiServlet` 提供全局的 <<rest_api_v2,REST API>>。
 --
 

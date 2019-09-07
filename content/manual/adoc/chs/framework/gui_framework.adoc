@@ -19,13 +19,15 @@ image::ClientStructure.svg[align="center"]
 
 <<gui_data,数据组件>>为可视化组件绑定到实体以及在界面控制器中处理实体提供统一的接口。
 
-<<gui_web,客户端的基础设施>>包含包含主应用程序窗口和其他的通用客户端机制。
+<<gui_web,客户端的基础设施>>包含包含主应用程序窗口和其它的通用客户端机制。
 
 include::gui_framework/gui_screens.adoc[]
 
 include::gui_framework/gui_vcl.adoc[]
 
 include::gui_framework/gui_data.adoc[]
+
+include::gui_framework/gui_facets.adoc[]
 
 include::gui_framework/gui_Action.adoc[]
 
@@ -45,8 +47,6 @@ include::gui_framework/shortcuts.adoc[]
 
 include::gui_framework/url_history_navigation.adoc[]
 
-include::gui_framework/url_routes_generator.adoc[]
-
 include::gui_framework/composite_components.adoc[]
 
 include::gui_framework/pluggable_component_factories.adoc[]
@@ -57,8 +57,8 @@ include::gui_framework/own_components.adoc[]
 
 include::gui_framework/gui_web.adoc[]
 
-include::gui_framework/main_window_layout.adoc[]
-
 include::gui_framework/web_login.adoc[]
+
+include::gui_framework/gui_anonymous_access.adoc[]
 
 include::gui_framework/unsupported_browser_page.adoc[]

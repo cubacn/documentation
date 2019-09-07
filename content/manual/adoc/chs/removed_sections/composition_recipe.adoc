@@ -1,0 +1,4 @@
+[[composition_recipe]]
+=== 组合结构
+
+参阅 https://www.cuba-platform.com/guides/data-modelling-composition[数据模型：组合] 向导。

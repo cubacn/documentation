@@ -66,10 +66,58 @@ include::{sourcesdir}/gui_vcl/gui_browserFrame_5.xml[]
 
 `browserFrame` 的属性:
 
+[[gui_BrowserFrame_allow]]
+* `allow` - 指定组件的“功能政策”。属性的值可以是空格隔开的下面值的组合：
+** `autoplay` – 控制当前网页是否允许自动播放接口的请求的媒体。
+** `camera` – 控制当前网页是否允许使用视频输入设备。
+** `document-domain` – 控制当前网页是否允许设置 `document.domain`。
+** `encrypted-media` – 控制当前网页是否允许使用加密媒体扩展 API（EME）。
+** `fullscreen` – 控制当前网页是否允许使用 `Element.requestFullScreen()`。
+** `geolocation` – 控制当前网页是否允许使用地理位置接口。
+** `microphone` – 控制当前网页是否允许使用音频输入设备。
+** `midi` – 控制当前网页是否允许使用 Web MIDI API。
+** `payment` – 控制当前网页是否允许使用付款请求 API。
+** `vr` – 控制当前网页是否允许使用 WebVR API。
+
 [[gui_BrowserFrame_alternateText]]
 * `alternateText` - 如果 frame 中没有设置内容源或者内容源不可用的情况下，作为默认显示的文字。
 
 `browserFrame` 内容源的配置信息:
+
+[[gui_BrowserFrame_referrerpolicy]]
+* `referrerpolicy` - 设置当获取 frame 的资源时，发送给哪个 referrer。`ReferrerPolicy` – 该属性的标准值枚举：
+
+** `no-referrer` – 不会发送 referer header。
+** `no-referrer-when-downgrade` – 如果没有 TLS（HTTPS），则不会发送 referer header 给 origins。
+** `origin` – 发送的 referrer 限制在 referrer page 的 origin：scheme、host、port。
+** `origin-when-cross-origin` – 发送给其它 origins 的 referrer 会被限制在 scheme、host 和 port。同源浏览也仍会包含 path。
+** `same-origin` – 同源则会发送 referrer，但是跨域的请求不会包含 referrer 信息。
+** `strict-origin` – 在协议的安全级别相同（HTTPS-&gt;HTTPS）时，将网页的 orign 作为 referrer 发送，但是不会发送给低安全级别的目的地（HTTPS-&gt;HTTP）。
+** `strict-origin-when-cross-origin` – 当发起同源请求时发送全部 URL，在协议的安全级别相同（HTTPS-&gt;HTTPS）时，只发送 origin, 如果是低安全级别的目的地（HTTPS-&gt;HTTP），则不会发送 header。
+** `unsafe-url` – referrer 会包含 origin 和 path。该值不安全，因为从 TLS 保护的资源转到了不安全的 origins，从而泄露了 origins 和 paths。
+
+[[gui_BrowserFrame_sandbox]]
+* `sandbox` - 对 frame 的内容使用更多的限制。该属性的值如果是空则使用所有限制，或者设置为空格分隔的标记升级特殊的限制。`Sandbox` – 该属性的标准值枚举：
+** `allow-forms` – 允许资源提交表单。
+** `allow-modals` – 资源可以打开模态窗。
+** `allow-orientation-lock` – 资源可以锁住屏幕朝向。
+** `allow-pointer-lock` – 资源可以使用 Pointer Lock API.
+** `allow-popups` – 允许弹窗（比如 `window.open()`、`target="_blank"` 或 `showModalDialog()`）。
+** `allow-popups-to-escape-sandbox` – 允许沙盒内的网页打开新窗口，并且这些新窗口不继承当前的沙盒。
+** `allow-presentation` – 允许资源开启一个展示会话。
+** `allow-same-origin` – 允许 `iframe` 的内容被当做同源处理。
+** `allow-scripts` – 允许资源运行脚本。
+** `allow-storage-access-by-user-activation` – 允许资源请求访问父网页的存储能力，能使用 Storage Access API。
+** `allow-top-navigation` – 允许资源浏览最顶级网页（以 `_top` 命名）浏览的内容。
+** `allow-top-navigation-by-user-activation` – 允许资源浏览最顶级网页浏览的内容，但是只有在该网页是通过用户交互产生。 
+** `allow-downloads-without-user-activation` – 允许在没有用户交互的情况下进行下载。
+** `""` – 应用所有的限制。
+
+[[gui_BrowserFrame_srcdoc]]
+* `srcdoc` – 可嵌入的行内 HTML，会覆盖 `src` 属性。IE 和 Edge 浏览器不支持该属性。也可以在 xml 中使用 `srcdocFile` 属性指定 HTML 代码的文件。
+
+[[gui_BrowserFrame_srcdocFile]]
+* `srcdocFile`  – 文件的路径，文件的内容会被设置到 `srcdoc` 属性。文件内容通过 classPath 资源获取。只能在 XML 描述中设置该属性。
 
 [[gui_BrowserFrame_bufferSize]]
 * `bufferSize` - 下载资源时的缓存大小，以字节为单位。
@@ -160,6 +208,7 @@ image::gui_browserFrame_3.png[align="center"]
 
 BrowserFrame 的属性::
 <<gui_attr_align,align>> -
+<<gui_BrowserFrame_allow, allow>> -
 <<gui_BrowserFrame_alternateText,alternateText>> -
 <<gui_attr_caption,caption>> -
 <<gui_attr_captionAsHtml,captionAsHtml>> -
@@ -174,8 +223,12 @@ BrowserFrame 的属性::
 <<gui_attr_height,height>> -
 <<gui_attr_icon,icon>> -
 <<gui_attr_id,id>> -
+<<gui_BrowserFrame_referrerpolicy,referrerpolicy>> -
 <<gui_attr_responsive,responsive>> -
 <<gui_attr_rowspan,rowspan>> -
+<<gui_BrowserFrame_sandbox,sandbox>> -
+<<gui_BrowserFrame_srcdoc,srcdoc>> -
+<<gui_BrowserFrame_srcdocFile,srcdocFile>> -
 <<gui_attr_stylename,stylename>> -
 <<gui_attr_visible,visible>> -
 <<gui_attr_width,width>>

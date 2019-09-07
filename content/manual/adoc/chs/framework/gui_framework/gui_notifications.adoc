@@ -29,7 +29,7 @@ include::{sourcesdir}/gui/notifications/gui_notifications_2.java[]
 
 ** `ERROR`– 错误消息。当用户点击界面时消失。
 
-默认类型是 `HUMANIZED`。也可以在 `create()` 方法中使用其他类型：
+默认类型是 `HUMANIZED`。也可以在 `create()` 方法中使用其它类型：
 
 [source, java]
 ----
@@ -45,4 +45,4 @@ include::{sourcesdir}/gui/notifications/gui_notifications_4.java[]
 
 当使用 HTML 时，别忘了对数据进行转义，以防恶意代码注入。
 
-其他诸如 `withHideDelayMs()`，`withPosition()` 和 `withStyleName()` 的方法可以用来自定义通知消息的外观和行为。
+其它诸如 `withHideDelayMs()`，`withPosition()` 和 `withStyleName()` 的方法可以用来自定义通知消息的外观和行为。

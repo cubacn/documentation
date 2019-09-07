@@ -27,6 +27,34 @@ include::{sourcesdir}/gui/std_actions/listActions_1.xml[]
 * `refresh` -   类型由 `com.haulmont.cuba.gui.actions.list.RefreshAction` 类实现。它被设计用于重新加载列表组件使用的数据容器。
 
 * `excel` -   类型由 `com.haulmont.cuba.gui.actions.list.ExcelAction` 类实现。它被设计用于将列表组件内容输出到 XLS 文件。
++
+++++
+<div class="manual-live-demo-container">
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/actions/list/BulkEditAction.html" class="api-docs-btn" target="_blank">API 文档</a>
+</div>
+++++
++
+++++
+<div class="manual-live-demo-container">
+    <a href="https://demo.cuba-platform.com/sampler/open?screen=bulk-editor" class="live-demo-btn" target="_blank">在线示例</a>
+</div>
+++++
+
+[[gui_BulkEditAction]]
+* `bulkEdit` 类型通过 `com.haulmont.cuba.gui.actions.list.BulkEditAction` 类实现。其设计为可以一次修改多个实体实例的属性值。使用方法跟其它操作一样，示例：
++
+[source, xml]
+----
+include::{sourcesdir}/gui/std_actions/actions_bulkEdit.xml[]
+----
++
+此外，`BulkEditorWindow` 可以用 `com.haulmont.cuba.gui.BulkEditors` bean 使用编程的方式创建：
++
+[source, java]
+----
+include::{sourcesdir}/gui/std_actions/builder_bulkEdit.java[]
+----
+
 
 标准操作为基本参数（题、图标和快捷键）提供默认值以及执行时的默认行为。可以在 XML 中为基本参数提供自己的值，就像其它任何操作一样。例如，可以指定自定义图标：
 

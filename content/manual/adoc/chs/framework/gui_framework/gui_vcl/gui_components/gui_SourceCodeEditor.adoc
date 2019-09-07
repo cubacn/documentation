@@ -65,6 +65,8 @@ include::{sourcesdir}/gui_vcl/sourceCodeEditor_1.java[]
 
 image::gui_SourceCodeEditor_2.png[align="center"]
 
+`SourceCodeEditor` 的展示可以使用带 `$cuba-sourcecodeeditor-*` 前缀的 SCSS 变量进行自定义。可以在创建一个 <<web_theme_extension,主题扩展>> 或者一个 <<web_theme_creation,自定义主题>> 之后在可视化编辑器里修改这些变量的值。
+
 '''
 
 sourceCodeEditor 的属性::

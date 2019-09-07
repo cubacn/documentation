@@ -19,7 +19,7 @@ include::{sourcesdir}/gui/screens/screen_annotations_common.java[]
 * `@UiDescriptor` 注解将界面控制器连接到<<screen_descriptors,界面 XML 描述>>。注解的值指定描述文件的路径。如果该值仅包含文件名，则假定该文件与控制器类位于同一个包中。
 
 [[LoadDataBeforeShow_annotation]]
-* `@LoadDataBeforeShow` 注解表示在显示界面之前应自动触发所有<<gui_data_loaders,数据加载器>>。准确的说，数据会在调用所有的 <<screen_BeforeShowEvent,BeforeShowEvent>> 监听器之后，但是在 <<screen_AfterShowEvent,AfterShowEvent>> 监听器之前加载。如果需要在界面显示之前的加载数据时刻执行某些操作，删除此注解或将其值设置为 `false`，这样可以在 `BeforeShowEvent` 事件监听器中使用 `getScreenData().loadAll()` 方法或个别加载器的 `load()` 方法来手动加载数据。
+* `@LoadDataBeforeShow` 注解表示在显示界面之前应自动触发所有<<gui_data_loaders,数据加载器>>。准确的说，数据会在调用所有的 <<screen_BeforeShowEvent,BeforeShowEvent>> 监听器之后，但是在 <<screen_AfterShowEvent,AfterShowEvent>> 监听器之前加载。如果需要在界面显示之前的加载数据时刻执行某些操作，删除此注解或将其值设置为 `false`，这样可以在 `BeforeShowEvent` 事件监听器中使用 `getScreenData().loadAll()` 方法或个别加载器的 `load()` 方法来手动加载数据。可以考虑使用<<gui_DataLoadCoordinator,DataLoadCoordinator>> facet 来做细致的数据加载控制。
 
 [[MultipleOpen_annotation]]
 * `@MultipleOpen` 注解表示可以从主菜单多次打开界面。默认情况下，当用户点击主菜单项时，框架会检查是否已在主窗口标签页上打开相同类和 ID 的界面。如果找到此类界面，则会关闭该界面，并在新标签页中打开新的界面实例。当存在 `@MultipleOpen` 注解时，不执行任何检查，只在新标签页中打开一个新的界面实例。

@@ -26,7 +26,7 @@
 
 *实体查询*
 
-按照 <<rest_api_v2_queries_config,此处>>描述定义一个查询。
+按照 {rest_man_url}#rest_api_v2_queries_config[此处] 描述定义一个查询。
 
 使用 https://cuba-elements.github.io/cuba-elements/components/cuba-data/#cuba-query[cuba-query] 元素来获取查询结果。可以选择性的通过 `params` 属性传递参数：
 
@@ -46,7 +46,7 @@
 
 *服务调用*
 
-用 <<rest_api_v2_services_config,此处>>的方法暴露服务及其方法。使用 https://cuba-elements.github.io/cuba-elements/components/cuba-data/#cuba-service[cuba-service] 元素来调用这个方法：
+用 {rest_man_url}#rest_api_v2_services_config[这里] 的方法暴露服务及其方法。使用 https://cuba-elements.github.io/cuba-elements/components/cuba-data/#cuba-service[cuba-service] 元素来调用这个方法：
 
 [source,html]
 ----
@@ -99,6 +99,6 @@ _handleFormError: function() {
 
 [TIP]
 ====
-如果在使用上面的例子中的 REST API 时不想强制用户登录，需要启用 <<rest_api_v2_anonymous, REST API 匿名访问>>。
+如果在使用上面的例子中的 REST API 时不想强制用户登录，需要启用 {rest_man_url}#rest_api_v2_anonymous[REST API 匿名访问] 。
 ====
 

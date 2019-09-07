@@ -1,0 +1,39 @@
+:sourcesdir: ../../../../../../source
+
+[[screen_fragment_events]]
+====== 界面片段事件
+
+本节介绍界面片段控制器能处理的生命周期事件。
+
+[[screenFragment_InitEvent]]
+* `InitEvent` 会在片段控制器和其所有以声明方式定义的组件创建之后，并且依赖注入完成才触发。此时，嵌套的片段还没有初始化。有些可视化组件没有完全初始化，比如按钮还没有连接到操作。如果该片段是通过 XML 的方式绑定到宿主界面的话，该事件会在宿主控制器的<<screen_InitEvent,InitEvent>>事件之后触发。否则会在该片段被添加到宿主组件树的时候触发。
+
+[[screenFragment_AfterInitEvent]]
+* `AfterInitEvent` 会在片段控制器和其所有以声明方式定义的组件创建之后，并且依赖注入完成，左右组件内部的初始化过程也已经结束之后触发。此时，嵌套的界面片段（如果有的话）已经触发了它们自己的 `InitEvent` 和 `AfterInitEvent` 事件。在该事件的监听器中，可以创建可视化和数据组件，并能执行依赖嵌套组件初始化完成的额外初始化过程。
+
+[[screenFragment_AttachEvent]]
+* `AttachEvent` 会在片段被添加到宿主的组件树时触发，片段已经完全初始化了，`InitEvent` 和 `AfterInitEvent` 事件已经触发。在该事件的监听器中，可以通过 `getHostScreen()` 和 `getHostController()` 访问宿主界面的界面和方法。
+
+[[screenFragment_DetachEvent]]
+* `DetachEvent` 会在片段以编程的方式从宿主的组件树中移除时触发。在该事件监听器中也能访问宿主界面。
+
+监听界面片段事件的示例：
+
+[source, java]
+----
+include::{sourcesdir}/gui/screens/screenFragment_events_1.java[]
+----
+
+[[using_screen_fragment_host_events]]
+订阅父界面事件::
++
+--
+在 fragment 控制器中，可以订阅父界面的事件，需要在注解中为 `target` 属性指定 `PARENT_CONTROLLER` 值，示例：
+
+[source, java]
+----
+include::{sourcesdir}/gui/screens/fragment_screen_events_1.java[]
+----
+
+这个方法可以处理任何事件，包括实体编辑界面发送的 <<screen_InitEntityEvent,InitEntityEvent>> 事件。
+--

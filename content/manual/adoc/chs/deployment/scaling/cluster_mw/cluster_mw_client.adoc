@@ -3,7 +3,7 @@
 [[cluster_mw_client]]
 ===== 配置连接 Middleware 集群
 
-为了使客户端 blocks 能跟多个 Middleware 服务器工作，服务器 URL 列表需要通过 <<cuba.connectionUrlList,cuba.connectionUrl>> 应用程序属性来配置。在 Web 客户端，这个配置可以写在 `tomcat/conf/app/local.app.properties`：
+为了使客户端 blocks 能跟多个 Middleware 服务器工作，服务器 URL 列表需要通过 <<cuba.connectionUrlList,cuba.connectionUrlList>> 应用程序属性来配置。在 Web 客户端，这个配置可以写在 `tomcat/conf/app/local.app.properties`：
 
 [source,plain]
 ----

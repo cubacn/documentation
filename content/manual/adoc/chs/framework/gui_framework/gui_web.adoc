@@ -1,38 +1,38 @@
 :sourcesdir: ../../../../source
 
 [[gui_web]]
-==== Web 客户端基础设施
+==== 通用 UI 基础设施
 
-Web 客户端<<app_tiers,block>>的通用用户界面基于 Vaadin 框架实现。Web 客户端基础设施中可用的主要类如下所述。
+本节介绍通用 UI 的基础设施类，可以在应用程序中对它们进行扩展。
 
-.Web 客户端基础设施类
+.通用 UI 基础设施类
 image::WebClientInfrastructure.svg[align="center"]
 
-* `App` - 应用程序基础设施的中心类。包含指向 `Connection` 和其它基础设施对象的引用。对于给定的 HTTP 会话，只存在一个 `App` 实例。可以使用 `App.getInstance()` 静态方法获取 `App` 实例的引用。如果要在项目中自定义 `App` 的功能，请在 *web* 模块的根包中创建一个类继承 `DefaultApp`，并将其作为 `cuba_App` bean 注册在 <<spring.xml, web-spring.xml>>中，例如：
+* `AppUI` 继承于 `com.vaadin.ui.UI`。对于 Web 浏览器打开的每个标签页，都有一个此类的实例。它指向一个 `RootWindow`，根据连接状态的不同，一个 `RootWindow` 可能包含了一个登录界面或者主界面。可以使用 `AppUI.getCurrent()` 静态方法获取对当前浏览器标签页的 `AppUI` 的引用。
++
+如果想自定义项目中 `AppUI` 的功能，需要在 *web* 模块创建一个继承 `AppUI` 的类，并在<<spring.xml, web-spring.xml >>中使用 `cuba_AppUI` id 和 `prototype` scope 进行注册，示例：
++
+[source, xml]
+----
+<bean id="cuba_AppUI" class="com.company.sample.web.MyAppUI" scope="prototype"/>
+----
+
+* `Connection` 是一个接口，此接口提供连接到中间件和保持<<userSession,用户会话>>的功能。`ConnectionImpl` 是此接口的标准实现。
++
+如果想自定义项目中 `Connection` 的功能，需要在 *web* 模块创建一个继承 `ConnectionImpl` 的类，并在<<spring.xml, web-spring.xml >>中使用 `cuba_Connection` id 和 `vaadin` scope 进行注册，示例：
++
+[source, xml]
+----
+<bean id="cuba_Connection" class="com.company.sample.web.MyConnection" scope="vaadin"/>
+----
+
+* `ExceptionHandlers` 类包含<<exceptionHandlers,客户端级(client-level)异常处理器>>的集合。
+
+* `App` 包含 `Connection`、`ExceptionHandlers` 以及其它基础设施对象的链接。框架会为每一个 HTTP 会话创建一个该类的单例，并存储在会话的属性中。可以使用 `App.getInstance()` 静态方法获取 `App` 实例的引用。
++
+如果想自定义项目中 `App` 的功能，需要在 *web* 模块创建一个继承 `DefaultApp` 的类，并在<<spring.xml, web-spring.xml >>中使用 `cuba_App` id 和 `vaadin` scope 进行注册，示例：
 +
 [source, xml]
 ----
 <bean name="cuba_App" class="com.company.sample.web.MyApp" scope="vaadin"/>
 ----
-
-* `Connection` 是一个接口，此接口提供连接到中间件和保持<<userSession,用户会话>>的功能。`ConnectionImpl` 是此接口的标准实现。
-
-* `ExceptionHandlers` 类包含<<exceptionHandlers,客户端级(client-level)异常处理器>>的集合。
-
-* `AppUI` 是一个继承 `com.vaadin.ui.UI` 类的平台类。对于 Web 浏览器打开的每个标签页，都有一个此类的实例。它包含指向 `TopLevelWindow` 实现( 登录窗口或主窗口) 的链接，具体取决于连接状态。可以使用 `AppUI.getCurrent()` 静态方法获取对当前浏览器标签页的 `AppUI` 的引用。
-
-* `AppLoginWindow` – 在用户登录之前显示的窗口。可以通过继承 `AppLoginWindow` 来自定义登录窗口，或者通过继承<<abstractWindow,AbstractWindow>>创建全新的登录窗口。Studio 中，在 CUBA 项目树中选择 *Generic UI > Screens* 部分然后点击 *New > Screen*。然后在 *Legacy Screen Templates* 标签页选择 *Login window* 模板。如果在自定义类中重写了 `init()` 方法，确保调用了 `super.init(params)` 方法。
-
-* `AppMainWindow` – 用户登录后显示的主应用程序窗口。可以通过继承 `AppMainWindow` 来自定义主窗口，或者通过继承 `AbstractMainWindow` 并在 XML 描述中定义所需的布局来创建全新的主窗口。Studio 中，在 CUBA 项目树中选择 *Generic UI > Screens* 部分然后点击 *New > Screen*。然后在 *Legacy Screen Templates* 标签页选择 *Main window* 模板。如果在自定义类中重写了 `init()` 方法，确保调用了 `super.init(params)` 方法。
-+
-可以使用以下应用程序属性控制某些主窗口参数，而无需重新定义默认实现：
-+
---
-** <<cuba.web.foldersPaneEnabled,cuba.web.foldersPaneEnabled>> - 启用<<folders_pane,文件夹面板>>。
-
-** <<cuba.web.appWindowMode,cuba.web.appWindowMode>> – 设置主窗口的默认模式：多标签或单界面（`TABBED` 或 `SINGLE`）。用户后续可以使用 *Help* > *Settings* 界面更改模式。
-
-** <<cuba.web.maxTabCount,cuba.web.maxTabCount>> – 当主窗口处于标签页模式时，此属性设置用户可以打开的最大标签页数量。默认值为 7。
---
-
-如果要处理浏览器的 *Back* 按钮，请在 `TopLevelWindow`（登录窗口或主窗口）中实现 `CubaHistoryControl.HistoryBackHandler` 接口。如果<<cuba.web.allowHandleBrowserHistoryBack,cuba.web.allowHandleBrowserHistoryBack>>应用程序属性设置为 true，则会调用这个接口实现的 `onHistoryBackPerformed()` 方法而不是浏览器的标准行为。

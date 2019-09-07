@@ -147,7 +147,8 @@ tokenList 的元素::
 API::
 <<gui_api_addValueChangeListener,addValueChangeListener>> -
 <<gui_api_contextHelp,setContextHelpIconClickHandler>> -
-<<gui_TokenList_ItemClickListener,setItemClickListener>>
+<<gui_TokenList_ItemClickListener,setItemClickListener>> -
+<<gui_LookupField_setOptionCaptionProvider,setOptionCaptionProvider>>
 
 '''
 

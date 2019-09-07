@@ -1,0 +1,4 @@
+[[composition_impl_recipe]]
+=== 一对多：一层嵌套
+
+参阅 https://www.cuba-platform.com/guides/data-modelling-composition#one_to_many_composition[数据模型：组合] 向导。

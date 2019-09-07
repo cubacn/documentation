@@ -31,6 +31,15 @@ include::{sourcesdir}/gui_vcl/grouptable_1.xml[]
 [[gui_GroupTable_group]]
 `group` 是 <<gui_Table_columns,columns>> 中的可选元素，它包含若干列 `column`，打开对应界面时，会默认将数据按这些列进行分组。
 
+下面的例子中，我们会使用 <<gui_Table_columns,columns>> 元素的 <<gui_Table_columns_includeAll,includeAll>> 属性，以及 `group` 元素。
+
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/gui_groupTable_includeAll.xml[]
+----
+
+结果是给 `name` 列设置了一个特殊的属性，并且 `GroupTable` 按照 `address` 列做了分组。
+
 [[gui_GroupTable_groupAllowed]]
 可以针对每个列 `column` 设置 `groupAllowed` 布尔值属性，控制该列是否可以用来分组数据。
 
@@ -109,7 +118,11 @@ GroupTable 的元素::
 <<gui_Table_rows,rows>> -
 <<gui_Table_rowsCount,rowsCount>>
 
-columns 的元素::
+<<gui_Table_columns,columns>>的属性::
+<<gui_Table_columns_includeAll, includeAll>> -
+<<gui_Table_columns_exclude, exclude>>
+
+<<gui_Table_columns,columns>>的元素::
 <<gui_Table_columns,column>> -
 <<gui_GroupTable_group,group>>
 
@@ -120,6 +133,7 @@ columns 的元素::
 <<gui_Table_column_collapsed,collapsed>> -
 <<gui_DateField_dateFormat,dateFormat>> -
 <<gui_Table_column_editable,editable>> -
+<<gui_Table_column_expandRatio,expandRatio>> -
 <<gui_GroupTable_groupAllowed,groupAllowed>> -
 <<gui_Table_column_id,id>> -
 <<gui_Table_column_link,link>> -

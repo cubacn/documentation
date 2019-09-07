@@ -16,7 +16,7 @@ Web Client - Web 客户端:: 是客户端层的主要块（block)。包含主要
 
 Web Portal - Web 门户:: 客户端层的附加块（block）。可以包含外部用户的界面以及作为与移动设备和第三方应用程序集成的入口点。由运行在 Java servlet 容器上的单独 Web 应用程序表示。用户界面基于 *Spring MVC* 框架实现。参阅<<portal>>。
 
-Frontend UI - 前端 UI:: 为外部用户设计的可选客户端，使用纯 JavaScript 编写。基于 https://www.polymer-project.org[Google Polymer] 或者 *React* 框架实现，并通过在 Web Client 或 web Portal 块中运行的 <<rest_api_v2,REST API>> 与中间件进行通信。参阅 <<front_ui>>。
+Frontend UI - 前端 UI:: 为外部用户设计的可选客户端，使用纯 JavaScript 编写。基于 https://www.polymer-project.org[Google Polymer] 或者 *React* 框架实现，并通过在 Web Client 或 web Portal 块中运行的 {rest_man_url}[REST API] 与中间件进行通信。参阅 <<front_ui>>。
 
 Middleware 是任何应用程序都需要的 block。用户界面可以由一个或多个 block 实现，例如 Web Client 和 Web Portal。
 

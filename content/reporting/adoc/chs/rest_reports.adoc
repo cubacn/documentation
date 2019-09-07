@@ -21,7 +21,7 @@ REST API 使用 OAuth2 协议进行身份验证，并支持匿名访问。
 image::visible_for_rest.png[align="center"]
 
 
-下面提供了一些报表特定功能的一般描述。有关如何获取 OAuth 令牌和其它 REST API 功能的更多信息，请参阅 {main_man_url}/rest_api_v2.html[开发人员手册] 。
+下面提供了一些报表特定功能的一般描述。有关如何获取 OAuth 令牌和其它 REST API 功能的更多信息，请参阅 {rest_man_url}[REST API 扩展文档] 。
 
 [[rest_reports_get_all]]
 获取现有报表列表::

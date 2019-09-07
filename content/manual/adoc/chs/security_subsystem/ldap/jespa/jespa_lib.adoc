@@ -12,10 +12,16 @@
 include::{sourcesdir}/security/ldap_jespa_2.groovy[]
 ----
 
-在 *web* 模块创建一个 `CubaAuthProvider` 的实现类：
+在 *web* 模块创建一个 `LoginProvider` 的实现类：
 
 [source, java]
 ----
 include::{sourcesdir}/security/ldap_jespa_1.java[]
 ----
 
+创建一个 bean 用来在 *web* 模块使用别名解析域名：
+
+[source, java]
+----
+include::{sourcesdir}/security/ldap_jespa_3.java[]
+----

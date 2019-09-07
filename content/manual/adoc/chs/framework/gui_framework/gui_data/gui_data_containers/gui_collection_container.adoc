@@ -53,7 +53,7 @@ include::{sourcesdir}/gui/data_containers/collection_3.java[]
 
 * `replaceItem(entity)` - 如果在容器中有相同 id 的实例，则会被方法的输入参数的实例替换。如果不存在，则会添加新的实例到实例列表中。此方法会发送 `CollectionChangeEvent` 事件，根据具体做了什么，事件类型可以是 `SET_ITEM` 或者 `ADD_ITEMS`。
 
-* `setSorter()` - 设置此容器的排序器。`Sorter` 接口的标准实现是 `CollectionContainerSorter`。当容器关联到<<gui_data_loaders,加载器>>时，会设置默认的排序器。也可提供自定义的实现。
+* `setSorter()` - 设置此容器的排序器。`Sorter` 接口的标准实现是 `CollectionContainerSorter`。当容器关联到<<gui_data_loaders,加载器>>时，会设置默认的排序器。如果需要，也可提供<<gui_data_comp_sort,自定义的实现>>。
 
 * `getSorter()` - 返回此容器当前设置的排序器。
 

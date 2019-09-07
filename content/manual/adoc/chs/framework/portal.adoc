@@ -11,7 +11,7 @@
 
 一个具体的应用程序可能因为不同的目的而设计几个不同的 portal 模块；比如，在一个出租车业务自动化的应用中，可能有一个对外部用户的公共 web 网站，还有一个手机应用中集成的模块用来预约出租车，以及一个给司机用的手机应用集成的界面，等等。
 
-*cuba* <<app_components,应用程序组件>>包含的 *portal* 模块，是一个用来在项目中创建 portal 的模板。提供了客户端 block 跟 Middleware 交互的基本功能。另外，全局 <<rest_api_v2,REST API>> 作为依赖被包含在 portal 模块中，并且默认开启。
+*cuba* <<app_components,应用程序组件>>包含的 *portal* 模块，是一个用来在项目中创建 portal 的模板。提供了客户端 block 跟 Middleware 交互的基本功能。另外，全局 {rest_man_url}[REST API] 作为依赖被包含在 portal 模块中，并且默认开启。
 
 下面是平台 *portal* 模块提供的主要组件的简介。
 

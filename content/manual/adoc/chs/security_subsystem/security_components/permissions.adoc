@@ -32,7 +32,7 @@ _permission -权限许可_ 定义用户对系统对象或功能的权限，例�
 +
 在 `target` 属性中指定 实体名 + “:” + 操作类型，操作类型有： `create`, `read`, `update`, `delete`。例如：`*library$Book:delete*`。`value` 属性值可以为 0（拒绝）或 1（允许）。
 +
-实体操作许可检查发生在使用 <<dataManager,DataManager>>，数据感知<<gui_components,可视化组件>>，和<<standard_actions,标准行为>>操作数据时，也适用于实体列表。所以，操作权限也会影响 client blocks 和 <<rest_api_v2,REST API>>。但是在 Middleware 通过 <<entityManager,EntityManager>> 操作数据时不会触发实体操作许可检查。
+实体操作许可检查发生在使用 <<dataManager,DataManager>>，数据感知<<gui_components,可视化组件>>，和<<standard_actions,标准行为>>操作数据时，也适用于实体列表。所以，操作权限也会影响 client blocks 和 {rest_man_url}[REST API] 。但是在 Middleware 通过 <<entityManager,EntityManager>> 操作数据时不会触发实体操作许可检查。
 +
 在应用程序中检查实体操作许可时，可以使用 <<security,Security>> 接口的 `isEntityOpPermitted()` 方法。
 
@@ -40,7 +40,7 @@ _permission -权限许可_ 定义用户对系统对象或功能的权限，例�
 +
 在 `target` 属性中指定 实体名 + “:” + 属性名，例如：`*library$Book:name*`。`value` 属性值可以为 0（不可见）, 1（只读） 或 2（读写）。
 +
-实体属性许可只在数据感知<<gui_components,可视化组件>>和 <<rest_api_v2,REST API>> 中检查。
+实体属性许可只在数据感知<<gui_components,可视化组件>>和 {rest_man_url}[REST API] 中检查。
 +
 在应用程序中检查实体属性许可时，可以使用 <<security,Security>> 接口的 `isEntityAttrPermitted()` 方法。
 

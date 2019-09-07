@@ -107,6 +107,8 @@ include::{sourcesdir}/gui_vcl/tabsheet_4.java[]
 * `padded-tabbar` - 为标签栏中的标签页周围添加少量内边距，以便它们不会紧挨着组件的外边缘。
 --
 
+`TabSheet` 的展示可以使用带 `$cuba-tabsheet-*` 前缀的 SCSS 变量进行自定义。可以在创建一个 <<web_theme_extension,主题扩展>> 或者一个 <<web_theme_creation,自定义主题>> 之后在可视化编辑器里修改这些变量的值。
+
 '''
 
 tabSheet 的属性::

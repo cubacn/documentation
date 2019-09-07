@@ -7,9 +7,35 @@
 
 `HtmlAttributes` bean 允许使用以下方法通过编程方式设置 DOM/CSS 属性：
 
-* `setDomAttribute()` - 在 UI 组件的最顶层 HTML 元素上设置 DOM 属性。接受组件的标识符、DOM 属性名称（例如 `title`）和属性值作为参数。
+* `setDomAttribute(Component component, String attributeName, String value)` - 在 UI 组件的最顶层 HTML 元素上设置 DOM 属性。
 
-* `setCssProperty()` - 在 UI 组件的最顶层 HTML 元素上设置 CSS 属性值。接受组件的标识符、CSS 属性名称（例如 `border-color`）和属性值作为参数。
+* `setCssProperty(Component component, String propertyName, String value)` - 在 UI 组件的最顶层 HTML 元素上设置 CSS 属性值。
+
+* `setDomAttribute(Component component, String querySelector, String attributeName, String value)` – 为 UI 组件内满足查询选择器的所有嵌套元素设置 DOM 属性。
+
+* `getDomAttribute(Component component, String querySelector, String attributeName)` – 获取之前使用 `HtmlAttributes` 设置的 DOM 属性。并不能反映当前 DOM 的真实值。
+
+* `removeDomAttribute(Component component, String querySelector, String attributeName)` – 为 UI 组件内满足查询选择器的所有嵌套元素移除 DOM 属性。
+
+* `setCssProperty(Component component, String querySelector, String propertyName, String value)` – 为 UI 组件内满足查询选择器的所有嵌套元素设置 CSS 属性值。
+
+* `getCssProperty(Component component, String querySelector, String propertyName)` – 获取之前使用 `HtmlAttributes` 设置的 CSS 属性值。并不能反映当前 DOM 的真实值。
+
+* `removeCssProperty(Component component, String querySelector, String propertyName)` – 为 UI 组件内满足查询选择器的所有嵌套元素清除 CSS 属性值。
+
+* `applyCss(Component component, String querySelector, String css)` – 使用 CSS 字符串应用 CSS 属性。
+
+以上方法接收下面这些参数：
+
+* `component` – 组件标识符。
+
+* `querySelector` – 字符串，包含一个或多个 https://www.w3.org/TR/selectors-api/#queryselectorall[选择器] 用来做匹配。这个字符串必须是正确的 CSS 选择器字符串。
+
+* `attributeName` – DOM 属性名称（比如 `title`）。
+
+* `propertyName` – CSS 属性名称（比如 `border-color`）。
+
+* `value` – 属性值。
 
 最常见的 DOM 属性名称和 CSS 属性名称在 `HtmlAttributes` bean 类中作为常量提供，但也可以使用任何自定义属性。
 

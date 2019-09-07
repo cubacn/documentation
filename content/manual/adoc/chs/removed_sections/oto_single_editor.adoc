@@ -1,0 +1,4 @@
+[[oto_single_editor]]
+=== 带单一编辑器的一对一组合
+
+参阅 https://www.cuba-platform.com/guides/data-modelling-composition#one_to_one_composition_with_a_single_editor[数据模型：组合] 向导。

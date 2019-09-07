@@ -3,7 +3,7 @@
 [[entity_listeners]]
 ===== 实体监听器
 
-_实体监听器_ 目的在于响应<<app_tiers,中间层>>上的实体实例的生命周期事件。请参阅 <<using_entity_listeners_recipe, cookbook>> 中的示例。
+_实体监听器_ 目的在于响应<<app_tiers,中间层>>上的实体实例的生命周期事件。
 
 监听器是一个实现 `com.haulmont.cuba.core.listener` 包中的一个或多个接口的类。监听器将根据所实现的接口对相应的事件做出响应。
 

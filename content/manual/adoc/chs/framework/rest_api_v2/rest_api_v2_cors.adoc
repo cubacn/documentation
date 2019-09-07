@@ -1,7 +1,0 @@
-:sourcesdir: ../../../../source
-
-[[rest_api_v2_cors]]
-==== 跨域请求（CORS）设置
-
-默认情况下，CUBA 允许所有的 REST API 的跨域请求。限制请求来源地址列表，可以通过设置 <<cuba.rest.allowedOrigins, cuba.rest.allowedOrigins>> 应用程序属性。
-

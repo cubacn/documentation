@@ -21,7 +21,7 @@ city 界面控制器有一个 public 的参数setter，然后在 <<screen_Before
 include::{sourcesdir}/gui/data_comp/data_comp_param_1.java[]
 ----
 
-city 界面可以从其他界面为其传递一个 country 实例并打开，示例：
+city 界面可以从其它界面为其传递一个 country 实例并打开，示例：
 
 [source, java]
 ----

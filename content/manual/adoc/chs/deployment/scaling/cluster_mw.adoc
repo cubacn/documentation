@@ -7,7 +7,7 @@
 
 image::cluster_mw.png[align="center"]
 
-`host1` 和 `host2` 服务器上部署了实现 Web 客户端 block 的 `app` Tomcat 实例。这些服务的集群配置在<<cluster_webclient,前一章节>>介绍过了。`host3` 和 `host4` 服务器部署了实现 Middleware block 的 `app-core` Tomcat 实例。这两个服务器配置了交互和共享用户会话、锁等等信息。
+`host1` 和 `host2` 服务器上部署了实现 Web 客户端 block 的 `app` Tomcat 实例。这些服务的集群配置在<<cluster_webclient,前一章节>>介绍过了。`host3` 和 `host4` 服务器部署了实现 Middleware block 的 `app-core` Tomcat 实例。这两个服务器配置了交互和共享用户会话、锁、缓存清空等信息。
 
 [TIP]
 ====

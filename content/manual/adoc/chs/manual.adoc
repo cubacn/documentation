@@ -19,10 +19,11 @@
 :revremark: Copyright (c) 2019 Haulmont (www.haulmont.com)
 :gradleVersion: 4.10.3
 :xsd_url: http://schemas.haulmont.com/cuba/{revnumber}
+:rest_man_url: https://doc.cuba-platform.cn/restapi-{revnumber}
 :fts_man_url: https://doc.cuba-platform.cn/fts-{revnumber}-chs
 :studio_man_url: https://doc.cuba-platform.cn/studio-chs
 :rest_swagger_url: http://files.cuba-platform.com/swagger/{revnumber}
-:sampler_url: https://demo.cuba-platform.com/sampler
+:sampler_url: https://demo.cuba-platform.cn/sampler
 :git_branch: master
 
 :!sectnums:

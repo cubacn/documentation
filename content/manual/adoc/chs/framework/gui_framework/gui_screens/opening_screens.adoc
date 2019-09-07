@@ -150,7 +150,7 @@ include::{sourcesdir}/gui/screens/screenBuilders_lookup_3.java[]
 --
 为打开界面传递参数的推荐方式是使用界面控制器的公共 setter 方法，如<<screens_intf,上面界面接口>>部分示范。
 
-使用这个方式，可以为任意类型的界面传递参数，包括使用<<screenBuilders,ScreenBuilders>>打开的实体编辑和查找界面。带有传参使用 `ScreenBuilders` 来调用 `FancyMessageScreen` 如下所示：
+使用这个方式，可以为任意类型的界面传递参数，包括使用<<screenBuilders,ScreenBuilders>>或者从<<menu.xml_screen_properties,主菜单>>打开的实体编辑和查找界面。带有传参使用 `ScreenBuilders` 来调用 `FancyMessageScreen` 如下所示：
 
 [source, java]
 ----

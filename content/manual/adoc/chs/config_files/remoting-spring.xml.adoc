@@ -9,7 +9,7 @@
 
 远程访问容器使用 Spring 主容器（在 <<spring.xml,spring.xml>> 文件配置主容器）作为父容器进行创建。因此，远程访问容器里的 bean 可以使用主容器内的 bean，但是主容器内的 bean 却“看不见”远程访问容器内的 bean。
 
-远程访问的主要目的是使 Middleware 的服务能从客户端级别通过 *Spring HttpInvoker* 机制访问。在 *cuba* 应用程序组件中的 `cuba-remoting-spring.xml` 文件定义了 `RemoteServicesBeanCreator` 类型的 `servicesExporter` bean，这个 bean 从主容器获得所有的 service 类，然后 export 他们。作为通常带注解的 service 的补充，远程访问容器 export 了一批特殊的 bean，比如 `LoginService`。
+远程访问的主要目的是使 Middleware 的服务能从客户端级别通过 *Spring HttpInvoker* 机制访问。在 *cuba* 应用程序组件中的 `cuba-remoting-spring.xml` 文件定义了 `RemoteServicesBeanCreator` 类型的 `servicesExporter` bean，这个 bean 从主容器获得所有的 service 类，然后 export 他们。作为通常带注解的 service 的补充，远程访问容器 export 了一批特殊的 bean，比如 `AuthenticationService`。
 
 还有，`cuba-remoting-spring.xml` 文件定义了一个基础包用来作为查找带有注解的 *Spring MVC* 下载和上传控制器类的入口。
 

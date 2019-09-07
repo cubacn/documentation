@@ -36,7 +36,7 @@ include::{sourcesdir}/common/bean_validation_3.java[]
 
 平台将以下约束组传递给验证机制:
 
-* `RestApiChecks` - 在 <<rest_api_v2,REST API>> 中验证时。
+* `RestApiChecks` - 在 {rest_man_url}[REST API] 中验证时。
 * `ServiceParametersChecks` -  验证服务参数时。
 * `ServiceResultChecks` - 验证服务返回值时。
 * `UiComponentChecks` - 验证单个 UI 字段时。

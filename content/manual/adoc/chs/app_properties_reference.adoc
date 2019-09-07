@@ -175,6 +175,17 @@ cuba.bruteForceProtection.maxLoginAttemptsNumber::
 可以在 Middleware block 使用。
 --
 
+[[cuba.checkConnectionToAdditionalDataStoresOnStartup]]
+cuba.checkConnectionToAdditionalDataStoresOnStartup::
++
+--
+如果设置为 `true`，框架会在应用程序启动时检查所有额外数据存储的连接。如果连接失败，日志会记录失败消息。注意，这种检查会使得启动过程变慢。
+
+默认值： `false`
+
+可以在 Middleware block 使用。
+--
+
 [[cuba.checkPasswordOnClient]]
 cuba.checkPasswordOnClient::
 +
@@ -183,9 +194,9 @@ cuba.checkPasswordOnClient::
 
 如果设置为 true，`LoginPasswordLoginProvider`本身将通过输入的登录名加载 `User` 实体并检查密码。如果密码与加载的密码哈希匹配，则提供程序使用<<cuba.trustedClientPassword,cuba.trustedClientPassword>> 属性中指定的密码作为可信客户端执行登录。此模式使您无需在受信任网络中的客户端和中间件之间设置 SSL 连接，同时不会向网络公开用户密码：仅传输哈希值。但请注意，可信客户端密码仍然通过网络传输，因此受 SSL 保护的连接仍然更加安全。
 
-默认值 ： `false`
+默认值： `false`
 
-接口：  `WebAuthConfig`, `PortalConfig`, `RestApiConfig`
+接口： `WebAuthConfig`，`PortalConfig`
 
 可在 Web 和 Porta block 使用。
 --
@@ -344,6 +355,21 @@ cuba.crossDataStoreReferenceLoadingBatchSize::
 可以在 Middleware block 使用。
 --
 
+[[cuba.dataManagerBeanValidation]]
+cuba.dataManagerBeanValidation::
++
+--
+设置 <<dataManager,DataManager>> 在保存实体时需要进行 <<bean_validation,bean 验证>> 。
+
+默认值： `true`
+
+保存在数据库。
+
+配置接口： `ServerConfig`
+
+可以在 Middleware block 使用。
+--
+
 [[cuba.dataManagerChecksSecurityOnMiddleware]]
 cuba.dataManagerChecksSecurityOnMiddleware::
 +
@@ -459,6 +485,19 @@ cuba.defaultQueryTimeoutSec::
 可以在 Middleware block 使用。
 --
 
+[[cuba.disableEntityEnhancementCheck]]
+cuba.disableEntityEnhancementCheck::
++
+--
+禁用启动检查，该检查用来确保所有实体都已经加强。
+
+默认值： `true`
+
+配置接口： `ServerConfig`
+
+可以在 Middleware block 使用。
+--
+
 [[cuba.disableEscapingLikeForDataStores]]
 cuba.disableEscapingLikeForDataStores::
 +
@@ -557,7 +596,7 @@ cuba.enableSessionParamsInQueryFilter::
 cuba.entityAttributePermissionChecking::
 +
 --
-如果设置为 `true`，在 Middleware 开启实体属性权限检查。如果设置为 `false`，属性权限检查则在客户端层做，比如在 <<gui_framework,Generic UI>> 或者 <<rest_api_v2,REST API>>。
+如果设置为 `true`，在 Middleware 开启实体属性权限检查。如果设置为 `false`，属性权限检查则在客户端层做，比如在 <<gui_framework,Generic UI>> 或者 {rest_man_url}[REST API]。
 
 默认值： `false`
 
@@ -610,6 +649,21 @@ cuba.groovyEvaluatorImport::
 ----
 cuba.groovyEvaluatorImport = com.haulmont.cuba.core.global.PersistenceHelper,com.abc.sales.CommonUtils
 ----
+--
+
+[[cuba.gui.genericFilterApplyImmediately]]
+cuba.gui.genericFilterApplyImmediately::
++
+--
+当设置成 `true` 时，过滤器会以即时模式工作，每个对于过滤器参数的调整都会立即生效，数据会自动刷新。当设置成 `false` 时，过滤器会使用显式操作模式。此时，过滤器只有在点击 *Search* 按钮时才会生效。参阅 <<gui_filter_immediately,applyImmediately>> 过滤器属性。
+
+默认值： `true`
+
+保存在数据库。
+
+配置接口： `ClientConfig`
+
+可以在 Web 客户端 block 使用。
 --
 
 [[cuba.gui.genericFilterChecking]]
@@ -932,6 +986,10 @@ cuba.httpSessionExpirationTimeoutSec::
 推荐对于 <<cuba.userSessionExpirationTimeoutSec, cuba.userSessionExpirationTimeoutSec>> 和 `cuba.httpSessionExpirationTimeoutSec` 属性使用相同的值。
 ====
 
+[WARNING]
+====
+不要在 `web.xml` 中配置 HTTP 会话超时时限，系统会忽略这个设置。
+====
 --
 
 [[cuba.iconsConfig]]
@@ -985,7 +1043,7 @@ cuba.keyForSecurityTokenEncryption::
 
 * <<cuba.entityAttributePermissionChecking,cuba.entityAttributePermissionChecking>> 应用程序属性设置成 true，也就是说在 Middleware 对实体属性权限进行了加强。（参考 <<dm_security>> 了解详情）
 
-* 行级的<<constraints,安全限制>>过滤了集合一组属性中的部分元素。这种情况下，安全令牌也会包含在 REST API 的返回 JSON 中，参考 <<rest_api_v2_security_constraints>>。
+* 行级的<<constraints,安全限制>>过滤了集合一组属性中的部分元素。这种情况下，安全令牌也会包含在 REST API 的返回 JSON 中，参考 {rest_man_url}#rest_api_v2_security_constraints[REST API documentation]。
 
 * 实体设置了动态 <<entity_attribute_access, 属性访问控制>>。
 
@@ -1302,230 +1360,6 @@ cuba.remotingSpringContextConfig = +com/company/sample/remoting-spring.xml
 ----
 --
 
-[[cuba.rest.allowedOrigins]]
-cuba.rest.allowedOrigins::
-+
---
-定义英文逗号分隔的可以访问 <<rest_api_v2,>> 的来源。需要开启跨域访问时可以用这个参数。
-
-默认值： `*`
-
-可以在 Web 客户端和 Web Portal blocks 使用。
---
-
-[[cuba.rest.anonymousEnabled]]
-cuba.rest.anonymousEnabled::
-+
---
-对匿名用户启用 <<rest_api_v2,>> 访问。
-
-默认值： `false`
-
-可以在 Web 客户端和 Web Portal blocks 使用。
---
-
-[[cuba.rest.client.authorizedGrantTypes]]
-cuba.rest.client.authorizedGrantTypes::
-+
---
-为默认的 REST API 客户端定义支持的许可类型列表。需要禁用刷新令牌（refresh token），可以从列表中删除 `refresh_token`。
-
-默认值： `password,external,refresh_token`
-
-可以在 Web 客户端和 Web Portal blocks 使用。
---
-
-[[cuba.rest.client.id]]
-cuba.rest.client.id::
-+
---
-定义 REST API 客户端的标识符。客户端，在这里，并不是说平台的用户，而是一个使用 <<rest_api_v2,>> 的应用（某些 web portal 或者手机 app）。使用客户端用户名密码做访问 REST API token 端点的基本认证。
-
-默认值： `client`
-
-可以在 Web 客户端和 Web Portal blocks 使用。
---
-
-[[cuba.rest.client.secret]]
-cuba.rest.client.secret::
-+
---
-定义 REST API 客户端的密码。客户端，在这里，并不是说平台的用户，而是一个使用 <<rest_api_v2,>> 的应用（某些 web portal 或者手机 app）。使用客户端用户名密码做访问 REST API token 端点的基本认证。应用程序属性的值需要在具体的密码值（比如 `secret`）之前包含一个 `PasswordEncoder` 的标识符（比如 `{noop}`）。
-
-默认值： `{noop}secret`
-
-可以在 Web 客户端和 Web Portal blocks 使用。
---
-
-[[cuba.rest.client.tokenExpirationTimeSec]]
-cuba.rest.client.tokenExpirationTimeSec::
-+
---
-定义默认客户端 <<rest_api_v2,>> 访问令牌过期时间的时限，单位是秒。
-
-默认值： `43200` (12 小时)
-
-可以在 Web 客户端和 Web Portal blocks 使用。
---
-
-[[cuba.rest.client.refreshTokenExpirationTimeSec]]
-cuba.rest.client.refreshTokenExpirationTimeSec::
-+
---
-定义默认客户端 <<rest_api_v2,>> 刷新令牌过期时间的时限，单位是秒。
-
-默认值： `31536000` (365 天)
-
-可以在 Web 客户端和 Web Portal blocks 使用。
---
-
-[[cuba.rest.deleteExpiredTokensCron]]
-cuba.rest.deleteExpiredTokensCron::
-+
---
-指定用来做定时任务的表达式，从数据库删除过期的令牌。
-
-默认值： `0 0 3 * * ?`
-
-可以在 Middleware block 使用。
---
-
-[[cuba.rest.jsonTransformationConfig]]
-cuba.rest.jsonTransformationConfig::
-+
---
-<<additive_app_properties,累加属性>>，用来定义 <<rest_api_v2,>> 使用的 JSON 转换配置文件，这些文件在客户端请求一些特殊版本数据模型的信息时会用到。
-
-平台使用 <<resources,Resource - 资源接口>>来加载此文件，所以这个文件可以放在 classpath 或者<<conf_dir,配置文件目录>>。
-
-文件的 XSD schema： {xsd_url}/rest-json-transformations.xsd.
-
-默认值： none
-
-示例：
-
-[source, properties]
-----
-cuba.rest.jsonTransformationConfig = +com/company/sample/json-transformations.xml
-----
-
-可以在 Web 客户端和 Web Portal blocks 使用。
---
-
-[[cuba.rest.maxUploadSize]]
-cuba.rest.maxUploadSize::
-+
---
-可以使用 <<rest_api_v2,>> 上传的文件大小的最大值，单位是字节。
-
-默认值： `20971520` (20 Mb)
-
-可以在 Web 客户端和 Web Portal blocks 使用。
---
-
-[[cuba.rest.optimisticLockingEnabled]]
-cuba.rest.optimisticLockingEnabled::
-+
---
-如果在 JSON 中提供了实体的 `version` 属性，启用 `Versioned` 实体的乐观锁。
-
-默认值： `false`
-
-可以在 Web 客户端和 Web Portal blocks 使用。
---
-
-[[cuba.rest.requiresSecurityToken]]
-cuba.rest.requiresSecurityToken::
-+
---
-如果是 true，会在加载的实体中包含一个特殊的系统属性，并且需要在保存实体的时候给 REST 接口传回一个同样的属性。细节参考 <<rest_api_v2_security_constraints>>。
-
-默认值： `false`
-
-可以在 Web 客户端和 Web Portal blocks 使用。
---
-
-[[cuba.rest.reuseRefreshToken]]
-cuba.rest.reuseRefreshToken::
-+
---
-定义是否可以重复使用刷新令牌。如果设置为 `false`，当使用刷新令牌获取访问令牌的时候，系统会发出一个新的刷新令牌，老的刷新令牌将会失效。
-
-默认值： `true`
-
-可以在 Web 客户端和 Web Portal blocks 使用。
---
-
-[[cuba.rest.servicesConfig]]
-cuba.rest.servicesConfig::
-+
---
-<<additive_app_properties,累加属性>>，用来定义包含应用 <<rest_api_v2,>> 对应的 <<services,services>> 列表的文件。
-
-平台使用 <<resources,Resource - 资源接口>>来加载此文件，所以这个文件可以放在 classpath 或者<<conf_dir,配置文件目录>>。
-
-文件的 XSD schema： {xsd_url}/rest-services-v2.xsd.
-
-默认值： none
-
-示例：
-
-[source, properties]
-----
-cuba.rest.servicesConfig = +com/company/sample/app-rest-services.xml
-----
-
-可以在 Web 客户端和 Web Portal blocks 使用。
---
-
-[[cuba.rest.storeTokensInDb]]
-cuba.rest.storeTokensInDb::
-+
---
-启用在数据库保存 REST API 安全令牌。默认情况下，令牌只是在内存中存储。
-
-保存在数据库。
-
-配置接口： `ServerConfig`
-
-默认值： `false`
-
-可以在 Middleware block 使用。
---
-
-[[cuba.rest.tokenMaskingEnabled]]
-cuba.rest.tokenMaskingEnabled::
-+
---
-设置是否在应用程序日志中对 REST API 进行掩码处理。
-
-默认值： `true`
-
-可以在 Web 客户端和 Web Portal blocks 使用。
---
-
-[[cuba.rest.queriesConfig]]
-cuba.rest.queriesConfig::
-+
---
-<<additive_app_properties,累加属性>>，用来定义包含应用程序 <<rest_api_v2,>> 可用的 JPQL 查询列表的文件。
-
-平台使用 <<resources,Resource - 资源接口>>来加载此文件，所以这个文件可以放在 classpath 或者<<conf_dir,配置文件目录>>。
-
-文件的 XSD schema： {xsd_url}/rest-queries.xsd.
-
-默认值： none
-
-示例：
-
-[source, properties]
-----
-cuba.rest.queriesConfig = +com/company/sample/app-rest-queries.xml
-----
-
-可以在 Web 客户端和 Web Portal blocks 使用。
---
-
 [[cuba.schedulingActive]]
 cuba.schedulingActive::
 +
@@ -1665,7 +1499,7 @@ cuba.triggerFilesCheckInterval::
 cuba.trustedClientPassword::
 +
 --
-定义 `LoginService.loginTrusted()` 方法要使用的密码。Middleware 层可以使用这个密码而不是用户密码来做用户认证，这些用户通过信任的客户端 <<app_tiers,block>> 连接。
+定义创建 `TrustedClientCredentials` 要使用的密码。Middleware 层可以对使用信任的客户端 <<app_tiers,block>> 连接的用户进行认证，而不需要检查用户的密码。
 
 这个属性在用户的密码不存在数据库的时候使用，客户端 block 会自己做实际的认证。比如，集成 *Active Directory* 的时候。
 
@@ -1678,7 +1512,7 @@ cuba.trustedClientPassword::
 cuba.trustedClientPermittedIpList::
 +
 --
-定义一组 IP 地址，从这些地址可以调用 `LoginService.loginTrusted()` 方法。示例：
+定义一组 IP 地址，这些 IP 地址与 `TrustedClientCredentials` 和 `TrustedClientService` 一起使用。示例：
 
 [source, plain]
 ----
@@ -1865,7 +1699,7 @@ cuba.userSessionProviderUrl::
 --
 定义 Middleware <<app_tiers,block>> 的 URL 来作为用户登录服务。
 
-这个参数需要在额外的 middleware blcoks 中设置，这些 middleware 可以执行客户端请求，但是不分享用户会话缓存。如果在请求发起的时候，在本地的缓存中没有需要的会话，这个 block 会在指定的 URL 执行 `LoginService.getSession()` 方法，然后将取到的会话缓存到本地。
+这个参数需要在额外的 middleware blcoks 中设置，这些 middleware 可以执行客户端请求，但是不分享用户会话缓存。如果在请求发起的时候，在本地的缓存中没有需要的会话，这个 block 会在指定的 URL 执行 `TrustedClientService.findSession()` 方法，然后将取到的会话缓存到本地。
 
 配置接口： `ServerConfig`
 
@@ -1907,25 +1741,6 @@ cuba.webAppUrl::
 在所有标准的 <<app_tiers,blocks>> 中都可以使用。
 --
 
-[[cuba.web.urlHandlingMode]]
-cuba.web.urlHandlingMode::
-+
---
-定义如何处理 URL 更改。
-
-可选值为 `UrlHandlingMode` 枚举类型的元素：
-
-* `NONE` – 不会处理 URL 改动；
-
-* `BACK_ONLY` – 使用 `CubaHistoryControl` 来处理改动。这个值替换旧的<<cuba.web.allowHandleBrowserHistoryBack,cuba.web.allowHandleBrowserHistoryBack>>属性；
-
-* `URL_ROUTES` – 使用<<url_history_navigation>>功能处理改动。
-
-默认值： `URL_ROUTES`
-
-配置接口： `WebConfig`
---
-
 [[cuba.windowConfig]]
 cuba.windowConfig::
 +
@@ -1942,6 +1757,21 @@ cuba.windowConfig::
 ----
 cuba.windowConfig = +com/company/sample/web-screens.xml
 ----
+--
+
+[[cuba.web.allowAnonymousAccess]]
+cuba.web.allowAnonymousAccess::
++
+--
+允许使用非认证用户访问应用程序界面。如果设置该参数为 `true`，确保 `Anonymous` 角色是 `Denying - 拒绝` 类型，即，匿名用户默认不能打开任何界面。
+
+参阅 <<gui_anonymous_access>>。
+
+默认值： `false`
+
+配置接口： `WebConfig`
+
+可以在 web 客户端 block 使用。
 --
 
 [[cuba.web.allowHandleBrowserHistoryBack]]
@@ -2058,36 +1888,6 @@ cuba.web.defaultScreenId = sys$SendingMessage.browse
 可以在 web 客户端 block 使用。
 --
 
-[[cuba.web.externalAuthentication]]
-cuba.web.externalAuthentication::
-+
---
-*Deprecated - 废弃*. 使用 <<web_login_extension_points,web 登录扩展点>>替代.
-
-通过外部认证机制进行认证，比如 <<ldap,LDAP>> 或者 <<sso,SSO>> IDP。也可参考<<cuba.web.externalAuthenticationProviderClass,cuba.web.externalAuthenticationProviderClass>>以及 https://github.com/cuba-platform/idp-addon/wiki[IDP 插件 wiki] 。
-
-默认值： `false`
-
-配置接口： `WebAuthConfig`
-
-可以在 web 客户端 block 使用。
---
-
-[[cuba.web.externalAuthenticationProviderClass]]
-cuba.web.externalAuthenticationProviderClass::
-+
---
-*Deprecated - 废弃*. 使用 <<web_login_extension_points,web 登录扩展点>>替代.
-
-实现了 `CubaAuthProvider` 接口的类，当 <<cuba.web.externalAuthentication,cuba.web.externalAuthentication>> 设置成 true 的时候会使用这个类做认证。
-
-参考 <<ldap,>> 和 https://github.com/cuba-platform/idp-addon/wiki[IDP 插件 wiki] 了解更多示例。
-
-配置接口： `WebAuthConfig`
-
-可以在 web 客户端 block 使用。
---
-
 [[cuba.web.foldersPaneDefaultWidth]]
 cuba.web.foldersPaneDefaultWidth::
 +
@@ -2105,7 +1905,7 @@ cuba.web.foldersPaneDefaultWidth::
 cuba.web.foldersPaneEnabled::
 +
 --
-启用文件夹面板功能。
+启用<<folders_pane,文件夹面板>>功能。
 
 默认值： `false`
 
@@ -2121,6 +1921,19 @@ cuba.web.foldersPaneVisibleByDefault::
 设置是否要默认展开<<folders_pane,文件夹面板>>。
 
 默认值： `false`
+
+配置接口： `WebConfig`
+
+可以在 web 客户端 block 使用。
+--
+
+[[cuba.web.initialScreenId]]
+cuba.web.initialScreenId::
++
+--
+定义非认证用户第一次打开应用程序 URL 地址时，系统会打开什么界面。需要 <<cuba.web.allowAnonymousAccess,cuba.web.allowAnonymousAccess>> 设置为 `true`。
+
+参阅 <<gui_anonymous_access>>。
 
 配置接口： `WebConfig`
 
@@ -2284,6 +2097,32 @@ cuba.web.loginDialogPoweredByLinkVisible::
 设置成 `false` 在登录窗口隐藏 "powered by CUBA Platform"。
 
 默认值： `true`
+
+配置接口： `WebConfig`
+
+可以在 web 客户端 block 使用。
+--
+
+[[cuba.web.loginScreenId]]
+cuba.web.loginScreenId::
++
+--
+用来作为应用程序<<gui_LoginScreen,登录界面>>的界面标识符。
+
+默认值： `login`
+
+配置接口： `WebConfig`
+
+可以在 web 客户端 block 使用。
+--
+
+[[cuba.web.mainScreenId]]
+cuba.web.mainScreenId::
++
+--
+用来作为应用程序<<gui_MainScreen,主界面>>的界面标识符。
+
+默认值： `main`
 
 配置接口： `WebConfig`
 
@@ -2579,6 +2418,43 @@ cuba.web.uiHeartbeatIntervalSec::
 可以在 web 客户端 block 使用。
 --
 
+[[cuba.web.unsupportedPagePath]]
+cuba.web.unsupportedPagePath::
++
+--
+定义<<unsupported_browser_page, HTML 界面>>的路径，这个界面用来在应用程序不支持当前浏览器版本时显示。
+
+[source, properties]
+----
+cuba.web.unsupportedPagePath = /com/company/sales/web/sys/unsupported-browser-page.html
+----
+
+默认值： `/com/haulmont/cuba/web/sys/unsupported-page-template.html`
+
+配置接口： `WebConfig`
+
+可以在 web 客户端 block 使用。
+--
+
+[[cuba.web.urlHandlingMode]]
+cuba.web.urlHandlingMode::
++
+--
+定义如何处理 URL 更改。
+
+可选值为 `UrlHandlingMode` 枚举类型的元素：
+
+* `NONE` – 不会处理 URL 改动；
+
+* `BACK_ONLY` – 使用 `CubaHistoryControl` 来处理改动。这个值替换旧的<<cuba.web.allowHandleBrowserHistoryBack,cuba.web.allowHandleBrowserHistoryBack>>属性；
+
+* `URL_ROUTES` – 使用<<url_history_navigation>>功能处理改动。
+
+默认值： `URL_ROUTES`
+
+配置接口： `WebConfig`
+--
+
 [[cuba.web.useFontIcons]]
 cuba.web.useFontIcons::
 +
@@ -2593,24 +2469,6 @@ cuba.web.icons.create.png = font-icon:FILE_O
 ----
 
 默认值： `true`
-
-配置接口： `WebConfig`
-
-可以在 web 客户端 block 使用。
---
-
-[[cuba.web.unsupportedPagePath]]
-cuba.web.unsupportedPagePath::
-+
---
-定义<<unsupported_browser_page, HTML 界面>>的路径，这个界面用来在应用程序不支持当前浏览器版本时显示。
-
-[source, properties]
-----
-cuba.web.unsupportedPagePath = /com/company/sales/web/sys/unsupported-browser-page.html
-----
-
-默认值： `/com/haulmont/cuba/web/sys/unsupported-page-template.html`
 
 配置接口： `WebConfig`
 

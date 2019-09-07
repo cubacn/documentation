@@ -1,50 +1,47 @@
 :sourcesdir: ../../../../../source
 
 [[categorized_entity]]
-===== 实体分类
+===== DynamicAttributesPanel
 
-如果实体实现了 `com.haulmont.cuba.core.entity.Categorized` 接口，则可以使用 `com.haulmont.cuba.gui.components.RuntimePropertiesFrame` 组件来显示该实体的动态属性。此组件允许用户为特定实体实例选择类别，并指定此类别的动态属性的值。
+如果实体实现了 `com.haulmont.cuba.core.entity.Categorized` 接口，则可以使用 `DynamicAttributesPanel` 组件来显示该实体的动态属性。此组件允许用户为特定实体实例选择类别，并指定此类别的动态属性的值。
 
-要在编辑界面中使用 `RuntimePropertiesFrame` 组件，请执行以下操作：
+要在编辑界面中使用 `DynamicAttributesPanel` 组件，请执行以下操作：
 
-* 在 `dsContext` 部分声明两个<<datasources,datasources>>：
-+
---
+* 在实体中，需要在<<views,视图>>中包含 `category` 属性：
 
-
-** `runtimePropsDatasource`  - 加载 `CategoryAttributeValue` 实例的特定数据源。`mainDs` 属性必须引用主数据源，其中包含被编辑的实体。
-
-** 一个常规的 `collectionDatasource` 来加载这个实体类型的类别列表。
-
-示例:
-
-[source, xml]
-----
-<dsContext>
-  <datasource id="carDs"
-      class="com.company.sample.entity.Car"
-      view="carEdit"/>
-
-  <runtimePropsDatasource id="runtimePropsDs"
-      mainDs="carDs"/>
-
-  <collectionDatasource id="categories"
-      class="com.haulmont.cuba.core.entity.Category"
-      view="_local">
-    <query>
-         select c from sys$Category c where c.entityType='sample$Car'
-    </query>
-  </collectionDatasource>
-</dsContext>
-----
---
-
-* 现在，数据源配置好了，可以将 `runtimeProperties` 可视化组件添加在界面的 XML 描述中：
 +
 [source, xml]
 ----
-<runtimeProperties id="runtimePropsFrame"
-  runtimeDs="runtimePropsDs"
-  categoriesDs="categories"/>
+include::{sourcesdir}/features/entity_with_category.xml[]
 ----
++
+* 在 `data` 部分，申明一个<<gui_instance_container,InstanceContainer>>:
+
++
+
+[source, xml]
+----
+include::{sourcesdir}/features/instance_with_dynamicAttributes.xml[]
+----
++
+
+--
+设置 <<gui_data_loaders,loader>> 的 `dynamicAttributes` 参数为 `true`，以便加载实体的动态属性。动态属性不是默认加载的。
+--
+
+* 现在可以将 `dynamicAttributesPanel` 可视化组件添加在界面的 XML 描述中：
++
+[source, xml]
+----
+include::{sourcesdir}/features/dynamicAttrPanel.xml[]
+----
++
+--
+可以使用 `cols` 参数设置展示动态属性的列数。或者也可以使用 `rows` 来指定行数（但是这种情况下，列数会自动计算）。默认情况下，所有属性会显示在一列内。
+
+[TIP]
+====
+在分类编辑器的 <<dynamic_attributes_mgmt_attr_location,Attributes Location>> 标签页，可以更灵活的自定义动态属性的位置。如此做的话，`cols` 和 `rows` 参数的值会被忽略。
+====
+--
 

@@ -206,16 +206,3 @@ include::{sourcesdir}/common/authProviderOrdered.java[]
 可在 <<system_authentication>> 中查看有关中间件处理身份验证的更多信息。
 
 --
-
-[[login_obsolete]]
-Obsolete/Deprecated::
-+
---
-
-以下组件已被弃用：
-
-- `LoginService` 将登录方法的执行委托给 `AuthenticationService` 
-- `LoginWorker` 将登录方法的执行委托给 `AuthenticationManager`
-
-不要在代码中使用这些组件。它们将在平台的下一个版本中删除。
---

@@ -17,9 +17,9 @@ image::app_components_sample.png[align="center"]
 
 * *Root package* - `com.company.customers`
 
-. 打开 *Project properties* 窗口，在 *Main* 标签页上将 *Module prefix* 设置为 `cust`。
+. 打开 *Project properties* 窗口，将 *Module prefix* 设置为 `cust`。
 
-. 创建至少有 `name` 属性的 `Customer` 实体。在 *Instance name* 字段，设置 <<namePattern_annotation,name pattern>> 属性。
+. 创建至少有 `name` 属性的 `Customer` 实体。
 +
 [WARNING]
 ====
@@ -28,7 +28,7 @@ image::app_components_sample.png[align="center"]
 
 . 生成 DB 脚本并为 `Customer` 实体创建标准界面：`cust_Customer.browse` 和 `cust_Customer.edit`。
 . 切换到菜单编辑器（menu designer），将 `application-cust` 菜单项更名为 `customerManagement`。然后，打开 *Main Message Pack* 部分的 `messages.properties`，为新的 `customerManagement` 设置标题。
-. 通过点击主菜单 *CUBA > Advanced > App Component Descriptor* 生成 <<app-component.xml,组件描述文件>> `app-component.xml`。
+. 通过点击主菜单 *CUBA > Advanced > App Component Descriptor* 生成 <<app-component.xml,app-component.xml>> 组件描述文件。
 . 测试客户管理功能：
 
 * 主菜单选择 *CUBA > Create Database*。
@@ -47,9 +47,9 @@ image::app_components_sample.png[align="center"]
 
 * *Root package* - `com.company.sales`
 
-. 打开 *Project properties* 窗口，并在 *Repositories* 部分中将本地 Maven 仓库添加到仓库列表。
+. 打开 *Project properties* 窗口，并选中 *Use local Maven repository* 复选框。
 
-. 在 *App components* 面板上单击 *Custom components* 旁边的加号按钮。在 *Custom application component* 对话框中，输入客户管理组件的 Maven 坐标，比如，`com.company.customers:cust-global:0.1-SNAPSHOT`。点击 *OK* 按钮保存项目属性设置。如果 Studio 建议更改 Gradle 脚本，同意即可。
+. 按照 {studio_man_url}#add_ons[Studio User Guide] 中 *Installing add-on by coordinates* 章节的描述在项目中添加应用程序组件。使用客户管理组件的 Maven 坐标，比如，`com.company.customers:cust-global:0.1-SNAPSHOT`。
 
 . 创建 `Order` 实体并添加 `date` 和 `amount` 属性。然后添加 `customer` 属性，与 `Customer` 实体多对一关联 - Customer 在 *Type* 下拉列表中可用。
 
@@ -77,9 +77,9 @@ image::app_components_sample.png[align="center"]
 
 . 通过执行 *CUBA > Advanced > Install App Component* 菜单项将应用程序组件重新安装到本地 Maven 仓库中。
 
-. 关闭 Studio 中的 `sales` 项目（如果已打开）并再次打开它。这是在 Studio 中下载新组件源代码所必须的。
+. 在 Studio 中切换到 `sales` 项目
 
-. 点击 *CUBA > Build Tasks > Clean*，然后再点击 *CUBA > Build Tasks > Assemble* 菜单项。
+. 点击 *CUBA > Build Tasks > Clean*。
 
 . 点击主菜单 *CUBA > Update Database* - 会执行客户管理组件的更新脚本。
 

@@ -1,0 +1,4 @@
+[[getting_messages]]
+=== 获取本地化消息
+
+参阅 https://www.cuba-platform.com/guides/localization-in-cuba-applications[CUBA 应用程序的本地化支持] 向导。

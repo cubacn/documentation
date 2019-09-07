@@ -17,6 +17,9 @@
 |DataManager 定义了一些使用<<entity_states,游离>>实体的高级方法： `load()`、`loadList()`、`reload()`、`commit()`。
 |EntityManager 与标准的 `javax.persistence.EntityManager` 非常相似。
 
+|DataManager 在保存实体是可以进行 <<bean_validation,bean 验证>>。
+|EntityManager 不进行 bean 验证。
+
 |===
 
 实际上，DataManager 委托给<<data_store,DataStore>>实现，因此下面列出的 DataManager 功能仅适用于处理关系型数据库中的实体最常见的情况：

@@ -3,8 +3,14 @@
 [[gui_dialogs]]
 ==== 对话框消息
 
-`Dialogs` 接口设计用来展示标准对话框窗口。其 `createMessageDialog()` 和 `createOptionDialog()` 方法是流式 API 的入口点，可以用来创建和显示对话框。
+`Dialogs` 接口设计用来展示标准对话框窗口。其 `createMessageDialog()`、`createOptionDialog()` 和 `createInputDialog()` 方法是流式 API 的入口点，可以用来创建和显示对话框。
 
+对话框的展示可以使用带 `$cuba-window-modal-*` 前缀的 SCSS 变量进行自定义。可以在创建一个 <<web_theme_extension,主题扩展>> 或者一个 <<web_theme_creation,自定义主题>> 之后在可视化编辑器里修改这些变量的值。
+
+[[gui_message_dialog]]
+消息对话框::
++
+--
 下面的例子中，当用户点击按钮时，会显示一个消息对话框：
 
 [source, java]
@@ -16,7 +22,7 @@ include::{sourcesdir}/gui/dialogs/gui_dialogs_1.java[]
 
 使用下面的方法可以自定义消息对话框的外观和行为：
 
-* `withModal()` - 如果使用 `false`，对话框不以模态窗展示，此时用户可以与应用程序的其他部分交互。
+* `withModal()` - 如果使用 `false`，对话框不以模态窗展示，此时用户可以与应用程序的其它部分交互。
 
 * `withCloseOnClickOutside()` - 如果使用 `true`，并且窗口是模态展示时，用户可以点击对话框之外的地方来关闭对话框。
 
@@ -28,6 +34,12 @@ include::{sourcesdir}/gui/dialogs/gui_dialogs_1.java[]
 ----
 include::{sourcesdir}/gui/dialogs/gui_dialogs_2.java[]
 ----
+--
+
+[[gui_option_dialog]]
+选项对话框::
++
+--
 
 选项对话框展示了一个消息和一组用户交互的按钮。使用 `withActions()` 方法可以提供<<gui_Action,操作>>，每个操作在对话框中以按钮的形式展示。示例：
 
@@ -41,3 +53,57 @@ include::{sourcesdir}/gui/dialogs/gui_dialogs_3.java[]
 `DialogAction` 基类设计用来创建带有标准名称和图标的操作。支持五种使用 `DialogAction.Type` 枚举定义的操作类型：`OK`，`CANCEL`，`YES`，`NO`，`CLOSE`。对应的按钮名称通过<<main_message_pack,主语言消息包>>获取。
 
 `DialogAction` 构造器的第二个参数用来为操作的按钮设置特殊的可视化样式。`c-primary-action` 样式提供的 `Status.PRIMARY` 会高亮对应的按钮并使得它被选中。如果对话框中有多个操作使用了 `Status.PRIMARY`，只有第一个操作的按钮能使用正确的样式和图标。
+--
+
+[[gui_input_dialog]]
+输入对话框::
++
+--
+输入对话框是一个多功能的工具，可以使用 API 构建输入表单，摆脱以前创建<<gui_screens,界面>>做数据输入。支持不同类型数据的输入、验证输入数据以及为用户提供不同的操作。
+
+下面我们看几个例子。
+
+. 带有标准类型参数和 OK/Cancel 按钮的输入对话框：
++
+[source, java]
+----
+include::{sourcesdir}/gui/dialogs/gui_input_dialog_1.java[]
+----
+<1> - 指定一个必填的字符串参数。
+<2> - 指定一个带有默认值的双浮点参数。
+<3> - 指定一个实体参数。
+<4> - 指定一个枚举参数。
+<5> - 指定一组用按钮表示的操作，并放在对话框底部。
+<6> - 在关闭事件监听器中，我们可以检查用户使用了什么操作。
+<7> - 关闭事件包含了输入的值，可以通过参数标识符进行获取。
+
+. 自定义参数的输入对话框：
++
+[source, java]
+----
+include::{sourcesdir}/gui/dialogs/gui_input_dialog_2.java[]
+----
+<1> - 指定一个自定义参数
+<2> - 在创建的组件中指定自定义参数的标题。
+<3> - 跟标准的参数一样的方法获取自定义参数的值。
+
+. 使用自定义操作的输入对话框：
++
+[source, java]
+----
+include::{sourcesdir}/gui/dialogs/gui_input_dialog_3.java[]
+----
+<1> - `withActions()` 方法能接收一组用户自定义的操作。
+<2> - 在操作处理器中，可以从对话框获取参数值。
+<3> - 自定义操作不会关闭对话框本身，所以需要同时手动关闭。
+
+. 带自定义校验的输入对话框
++
+[source, java]
+----
+include::{sourcesdir}/gui/dialogs/gui_input_dialog_4.java[]
+----
+<1> - 需要自定义校验确保至少输入了一个参数。
+<2> - 在校验器中，参数值可以通过上下文对象获取。
+--
+

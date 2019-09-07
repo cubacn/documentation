@@ -24,7 +24,7 @@
 
 [TIP]
 ====
-从 7.0 开始，BPM，Charts，全文检索（Full-Text Search）和 Reports 扩展插件将会免费和开源。这些扩展插件目前在上面提到的主仓库，所以只需要为使用其他 premium 插件配置 premium 仓库，比如，WebDAV。
+从 7.0 开始，BPM，Charts，全文检索（Full-Text Search）和 Reports 扩展插件将会免费和开源。这些扩展插件目前在上面提到的主仓库，所以只需要为使用其它 premium 插件配置 premium 仓库，比如，WebDAV。
 ====
 
 如果项目使用了 CUBA Premium 插件，在 build.gradle 添加一个仓库：

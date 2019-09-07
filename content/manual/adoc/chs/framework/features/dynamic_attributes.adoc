@@ -20,7 +20,7 @@ image::dynamic_attributes.png[align="center"]
 
 一个实体实例可以拥有跟这个实体类型相关的所有类别的动态属性。所以如果按照上面创建了两个关于 Car 的类别，则可以为一个 Car 实例定义两种类别中的任何动态属性。如果需要将实体实例分类到具体的某一类别（比如 Car 可以是卡车或者客车），那么实体需要实现 <<categorized_entity,Categorized>> 接口。这样实体实例就会有指向类别的引用，也只能包含此类别的动态属性。
 
-加载和保存动态属性是通过 <<dataManager,DataManager>> 来处理的。`LoadContext.setLoadDynamicAttributes()` 方法可以用来设置是否需要为实体实例加载动态属性。默认情况下，不会加载动态属性。同时，`DataManager` 总是会保存传递给 `commit()` 方法的实体实例的动态属性。
+加载和保存动态属性是通过 <<dataManager,DataManager>> 来处理的。`LoadContext` 的 `setLoadDynamicAttributes()` 方法或流式 API 的 `dynamicAttributes()` 方法可以用来设置是否需要为实体实例加载动态属性。默认情况下，不会加载动态属性。同时，`DataManager` 总是会保存传递给 `commit()` 方法的实体实例的动态属性。
 
 对于任何继承自 `BaseGenericIdEntity` 的持久化实体，动态属性的值可以通过 `getValue()` / `setValue()` 方法来读写。此时，需要给方法传递一个带 `+++++` 前缀的属性 code。示例：
 
@@ -29,7 +29,7 @@ image::dynamic_attributes.png[align="center"]
 include::{sourcesdir}/features/dynamicAttr_1.java[]
 ----
 
-事实上，在应用中直接访问动态属性是很少用到的。任何动态属性都可以在绑定了包含动态属性的实体数据源的任何<<gui_Table,表格>>或者<<gui_FieldGroup,字段组>>中自动展示。下面说的属性编辑器可以用来指定需要显示动态属性的界面和组件。
+事实上，在应用中直接访问动态属性是很少用到的。任何动态属性都可以在绑定了包含动态属性的实体数据源的任何<<gui_Table,表格>>或者<<gui_Form,表单>>中自动展示。下面说的属性编辑器可以用来指定需要显示动态属性的界面和组件。
 
 访问动态属性的用户<<permissions,权限>>可以在<<roles,安全角色>>编辑器中跟普通属性一样配置。动态属性显示为带 `+++++` 前缀的属性。
 

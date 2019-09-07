@@ -18,7 +18,7 @@
 ----
 include::{sourcesdir}/middleware/entityChangedEvent_usage_1.java[]
 ----
-<1> - 该监听器会在当前事务中调用。使用 `@EventListener` 注解跟 `@TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)` 是一样的。
+<1> - 该监听器会在当前事务中调用。
 <2> - 更改实体的 id。
 <3> - 更改类型： `CREATED`、`UPDATED` 或 `DELETED`。
 <4> - 可以检查是否某个特定属性有变化。
@@ -28,7 +28,15 @@ include::{sourcesdir}/middleware/entityChangedEvent_usage_1.java[]
 
 如果监听器在事务内部调用，可以通过抛出异常的方法回滚事务，这样不会有数据保存至数据库。如果不想用户看到任何错误提示，可以用 `SilentException`。
 
-如果在当前事务中处理 `EntityChangedEvent`，可以使用 <<transactionalDataManager,TransactionalDataManager>> 从数据库获取更改实体的当前状态。如果在事务提交之后的监听器中，可以使用 `DataManager` 来创建新事务并加载数据。
+如果一个 "after commit" 监听器抛出了异常，该异常会被日志记录，而不会呈现给客户端（用户不会在 UI 看到该错误）。
+
+[WARNING]
+====
+如果在当前事务（`TransactionPhase.BEFORE_COMMIT`）中处理 `EntityChangedEvent`，请确保使用了 <<transactionalDataManager,TransactionalDataManager>> 从数据库获取更改实体的当前状态。如果使用的是 <<dataManager,DataManager>>，它会创建新的数据库事务，如果尝试读取未提交的数据会容易导致数据库死锁。
+
+在 "after commit" 监听器（`TransactionPhase.AFTER_COMMIT`）中，在使用 `TransactionalDataManager` 之前需要使用 `DataManager` 或者显式创建一个新事务。
+====
+
 
 下面是使用 `EntityChangedEvent` 更新关联实体的示例。
 

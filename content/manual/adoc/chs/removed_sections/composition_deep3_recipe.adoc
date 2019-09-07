@@ -1,0 +1,4 @@
+[[composition_deep3_recipe]]
+=== 一对多：三层嵌套
+
+参阅 https://www.cuba-platform.com/guides/data-modelling-composition#more_levels_of_nesting[数据模型：组合] 向导。

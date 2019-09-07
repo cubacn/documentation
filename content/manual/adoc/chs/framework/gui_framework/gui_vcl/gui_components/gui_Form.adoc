@@ -5,13 +5,19 @@
 
 ++++
 <div class="manual-live-demo-container">
+    <a href="https://demo.cuba-platform.com/sampler/open?screen=form-simple" class="live-demo-btn" target="_blank">在线示例</a>
+</div>
+++++
+
+++++
+<div class="manual-live-demo-container">
     <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/Form.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
-`Form` 被用于多个实体属性的联合显示和编辑。它是一个类似于<<gui_GridLayout,GridLayout>>的简单容器，可以有一定数量的嵌套列，嵌套字段的类型在 XML 中以声明方式定义，字段的标题位于字段的左侧。与 `GridLayout` 的主要区别在于 `Form` 能够将所有嵌套字段绑定到一个<<gui_attr_dataContainer,数据容器>>中。
+`Form` 组件被用于多个实体属性的联合显示和编辑。它是一个类似于<<gui_GridLayout,GridLayout>>的简单容器，可以有一定数量的嵌套列，嵌套字段的类型在 XML 中以声明方式定义，字段的标题位于字段的左侧。与 `GridLayout` 的主要区别在于 `Form` 能够将所有嵌套字段绑定到一个<<gui_attr_dataContainer,数据容器>>中。
 
-从平台版本 7.0 开始，生成的<<screen_edit,编辑界面>>默认使用 `Form` 代替<<gui_FieldGroup,FieldGroup>>。
+从平台版本 7.0 开始，生成的编辑界面默认使用 `Form` 代替<<gui_FieldGroup,FieldGroup>>。
 
 image::gui_Form_1.png[align="center"]
 
@@ -24,7 +30,11 @@ image::gui_Form_1.png[align="center"]
 include::{sourcesdir}/gui_vcl/gui_form_1.xml[]
 ---- 
 
-在上面的例子中，`data` 上下文定义了一个 `orderDc` 数据容器，它包含 `Order` 实体的单个实例。数据容器在 `form` 组件的 `dataContainer` 属性中指定。嵌套元素指的是需要在组件中显示的实体属性。它们会根据属性数据类型自动类型化。
+在上面的例子中，`form` 组件显示了加载到 `orderDc` 数据容器中的实体属性。嵌套的 `form` 元素使用 `property` 这个 XML 属性定义了绑定到实体属性的可视化组件。会根据实体属性的本地化名称自动创建标题。嵌套的组件可以有任意的普通或者特定属性，比如例子中的 `description`。
+
+除了具体的可视化组件外，表单还能包含用嵌套的 `field` 元素定义的通用控件。框架会根据相应的实体属性和<<pluggable_component_factories,组件生成策略>>选择合适的可视化组件。`field` 元素可以有多个普通属性，比如 `description`、`contextHelpText` 等。
+
+如果要在界面控制器注入嵌套的组件，可以在 XML 中指定其 `id` 属性。组件会使用其具体的类型进行注入，比如 `TextField`。如果在界面中注入了一个通用控件，则其会是 `Field` 类型，该类是表单能展示的所有可视化组件的父类。
 
 `form` 的属性：
 
@@ -65,19 +75,18 @@ include::{sourcesdir}/gui_vcl/gui_form_2.xml[]
 `Form` 接口的方法：
 
 [[gui_Form_add]]
-* `add()` - 允许在运行时向 `Form` 添加一个或多个字段。它接受一个 `Component` 实例作为参数，也可以通过添加 `column` 和 `row` 索引来定义新字段的位置。
+* `add()` - 允许在向 `Form` 添加字段。它接受一个 `Component` 实例作为参数，也可以通过添加 `column` 和 `row` 索引来定义新字段的位置。
 +
-[WARNING]
-====
-框架不会为使用编程方式添加的组件指定数据容器，在这种情况下，使用 `setValueSource()` 方法进行数据绑定。
-====
+框架不会为使用编程方式添加的组件指定数据容器，所以需要使用 `setValueSource()` 方法进行数据绑定。
 +
-示例：
+示例，声明一个带有 `name` 字段的表单：
 +
 [source, xml]
 ----
 include::{sourcesdir}/gui_vcl/gui_form_3.xml[]
 ----
++
+如下例所示，可以在界面控制器中使用编程的方式添加 `email` 字段：
 +
 [source, java]
 ----

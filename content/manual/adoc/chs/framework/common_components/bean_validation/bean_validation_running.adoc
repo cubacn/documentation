@@ -23,7 +23,7 @@ include::{sourcesdir}/common/bean_validation_12.java[]
 
 如果实体属性带有 `@NotNull` 注解且没有定义约束组，则在元数据中这个属性会被标记为强制的(mandatory)，并且通过数据源使用此属性的 UI 组件将具有 `required = true` 属性。
 
-<<gui_DateField,DateField>>和<<gui_DatePicker,DatePicker>>组件使用 `@Past` 和 `@Future` 注解自动设置其 `rangeStart` 和 `rangeEnd` 属性，不过这里忽略了时间部分。
+<<gui_DateField,DateField>>和<<gui_DatePicker,DatePicker>>组件使用 `@Past`、`@PastOrPresent`、`@Future`、`@FutureOrPresent` 注解自动设置其 `rangeStart` 和 `rangeEnd` 属性，不过这里忽略了时间部分。
 
 如果约束包含 `UiCrossFieldChecks` 组并且所有属性级别的检查都通过了，<<abstractEditor,编辑>>界面将在提交时做类级别约束的验证。可以在 XML 描述或界面控制器使用 `crossFieldValidate` 属性关闭此验证：
 
@@ -36,6 +36,19 @@ include::{sourcesdir}/common/bean_validation_13.xml[]
 ----
 include::{sourcesdir}/common/bean_validation_14.java[]
 ----
+--
+
+[[bean_validation_in_DataManager]]
+DataManager中的验证::
++
+--
+<<dataManager,DataManager>> 可以对保存的实体实例进行验证。以下参数会影响验证：
+
+* <<cuba.dataManagerBeanValidation,cuba.dataManagerBeanValidation>> 应用程序属性设置设置是否进行验证的全局默认值。
+
+* 也可以覆盖上面的全局默认值，在 UI 界面保存数据的时候，可以在使用 `DataManager.commit()` 或者 `DataContext.PreCommitEvent` 里为 `CommitContext` 设置 `CommitContext.ValidationMode`
+
+* 也可以提供一个 <<bean_validation_constraint_groups,验证组>> 的列表给 `CommitContext` 或者 `DataContext.PreCommitEvent`，这样可以只应用定义的约束的一部分。
 --
 
 [[bean_validation_in_services]]
@@ -66,7 +79,7 @@ include::{sourcesdir}/common/bean_validation_15.java[]
 +
 --
 
-对于创建和更新操作, 通常 <<rest_api_v2,REST API>> 会自动执行 bean 验证。验证错误会以如下方式返回给客户端:
+对于创建和更新操作, 通常 {rest_man_url}[REST API] 会自动执行 bean 验证。验证错误会以如下方式返回给客户端:
 
 
 * `MethodResultValidationException` 和 `ValidationException` 导致 `500 Server error` HTTP 状态

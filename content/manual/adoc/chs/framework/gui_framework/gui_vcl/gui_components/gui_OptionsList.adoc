@@ -18,7 +18,21 @@ image::gui_optionsList.png[align="center"]
 [[gui_OptionsGroup_nullOptionVisible]]
 默认情况下，`OptionsList` 组件在建议弹窗中显示第一个空元素，可以通过将 `nullOptionVisible` 属性设置为 `false` 来禁止此行为。
 
-`OptionsList` 和 <<gui_OptionsGroup,OptionsGroup>> API 之间的唯一区别是 `OptionsList` 没有 `orientation` 属性。
+[[gui_OptionsList_doubleClickEvent]]
+`addDoubleClickListener()` 会添加实现了 `DoubleClickEvent` 接口的监听器，用来拦截组件选项上的双击事件。
+
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/gui_optionsList_addDoubleClick.java[]
+----
+同样，也可以订阅组件的双击事件的专有事件，示例：
+
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/gui_optionsList_doubleClick.java[]
+----
+
+`OptionsList` 和 <<gui_OptionsGroup,OptionsGroup>> API 之间的区别是 `OptionsList` 没有 `orientation` 属性。
 
 '''
 
@@ -55,8 +69,10 @@ optionsList 的元素::
 <<gui_validator,validator>>
 
 API::
+<<gui_OptionsList_doubleClickEvent,addDoubleClickListener>> -
 <<gui_api_addValueChangeListener,addValueChangeListener>> -
-<<gui_api_contextHelp,setContextHelpIconClickHandler>>
+<<gui_api_contextHelp,setContextHelpIconClickHandler>> -
+<<gui_LookupField_setOptionCaptionProvider,setOptionCaptionProvider>>
 
 '''
 

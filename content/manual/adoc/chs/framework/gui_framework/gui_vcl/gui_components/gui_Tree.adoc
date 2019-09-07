@@ -32,6 +32,9 @@ include::{sourcesdir}/gui_vcl/tree_1.xml[]
 
 使用 `treechildren` 元素的 `captionProperty` 属性指定要显示为树节点名称的实体属性的名称，如果这个属性没有定义，将默认显示实体的<<namePattern_annotation,实例名称>>。
 
+[[gui_Tree_setItemCaptionProvider]]
+使用 `setItemCaptionProvider()` 方法可以设置一个函数，用来将实体的属性名称作为标题放到数的每项中。
+
 在 `Tree` 中进行选择：
 
 [[gui_Tree_multiselect]]
@@ -91,6 +94,9 @@ tree 的元素::
 treechildren 的属性::
 <<gui_attr_captionProperty,captionProperty>> -
 <<gui_attr_datasource,datasource>>
+
+API::
+<<gui_Tree_setItemCaptionProvider,setItemCaptionProvider>>
 
 '''
 

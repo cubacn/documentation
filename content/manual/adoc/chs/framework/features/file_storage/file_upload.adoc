@@ -24,4 +24,4 @@ include::{sourcesdir}/features/fileUploadDialog_1.java[]
 <3> - 上传文件至中间层的文件存储。
 <4> - 保存 `FileDescriptor` 实体。
 
-在上传成功后，对话框使用 `COMMIT_ACTION_ID` 关闭。在 `CloseWithCommitListener` 监听器中，可以用 `getFileId()` 和 `getFileName()` 方法获取上传文件的 UUID 和名称。然后可以获取文件本身或者创建 `FileDescriptor` 对象并上传文件到文件存储，也可以实现其他的逻辑。
+在上传成功后，对话框使用 `COMMIT_ACTION_ID` 关闭。在 `CloseWithCommitListener` 监听器中，可以用 `getFileId()` 和 `getFileName()` 方法获取上传文件的 UUID 和名称。然后可以获取文件本身或者创建 `FileDescriptor` 对象并上传文件到文件存储，也可以实现其它的逻辑。

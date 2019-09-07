@@ -89,7 +89,7 @@ resizableTextArea 属性::
 <<gui_TextField_trim,trim>> -
 <<gui_attr_visible,visible>> -
 <<gui_attr_width,width>> -
-<<gui_TextArea_wordwrap,wordwrap>>
+<<gui_TextArea_wordwrap,wordWrap>>
 
 resizableTextArea 的预定义样式::
 <<gui_textarea_align-center,align-center>> -

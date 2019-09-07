@@ -151,6 +151,9 @@ include::{sourcesdir}/gui_vcl/button.java[]
 
 [[gui_button_quiet]]
 * `quiet` - "安静的" 按钮，跟 `borderless` 很像，只有在光标悬浮到这个按钮上面才会有样式变化。
+
+`Button` 的展示可以使用带 `$cuba-button-*` 前缀的 SCSS 变量进行自定义。可以在创建一个 <<web_theme_extension,主题扩展>> 或者一个 <<web_theme_creation,自定义主题>> 之后在可视化编辑器里修改这些变量的值。
+
 --
 
 '''
