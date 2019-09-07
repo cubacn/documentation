@@ -35,13 +35,6 @@ include::{sourcesdir}/development/testing_4.groovy[]
 include::{sourcesdir}/development/testing_5.java[]
 ----
 
-在测试类里使用：
-
-[source, java]
-----
-include::{sourcesdir}/development/testing_7.java[]
-----
-
 几个有用的测试容器方法::
 +
 --

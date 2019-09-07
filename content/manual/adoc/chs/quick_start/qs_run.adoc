@@ -13,7 +13,7 @@ image::quick_start/customer_browse.png[align="center"]
 
 点击 *Create* 创建一个新 customer：
 
-[[figure_customerEdit]]
+[[figure_customerEditScreen]]
 .Customer 编辑界面
 image::quick_start/customer_edit_2.png[align="center"]
 
