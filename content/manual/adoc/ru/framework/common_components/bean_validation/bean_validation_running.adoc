@@ -24,7 +24,7 @@ include::{sourcesdir}/common/bean_validation_12.java[]
 
 Если атрибут сущности аннотирован `@NotNull` без группы ограничений, он будет помечен как обязательный в метаданных, и UI-компоненты работающие с данным атрибутом через источник данных, будут иметь свойство `required = true`.
 
-Компоненты <<gui_DateField,DateField>> и <<gui_DatePicker,DatePicker>> автоматически устанавливают свои свойства `rangeStart` и `rangeEnd` в соответствии с аннотациями `@Past` и `@Future`, не учитывая текущее время.
+Компоненты <<gui_DateField,DateField>> и <<gui_DatePicker,DatePicker>> автоматически устанавливают свои свойства `rangeStart` и `rangeEnd` в соответствии с аннотациями `@Past`, `@PastOrPresent`, `@Future`, `@FutureOrPresent`.
 
 Экраны <<abstractEditor,редактирования>> выполняют валидацию ограничений уровня класса при коммите, если ограничения включают группу `UiCrossFieldChecks` и все проверки ограничений уровня атрибутов прошли успешно. Валидацию данного типа можно отключить с помощью свойства экрана `crossFieldValidate` в XML-дескрипторе или в контроллере:
 
@@ -37,6 +37,19 @@ include::{sourcesdir}/common/bean_validation_13.xml[]
 ----
 include::{sourcesdir}/common/bean_validation_14.java[]
 ----
+--
+
+[[bean_validation_in_DataManager]]
+Валидация в DataManager::
++
+--
+<<dataManager,DataManager>> может выполнять валидацию сохраняемых сущностей. Следующие параметры оказывают влияние на валидацию:
+
+* Свойство приложения <<cuba.dataManagerBeanValidation,cuba.dataManagerBeanValidation>> устанавливает глобальный признак, выполнять ли валидацию по умолчанию.
+
+* Глобальный признак можно переопределить, устанавливая значение типа `CommitContext.ValidationMode` в `CommitContext` при выполнении `DataManager.commit()`, или в `DataContext.PreCommitEvent` при сохранении данных в экране UI.
+
+* В `CommitContext` и в `DataContext.PreCommitEvent` можно передать список <<bean_validation_constraint_groups,групп валидации>> для применения некоторого подмножества определенных ограничений.
 --
 
 [[bean_validation_in_services]]
@@ -64,7 +77,7 @@ include::{sourcesdir}/common/bean_validation_15.java[]
 Валидация в REST API::
 +
 --
-Универсальный <<rest_api_v2,REST API>> автоматически выполняет bean validation для действий создания и изменения сущностей. Ошибки валидации передаются клиенту следующим образом:
+Универсальный {rest_man_url}[REST API] автоматически выполняет bean validation для действий создания и изменения сущностей. Ошибки валидации передаются клиенту следующим образом:
 
 * `MethodResultValidationException` и `ValidationException` порождают HTTP статус `500 Server error`
 

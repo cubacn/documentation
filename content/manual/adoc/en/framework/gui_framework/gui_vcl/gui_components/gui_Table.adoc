@@ -43,11 +43,43 @@ include::{sourcesdir}/gui_vcl/tableIconProvider_1.java[]
 ----
 
 [[gui_Table_columns]]
-* `columns` – a required element defining the set of columns for a table.
+* `columns` – a required element defining the set of columns for a table. Element `columns` has the following attributes:
++
+--
+[[gui_Table_columns_includeAll]]
+** `includeAll` – load all the attributes from the <<views,view>> that is defined in <<gui_data_containers,dataContainer>> or <<datasources,datasource>>.
++
+In the example below, we will show all the attributes from the view used in the `customersDc`. If the view contains system properties, they will be shown too.
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/gui_Table_columns_includeAll.xml[]
+----
++
+If the view of the entity contains a reference attribute, this attribute will be displayed according to its <<namePattern_annotation,instance name>>. If you want to show a specific attribute, it must be defined in the view as well as in the `column` element:
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/gui_Table_columns_includeAll_related.xml[]
+----
++
+If no view is specified, `includeAll` attribute will load all the attributes from a given entity and its ancestors.
+
+[[gui_Table_columns_exclude]]
+** `exclude` – comma-separated list of attributes that should not be loaded to the table.
++
+In the example below, we will show all the attributes excluding `name` and `order`:
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/gui_Table_columns_exclude.xml[]
+----
+--
 +
 Each column is described in a nested `column` element with the following attributes:
 +
 --
+
 [[gui_Table_column_id]]
 ** `id` − a mandatory attribute, contains the name of an entity attribute displayed in the column. Can be either an attribute of the entity from the data container or a linked entity – object graph traversal is indicated with a dot. For example:
 +
@@ -74,6 +106,9 @@ role.name=<em>Name</em>
 
 [[gui_Table_column_collapsed]]
 ** `collapsed` − an optional attribute; hides the column by default when set to `true`. Users can control column's visibility using the menu available via a image:gui_table_columnControl.png[] button in the top right part of the table when the table's `columnControlVisible` attribute is not `false`. By default, `collapsed` is `false`.
+
+[[gui_Table_column_expandRatio]]
+** `expandRatio` − an optional attribute that specifies the expand ratio for each column. The ratio must be greater than or equal to 0. If some value is set for at least one column, all implicit values are ignored, and only explicitly assigned values are considered. If you set <<gui_Table_column_width,width>> and `expandRatio` attributes simultaneously, it will cause an error in the application.
 
 [[gui_Table_column_width]]
 ** `width` − an optional attribute controlling default column width. May contain only numeric values in pixels.
@@ -175,6 +210,8 @@ In the latter case, the database sorting will be performed by attributes defined
 If the column refers to a non-persistent entity attribute, the database sorting will be performed by attributes defined in the `related()` parameter of the `@MetaProperty` annotation. If no related attributes are specified, the sorting will be performed in memory only within the current page.
 +
 If the table is connected to a nested <<gui_property_containers,property container>> that contains a collection of related entities, the collection attribute must be of ordered type (`List` or `LinkedHashSet`) for table to be sortable. If the attribute is of type `Set`, the `sortable` attribute has no effect and the table cannot be sorted by users.
++
+You can provide your <<gui_data_comp_sort,own implementation of sorting>> if needed.
 
 [[gui_Table_presentations]]
 * `presentations` attribute controls the mechanism of <<gui_presentations,presentations>>. By default, the value is `false`. If the attribute value is `true`, a corresponding icon is added to the top right corner of the table image:gui_presentation.png[]. The mechanism of presentations is implemented for the *Web Client* only.
@@ -338,10 +375,9 @@ Example of using the component:
 include::{sourcesdir}/gui_vcl/tableColumnGenerator_1.java[]
 ---- 
 
-In the example above, all cells within the `color` column in the table show the <<gui_LookupPickerField,LookupPickerField>> component. The component should save its value into the `color` attribute of the entity which instance is displayed in the corresponding row.
-////
-For this purpose, `getItemDatasource()` method is used to get the datasource for the current entity instance from the table and pass it to the `LookupPickerField` component.
-////
+In the example above, all cells within the `color` column in the table show the <<gui_LookupPickerField,LookupPickerField>> component. The component will save its value into the `color` attribute of the entity instance which is displayed in the corresponding row.
+
+The `getInstanceContainer()` method returning container with the current entity should be used only for data binding of components created when generating table cells.
 
 If you want to display just dynamic text, use special class `Table.PlainTextCell` instead of the <<gui_Label,Label>> component. It will simplify rendering and make the table faster.
 
@@ -445,6 +481,8 @@ If such action is found, and has `enabled = true` property, the action is execut
 If such action is found, and has `enabled = true` property, the action is executed.
 --
 
+The appearance of the `Table` component can be customized using SCSS variables with `$cuba-table-*` prefix. You can change these variables in the visual editor after creating a <<web_theme_extension,theme extension>> or a <<web_theme_creation,custom theme>>.
+
 '''
 
 Attributes of table::
@@ -487,6 +525,10 @@ Elements of table::
 <<gui_Table_rows,rows>> -
 <<gui_Table_rowsCount,rowsCount>>
 
+Attributes of <<gui_Table_columns,columns>>::
+<<gui_Table_columns_includeAll, includeAll>> -
+<<gui_Table_columns_exclude, exclude>>
+
 Attributes of <<gui_Table_columns,column>>::
 <<gui_Table_column_align,align>> -
 <<gui_Table_column_caption,caption>> -
@@ -495,6 +537,7 @@ Attributes of <<gui_Table_columns,column>>::
 <<gui_Table_column_collapsed,collapsed>> -
 <<gui_DateField_dateFormat,dateFormat>> -
 <<gui_Table_column_editable,editable>> -
+<<gui_Table_column_expandRatio,expandRatio>> -
 <<gui_Table_column_generator,generator>> -
 <<gui_Table_column_id,id>> -
 <<gui_Table_column_link,link>> -

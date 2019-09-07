@@ -47,8 +47,6 @@ include::gui_framework/shortcuts.adoc[]
 
 include::gui_framework/url_history_navigation.adoc[]
 
-include::gui_framework/url_routes_generator.adoc[]
-
 include::gui_framework/composite_components.adoc[]
 
 include::gui_framework/pluggable_component_factories.adoc[]
@@ -59,8 +57,8 @@ include::gui_framework/own_components.adoc[]
 
 include::gui_framework/gui_web.adoc[]
 
-include::gui_framework/main_window_layout.adoc[]
-
 include::gui_framework/web_login.adoc[]
+
+include::gui_framework/gui_anonymous_access.adoc[]
 
 include::gui_framework/unsupported_browser_page.adoc[]

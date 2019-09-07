@@ -24,7 +24,7 @@ By default, `BeanValidator` has both `Default` and `UiComponentChecks` groups.
 
 If an entity attribute is annotated with `@NotNull` without constraint groups, it will be marked as mandatory in metadata and UI components working with this attribute through a datasource will have `required = true`.
 
-The <<gui_DateField,DateField>> and <<gui_DatePicker,DatePicker>> components automatically set their `rangeStart` and `rangeEnd` properties by the `@Past` and `@Future` annotations, but without considering time.
+The <<gui_DateField,DateField>> and <<gui_DatePicker,DatePicker>> components automatically set their `rangeStart` and `rangeEnd` properties by the `@Past`, `@PastOrPresent`, `@Future`, `@FutureOrPresent` annotations.
 
 <<abstractEditor,Editor>> screens perform validation against class-level constraints on commit if the constraint includes the `UiCrossFieldChecks` group and if all attribute-level checks are passed. You can turn off the validation of this kind using the `crossFieldValidate` property of the screen in the screen XML descriptor or in the controller:
 
@@ -37,6 +37,19 @@ include::{sourcesdir}/common/bean_validation_13.xml[]
 ----
 include::{sourcesdir}/common/bean_validation_14.java[]
 ----
+--
+
+[[bean_validation_in_DataManager]]
+Validation in DataManager::
++
+--
+<<dataManager,DataManager>> can perform validation of saved entity instances. The following parameters affect the validation:
+
+* The <<cuba.dataManagerBeanValidation,cuba.dataManagerBeanValidation>> application property sets the global default for whether the validation is performed.
+
+* You can override the global default by providing a `CommitContext.ValidationMode` value to `CommitContext` when using `DataManager.commit()` method or to `DataContext.PreCommitEvent` when saving data in a UI screen.
+
+* You can provide a list of <<bean_validation_constraint_groups,validation groups>> to `CommitContext` and to `DataContext.PreCommitEvent` to apply only a subset of defined constraints.
 --
 
 [[bean_validation_in_services]]
@@ -64,7 +77,7 @@ If you perform some custom programmatic validation in a service, use `CustomVali
 Validation in REST API::
 +
 --
-Universal <<rest_api_v2,REST API>> automatically performs bean validation for create and update actions. Validation errors are returned to the client in the following way:
+Universal {rest_man_url}[REST API] automatically performs bean validation for create and update actions. Validation errors are returned to the client in the following way:
 
 * `MethodResultValidationException` and `ValidationException` cause `500 Server error` HTTP status
 

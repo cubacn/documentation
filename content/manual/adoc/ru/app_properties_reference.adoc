@@ -173,6 +173,17 @@ cuba.bruteForceProtection.maxLoginAttemptsNumber::
 Используется в блоке Middleware.
 --
 
+[[cuba.checkConnectionToAdditionalDataStoresOnStartup]]
+cuba.checkConnectionToAdditionalDataStoresOnStartup::
++
+--
+При установке в true, фреймворк проверяет подключения ко всем дополнительным хранилищам на старте приложения. При ошибке подключения в лог выводится сообщение. Имейте в виду, что проверка может замедлить запуск приложения.
+
+Значение по умолчанию: `false`
+
+Используется в блоке Middleware.
+--
+
 [[cuba.checkPasswordOnClient]]
 cuba.checkPasswordOnClient::
 +
@@ -183,7 +194,7 @@ cuba.checkPasswordOnClient::
 
 Значение по умолчанию: `false`
 
-Интерфейс: `WebAuthConfig`, `PortalConfig`, `RestApiConfig`
+Интерфейс: `WebAuthConfig`, `PortalConfig`
 
 Используется в блоках Web и Portal.
 --
@@ -342,6 +353,21 @@ cuba.crossDataStoreReferenceLoadingBatchSize::
 Используется в блоке Middleware.
 --
 
+[[cuba.dataManagerBeanValidation]]
+cuba.dataManagerBeanValidation::
++
+--
+Указывает, что <<dataManager,DataManager>> должен выполнять <<bean_validation,bean validation>> при сохранении сущностей.
+
+Значение по умолчанию: `false`
+
+Хранится в базе данных.
+
+Интерфейс: `ServerConfig`
+
+Используется в блоке Middleware.
+--
+
 [[cuba.dataManagerChecksSecurityOnMiddleware]]
 cuba.dataManagerChecksSecurityOnMiddleware::
 +
@@ -457,6 +483,19 @@ cuba.defaultQueryTimeoutSec::
 Используется в блоке Middleware.
 --
 
+[[cuba.disableEntityEnhancementCheck]]
+cuba.disableEntityEnhancementCheck::
++
+--
+Отключает выполняемую на старте приложения проверку, которая убеждается, что для всех сущностей правильно выполнено bytecode enhancement.
+
+Значение по умолчанию: `true`
+
+Интерфейс: `ServerConfig`
+
+Используется в блоке Middleware.
+--
+
 [[cuba.disableEscapingLikeForDataStores]]
 cuba.disableEscapingLikeForDataStores::
 +
@@ -555,7 +594,7 @@ cuba.enableSessionParamsInQueryFilter::
 cuba.entityAttributePermissionChecking::
 +
 --
-При установке в `true` включает проверку прав на атрибуты сущностей на уровне Middleware. Если значением является `false`, права на атрибуты проверяются только на клиентском уровне, т.е. в <<gui_framework,Generic UI>> и <<rest_api_v2,REST API>>.
+При установке в `true` включает проверку прав на атрибуты сущностей на уровне Middleware. Если значением является `false`, права на атрибуты проверяются только на клиентском уровне, т.е. в <<gui_framework,Generic UI>> и {rest_man_url}[REST API].
 
 Значение по умолчанию: `false`
 
@@ -608,6 +647,21 @@ cuba.groovyEvaluatorImport::
 ----
 cuba.groovyEvaluatorImport=com.haulmont.cuba.core.global.PersistenceHelper,com.abc.sales.CommonUtils
 ----
+--
+
+[[cuba.gui.genericFilterApplyImmediately]]
+cuba.gui.genericFilterApplyImmediately::
++
+--
+Если установлено значение `true`, <<gui_Filter,универсальный фильтр>> работает в режиме немедленного применения, когда каждое изменение параметров фильтра автоматически перезагружает данные. Если установлено значение `false`, фильтр будет применен только после нажатия кнопки **Search**. См. также атрибут фильтра <<gui_filter_immediately,applyImmediately>>.
+
+Значение по умолчанию: `true`
+
+Хранится в базе данных.
+
+Интерфейс: `ClientConfig`
+
+Используется в блоке Web Client.
 --
 
 [[cuba.gui.genericFilterChecking]]
@@ -930,6 +984,10 @@ cuba.httpSessionExpirationTimeoutSec::
 Рекомендуется выставлять параметры <<cuba.userSessionExpirationTimeoutSec,cuba.userSessionExpirationTimeoutSec>> и <<cuba.httpSessionExpirationTimeoutSec,cuba.httpSessionExpirationTimeoutSec>> в одинаковое значение.
 ====
 
+[WARNING]
+====
+Не пытайтесь установить таймаут HTTP сессии в `web.xml` - он будет проигнорирован.
+====
 --
 
 [[cuba.iconsConfig]]
@@ -982,7 +1040,7 @@ cuba.keyForSecurityTokenEncryption::
 
 * Свойство приложения <<cuba.entityAttributePermissionChecking,cuba.entityAttributePermissionChecking>> установлено в true, что означает, что права на атрибуты проверяются на среднем слое (подробнее см. <<dm_security>>).
 
-* <<constraints,Ограничения>> доступа к сущностям на уровне экземпляров (row-level security constraints) отфильтровали некоторые элементы атрибута-коллекции. В этом случае, токен включается также в JSON, возвращаемый из REST API, см. <<rest_api_v2_security_constraints>>.
+* <<constraints,Ограничения>> доступа к сущностям на уровне экземпляров (row-level security constraints) отфильтровали некоторые элементы атрибута-коллекции. В этом случае, токен включается также в JSON, возвращаемый из REST API, см. {rest_man_url}#rest_api_v2_security_constraints[документацию по REST API].
 
 * Для сущности настроен динамический <<entity_attribute_access, контроль доступа к атрибутам сущностей>>.
 
@@ -1298,230 +1356,6 @@ cuba.remotingSpringContextConfig = +com/company/sample/remoting-spring.xml
 ----
 --
 
-[[cuba.rest.allowedOrigins]]
-cuba.rest.allowedOrigins::
-+
---
-Задает список хостов, которым разрешен доступ к <<rest_api_v2,>>. Значения хостов должны быть разделены запятой.
-
-Значение по умолчанию: `*`
-
-Используется в блоках Web Client и Web Portal.
---
-
-[[cuba.rest.anonymousEnabled]]
-cuba.rest.anonymousEnabled::
-+
---
-Разрешает анонимный доступ к <<rest_api_v2,>>.
-
-Значение по умолчанию: `false`
-
-Используется в блоках Web Client и Web Portal.
---
-
-[[cuba.rest.client.id]]
-cuba.rest.client.id::
-+
---
-Задает идентификатор клиента REST API. Клиент - это не пользователь платформы, а приложение (какой-либо веб-портал или мобильный клиент), использующий <<rest_api_v2,>>. Идентификатор и пароль клиента используются для базовой аутентификации при доступе к URL для получения токена.
-
-Значение по умолчанию: `client`
-
-Используется в блоках Web Client и Web Portal.
---
-
-[[cuba.rest.client.authorizedGrantTypes]]
-cuba.rest.client.authorizedGrantTypes::
-+
---
-Определяеет список типов авторизации (grant type), поддерживаемых клиентом по умолчанию. Для отключения поддержки refresh-токенов, удалите элемент `refresh_token` из значения свойства.
-
-Значение по умолчанию: `password,external,refresh_token`
-
-Используется в блоках Web Client и Web Portal.
---
-
-[[cuba.rest.client.secret]]
-cuba.rest.client.secret::
-+
---
-Задает пароль клиента REST API. Клиент - это не пользователь платформы, а приложение (какой-либо веб-портал или мобильный клиент), использующий <<rest_api_v2,>>. Идентификатор и пароль клиента используются для базовой аутентификации при доступе к URL для получения токена. Значение свойства приложения помимо непосредственно пароля клиента REST API (например, `secret`) должно содержать и идентификатор используемого `PasswordEncoder` (например, `noop`).
-
-Значение по умолчанию: `{noop}secret`
-
-Используется в блоках Web Client и Web Portal.
---
-
-[[cuba.rest.client.tokenExpirationTimeSec]]
-cuba.rest.client.tokenExpirationTimeSec::
-+
---
-Задает время жизни access токена <<rest_api_v2,>> в секундах для клиента по умолчанию.
-
-Значение по умолчанию: `43200` (12 часов)
-
-Используется в блоках Web Client и Web Portal.
---
-
-[[cuba.rest.client.refreshTokenExpirationTimeSec]]
-cuba.rest.client.refreshTokenExpirationTimeSec::
-+
---
-Задает время жизни refresh токена <<rest_api_v2,>> в секундах для клиента по умолчанию.
-
-Значение по умолчанию: `31536000` (365 дней)
-
-Используется в блоках Web Client и Web Portal.
---
-
-[[cuba.rest.deleteExpiredTokensCron]]
-cuba.rest.deleteExpiredTokensCron::
-+
---
-Задает выражение cron, определяющее расписание удаления истекших OAuth токенов из базы данных.
-
-Значение по умолчанию: `0 0 3 * * ?`
-
-Используется в блоке Middleware.
---
-
-[[cuba.rest.jsonTransformationConfig]]
-cuba.rest.jsonTransformationConfig::
-+
---
-<<additive_app_properties,Аддитивное>> свойство, задающее файл, содержащий конфигурацию JSON трансформеров, используемых <<rest_api_v2,>> для случаев, когда клиентскому приложению требуются данные в формате определенной версии модели данных.
-
-Файл загружается с помощью интерфейса <<resources,Resources>>, поэтому может быть расположен в classpath или в <<conf_dir,конфигурационном каталоге>>.
-
-XSD файла доступна по адресу {xsd_url}/rest-json-transformations.xsd.
-
-Значение по умолчанию: отсутствует
-
-Пример:
-
-[source, properties]
-----
-cuba.rest.jsonTransformationConfig = +com/company/sample/json-transformations.xml
-----
-
-Используется в блоках Web Client и Web Portal.
---
-
-[[cuba.rest.maxUploadSize]]
-cuba.rest.maxUploadSize::
-+
---
-Максимальный размер файла (в байтах), который может быть загружен с помощью <<rest_api_v2,>>.
-
-Значение по умолчанию: `20971520` (20 Mb)
-
-Используется в блоках Web Client и Web Portal.
---
-
-[[cuba.rest.optimisticLockingEnabled]]
-cuba.rest.optimisticLockingEnabled::
-+
---
-Включает оптимистичную блокировку сущностей, реализующих интерфейс `Versioned`, если атрибут `version` передан в JSON.
-
-Значение по умолчанию: `false`
-
-Используется в блоках Web Client и Web Portal.
---
-
-[[cuba.rest.requiresSecurityToken]]
-cuba.rest.requiresSecurityToken::
-+
---
-Если установлен в true, то в JSON загружаемой из БД сущности включается дополнительный системный атрибут, и этот же атрибут ожидается от клиента при сохранении сущности. Подробнее см. <<rest_api_v2_security_constraints>>.
-
-Значение по умолчанию: `false`
-
-Используется в блоках Web Client и Web Portal.
---
-
-[[cuba.rest.reuseRefreshToken]]
-cuba.rest.reuseRefreshToken::
-+
---
-Определяет, должен ли refresh-токен быть повторно использован. Если установить значение в `false`, то когда access-токен запрашивается с помощью refresh-токена, то будет выдан новый refresh-токен, а старый будет удалён.
-
-Значение по умолчанию: `true`
-
-Используется в блоках Web Client и Web Portal.
---
-
-[[cuba.rest.servicesConfig]]
-cuba.rest.servicesConfig::
-+
---
-<<additive_app_properties,Аддитивное>> свойство задающее файл, который содержит список доступных для вызова через <<rest_api_v2,>> сервисов.
-
-Файл загружается с помощью интерфейса <<resources,Resources>>, поэтому может быть расположен в classpath или в <<conf_dir,конфигурационном каталоге>>.
-
-XSD файла доступна по адресу {xsd_url}/rest-services-v2.xsd.
-
-Значение по умолчанию: не задано
-
-Example:
-
-[source, properties]
-----
-cuba.rest.servicesConfig = +com/company/sample/app-rest-services.xml
-----
-
-Используется в блоках Web Client и Web Portal.
---
-
-[[cuba.rest.storeTokensInDb]]
-cuba.rest.storeTokensInDb::
-+
---
-Включает хранение OAuth токенов в базе данных. По умолчанию токены хранятся только в памяти.
-
-Хранится в базе данных.
-
-Интерфейс: `ServerConfig`
-
-Значение по умолчанию: `false`
-
-Используется в блоке Middleware.
---
-
-[[cuba.rest.tokenMaskingEnabled]]
-cuba.rest.tokenMaskingEnabled::
-+
---
-Определяет, должны ли токены REST API быть маскированы в логах приложения.
-
-Значение по умолчанию: `true`
-
-Используется в блоках Web Client и Web Portal.
---
-
-[[cuba.rest.queriesConfig]]
-cuba.rest.queriesConfig::
-+
---
-<<additive_app_properties,Аддитивное>> свойство задающее файл, который содержит список доступных для выполнения через <<rest_api_v2,>> JPQL запросов.
-
-Файл загружается с помощью интерфейса <<resources,Resources>>, поэтому может быть расположен в classpath или в <<conf_dir,конфигурационном каталоге>>.
-
-XSD файла доступна по адресу {xsd_url}/rest-queries.xsd.
-
-Значение по умолчанию: не задано
-
-Example:
-
-[source, properties]
-----
-cuba.rest.queriesConfig = +com/company/sample/app-rest-queries.xml
-----
-
-Используется в блоках Web Client и Web Portal.
---
-
 [[cuba.schedulingActive]]
 cuba.schedulingActive::
 +
@@ -1665,7 +1499,7 @@ cuba.triggerFilesCheckInterval::
 cuba.trustedClientPassword::
 +
 --
-Пароль, используемый методом `LoginService.loginTrusted()`. Средний слой может аутентифицировать пользователей, подключающихся через доверенный клиентский <<app_tiers,блок>>, без проверки пользовательского пароля.
+Пароль, используемый при создании аутентификационных данных `TrustedClientCredentials`. Средний слой может аутентифицировать пользователей, подключающихся через доверенный клиентский <<app_tiers,блок>>, без проверки пользовательского пароля.
 
 Это свойство используется в случае, если пароли пользователей не хранятся в БД, и реальную аутентификацию выполняет сам клиентский блок, например, путем интеграции с *Active Directory*.
 
@@ -1678,7 +1512,7 @@ cuba.trustedClientPassword::
 cuba.trustedClientPermittedIpList::
 +
 --
-Список IP адресов, с которых возможен вызов метода `LoginService.loginTrusted()`.
+Список IP адресов, который используется совместно с `TrustedClientCredentials` и `TrustedClientService`.
 
 Значение по умолчанию: `127.0.0.1`
 
@@ -1859,7 +1693,7 @@ cuba.userSessionProviderUrl::
 --
 URL для соединения с <<app_tiers,блоком>> Middleware, через который выполняется вход пользователей в систему.
 
-Этот параметр необходимо устанавливать в дополнительных блоках среднего слоя, которые выполняют запросы клиентов, но не содержат общего кэша пользовательских сессий. Тогда в начале выполнения запроса при отсутствии требуемой сессии в локальном кэше данный блок вызовет метод `LoginService.getSession()` по указанному URL, и в случае успеха закэширует полученную сессию у себя.
+Этот параметр необходимо устанавливать в дополнительных блоках среднего слоя, которые выполняют запросы клиентов, но не содержат общего кэша пользовательских сессий. Тогда в начале выполнения запроса при отсутствии требуемой сессии в локальном кэше данный блок вызовет метод `TrustedClientService.findSession()` по указанному URL, и в случае успеха закэширует полученную сессию у себя.
 
 Интерфейс: `ServerConfig`
 
@@ -1901,25 +1735,6 @@ URL, по которому доступен Web Client приложения.
 Может использоваться во всех стандартных <<app_tiers,блоках>>.
 --
 
-[[cuba.web.urlHandlingMode]]
-cuba.web.urlHandlingMode::
-+
---
-Определяет, как должны обрабатываться изменения URL.
-
-Возможными значениями являются элементы перечисления `UrlHandlingMode`:
-
-* `NONE` – изменения URL не обрабатываются вообще;
-
-* `BACK_ONLY` – для обработки изменений используется `CubaHistoryControl`. Это значение заменяет устаревшее свойство <<cuba.web.allowHandleBrowserHistoryBack,cuba.web.allowHandleBrowserHistoryBack>>;
-
-* `URL_ROUTES` – изменения обрабатываются <<url_history_navigation, механизмом навигации и истории просмотров URL>>.
-
-Значение по умолчанию: `URL_ROUTES`.
-
-Интерфейс: `WebConfig`.
---
-
 [[cuba.windowConfig]]
 cuba.windowConfig::
 +
@@ -1936,6 +1751,21 @@ cuba.windowConfig::
 ----
 cuba.windowConfig = +com/company/sample/web-screens.xml
 ----
+--
+
+[[cuba.web.allowAnonymousAccess]]
+cuba.web.allowAnonymousAccess::
++
+--
+Разрешает доступ неаутентифицированных пользователей к экранам приложения. Если вы устанавливаете это свойство в true, убедитесь что роль `Anonymous` имеет тип `Denying`, т.е. по умолчанию анонимному пользователю никакие экраны не доступны.
+
+См. раздел <<gui_anonymous_access>>.
+
+Значение по умолчанию: `false`
+
+Интерфейс: `WebConfig`
+
+Используется в блоке Web Client.
 --
 
 [[cuba.web.allowHandleBrowserHistoryBack]]
@@ -2052,36 +1882,6 @@ cuba.web.defaultScreenId = sys$SendingMessage.browse
 Используется в блоке Web Client.
 --
 
-[[cuba.web.externalAuthentication]]
-cuba.web.externalAuthentication::
-+
---
-**Устарело**. Используйте вместо этого свойства <<web_login_extension_points,точки расширения в Web Client>>.
-
-Указывает на то, что аутентификация производится внешним механизмом, таким как <<ldap,LDAP>> или <<sso,SSO>> Identity Provider. См. также <<cuba.web.externalAuthenticationProviderClass,cuba.web.externalAuthenticationProviderClass>>.
-
-Значение по умолчанию: `false`
-
-Интерфейс: `WebAuthConfig`
-
-Используется в блоке Web Client.
---
-
-[[cuba.web.externalAuthenticationProviderClass]]
-cuba.web.externalAuthenticationProviderClass::
-+
---
-**Устарело**. Используйте вместо этого свойства <<web_login_extension_points,точки расширения в Web Client>>.
-
-Класс, реализующий интерфейс `CubaAuthProvider` и используемый в случае если свойство <<cuba.web.externalAuthentication,cuba.web.externalAuthentication>> установлено в `true`.
-
-См. разделы <<ldap,>> и <<sso,>> для примеров.
-
-Интерфейс: `WebAuthConfig`
-
-Используется в блоке Web Client.
---
-
 [[cuba.web.foldersPaneDefaultWidth]]
 cuba.web.foldersPaneDefaultWidth::
 +
@@ -2099,7 +1899,7 @@ cuba.web.foldersPaneDefaultWidth::
 cuba.web.foldersPaneEnabled::
 +
 --
-Если `false`, то функциональность панели папок отключена.
+Если `false`, то функциональность <<folders_pane,панели папок>> отключена.
 
 Значение по умолчанию: `false`
 
@@ -2117,6 +1917,19 @@ cuba.web.foldersPaneVisibleByDefault::
 Значение по умолчанию: `false`
 
 Интерфейс: `WebConfig`
+
+Используется в блоке Web Client.
+--
+
+[[cuba.web.initialScreenId]]
+cuba.web.initialScreenId::
++
+--
+Задает экран, который должен быть открыт для неаутентифицированного пользователя, когда он переходит по адресу приложения. Свойство <<cuba.web.allowAnonymousAccess,cuba.web.allowAnonymousAccess>> при этом должно быть установлено в `true`.
+
+См. <<gui_anonymous_access>>.
+
+\Интерфейс: `WebConfig`
 
 Используется в блоке Web Client.
 --
@@ -2278,6 +2091,32 @@ cuba.web.loginDialogPoweredByLinkVisible::
 Установите в `false`, чтобы скрыть ссылку "powered by CUBA Platform" на экране входа в систему.
 
 Значение по умолчанию: `true`
+
+Интерфейс: `WebConfig`
+
+Используется в блоке Web Client.
+--
+
+[[cuba.web.loginScreenId]]
+cuba.web.loginScreenId::
++
+--
+Идентификатор экрана, который должен использоваться в качестве <<gui_LoginScreen,экрана логина>> приложения.
+
+Значение по умолчанию: `login`
+
+Интерфейс: `WebConfig`
+
+Используется в блоке Web Client.
+--
+
+[[cuba.web.mainScreenId]]
+cuba.web.mainScreenId::
++
+--
+Идентификатор экрана, который должен использоваться в качестве <<gui_MainScreen,главного экрана>> приложения.
+
+Значение по умолчанию: `main`
 
 Интерфейс: `WebConfig`
 
@@ -2509,7 +2348,7 @@ cuba.web.requirePasswordForNewUsers::
 cuba.web.standardAuthenticationUsers::
 +
 --
-Разделенный запятыми список логинов пользователей, которые могут входить в систему, используя только стандартную аутентификацию. Для этих пользователей <<cuba.web.externalAuthentication,внешняя аутентификация>> (например, <<ldap,LDAP>> или <<sso,IDP SSO>>) запрещена.
+Разделенный запятыми список логинов пользователей, которые могут входить в систему, используя только стандартную аутентификацию. Для этих пользователей внешняя аутентификация (например, <<ldap,LDAP>> или <<sso,IDP SSO>>) запрещена.
 
 Пустой список означает, что все могут использовать внешнюю аутентификацию, если она включена.
 
@@ -2572,6 +2411,43 @@ cuba.web.uiHeartbeatIntervalSec::
 Используется в блоке Web Client.
 --
 
+[[cuba.web.unsupportedPagePath]]
+cuba.web.unsupportedPagePath::
++
+--
+Определяет путь к <<unsupported_browser_page,HTML-странице>>, которая отображается, когда приложение не поддерживает текущую версию браузера.
+
+[source, properties]
+----
+cuba.web.unsupportedPagePath = /com/company/sales/web/sys/unsupported-browser-page.html
+----
+
+Значение по умолчанию: `/com/haulmont/cuba/web/sys/unsupported-page-template.html`.
+
+Интерфейс: `WebConfig`.
+
+Используется в блоке Web Client.
+--
+
+[[cuba.web.urlHandlingMode]]
+cuba.web.urlHandlingMode::
++
+--
+Определяет, как должны обрабатываться изменения URL.
+
+Возможными значениями являются элементы перечисления `UrlHandlingMode`:
+
+* `NONE` – изменения URL не обрабатываются вообще;
+
+* `BACK_ONLY` – для обработки изменений используется `CubaHistoryControl`. Это значение заменяет устаревшее свойство <<cuba.web.allowHandleBrowserHistoryBack,cuba.web.allowHandleBrowserHistoryBack>>;
+
+* `URL_ROUTES` – изменения обрабатываются <<url_history_navigation, механизмом навигации и истории просмотров URL>>.
+
+Значение по умолчанию: `URL_ROUTES`.
+
+Интерфейс: `WebConfig`.
+--
+
 [[cuba.web.useFontIcons]]
 cuba.web.useFontIcons::
 +
@@ -2591,23 +2467,6 @@ cuba.web.icons.create.png = font-icon:FILE_O
 
 Используется в блоке Web Client.
 
---
-[[cuba.web.unsupportedPagePath]]
-cuba.web.unsupportedPagePath::
-+
---
-Определяет путь к <<unsupported_browser_page,HTML-странице>>, которая отображается, когда приложение не поддерживает текущую версию браузера.
-
-[source, properties]
-----
-cuba.web.unsupportedPagePath = /com/company/sales/web/sys/unsupported-browser-page.html
-----
-
-Значение по умолчанию: `/com/haulmont/cuba/web/sys/unsupported-page-template.html`.
-
-Интерфейс: `WebConfig`.
-
-Используется в блоке Web Client.
 --
 
 [[cuba.web.useInverseHeader]]

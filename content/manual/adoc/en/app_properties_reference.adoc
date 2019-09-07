@@ -175,6 +175,17 @@ Interface: `ServerConfig`
 Used in the Middleware block.
 --
 
+[[cuba.checkConnectionToAdditionalDataStoresOnStartup]]
+cuba.checkConnectionToAdditionalDataStoresOnStartup::
++
+--
+If set to true, the framework checks connections to all additional data stores on the application startup. If the connection fails, a message is written in the log. Keep in mind that such checks can slow down the startup process.
+
+Default value: `false`
+
+Used in the Middleware block.
+--
+
 [[cuba.checkPasswordOnClient]]
 cuba.checkPasswordOnClient::
 +
@@ -185,7 +196,7 @@ If set to true, `LoginPasswordLoginProvider` loads the `User` entity by the ente
 
 Default value: `false`
 
-Interface: `WebAuthConfig`, `PortalConfig`, `RestApiConfig`
+Interface: `WebAuthConfig`, `PortalConfig`
 
 Used in the Web and Portal blocks.
 --
@@ -344,6 +355,21 @@ Interface: `ServerConfig`
 Used in the Middleware block.
 --
 
+[[cuba.dataManagerBeanValidation]]
+cuba.dataManagerBeanValidation::
++
+--
+Indicates that <<dataManager,DataManager>> should perform <<bean_validation,bean validation>> when saving entities.
+
+Default value: `true`
+
+Stored in the database.
+
+Interface: `ServerConfig`
+
+Used in the Middleware block.
+--
+
 [[cuba.dataManagerChecksSecurityOnMiddleware]]
 cuba.dataManagerChecksSecurityOnMiddleware::
 +
@@ -459,6 +485,19 @@ Interface: `ServerConfig`
 Used in the Middleware block.
 --
 
+[[cuba.disableEntityEnhancementCheck]]
+cuba.disableEntityEnhancementCheck::
++
+--
+Disables the startup check which ensures all entities are properly enhanced.
+
+Default value: `true`
+
+Interface: `ServerConfig`
+
+Used in the Middleware block.
+--
+
 [[cuba.disableEscapingLikeForDataStores]]
 cuba.disableEscapingLikeForDataStores::
 +
@@ -557,7 +596,7 @@ Used in the Web Client block.
 cuba.entityAttributePermissionChecking::
 +
 --
-If set to `true`, turns on checking entity attribute permissions on Middleware. When `false`, attribute permissions are checked on the client tier, e.g. in <<gui_framework,Generic UI>> or <<rest_api_v2,REST API>>.
+If set to `true`, turns on checking entity attribute permissions on Middleware. When `false`, attribute permissions are checked on the client tier, e.g. in <<gui_framework,Generic UI>> or {rest_man_url}[REST API].
 
 Default value: `false`
 
@@ -610,6 +649,21 @@ Example:
 ----
 cuba.groovyEvaluatorImport = com.haulmont.cuba.core.global.PersistenceHelper,com.abc.sales.CommonUtils
 ----
+--
+
+[[cuba.gui.genericFilterApplyImmediately]]
+cuba.gui.genericFilterApplyImmediately::
++
+--
+When set to `true`, the <<gui_Filter,generic filter>> works in the immediate mode when every change of filter parameters automatically reloads data. When set to `false`, the filter will be applied only after the *Search* button is clicked. See also <<gui_filter_immediately,applyImmediately>> filter attribute.
+
+Default value: `true`
+
+Stored in the database.
+
+Interface: `ClientConfig`
+
+Used in the Web Client block.
 --
 
 [[cuba.gui.genericFilterChecking]]
@@ -932,6 +986,10 @@ Used in the Web Client block.
 It is recommended to use the same values for <<cuba.userSessionExpirationTimeoutSec, cuba.userSessionExpirationTimeoutSec>> and `cuba.httpSessionExpirationTimeoutSec` properties.
 ====
 
+[WARNING]
+====
+Do not try to set HTTP session timeout in `web.xml` - it will be ignored.
+====
 --
 
 [[cuba.iconsConfig]]
@@ -985,7 +1043,7 @@ Used as a key for AES encryption of the entity security token. The token is sent
 
 * <<cuba.entityAttributePermissionChecking,cuba.entityAttributePermissionChecking>> application property is set to true which means that attribute permissions are enforced on the middleware (see more details <<dm_security>>).
 
-* Row-level <<constraints,security constraints>> are filtered out some elements of a collection attribute. In this case, the security token is also included to JSON returned by REST API, see <<rest_api_v2_security_constraints>>.
+* Row-level <<constraints,security constraints>> are filtered out some elements of a collection attribute. In this case, the security token is also included to JSON returned by REST API, see {rest_man_url}#rest_api_v2_security_constraints[REST API documentation].
 
 * Dynamic <<entity_attribute_access, attribute access control>> is set up for the entity.
 
@@ -1302,230 +1360,6 @@ cuba.remotingSpringContextConfig = +com/company/sample/remoting-spring.xml
 ----
 --
 
-[[cuba.rest.allowedOrigins]]
-cuba.rest.allowedOrigins::
-+
---
-Defines a comma-separated list of origins that can access the <<rest_api_v2,>>.
-
-Default value: `*`
-
-Used in the Web Client and Web Portal blocks.
---
-
-[[cuba.rest.anonymousEnabled]]
-cuba.rest.anonymousEnabled::
-+
---
-Enables an anonymous access to the <<rest_api_v2,>> endpoints.
-
-Default value: `false`
-
-Used in the Web Client and Web Portal blocks.
---
-
-[[cuba.rest.client.authorizedGrantTypes]]
-cuba.rest.client.authorizedGrantTypes::
-+
---
-Defines a list of supported grant types for the default REST API client. To disable refresh token support remove the `refresh_token` item from the value.
-
-Default value: `password,external,refresh_token`
-
-Used in the Web Client and Web Portal blocks.
---
-
-[[cuba.rest.client.id]]
-cuba.rest.client.id::
-+
---
-Defines an identifier of the REST API client. Client, in this case, is not a platform user, but an application (some web portal or mobile app) that uses <<rest_api_v2,>>. Client credentials are used for basic authentication when accessing the REST API token endpoint.
-
-Default value: `client`
-
-Used in the Web Client and Web Portal blocks.
---
-
-[[cuba.rest.client.secret]]
-cuba.rest.client.secret::
-+
---
-Defines a password for the REST API client. Client, in this case, is not a platform user, but an application (some web portal or mobile app) that uses <<rest_api_v2,>>. Client credentials are used for basic authentication when accessing the REST API token endpoint. The application property value in addition to the actual password value (e.g. `secret`) must contain an identifier of the `PasswordEncoder` (e.g. `{noop}`).
-
-Default value: `{noop}secret`
-
-Used in the Web Client and Web Portal blocks.
---
-
-[[cuba.rest.client.tokenExpirationTimeSec]]
-cuba.rest.client.tokenExpirationTimeSec::
-+
---
-Defines a <<rest_api_v2,>> access token expiration timeout for the default client in seconds.
-
-Default value: `43200` (12 hours)
-
-Used in the Web Client and Web Portal blocks.
---
-
-[[cuba.rest.client.refreshTokenExpirationTimeSec]]
-cuba.rest.client.refreshTokenExpirationTimeSec::
-+
---
-Defines a <<rest_api_v2,>> refresh token expiration timeout for the default client in seconds.
-
-Default value: `31536000` (365 days)
-
-Used in the Web Client and Web Portal blocks.
---
-
-[[cuba.rest.deleteExpiredTokensCron]]
-cuba.rest.deleteExpiredTokensCron::
-+
---
-Specifies cron expression for scheduled removing of expired tokens from the database.
-
-Default value: `0 0 3 * * ?`
-
-Used in the Middleware block.
---
-
-[[cuba.rest.jsonTransformationConfig]]
-cuba.rest.jsonTransformationConfig::
-+
---
-<<additive_app_properties,Additive>> property defining a file that contains JSON transformation configurations used by the <<rest_api_v2,>> when the client needs data in format of some particular data model version.
-
-The file is loaded using the <<resources,Resources>> interface, so it can be located in classpath or in the <<conf_dir,configuration directory>>.
-
-The XSD of the file is available at {xsd_url}/rest-json-transformations.xsd.
-
-Default value: none
-
-Example:
-
-[source, properties]
-----
-cuba.rest.jsonTransformationConfig = +com/company/sample/json-transformations.xml
-----
-
-Used in the Web Client and Web Portal blocks.
---
-
-[[cuba.rest.maxUploadSize]]
-cuba.rest.maxUploadSize::
-+
---
-Maximum file size (in bytes) that can be uploaded with the <<rest_api_v2,>>.
-
-Default value: `20971520` (20 Mb)
-
-Used in the Web Client and Web Portal blocks.
---
-
-[[cuba.rest.optimisticLockingEnabled]]
-cuba.rest.optimisticLockingEnabled::
-+
---
-Enables optimistic locking of `Versioned` entities if the `version` attribute is provided in JSON.
-
-Default value: `false`
-
-Used in the Web Client and Web Portal blocks.
---
-
-[[cuba.rest.requiresSecurityToken]]
-cuba.rest.requiresSecurityToken::
-+
---
-If true, a special system attribute is included in JSON for loaded entities, and the same attribute is expected to be passed back to REST when saving the entities. See details in <<rest_api_v2_security_constraints>>.
-
-Default value: `false`
-
-Used in the Web Client and Web Portal blocks.
---
-
-[[cuba.rest.reuseRefreshToken]]
-cuba.rest.reuseRefreshToken::
-+
---
-Specifies whether a refresh token may be reused. If set to `false` then when an access token is requested using the refresh token, a new refresh token will be issued, and the old refresh token will be revoked.
-
-Default value: `true`
-
-Used in the Web Client and Web Portal blocks.
---
-
-[[cuba.rest.servicesConfig]]
-cuba.rest.servicesConfig::
-+
---
-<<additive_app_properties,Additive>> property defining a file that contains a list of <<services,services>> available for application <<rest_api_v2,>> calls.
-
-The file is loaded using the <<resources,Resources>> interface, so it can be located in classpath or in the <<conf_dir,configuration directory>>.
-
-The XSD of the file is available at {xsd_url}/rest-services-v2.xsd.
-
-Default value: none
-
-Example:
-
-[source, properties]
-----
-cuba.rest.servicesConfig = +com/company/sample/app-rest-services.xml
-----
-
-Used in the Web Client and Web Portal blocks.
---
-
-[[cuba.rest.storeTokensInDb]]
-cuba.rest.storeTokensInDb::
-+
---
-Enables storing of REST API security tokens in the database. By default, tokens are stored in memory only.
-
-Stored in the database.
-
-Interface: `ServerConfig`
-
-Default value: `false`
-
-Used in the Middleware block.
---
-
-[[cuba.rest.tokenMaskingEnabled]]
-cuba.rest.tokenMaskingEnabled::
-+
---
-Specifies whether REST API token values should be masked in application logs.
-
-Default value: `true`
-
-Used in the Web Client and Web Portal blocks.
---
-
-[[cuba.rest.queriesConfig]]
-cuba.rest.queriesConfig::
-+
---
-<<additive_app_properties,Additive>> property defining a file that contains a list of JPQL queries available for application <<rest_api_v2,>> calls.
-
-The file is loaded using the <<resources,Resources>> interface, so it can be located in classpath or in the <<conf_dir,configuration directory>>.
-
-The XSD of the file is available at {xsd_url}/rest-queries.xsd.
-
-Default value: none
-
-Example:
-
-[source, properties]
-----
-cuba.rest.queriesConfig = +com/company/sample/app-rest-queries.xml
-----
-
-Used in the Web Client and Web Portal blocks.
---
-
 [[cuba.schedulingActive]]
 cuba.schedulingActive::
 +
@@ -1664,7 +1498,7 @@ Used in blocks with the configured processing, the default is Web Client.
 cuba.trustedClientPassword::
 +
 --
-Defines password used by the `LoginService.loginTrusted()` method. The Middleware layer can authenticate users who connect via the trusted client <<app_tiers,block>> without checking the user password.
+Defines password used to create `TrustedClientCredentials`. The Middleware layer can authenticate users who connect via the trusted client <<app_tiers,block>> without checking the user password.
 
 This property is used when user passwords are not stored in the database, while the client block performs the actual authentication itself. For example, by integrating with *Active Directory*.
 
@@ -1677,7 +1511,7 @@ Used in blocks: Middleware, Web Client, Web Portal.
 cuba.trustedClientPermittedIpList::
 +
 --
-Defines the list of IP addresses, from which the invocation of the `LoginService.loginTrusted()` method is allowed. For example:
+Defines the list of IP addresses, which is used with `TrustedClientCredentials` and `TrustedClientService`. For example:
 
 [source, plain]
 ----
@@ -1864,7 +1698,7 @@ cuba.userSessionProviderUrl::
 --
 Defines the Middleware <<app_tiers,block>> URL used for logging users in.
 
-This parameter should be set in additional middleware blocks that execute client requests but do not share the user session cache. If there is no required session in the local cache at the start of the request, this block invokes the `LoginService.getSession()` method at the specified URL, and caches the retrieved session.
+This parameter should be set in additional middleware blocks that execute client requests but do not share the user session cache. If there is no required session in the local cache at the start of the request, this block invokes the `TrustedClientService.findSession()` method at the specified URL, and caches the retrieved session.
 
 Interface: `ServerConfig`
 
@@ -1906,25 +1740,6 @@ Interface: `GlobalConfig`
 Can be used in all standard <<app_tiers,blocks>>.
 --
 
-[[cuba.web.urlHandlingMode]]
-cuba.web.urlHandlingMode::
-+
---
-Defines how URL changes should be handled.
-
-Possible values are the elements of `UrlHandlingMode` enumeration:
-
-* `NONE` – URL changes are not handled at all;
-
-* `BACK_ONLY` – `CubaHistoryControl` is used to handle changes. This value replaces the old <<cuba.web.allowHandleBrowserHistoryBack,cuba.web.allowHandleBrowserHistoryBack>> property;
-
-* `URL_ROUTES` – changes are handled by the <<url_history_navigation>> feature.
-
-Default value: `URL_ROUTES`.
-
-Interface: `WebConfig`.
---
-
 [[cuba.windowConfig]]
 cuba.windowConfig::
 +
@@ -1941,6 +1756,21 @@ Example:
 ----
 cuba.windowConfig = +com/company/sample/web-screens.xml
 ----
+--
+
+[[cuba.web.allowAnonymousAccess]]
+cuba.web.allowAnonymousAccess::
++
+--
+Enables access to the application screens for non-authenticated users. If you set this property to true, make sure the `Anonymous` role is of `Denying` type, i.e anonymous users cannot open any screens by default.
+
+See <<gui_anonymous_access>>.
+
+Default value: `false`
+
+Interface: `WebConfig`
+
+Used in the Web Client block.
 --
 
 [[cuba.web.allowHandleBrowserHistoryBack]]
@@ -2057,36 +1887,6 @@ Interface: `WebConfig`
 Used in the Web Client block.
 --
 
-[[cuba.web.externalAuthentication]]
-cuba.web.externalAuthentication::
-+
---
-*Deprecated*. Use <<web_login_extension_points,Web login extension points>> instead.
-
-Indicates that the authentication is done through an external mechanism like <<ldap,LDAP>> or <<sso,SSO>> Identity Provider. See also <<cuba.web.externalAuthenticationProviderClass,cuba.web.externalAuthenticationProviderClass>> and https://github.com/cuba-platform/idp-addon/wiki[IDP addon wiki].
-
-Default value: `false`
-
-Interface: `WebAuthConfig`
-
-Used in the Web Client block.
---
-
-[[cuba.web.externalAuthenticationProviderClass]]
-cuba.web.externalAuthenticationProviderClass::
-+
---
-*Deprecated*. Use <<web_login_extension_points,Web login extension points>> instead.
-
-A class implementing the `CubaAuthProvider` interface which is used when <<cuba.web.externalAuthentication,cuba.web.externalAuthentication>> is set to `true`.
-
-See <<ldap,>> and section and https://github.com/cuba-platform/idp-addon/wiki[IDP addon wiki] for examples.
-
-Interface: `WebAuthConfig`
-
-Used in the Web Client block.
---
-
 [[cuba.web.foldersPaneDefaultWidth]]
 cuba.web.foldersPaneDefaultWidth::
 +
@@ -2104,7 +1904,7 @@ Used in the Web Client block.
 cuba.web.foldersPaneEnabled::
 +
 --
-Enables the folders panel functionality.
+Enables the <<folders_pane,folders panel>> functionality.
 
 Default value: `false`
 
@@ -2120,6 +1920,19 @@ cuba.web.foldersPaneVisibleByDefault::
 Determines whether the <<folders_pane,folders panel>> should be expanded by default.
 
 Default value: `false`
+
+Interface: `WebConfig`
+
+Used in the Web Client block.
+--
+
+[[cuba.web.initialScreenId]]
+cuba.web.initialScreenId::
++
+--
+Defines what screen will be open for non-authenticated users when they first open the application URL. Requires the <<cuba.web.allowAnonymousAccess,cuba.web.allowAnonymousAccess>> to be set to `true`.
+
+See <<gui_anonymous_access>>.
 
 Interface: `WebConfig`
 
@@ -2283,6 +2096,32 @@ cuba.web.loginDialogPoweredByLinkVisible::
 Set to `false` to hide the "powered by CUBA Platform" link on the login dialog.
 
 Default value: `true`
+
+Interface: `WebConfig`
+
+Used in the Web Client block.
+--
+
+[[cuba.web.loginScreenId]]
+cuba.web.loginScreenId::
++
+--
+Identifier of a screen to be used as <<gui_LoginScreen,login screen>> of the application.
+
+Default value: `login`
+
+Interface: `WebConfig`
+
+Used in the Web Client block.
+--
+
+[[cuba.web.mainScreenId]]
+cuba.web.mainScreenId::
++
+--
+Identifier of a screen to be used as <<gui_MainScreen,main screen>> of the application.
+
+Default value: `main`
 
 Interface: `WebConfig`
 
@@ -2577,6 +2416,43 @@ Interface: `WebConfig`
 Used in the Web Client block.
 --
 
+[[cuba.web.unsupportedPagePath]]
+cuba.web.unsupportedPagePath::
++
+--
+Defines the path to the <<unsupported_browser_page,HTML page>> that is shown when an application doesn't support the current browser version.
+
+[source, properties]
+----
+cuba.web.unsupportedPagePath = /com/company/sales/web/sys/unsupported-browser-page.html
+----
+
+Default value: `/com/haulmont/cuba/web/sys/unsupported-page-template.html`.
+
+Interface: `WebConfig`.
+
+Used in the Web Client block.
+--
+
+[[cuba.web.urlHandlingMode]]
+cuba.web.urlHandlingMode::
++
+--
+Defines how URL changes should be handled.
+
+Possible values are the elements of `UrlHandlingMode` enumeration:
+
+* `NONE` – URL changes are not handled at all;
+
+* `BACK_ONLY` – `CubaHistoryControl` is used to handle changes. This value replaces the old <<cuba.web.allowHandleBrowserHistoryBack,cuba.web.allowHandleBrowserHistoryBack>> property;
+
+* `URL_ROUTES` – changes are handled by the <<url_history_navigation>> feature.
+
+Default value: `URL_ROUTES`.
+
+Interface: `WebConfig`.
+--
+
 [[cuba.web.useFontIcons]]
 cuba.web.useFontIcons::
 +
@@ -2593,24 +2469,6 @@ cuba.web.icons.create.png = font-icon:FILE_O
 Default value: `true`
 
 Interface: `WebConfig`
-
-Used in the Web Client block.
---
-
-[[cuba.web.unsupportedPagePath]]
-cuba.web.unsupportedPagePath::
-+
---
-Defines the path to the <<unsupported_browser_page,HTML page>> that is shown when an application doesn't support the current browser version.
-
-[source, properties]
-----
-cuba.web.unsupportedPagePath = /com/company/sales/web/sys/unsupported-browser-page.html
-----
-
-Default value: `/com/haulmont/cuba/web/sys/unsupported-page-template.html`.
-
-Interface: `WebConfig`.
 
 Used in the Web Client block.
 --

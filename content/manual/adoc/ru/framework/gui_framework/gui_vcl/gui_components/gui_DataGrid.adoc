@@ -35,7 +35,40 @@ include::{sourcesdir}/gui_vcl/datagrid.xml[]
 *Элементы dataGrid:*
 
 [[gui_DataGrid_columns]]
-* `columns` - обязательный элемент, определяет набор колонок `DataGrid`. Каждая колонка описывается во вложенном элементе `column` со следующими атрибутами:
+* `columns` - обязательный элемент, определяет набор колонок `DataGrid`. Элемент `columns` имеет следующие атрибуты:
++
+--
+[[gui_DataGrid_columns_includeAll]]
+** `includeAll` – загружает все атрибуты <<views,представления>>, используемого при загрузке данных из <<gui_data_containers,контейнера данных>> или <<datasources,источника данных>>.
++
+В приведенном ниже примере мы покажем все атрибуты из представления, используемого в `customersDc`. Если представление содержит системные свойства, они также будут показаны.
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/gui_dataGrid_columns_includeAll.xml[]
+----
++
+Если представление сущности содержит ссылочный атрибут, этот атрибут выводится в соответствии с его шаблоном <<namePattern_annotation,@NamePattern>>. Если вы хотите показать какой-то конкретный атрибут, он должен быть определен в представлении, а также в элементе `column`:
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/gui_Table_columns_includeAll_related.xml[]
+----
++
+Если представление не указано, атрибут `includeAll` загрузит все атрибуты из данной сущности и ее предков.
+
+[[gui_DataGrid_columns_exclude]]
+** `exclude` – разделенный запятыми список атрибутов, которые не должны быть загружены в `DataGrid`.
++
+В приведенном ниже примере мы покажем все атрибуты, за исключением атрибутов `name` и `order`:
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/gui_dataGrid_columns_exclude.xml[]
+----
+--
++
+Каждая колонка описывается во вложенном элементе `column` со следующими атрибутами:
 +
 --
 * `id` - необязательный атрибут, содержит строковый идентификатор колонки. Если не задан, в качестве идентификатора колонки будет использоваться строковое значение атрибута `property`. В этом случае проставление атрибута `property` является обязательным, в противном случае будет брошено исключение `GuiDevelopmentException`. Атрибут `id` по-прежнему является обязательным для колонки, создаваемой программно.
@@ -129,6 +162,9 @@ include::{sourcesdir}/gui_vcl/datagrid_formatter.xml[]
 [[gui_DataGrid_editorCancelCaption]]
 * `editorCancelCaption` - устанавливает заголовок кнопки отмены в режиме редактирования `DataGrid`.
 
+[[gui_DataGrid_editorCrossFieldValidate]]
+* `editorCrossFieldValidate` - включает перекрестную проверку полей во <<gui_DataGrid_inline_editor,встроенном редакторе>>. По умолчанию имеет значение `true`.
+
 [[gui_DataGrid_editorEnabled]]
 * `editorEnabled` - включает отображение UI для внутристрочного редактирования ячеек. Если `dataGrid` привязан к источнику данных с типом <<gui_keyvalue_containers,KeyValueCollectionContainer>> или <<value_datasources,ValueCollectionDatasource>>, предполагается, что он используется только для чтения, и использование атрибута `editorEnabled` в этом случае бессмысленно.
 
@@ -191,11 +227,11 @@ image::gui_dataGrid_3.png[align="center"]
 
 * `scrollToStart()` and `scrollToEnd()` - позволяют прокрутить `DataGrid` в начало и конец соответственно.
 
-[[gui_DataGrid_setCellStyleProvider]]
-* `setCellStyleProvider()` - позволяет задать стиль отображения ячеек `DataGrid`.
+[[gui_DataGrid_addCellStyleProvider]]
+* `addCellStyleProvider()` - позволяет добавить стиль отображения ячеек `DataGrid`.
 
-[[gui_DataGrid_setRowStyleProvider]]
-* `setRowStyleProvider()` - позволяет задать стиль отображения строк `DataGrid`.
+[[gui_DataGrid_addRowStyleProvider]]
+* `addRowStyleProvider()` - позволяет добавить стиль отображения строк `DataGrid`.
 
 [[gui_DataGrid_setEnterPressAction]]
 * `setEnterPressAction()` - позволяет задать <<gui_Action,действие>>, выполняемое при нажатии клавиши *Enter*. Если такое действие не задано, таблица пытается найти среди своих действий подходящее в следующем порядке:
@@ -274,12 +310,13 @@ image::gui_dataGrid_10.png[align="center"]
 include::{sourcesdir}/gui_vcl/datagrid_detailsGenerator.java[]
 ----
 
-<1> – Смотрите описание метода `createCloseButton` в классе https://demo.cuba-platform.com/sampler/open?screen=datagrid-detailsgenerator[DataGridDetailsGeneratorSample].
-<2> – Смотрите описание метода `getContent` в классе https://demo.cuba-platform.com/sampler/open?screen=datagrid-detailsgenerator[DataGridDetailsGeneratorSample].
+<1> – Смотрите код метода `createCloseButton` целиком в классе https://demo.cuba-platform.com/sampler/open?screen=datagrid-detailsgenerator[DataGridDetailsGeneratorSample].
+<2> – Смотрите код метода `getContent` целиком в классе https://demo.cuba-platform.com/sampler/open?screen=datagrid-detailsgenerator[DataGridDetailsGeneratorSample].
 
 Результат:
 
 image::gui_dataGrid_15.png[align="center"]
+
 
 [[gui_DataGrid_inline_editor]]
 *Использование режима внутристрочного редактирования:*
@@ -288,7 +325,7 @@ image::gui_dataGrid_15.png[align="center"]
 
 Методы API встроенного редактора:
 
-* `getEditedItemId()` - возвращает `id` редактируемой записи.
+* `getEditedItem()` - возвращает редактируемую запись.
 
 * `isEditorActive()` - возвращает `true`, если в момент вызова редактируется какая-либо запись.
 
@@ -297,6 +334,13 @@ image::gui_dataGrid_15.png[align="center"]
 
 [[gui_DataGrid_edit]]
 * `edit(Entity item)` - открывает интерфейс внутристрочного редактора для указанной записи. Пролистывает таблицу до нужной записи, если в момент вызова она не была видна на экране.
+
+[[gui_DataGrid_inlineEditorCrossFieldValidate]]
+Встроенный редактор `DataGrid` может учитывать <<bean_validation_custom_constraints,ограничения сущностей>> (перекрестная проверка полей). Если есть ошибки валидации, `DataGrid` покажет сообщение об ошибке. Чтобы включить/отключить проверку или получить текущее состояние, используйте следующие методы:
+
+* `setEditorCrossFieldValidate(boolean validate)` - включает или отключает перекрестную проверку полей во встроенном редакторе. По умолчанию имеет значение `true`.
+
+* `isEditorCrossFieldValidate()` - возвращает значение `true`, если для встроенного редактора включена перекрестная проверка полей.
 
 Вы также можете добавить к встроенному редактору или удалить слушатели, использовав следующие методы:
 
@@ -416,6 +460,8 @@ image::gui_dataGrid_9.png[align="center"]
 
 Список рендереров, реализованных в платформе:
 
+* `IconRenderer` - рендерер, который представляет `CubaIcon`.
+
 * `TextRenderer` - рендерер для отображения простого текста.
 
 * `HtmlRenderer` - рендерер для отображения HTML-разметки.
@@ -479,6 +525,8 @@ include::{sourcesdir}/gui_vcl/datagrid_example_2.java[]
 
 image::gui_dataGrid_12.png[align="center"]
 
+Внешний вид компонента `DataGrid` можно настроить с помощью переменных SCSS с префиксом `$cuba-datagrid-*`. Эти переменные можно изменить в визуальном редакторе после <<web_theme_extension,расширения темы>> или создания <<web_theme_creation,новой темы>>.
+
 '''
 
 Атрибуты dataGrid::
@@ -498,6 +546,7 @@ image::gui_dataGrid_12.png[align="center"]
 <<gui_attr_descriptionAsHtml,descriptionAsHtml>> -
 <<gui_DataGrid_editorBuffered,editorBuffered>> -
 <<gui_DataGrid_editorCancelCaption,editorCancelCaption>> -
+<<gui_DataGrid_editorCrossFieldValidate,editorCrossFieldValidate>> -
 <<gui_DataGrid_editorEnabled,editorEnabled>> -
 <<gui_DataGrid_editorSaveCaption,editorSaveCaption>> -
 <<gui_attr_enable,enable>> -
@@ -525,6 +574,10 @@ image::gui_dataGrid_12.png[align="center"]
 <<gui_DataGrid_columns,columns>> -
 <<gui_DataGrid_rowsCount,rowsCount>>
 
+Атрибуты <<gui_DataGrid_columns,columns>>::
+<<gui_DataGrid_columns_includeAll, includeAll>> -
+<<gui_DataGrid_columns_exclude, exclude>>
+
 Атрибуты column::
 <<gui_attr_caption,caption>> -
 <<gui_DataGrid_collapsed,collapsed>> -
@@ -551,14 +604,15 @@ API::
 <<gui_api_settings,saveSettings>> -
 <<gui_DataGrid_scrollTo,getColumns>> -
 <<gui_DataGrid_setDescriptionProvider,setDescriptionProvider>> -
-<<gui_DataGrid_setCellStyleProvider,setCellStyleProvider>> -
+<<gui_DataGrid_addCellStyleProvider,addCellStyleProvider>> -
 <<gui_DataGrid_setConverter,setConverter>> -
 <<gui_DataGrid_setDetailsGenerator,setDetailsGenerator>> -
+<<gui_DataGrid_inlineEditorCrossFieldValidate,setEditorCrossFieldValidate>> -
 <<gui_DataGrid_setEnterPressAction,setEnterPressAction>> -
 <<gui_DataGrid_setItemClickAction,setItemClickAction>> -
 <<gui_DataGrid_setRenderer,setRenderer>> -
 <<gui_DataGrid_setRowDescriptionProvider,setRowDescriptionProvider>> -
-<<gui_DataGrid_setRowStyleProvider,setRowStyleProvider>> -
+<<gui_DataGrid_addRowStyleProvider,addRowStyleProvider>> -
 <<gui_DataGrid_sort,sort>>
 
 Слушатели dataGrid::

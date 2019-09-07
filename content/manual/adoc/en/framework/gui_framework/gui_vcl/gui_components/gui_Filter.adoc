@@ -302,6 +302,22 @@ order by c.createTs
 [[gui_Filter_editable]]
 * `editable` – if the attribute value is `false`, the *Edit* option is disabled.
 
+[[gui_filter_immediately]]
+* `applyImmediately` – specifies when the filter is applied. If the attribute value is `false`, the filter will be applied only after the *Search* button is clicked. If the attribute value is `true`, filter is applied immediately after changing the filter conditions. General cases when a filter is applied immediately:
++
+--
+** After the parameter field's value changing;
+** After changing condition operation;
+** After removing a condition from the filter;
+** After the **Show rows** field changing;
+** When you click on the **OK** button in the filter editor dialog;
+** After clearing all values.
+
+In the immediate mode, the **Refresh** button is used instead of **Search**.
+
+The `applyImmediately` attribute takes precedence over the <<cuba.gui.genericFilterApplyImmediately,cuba.gui.genericFilterApplyImmediately>> application property.
+--
+
 [[gui_Filter_manualApplyRequired]]
 * `manualApplyRequired` − defines when the filter will be applied. If the attribute value is `false`, the filter (default or empty) will be applied when the screen is opened. It means that the data container will be refreshed and linked components (e.g. `Table`) will display data. If the value is `true`, the filter will be applied only after the *Search* button is clicked.
 +
@@ -352,9 +368,12 @@ image::gui_filter_apply_to.png[align="center"]
 [[gui_Filter_FilterEntityChangeListener]]
 * `FilterEntityChangeListener` - is triggered when a filter is selected for the first time on a component initialization or later from the list of saved filters.
 
+The appearance of the `Filter` component can be customized using SCSS variables with `$cuba-filter-*` prefix. You can change these variables in the visual editor after creating a <<web_theme_extension,theme extension>> or a <<web_theme_creation,custom theme>>.
+
 '''
 
 Attributes of filter::
+<<gui_filter_immediately,applyImmediately>> -
 <<gui_Filter_applyTo,applyTo>> -
 <<gui_Filter_caption,caption>> -
 <<gui_attr_captionAsHtml,captionAsHtml>> -
@@ -435,6 +454,8 @@ For specific permissions configuration information, see <<security_subsystem>>.
 --
 The following application properties affect filter behavior:
 
+* <<cuba.gui.genericFilterApplyImmediately,cuba.gui.genericFilterApplyImmediately>> allows controlling the default search mode for the filter. See also <<gui_filter_immediately,applyImmediately>> filter attribute.
+
 * <<cuba.gui.genericFilterManualApplyRequired,cuba.gui.genericFilterManualApplyRequired>> − disables automatic applying of the filter (i.e., data loading) when the screen is opened. See also <<gui_Filter_manualApplyRequired,manualApplyRequired>> filter attribute.
 
 * <<cuba.gui.genericFilterChecking,cuba.gui.genericFilterChecking>> − enables the check that at least one condition is filled before applying the filter.
@@ -505,7 +526,7 @@ The `Filter` interface provides methods for reading and writing of filter parame
 
 `paramName` - filter parameter name. Parameter name is a part of component name that displays a parameter value. The procedure of getting a component name was described <<gui_Filter_parameter_component_name,above>>. Parameter name is placed after the last dot in a component name. For example, if the component name is `component$filter.model_manufacturer90062`, then the parameter name is `model_manufacturer90062`.
 
-Note that you cannot use these methods in the <<abstractFrame,init()>> method of the screen controller, because the filter is not initialized at that moment. A good place to work with filter parameters is the <<abstractWindow,ready()>> method.
+Note that you cannot use these methods in the <<screen_InitEvent,InitEvent>> handler of the screen controller, because the filter is not initialized at that moment. A good place to work with filter parameters is the <<screen_BeforeShowEvent,BeforeShowEvent>> handler.
 
 [[gui_Filter_fts]]
 *Full-Text Search Mode in Filter*

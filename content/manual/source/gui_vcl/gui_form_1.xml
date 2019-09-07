@@ -1,14 +1,14 @@
 <data>
-    <instance id="orderDc"
-              class="com.company.sales.entity.Order"
-              view="order-edit">
+    <instance id="orderDc" class="com.company.sales.entity.Order" view="order-edit">
         <loader/>
     </instance>
 </data>
-<layout expand="editActions" spacing="true">
+<layout>
     <form id="form" dataContainer="orderDc">
         <dateField property="date"/>
-        <textField property="amount"/>
+        <textField property="amount" description="Total amount"/>
         <pickerField property="customer"/>
+
+        <field id="statusField" property="status"/>
     </form>
 </layout>

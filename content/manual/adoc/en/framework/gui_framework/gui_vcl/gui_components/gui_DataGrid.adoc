@@ -33,7 +33,42 @@ In the example above the `id` attribute is a column identifier, and the `propert
 *dataGrid elements:*
 
 [[gui_DataGrid_columns]]
-* `columns` - mandatory element that defines the `DataGrid` columns set. Each column is described in the nested `column` element with the following attributes:
+* `columns` - mandatory element that defines the `DataGrid` columns set. Element `columns` has the following attributes:
++
+--
+[[gui_DataGrid_columns_includeAll]]
+** `includeAll` – load all the attributes from the <<views,view>> that is defined in <<gui_data_containers,dataContainer>> or <<datasources,datasource>>.
++
+In the example below, we will show all the attributes from the view used in the `customersDc`. If the view contains system properties, they will be shown too.
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/gui_dataGrid_columns_includeAll.xml[]
+----
++
+
+If the view of the entity contains a reference attribute, this attribute will be displayed according to its <<namePattern_annotation,instance name>>. If you want to show a specific attribute, it must be defined in the view as well as in the `column` element:
+
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/gui_Table_columns_includeAll_related.xml[]
+----
++
+If no view is specified, `includeAll` attribute will load all the attributes from a given entity and its ancestors.
+
+[[gui_DataGrid_columns_exclude]]
+** `exclude` – comma-separated list of attributes that should not be loaded to the `DataGrid`.
++
+In the example below, we will show all the attributes excluding `name` and `order`:
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/gui_dataGrid_columns_exclude.xml[]
+----
+--
++
+Each column is described in the nested `column` element with the following attributes:
 +
 --
 * `id` - an optional attribute with the column identifier. If not set, the string with the `property` value will be used as the column identifier. In this case setting the `property` value is mandatory, otherwise the `GuiDevelopmentException` exception will be thrown. The `id` attribute is still mandatory for the columns created in the screen controller.
@@ -127,6 +162,9 @@ The right mouse clicks on the `DataGrid` can be tracked with `ContextClickListen
 [[gui_DataGrid_editorCancelCaption]]
 * `editorCancelCaption` - sets the caption on the cancel button in the `DataGrid` editor.
 
+[[gui_DataGrid_editorCrossFieldValidate]]
+* `editorCrossFieldValidate` - enables cross field validation in the <<gui_DataGrid_inline_editor,inline editor>>. Default value is `true`.
+
 [[gui_DataGrid_editorEnabled]]
 * `editorEnabled` - enables the item inline editor UI. Default value is `false`. If `dataGrid` is bound to <<gui_keyvalue_containers,KeyValueCollectionContainer>> or <<value_datasources,ValueCollectionDatasource>>, it is supposed to be read-only, and `editorEnabled` attribute becomes nonsense.
 
@@ -189,11 +227,11 @@ The `DataGrid` sorting events can be tracked by `SortListener`. The origin of th
 
 * `scrollToStart()` and `scrollToEnd()` - scroll the `DataGrid` to the top and to the end respectively.
 
-[[gui_DataGrid_setCellStyleProvider]]
-* `setCellStyleProvider()` - enables setting the `DataGrid` cell display style.
+[[gui_DataGrid_addCellStyleProvider]]
+* `addCellStyleProvider()` - adds style provider for the `DataGrid` cells.
 
-[[gui_DataGrid_setRowStyleProvider]]
-* `setRowStyleProvider()` - enables setting the `DataGrid` row display style.
+[[gui_DataGrid_addRowStyleProvider]]
+* `addRowStyleProvider()` - adds style provider for the `DataGrid` rows.
 
 [[gui_DataGrid_setEnterPressAction]]
 * `setEnterPressAction()` - method allows you to define an <<gui_Action,action>> executed when *Enter* is pressed. If such action is not defined, the table will attempt to find an appropriate one in the list of its actions in the following order:
@@ -272,8 +310,8 @@ The `DetailsGenerator` interface allows you to create a custom component to disp
 include::{sourcesdir}/gui_vcl/datagrid_detailsGenerator.java[]
 ----
 
-<1> – See the `createCloseButton` method description in the https://demo.cuba-platform.com/sampler/open?screen=datagrid-detailsgenerator[DataGridDetailsGeneratorSample] class.
-<2> – See the `getContent` method description in the https://demo.cuba-platform.com/sampler/open?screen=datagrid-detailsgenerator[DataGridDetailsGeneratorSample] class.
+<1> – See the full code of the `createCloseButton` method in the https://demo.cuba-platform.com/sampler/open?screen=datagrid-detailsgenerator[DataGridDetailsGeneratorSample] class.
+<2> – See the full code of the `getContent` method in the https://demo.cuba-platform.com/sampler/open?screen=datagrid-detailsgenerator[DataGridDetailsGeneratorSample] class.
 
 Result:
 
@@ -286,7 +324,7 @@ The `DataGrid` component has an API for inline editing of records in the cells. 
 
 Methods of inline editor API:
 
-* `getEditedItemId()` - returns the `id` of the item that is currently being edited.
+* `getEditedItem()` - returns the item that is currently being edited.
 
 * `isEditorActive()` - returns whether an item is currently being edited in the editor.
 
@@ -295,6 +333,13 @@ Methods of inline editor API:
 
 [[gui_DataGrid_edit]]
 * `edit(Entity item)` - opens the editor interface for the provided item. Scrolls the Grid to bring the item to view if it is not already visible.
+
+[[gui_DataGrid_inlineEditorCrossFieldValidate]]
+`DataGrid` inline editor can take into account <<bean_validation_custom_constraints,entity constraints>> (cross field validation). If there are validation errors, `DataGrid` will show an error message. To enable/disable validation or get current state use the following methods:
+
+* `setEditorCrossFieldValidate(boolean validate)` - enables or disables the cross field validation in the inline editor. The default value is `true`.
+
+* `isEditorCrossFieldValidate()` - return `true` if the inline editor validates cross field rules.
 
 You can add and remove listeners to the editor using the following methods:
 
@@ -414,6 +459,8 @@ For the moment this way is suitable only for the *Web* module.
 
 The list of renderers supported by the Platform:
 
+* `IconRenderer` - a renderer that represents `CubaIcon`.
+
 * `TextRenderer` - displays plain text.
 
 * `HtmlRenderer` - displays HTML layout.
@@ -477,6 +524,8 @@ include::{sourcesdir}/gui_vcl/datagrid_example_2.java[]
 
 image::gui_dataGrid_12.png[align="center"]
 
+The appearance of the `DataGrid` component can be customized using SCSS variables with `$cuba-datagrid-*` prefix. You can change these variables in the visual editor after creating a <<web_theme_extension,theme extension>> or a <<web_theme_creation,custom theme>>.
+
 '''
 
 Attributes of dataGrid::
@@ -496,6 +545,7 @@ Attributes of dataGrid::
 <<gui_attr_descriptionAsHtml,descriptionAsHtml>> -
 <<gui_DataGrid_editorBuffered,editorBuffered>> -
 <<gui_DataGrid_editorCancelCaption,editorCancelCaption>> -
+<<gui_DataGrid_editorCrossFieldValidate,editorCrossFieldValidate>> -
 <<gui_DataGrid_editorEnabled,editorEnabled>> -
 <<gui_DataGrid_editorSaveCaption,editorSaveCaption>> -
 <<gui_attr_enable,enable>> -
@@ -523,6 +573,10 @@ Elements of dataGrid::
 <<gui_DataGrid_columns,columns>> -
 <<gui_DataGrid_rowsCount,rowsCount>>
 
+Attributes of <<gui_DataGrid_columns,columns>>::
+<<gui_DataGrid_columns_includeAll, includeAll>> -
+<<gui_DataGrid_columns_exclude, exclude>>
+
 Attributes of column::
 <<gui_attr_caption,caption>> -
 <<gui_DataGrid_collapsed,collapsed>> -
@@ -549,14 +603,15 @@ API::
 <<gui_api_settings,saveSettings>> -
 <<gui_DataGrid_scrollTo,getColumns>> -
 <<gui_DataGrid_setDescriptionProvider,setDescriptionProvider>> -
-<<gui_DataGrid_setCellStyleProvider,setCellStyleProvider>> -
+<<gui_DataGrid_addCellStyleProvider,addCellStyleProvider>> -
 <<gui_DataGrid_setConverter,setConverter>> -
 <<gui_DataGrid_setDetailsGenerator,setDetailsGenerator>> -
+<<gui_DataGrid_inlineEditorCrossFieldValidate,setEditorCrossFieldValidate>> -
 <<gui_DataGrid_setEnterPressAction,setEnterPressAction>> -
 <<gui_DataGrid_setItemClickAction,setItemClickAction>> -
 <<gui_DataGrid_setRenderer,setRenderer>> -
 <<gui_DataGrid_setRowDescriptionProvider,setRowDescriptionProvider>> -
-<<gui_DataGrid_setRowStyleProvider,setRowStyleProvider>> -
+<<gui_DataGrid_addRowStyleProvider,addRowStyleProvider>> -
 <<gui_DataGrid_sort,sort>>
 
 Listeners of dataGrid::

@@ -19,7 +19,10 @@
 
 image::gui_searchPickerFieldOverlap.png[align="center"]
 
-См. также <<gui_SuggestionPickerField,SuggestionPickerField>>.
+[WARNING]
+====
+`SearchPickerField` работает только в экранах, основанных на <<gui_legacy,устаревшем API>>. Аналогичная функциональность для нового API предоставляется компонентом <<gui_SuggestionPickerField,SuggestionPickerField>>.
+====
 
 XML-имя компонента: `searchPickerField`.
 
@@ -104,7 +107,10 @@ include::{sourcesdir}/gui_vcl/searchpickerfield_2.java[]
 
 API::
 <<gui_api_addValueChangeListener,addValueChangeListener>> -
-<<gui_api_contextHelp,setContextHelpIconClickHandler>>
+<<gui_api_contextHelp,setContextHelpIconClickHandler>> -
+<<gui_LookupField_setOptionCaptionProvider,setOptionCaptionProvider>> -
+<<gui_LookupField_setOptionImageProvider, setOptionImageProvider>> -
+<<gui_LookupField_PopupWidth,setPopupWidth>>
 
 '''
 

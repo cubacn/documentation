@@ -15,11 +15,11 @@
 
 Взаимодействие CUBA-приложения с LDAP осуществляется через бин `LdapLoginProvider`.
 
-Для расширенной интеграции с Active Directory и обеспечения Single Sign-On для пользователей домена Windows можно использовать библиотеку *Jespa* и соответствующую имплементацию `CubaAuthProvider`, которая описана в <<jespa,>>.
+Для расширенной интеграции с Active Directory и обеспечения Single Sign-On для пользователей домена Windows можно использовать библиотеку *Jespa* и соответствующую имплементацию `LoginProvider`, которая описана в <<jespa,>>.
 
 Вы можете реализовать свой механизм входа при помощи интерфейсов `LoginProvider`, `HttpRequestFilter` и обработчиков событий, как это описано в разделе <<web_login, Специфика процесса входа в Web Client>>.
 
-Также вы можете включить LDAP аутентификацию для клиентов REST API: <<rest_api_v2_ldap,LDAP аутентификация для REST API>>.
+Также вы можете включить LDAP аутентификацию для клиентов REST API: {rest_man_url}#rest_api_v2_ldap[LDAP аутентификация для REST API].
 
 include::ldap/ldap_basic.adoc[]
 

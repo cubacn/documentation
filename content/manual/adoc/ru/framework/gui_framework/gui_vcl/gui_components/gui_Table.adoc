@@ -43,7 +43,38 @@ include::{sourcesdir}/gui_vcl/tableIconProvider_1.java[]
 ---- 
 
 [[gui_Table_columns]]
-* `columns` - обязательный элемент, определяет набор колонок таблицы.
+* `columns` - обязательный элемент, определяет набор колонок таблицы. Элемент `columns` имеет следующие атрибуты:
++
+--
+[[gui_Table_columns_includeAll]]
+** `includeAll` – загружает все атрибуты <<views,представления>>, используемого при загрузке данных из <<gui_data_containers,контейнера данных>> или <<datasources,источника данных>>.
++
+В приведенном ниже примере мы покажем все атрибуты из представления, используемого в `customersDc`. Если представление содержит системные свойства, они также будут показаны.
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/gui_Table_columns_includeAll.xml[]
+----
++
+Если представление сущности содержит ссылочный атрибут, этот атрибут выводится в соответствии с его шаблоном <<namePattern_annotation,@NamePattern>>. Если вы хотите показать какой-то конкретный атрибут, он должен быть определен в представлении, а также в элементе `column`:
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/gui_Table_columns_includeAll_related.xml[]
+----
++
+Если представление не указано, атрибут `includeAll` загрузит все атрибуты из данной сущности и ее предков.
+
+[[gui_Table_columns_exclude]]
+** `exclude` – разделенный запятыми список атрибутов, которые не должны быть загружены в таблицу.
++
+В приведенном ниже примере мы покажем все атрибуты, за исключением атрибутов `name` и `order`:
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/gui_Table_columns_exclude.xml[]
+----
+--
 +
 Каждая колонка описывается во вложенном элементе `column` со следующими атрибутами:
 +
@@ -74,6 +105,9 @@ role.name=<em>Name</em>
 
 [[gui_Table_column_collapsed]]
 ** `collapsed` − необязательный атрибут, при указании `true` колонка будет изначально скрыта. Пользователь может управлять отображением колонок с помощью меню, доступного по кнопке image:gui_table_columnControl.png[] в правой верхней части таблицы, если атрибут `columnControlVisible` таблицы не `false`. По умолчанию `collapsed` имеет значение `false`.
+
+[[gui_Table_column_expandRatio]]
+** `expandRatio` − необязательный атрибут, определяющий относительную длину для каждой колонки. Принимает значение большее или равное 0. Если хотя бы одной колонке установлено значение атрибута `expandRatio`, все неявные значения игнорируются и учитываются только явно присвоенные значения. Если вы одновременно установите атрибуты <<gui_Table_column_width,width>> и `expandRatio`, это вызовет ошибку в приложении.
 
 [[gui_Table_column_width]]
 ** `width` − необязательный атрибут, отвечает за изначальную ширину колонки. Может принимать только числовые значения в пикселах.
@@ -175,6 +209,8 @@ include::{sourcesdir}/gui_vcl/tableSortable_1.xml[]
 Если колонка таблицы ссылается на неперсистентный атрибут, то сортировка на базе данных производится по атрибутам, указанным в параметре `related()` аннотации `@MetaProperty`. Если такой параметр не указан, то сортировка производится в памяти только в пределах текущей страницы.
 +
 Если таблица соединена со вложенным <<gui_property_containers,property container>>, который содержит коллекцию связанных сущностей, то для того, чтобы таблицу можно было сортировать, атрибут-коллекция должен быть упорядоченного типа (`List` или `LinkedHashSet`). Если атрибут имеет тип `Set`, то атрибут `sortable` не оказывает влияния и пользователи не смогут сортировать таблицу.
++
+Если необходимо, можно создать <<gui_data_comp_sort,собственную реализацию сортировки>>.
 
 [[gui_Table_presentations]]
 * Атрибут `presentations` управляет механизмом <<gui_presentations,представлений>>. Значение по умолчанию равно `false`. Когда значение атрибута равно `true`, то в верхнем правом углу таблицы появляется значок image:gui_presentation.png[]. Механизм представлений реализован только для блока *Web Client*.
@@ -337,10 +373,9 @@ include::{sourcesdir}/gui_vcl/gui_Table_SelectionListener_event.java[]
 include::{sourcesdir}/gui_vcl/tableColumnGenerator_1.java[]
 ---- 
 
-В данном случае в ячейках колонки `color` таблицы отображается компонент <<gui_LookupPickerField,LookupPickerField>>. Компонент должен сохранять свое значение в атрибут `color` сущности, экземпляр которой отображается в данной строке.
-////
-Для этого у таблицы методом `getItemDatasource()` запрашивается источник данных для текущего экземпляра сущности, и передается компоненту `LookupPickerField`.
-////
+В данном случае в ячейках колонки `color` таблицы отображается компонент <<gui_LookupPickerField,LookupPickerField>>. Компонент будет сохранять свое значение в атрибут `color` сущности, экземпляр которой отображается в данной строке.
+
+Метод `getInstanceContainer()`, возвращающий контейнер с текущим экземпляром сущности, должен использоваться только в data binding компонентов, создаваемых при генерации ячеек таблицы.
 
 Если в ячейке необходимо отобразить просто динамически сформированный текст, вместо компонента <<gui_Label,Label>> используйте класс `Table.PlainTextCell`. Это упростит отрисовку и сделает таблицу быстрее.
 
@@ -445,6 +480,8 @@ include::{sourcesdir}/gui_vcl/table_addPrintable_2.java[]
 Если такое действие найдено и имеет свойство `enabled = true`, оно выполняется.
 --
 
+Внешний вид компонента `Table` можно настроить с помощью переменных SCSS с префиксом `$cuba-table-*`. Эти переменные можно изменить в визуальном редакторе после <<web_theme_extension,расширения темы>> или создания <<web_theme_creation,новой темы>>.
+
 '''
 
 Атрибуты table::
@@ -487,6 +524,10 @@ include::{sourcesdir}/gui_vcl/table_addPrintable_2.java[]
 <<gui_Table_rows,rows>> -
 <<gui_Table_rowsCount,rowsCount>>
 
+Атрибуты <<gui_Table_columns,columns>>::
+<<gui_Table_columns_includeAll, includeAll>> -
+<<gui_Table_columns_exclude, exclude>>
+
 Атрибуты <<gui_Table_columns,column>>::
 <<gui_Table_column_align,align>> -
 <<gui_Table_column_caption,caption>> -
@@ -495,6 +536,7 @@ include::{sourcesdir}/gui_vcl/table_addPrintable_2.java[]
 <<gui_Table_column_collapsed,collapsed>> -
 <<gui_DateField_dateFormat,dateFormat>> -
 <<gui_Table_column_editable,editable>> -
+<<gui_Table_column_expandRatio,expandRatio>> -
 <<gui_Table_column_generator,generator>> -
 <<gui_Table_column_id,id>> -
 <<gui_Table_column_link,link>> -
