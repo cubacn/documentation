@@ -9,7 +9,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="https://demo.cuba-platform.com/sampler/open?screen=stockchart-multiple-datasets" class="live-demo-btn" target="_blank">在线示例</a>
+    <a href="https://demo.cuba-platform.cn/sampler/open?screen=stockchart-multiple-datasets" class="live-demo-btn" target="_blank">在线示例</a>
 </div>
 ++++
 
@@ -20,7 +20,7 @@ image::chart/stock-chart-with-datasets.svg[align="center", width="800"]
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="https://demo.cuba-platform.com/sampler/open?screen=stockchart-stock-events" class="live-demo-btn" target="_blank">在线示例</a>
+    <a href="https://demo.cuba-platform.cn/sampler/open?screen=stockchart-stock-events" class="live-demo-btn" target="_blank">在线示例</a>
 </div>
 ++++
 
@@ -31,7 +31,7 @@ image::chart/stock-chart-with-stockevents.png[align="center", width="800"]
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="https://demo.cuba-platform.com/sampler/open?screen=stockchart-multiple-panels" class="live-demo-btn" target="_blank">在线示例</a>
+    <a href="https://demo.cuba-platform.cn/sampler/open?screen=stockchart-multiple-panels" class="live-demo-btn" target="_blank">在线示例</a>
 </div>
 ++++
 

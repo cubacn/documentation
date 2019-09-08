@@ -311,8 +311,8 @@ image::gui_dataGrid_10.png[align="center"]
 include::{sourcesdir}/gui_vcl/datagrid_detailsGenerator.java[]
 ----
 
-<1> – 参考 https://demo.cuba-platform.com/sampler/open?screen=datagrid-detailsgenerator[DataGridDetailsGeneratorSample] 类中的 `createCloseButton` 方法全部代码。
-<2> – 参考 https://demo.cuba-platform.com/sampler/open?screen=datagrid-detailsgenerator[DataGridDetailsGeneratorSample] 类中的 `getContent` 方法全部代码。
+<1> – 参考 https://demo.cuba-platform.cn/sampler/open?screen=datagrid-detailsgenerator[DataGridDetailsGeneratorSample] 类中的 `createCloseButton` 方法全部代码。
+<2> – 参考 https://demo.cuba-platform.cn/sampler/open?screen=datagrid-detailsgenerator[DataGridDetailsGeneratorSample] 类中的 `getContent` 方法全部代码。
 
 结果如图所示：
 

@@ -14,7 +14,7 @@
 有三种类型的 `BoxLayout`，它们对应的 XML 元素如下：
 ++++
 <div class="manual-live-demo-container">
-    <a href="https://demo.cuba-platform.com/sampler/open?screen=hbox-sample" class="live-demo-btn" target="_blank">在线示例</a>
+    <a href="https://demo.cuba-platform.cn/sampler/open?screen=hbox-sample" class="live-demo-btn" target="_blank">在线示例</a>
 </div>
 ++++
 
@@ -30,7 +30,7 @@ include::{sourcesdir}/gui_vcl/boxlayout_1.xml[]
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="https://demo.cuba-platform.com/sampler/open?screen=vbox-sample" class="live-demo-btn" target="_blank">在线示例</a>
+    <a href="https://demo.cuba-platform.cn/sampler/open?screen=vbox-sample" class="live-demo-btn" target="_blank">在线示例</a>
 </div>
 ++++
 
@@ -46,7 +46,7 @@ include::{sourcesdir}/gui_vcl/boxlayout_2.xml[]
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="https://demo.cuba-platform.com/sampler/open?screen=flowbox-sample" class="live-demo-btn" target="_blank">在线示例</a>
+    <a href="https://demo.cuba-platform.cn/sampler/open?screen=flowbox-sample" class="live-demo-btn" target="_blank">在线示例</a>
 </div>
 ++++
 
