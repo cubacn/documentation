@@ -13,7 +13,7 @@
 :sectlinks:
 :sectanchors:
 :lang: zh
-:revnumber: 7.1
+:revnumber: 7.1-chs
 :version-label: Version
 :revremark: Copyright (c) 2019 Haulmont
 :youtrack: https://youtrack.cuba-platform.com
