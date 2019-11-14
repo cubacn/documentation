@@ -72,7 +72,7 @@ gradle assemble install
 include::{sourcesdir}/gui/themes/themes_38.groovy[]
 ----
 +
-如果在本地安装主题，不要忘记将 `mavenLocal()` 添加到仓库列表中：打开 Studio 中的 *Project Properties* 部分，并将本地 Maven 仓库坐标添加到仓库列表中。
+如果在本地安装主题，不要忘记将 `mavenLocal()` 添加到仓库列表中：在 Studio 中打 *Project Properties* 界面，选中 “User local maven repository” 复选框。
 
 . 要在项目中继承此主题并修改它，必须扩展此主题。扩展 `halo` 主题并将 `themes/halo` 文件夹重命名为 `themes/halo-facebook`：
 +
