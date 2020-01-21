@@ -1,0 +1,4 @@
+[[std_picker_actions]]
+=== 选取器控件操作
+
+参阅 <<standard_actions>>。

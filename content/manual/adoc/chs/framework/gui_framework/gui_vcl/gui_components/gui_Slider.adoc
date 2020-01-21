@@ -1,0 +1,96 @@
+:sourcesdir: ../../../../../../source
+
+[[gui_Slider]]
+====== 滑动条
+
+`Slider` 是一个竖直或水平的条。通过鼠标拖拽条上的小控件可以为其设定某个范围内的一个数值。拖拽小控件同时也会显示值的大小。
+
+image::gui_slider.png[align="center"]
+
+该组件的 XML 名称： `slider`
+
+滑动条的默认数据类型是 `double`。可以用组件的 `datatype` 属性设置其数据类型，比如 `int`、`long`、`double` 和 `decimal`，支持在 XML 描述中或者使用 API 设置。
+
+用 <<gui_attr_dataContainer,dataContainer>> 和 <<gui_attr_property,property>> 属性可以创建数据关联的滑动条。此时，数据类型由 `property` 指定的实体属性决定。
+
+下面例子中，滑动条的数据类型设置为 `Order` 实体的 `amount` 数据类型。
+
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/slider_1.xml[]
+---- 
+
+滑动条组件有下列特殊属性：
+
+[[gui_Slider_max]]
+* `max` - 滑动条数值范围的最大值，默认 100。
+
+[[gui_Slider_min]]
+* `min` - 滑动条数值范围的最小值，默认 0。
+
+[[gui_Slider_resolution]]
+* `resolution` - 小数点后数字的位数。默认值 0。
+
+[[gui_Slider_orientation]]
+* `orientation` - 滑动条竖直还是水平。默认值 horizontal - 水平。
+
+[[gui_Slider_updateValueOnClick]]
+* `updateValueOnClick` - 如果设置为 `true`，可以通过点击滑动条设置值。默认值 `false`。
+
+这个例子中滑动条竖直放置，使用整数类型，数值范围从 2 到 20。
+
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/slider_2.xml[]
+---- 
+
+值可以通过 `getValue()` 方法获取，`setValue()` 方法设置。
+
+如需跟踪滑动条值的变化，或者其他实现了 `Field` 接口的组件值的变化，使用 `ValueChangeListener` 监听器并订阅对应事件。
+下面例子中，如果 `Slider` 的值发生变化，则将其值写入 `TextField`。
+
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/slider_3.java[]
+---- 
+
+'''
+
+slider 属性::
+<<gui_attr_align,align>> -
+<<gui_attr_caption,caption>> -
+<<gui_attr_captionAsHtml,captionAsHtml>> -
+<<gui_attr_colspan,colspan>> - 
+<<gui_attr_contextHelpText,contextHelpText>> - 
+<<gui_attr_contextHelpTextHtmlEnabled,contextHelpTextHtmlEnabled>> - 
+<<gui_attr_css,css>> -
+<<gui_attr_dataContainer,dataContainer>> - 
+<<gui_attr_datasource,datasource>> - 
+<<gui_attr_datatype,datatype>> - 
+<<gui_attr_description,description>> -
+<<gui_attr_descriptionAsHtml,descriptionAsHtml>> -
+<<gui_attr_enable,enable>> -
+<<gui_attr_expandRatio,box.expandRatio>> -
+<<gui_attr_height,height>> - 
+<<gui_attr_icon,icon>> -
+<<gui_attr_id,id>> -
+<<gui_Slider_max,max>> - 
+<<gui_Slider_min,min>> - 
+<<gui_Slider_orientation,orientation>> - 
+<<gui_attr_property,property>> - 
+<<gui_attr_requiredMessage,requiredMessage>> - 
+<<gui_Slider_resolution,resolution>> - 
+<<gui_attr_responsive,responsive>> - 
+<<gui_attr_required,required>> - 
+<<gui_attr_rowspan,rowspan>> - 
+<<gui_attr_stylename,stylename>> -
+<<gui_Slider_updateValueOnClick,updateValueOnClick>> - 
+<<gui_attr_visible,visible>> -
+<<gui_attr_width,width>>
+
+API::
+<<gui_api_contextHelp, setContextHelpText>> - 
+<<gui_api_addValueChangeListener, addValueChangeListener>>
+
+'''
+

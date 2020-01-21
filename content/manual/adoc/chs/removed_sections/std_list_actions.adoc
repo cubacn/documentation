@@ -1,0 +1,4 @@
+[[std_list_actions]]
+=== 列表组件操作
+
+参阅 <<standard_actions>>。

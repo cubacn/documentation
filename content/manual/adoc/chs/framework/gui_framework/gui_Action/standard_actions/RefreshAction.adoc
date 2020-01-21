@@ -1,0 +1,22 @@
+:sourcesdir: ../../../../../../source
+
+[[RefreshAction]]
+====== RefreshAction
+
+RefreshAction 是 <<standard_list_actions,列表操作>> 设计用来为表格或者树组件重新加载数据容器。
+
+该操作通过 `com.haulmont.cuba.gui.actions.list.RefreshAction` 类实现，在 XML 中需要使用操作属性 `type="refresh"` 定义。可以用 `action` 元素的 XML 属性定义通用的操作参数，参阅 <<declarative_actions>> 了解细节。
+
+如果需要在该操作执行前做一些检查或者与用户做一些交互，可以订阅操作的 `ActionPerformedEvent` 事件并按需调用操作的 `execute()` 方法。操作会使用你为它定义的所有参数进行调用。下面的例子中，我们在执行操作前展示了一个确认对话框：
+
+[source,java]
+----
+include::{sourcesdir}/gui/std_actions/refresh/09.java[]
+----
+
+另外，还可以先订阅 `ActionPerformedEvent`，但是不调用操作的 `execute()` 方法，而是直接出发数据加载器。示例：
+
+[source,java]
+----
+include::{sourcesdir}/gui/std_actions/refresh/10.java[]
+----

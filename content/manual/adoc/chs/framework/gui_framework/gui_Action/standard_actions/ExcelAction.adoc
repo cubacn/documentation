@@ -1,0 +1,37 @@
+:sourcesdir: ../../../../../../source
+
+[[ExcelAction]]
+====== ExcelAction
+
+ExcelAction 是 <<standard_list_actions,列表操作>> 设计用来导出表格内容至 XLS 文件。
+
+如果用户在表格中选择了某些行，该操作会询问需要导出选中的行还是所有行。可以覆盖此弹窗的标题和消息内容，只需要在主消息包添加 `actions.exportSelectedTitle` 和 `actions.exportSelectedCaption` 键值的消息即可。
+
+该操作通过 `com.haulmont.cuba.gui.actions.list.ExcelAction` 类实现，在 XML 中需要使用操作属性 `type="excel"` 定义。可以用 `action` 元素的 XML 属性定义通用的操作参数，参阅 <<declarative_actions>> 了解细节。下面我们介绍 `ExcelAction` 类特有的参数。
+
+* `fileName` - 导出的文件名。如果未指定，会根据实体名称自动生成。
+
+* `exportAggregation` - 是否导出表格的聚合行（如果有的话）。默认为 true。
+
+示例：
+
+[source,xml]
+----
+include::{sourcesdir}/gui/std_actions/excel/01.xml[]
+----
+
+或者，可以在界面控制器注入该操作，然后用 setter 配置：
+
+[source,java]
+----
+include::{sourcesdir}/gui/std_actions/excel/02.java[]
+----
+
+如果需要在该操作执行前做一些检查或者与用户做一些交互，可以订阅操作的 `ActionPerformedEvent` 事件并按需调用操作的 `execute()` 方法。操作会使用你为它定义的所有参数进行调用。下面的例子中，我们在执行操作前展示了一个确认对话框：
+
+[source,java]
+----
+include::{sourcesdir}/gui/std_actions/excel/09.java[]
+----
+
+另外，还可以先订阅 `ActionPerformedEvent`，但是不调用操作的 `execute()` 方法，而是直接使用 `ExcelExporter` 类。

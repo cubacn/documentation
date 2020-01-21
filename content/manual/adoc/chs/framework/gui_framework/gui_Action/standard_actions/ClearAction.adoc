@@ -1,0 +1,15 @@
+:sourcesdir: ../../../../../../source
+
+[[ClearAction]]
+====== ClearAction
+
+ClearAction 是 <<standard_picker_actions,选取器控件操作>> 设计用来清空选取器控件。如果控件展示一对一组合实体，实体实例也会在 <<gui_DataContext,DataContext>> 提交时移除（如果界面是实体编辑器，会在用户点击 *OK* 是发生）。
+
+该操作通过 `com.haulmont.cuba.gui.actions.picker.ClearAction` 类实现，在 XML 中需要使用操作属性 `type="picker_clear"` 定义。可以用 `action` 元素的 XML 属性定义通用的操作参数，参阅 <<declarative_actions>> 了解细节。
+
+如果需要在该操作执行前做一些检查或者与用户做一些交互，可以订阅操作的 `ActionPerformedEvent` 事件并按需调用操作的 `execute()` 方法。下面的例子中，我们在执行操作前展示了一个确认对话框：
+
+[source,java]
+----
+include::{sourcesdir}/gui/std_actions/clear/09.java[]
+----

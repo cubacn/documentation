@@ -1,0 +1,71 @@
+:sourcesdir: ../../../../../../source
+
+[[BulkEditAction]]
+====== BulkEditAction
+
+++++
+<div class="manual-live-demo-container">
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/actions/list/BulkEditAction.html" class="api-docs-btn" target="_blank">API 文档</a>
+</div>
+++++
+
+++++
+<div class="manual-live-demo-container">
+    <a href="https://demo.cuba-platform.com/sampler/open?screen=bulk-editor" class="live-demo-btn" target="_blank">在线示例</a>
+</div>
+++++
+
+BulkEditAction 是 <<standard_list_actions,列表操作>>，设计用来为多个实体实例统一修改属性值。它会打开一个特殊的界面，用户可以输入需要的属性值。之后，该操作会在数据库更新选中的实体，同时也会在数据容器更新以反映到 UI 变化。
+
+该操作通过 `com.haulmont.cuba.gui.actions.list.BulkEditAction` 类实现，在 XML 中需要使用操作属性 `type="bulkEdit"` 定义。可以用 `action` 元素的 XML 属性定义通用的操作参数，参阅 <<declarative_actions>> 了解细节。下面我们介绍 `BulkEditAction` 类特有的参数。
+
+* `openMode` - 批量编辑界面的打开模式，要求是 `OpenMode` 枚举类型的一个值：`NEW_TAB`、`DIALOG` 等。默认情况下，BulkEditAction 用 `DIALOG` 模式打开界面。
+
+* `columnsMode` - 批量编辑界面列的数量，要求是 `ColumnsMode` 枚举类型的一个值。默认是 `TWO_COLUMNS`。
+
+* `exclude` - 一个正则表达式，排除某些实体属性，不显示在编辑器。
+
+* `includeProperties` - 编辑器需要展示实体属性列表。该列表比 `exclude` 表达式优先级高。
+
+* `loadDynamicAttributes` - 是否在编辑界面展示动态属性。默认为 true。
+
+* `useConfirmDialog` - 是否在保存改动之前显示确认对话框。默认为 true。
+
+示例：
+
+[source,xml]
+----
+include::{sourcesdir}/gui/std_actions/bulkEdit/01.xml[]
+----
+
+或者，可以在界面控制器注入该操作，然后用 setter 配置：
+
+[source,java]
+----
+include::{sourcesdir}/gui/std_actions/bulkEdit/02.java[]
+----
+
+下面这些参数只能用 Java 代码配置。如果要为这些参数生成带正确注解的方法桩代码，可以用 Studio 中 *Component Inspector* 工具窗口的 *Handlers* 标签页功能。
+
+* `fieldSorter` - 接收表示实体属性的 `MetaProperty` 对象列表，返回按照编辑界面需要顺序的这些对象。示例：
++
+[source,java]
+----
+include::{sourcesdir}/gui/std_actions/bulkEdit/03.java[]
+----
+
+如果需要在该操作执行前做一些检查或者与用户做一些交互，可以订阅操作的 `ActionPerformedEvent` 事件并按需调用操作的 `execute()` 方法。下面的例子中，我们在执行操作前展示了一个自定义确认对话框：
+
+[source,java]
+----
+include::{sourcesdir}/gui/std_actions/bulkEdit/09.java[]
+----
+
+另外，还可以先订阅 `ActionPerformedEvent`，但是不调用操作的 `execute()` 方法，而是直接使用 `BulkEditors` API。此时，会忽略所有的操作参数和行为，只能用其通用参数，比如 caption, icon 等。示例：
+
+[source, java]
+----
+include::{sourcesdir}/gui/std_actions/bulkEdit/10.java[]
+----
+
+批量编辑界面的外观可以自定义，使用带 `$c-bulk-editor-*` 前缀的 SCSS 变量即可。在创建了 <<web_theme_extension,主题扩展>> 或 <<web_theme_creation,自定义主题>> 之后，可以在可视化编辑器修改这些参数。

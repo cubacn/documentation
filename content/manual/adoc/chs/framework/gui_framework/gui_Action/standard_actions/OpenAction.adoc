@@ -1,0 +1,71 @@
+:sourcesdir: ../../../../../../source
+
+[[OpenAction]]
+====== OpenAction
+
+OpenAction 是 <<standard_picker_actions,选取器控件操作>> 设计用来为选取器当前选中的实体打开编辑界面。
+
+该操作通过 `com.haulmont.cuba.gui.actions.picker.OpenAction` 类实现，在 XML 中需要使用操作属性 `type="picker_open"` 定义。可以用 `action` 元素的 XML 属性定义通用的操作参数，参阅 <<declarative_actions>> 了解细节。下面我们介绍 `OpenAction` 类特有的参数。
+
+下列参数可以通过 XML 或 Java 的方式设置：
+
+* `openMode` - 编辑界面的打开模式，要求是 `OpenMode` 枚举类型的一个值：`NEW_TAB`、`DIALOG` 等。默认情况下，OpenAction 用 `THIS_TAB` 模式打开编辑界面。
+
+* `screenId` - 编辑界面的字符串 id。OpenAction 默认会使用带有 `@PrimaryEditorScreen` 注解的界面，或 `<entity_name>.edit` 格式的界面标识符，比如， `demo_Customer.edit`。
+
+* `screenClass` - 编辑界面控制器的 Java 类。比 `screenId` 有更高的优先级。
+
+示例，需要以对话框方式打开一个特定的编辑界面，可以在 XML 中这样配置操作：
+
+[source,xml]
+----
+include::{sourcesdir}/gui/std_actions/open/01.xml[]
+----
+
+或者，可以在界面控制器注入该操作，然后用 setter 配置：
+
+[source,java]
+----
+include::{sourcesdir}/gui/std_actions/open/02.java[]
+----
+
+现在我们看看那些只能用 Java 代码配置的参数。如果要为这些参数生成带正确注解的方法桩代码，可以用 Studio 中 *Component Inspector* 工具窗口的 *Handlers* 标签页功能。
+
+* `screenOptionsSupplier` - 返回 `ScreenOptions` 对象的处理器，返回值可以传递给打开的编辑界面。示例：
++
+[source,java]
+----
+include::{sourcesdir}/gui/std_actions/open/03.java[]
+----
++
+返回的 `ScreenOptions` 对象可以通过打开界面的 `InitEvent` 访问。
+
+* `screenConfigurer` - 接收编辑界面作为参数并能在打开之间初始化界面的处理器。示例：
++
+[source,java]
+----
+include::{sourcesdir}/gui/std_actions/open/04.java[]
+----
++
+注意，界面 configurer 会在界面已经初始化但是还未显示时生效，即在界面的 `InitEvent` 和 `AfterInitEvent` 事件之后，但是在 `BeforeShowEvent` 之前。
+
+* `afterCloseHandler` - 在编辑界面关闭后调用的处理器。`AfterCloseEvent` 事件会传递给该处理器。示例：
++
+[source,java]
+----
+include::{sourcesdir}/gui/std_actions/open/08.java[]
+----
+
+如果需要在该操作执行前做一些检查或者与用户做一些交互，可以订阅操作的 `ActionPerformedEvent` 事件并按需调用操作的 `execute()` 方法。操作会使用你为它定义的所有参数进行调用。下面的例子中，我们在执行操作前展示了一个确认对话框：
+
+[source,java]
+----
+include::{sourcesdir}/gui/std_actions/open/09.java[]
+----
+
+另外，还可以先订阅 `ActionPerformedEvent`，但是不调用操作的 `execute()` 方法，而是使用 `ScreenBuilders` API 直接打开编辑界面。此时，会忽略所有的操作参数和行为，只能用其通用参数，比如 caption, icon 等。示例：
+
+[source,java]
+----
+include::{sourcesdir}/gui/std_actions/open/10.java[]
+----

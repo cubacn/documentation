@@ -1,0 +1,8 @@
+:sourcesdir: ../../../../../../source
+
+[[OpenCompositionAction]]
+====== OpenCompositionAction
+
+OpenCompositionAction 是 <<standard_picker_actions,选取器控件操作>> 设计用来为选取器当前选中的一对一组合实体打开编辑界面。如果此时没有关联实体（比如，字段为空），则会创建一个新的实例，将来会通过编辑界面保存。
+
+该操作通过 `com.haulmont.cuba.gui.actions.picker.OpenCompositionAction` 类实现，在 XML 中需要使用操作属性 `type="picker_open_composition"` 定义。该操作的参数与 <<OpenAction>> 相同。

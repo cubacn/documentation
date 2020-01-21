@@ -1,0 +1,4 @@
+[[cookbook]]
+=== Cookbook
+
+参阅 https://www.cuba-platform.cn/guides[指南].

@@ -1,0 +1,132 @@
+:sourcesdir: ../../../source
+
+[[data_access_checks]]
+=== 数据访问检查
+
+下面的表格解释框架中不同的机制如何使用数据访问<<permissions,权限>>和<<constraints,约束>>。
+
+[cols="2,1,1,1,1,1"]
+|===
+|
+|实体操作
+|实体属性
+|读约束 +
+在数据库检查 <<data_access_checks_read_db,(1)>>
+|读约束 +
+在内存中检查 <<data_access_checks_read_mem,(2)>>
+| 创建/更新/删除 +
+约束
+
+// ------------------
+| EntityManager
+|否
+|否
+|否
+|否
+|否
+
+// ------------------
+|DataManager 在中间件层
+|否 +
+是 <<data_access_checks_entity,(3)>> <<data_access_checks_mw,(4)>>
+|否 +
+是 <<data_access_checks_attr,(5)>>
+|是
+|否 +
+是 <<data_access_checks_mw,(4)>>
+|否 +
+是 <<data_access_checks_mw,(4)>>
+
+// ------------------
+|DataManager.secure 在中间件层
+
+DataManager 在客户端层
+|是 <<data_access_checks_entity,(3)>>
+|否 +
+是 <<data_access_checks_attr,(5)>>
+|是
+|是
+|是
+
+// ------------------
+|通用 UI 数据感知组件
+|是
+|是
+|- <<data_access_checks_ui,(6)>>
+|- <<data_access_checks_ui,(6)>>
+|- <<data_access_checks_ui,(6)>>
+
+// ------------------
+|REST API `/entities`
+|是
+|是
+|是
+|是
+|是
+
+// ------------------
+|REST API `/queries`
+|是
+|是
+|是
+|是
+|- <<data_access_checks_rest_queries,(7)>>
+
+// ------------------
+|REST API `/services`
+|是
+|是
+|- <<data_access_checks_rest_serv,(8)>>
+|- <<data_access_checks_rest_serv,(8)>>
+|- <<data_access_checks_rest_serv,(8)>>
+|===
+
+注：
+
+[[data_access_checks_read_db]]
+1) 在数据库检查的读约束只影响根实体
+
+[source,java]
+----
+// 只有在满足 Order 实体的约束情况下才会加载 order
+Order order = dataManager.load(Order.class).viewProperties("date", "amount", "customer.name").one();
+// 关联的 customer 会被加载，忽略 Customer 实体在数据库检查的约束
+assert order.getCustomer() != null;
+----
+
+[[data_access_checks_read_mem]]
+2) 读约束 checked in memory affects the root entity and all linked entities in the loaded graph.
+
+[source,java]
+----
+// 只有在满足 Order 实体的约束情况下才会加载 order
+Order order = dataManager.load(Order.class).viewProperties("date", "amount", "customer.name").one();
+// 关联的 customer 非空，只有满足了 Customer 实体在内存中检查的约束
+if (order.getCustomer() != null) ...
+----
+
+[[data_access_checks_entity]]
+3) DataManager 中的实体操作检查只对根实体生效。
+
+[source,java]
+----
+// 加载 Order
+Order order = dataManager.load(Order.class).viewProperties("date", "amount", "customer.name").one();
+// 关联 customer 会被加载，即便用户没有权限读取 Customer 实体
+assert order.getCustomer() != null;
+----
+
+[[data_access_checks_mw]]
+4) 只有在设置了 <<cuba.dataManagerChecksSecurityOnMiddleware,cuba.dataManagerChecksSecurityOnMiddleware>> 应用程序属性为 true 时，DataManager 才会在中间件层检查实体操作权限和内存中约束。
+
+[[data_access_checks_attr]]
+5) 只有在设置了 <<cuba.entityAttributePermissionChecking,cuba.entityAttributePermissionChecking>> 应用程序属性为 true 时，DataManager 才检查实体属性权限。
+
+[[data_access_checks_ui]]
+6) UI 组件本身不检查约束，但是当数据是通过标准机制加载时，DataManager 会使用约束。所以，如果实体实例受到某些约束的限制被过滤掉了，相应的 UI 组件还是会显示，但是内容为空。另外，可以将基于 `ItemTrackingAction` 类的操作与特定的约束相关联，这样只有在选中的实体通过了关联的约束检查之后这个操作才会启用。
+
+[[data_access_checks_rest_queries]]
+7) REST 查询都是只读的。
+
+[[data_access_checks_rest_serv]]
+8) REST 服务方法参数和结果不会被检查，因为要与访问组约束一致。服务中与约束相关的定义是由服务如何加载和保存数据决定的，比如是否使用 `DataManager` 或 `DataManager.secure()`。

@@ -1,0 +1,4 @@
+[[db_update_in_dev]]
+=== 创建数据库 Schema
+
+ 参阅 {studio_man_url}/#database_migration[Studio 用户向导].
