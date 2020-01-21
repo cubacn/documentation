@@ -11,7 +11,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/TreeTable.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/TreeTable.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -49,6 +49,8 @@ include::{sourcesdir}/gui_vcl/treetable_1.xml[]
 <<gui_attr_description,description>> -
 <<gui_attr_descriptionAsHtml,descriptionAsHtml>> -
 <<gui_Table_editable,editable>> -
+<<gui_Table_emptyStateLinkMessage,emptyStateLinkMessage>> -
+<<gui_Table_emptyStateMessage,emptyStateMessage>> -
 <<gui_attr_enable,enable>> -
 <<gui_attr_expandRatio,box.expandRatio>> -
 <<gui_attr_height,height>> -
@@ -92,6 +94,7 @@ include::{sourcesdir}/gui_vcl/treetable_1.xml[]
 <<gui_Table_column_maxTextLength,maxTextLength>> -
 <<gui_attr_optionsDatasource,optionsDatasource>> -
 <<gui_DateField_resolution,resolution>> -
+<<gui_Table_column_sort,sort>> -
 <<gui_Table_column_sortable,sortable>> -
 <<gui_attr_visible,visible>> -
 <<gui_Table_column_width,width>>
@@ -100,12 +103,21 @@ include::{sourcesdir}/gui_vcl/treetable_1.xml[]
 <<gui_Table_column_aggregation,aggregation>> -
 <<gui_formatter,formatter>>
 
+Атрибуты <<gui_Table_column_aggregation,aggregation>>::
+<<gui_Table_column_aggregation_editable,editable>> -
+<<gui_Table_column_aggregation_strategyClass,strategyClass>> -
+<<gui_Table_column_aggregation,type>> -
+<<gui_Table_column_aggregation_valueDescription,valueDescription>>
+
 Атрибуты <<gui_Table_rows,rows>>::
 <<gui_attr_datasource,datasource>>
 
 API::
 <<gui_Table_ColumnCollapseListener,addColumnCollapseListener>> -
 <<gui_Table_SelectionListener,addSelectionListener>> -
-<<gui_Table_CellClickListener,setClickListener>>
+<<gui_Table_getAggregationResults,getAggregationResults>> -
+<<gui_Table_AggregationDistributionProvider,setAggregationDistributionProvider>> -
+<<gui_Table_CellClickListener,setClickListener>> -
+<<gui_Table_setEmptyStateLinkClickHandler,setEmptyStateLinkClickHandler>>
 
 '''

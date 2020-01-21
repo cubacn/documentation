@@ -1,5 +1,4 @@
 task buildWar(type: CubaWarBuilding) {
-    appHome = '${catalina.base}/work'
     singleWar = true
     includeContextXml = true
     includeJdbcDriver = true

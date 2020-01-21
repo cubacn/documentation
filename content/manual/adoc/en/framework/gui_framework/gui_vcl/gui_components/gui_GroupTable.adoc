@@ -11,7 +11,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/GroupTable.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/GroupTable.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -73,6 +73,16 @@ groupTable.ungroupByColumns("department");
 
 [[gui_GroupTable_ungroup]]
 * `ungroup()` - resets grouping at all.
+
+[[gui_GroupTable_AggregationDistributionProvider]]
+* The `setAggregationDistributionProvider()` method is similar to the <<gui_Table_AggregationDistributionProvider,same>> method for the `Table` component with the only difference that when creating a provider, the `GroupAggregationDistributionContext<V>` object is used, which contains additional:
++
+[[gui_GroupTable_groupInfo]]
+** `GroupInfo groupInfo` – an object with information about the grouping row: properties of the grouped columns and their values.
+
+[[gui_GroupTable_getAggregationResults]]
+* The `getAggregationResults()` method returns a map with aggregation results for the specified <<gui_GroupTable_groupInfo,GroupInfo>> object, where map keys are table column identifiers, and values are aggregation values.
+
 --
 
 The rest of the `GroupTable` functionality is similar to a simple <<gui_Table,Table>>.
@@ -94,6 +104,8 @@ Attributes of groupTable::
 <<gui_attr_description,description>> -
 <<gui_attr_descriptionAsHtml,descriptionAsHtml>> -
 <<gui_Table_editable,editable>> -
+<<gui_Table_emptyStateLinkMessage,emptyStateLinkMessage>> -
+<<gui_Table_emptyStateMessage,emptyStateMessage>> -
 <<gui_attr_enable,enable>> -
 <<gui_attr_expandRatio,box.expandRatio>> -
 <<gui_attr_height,height>> -
@@ -143,6 +155,7 @@ Attributes of <<gui_Table_columns,column>>::
 <<gui_Table_column_maxTextLength,maxTextLength>> -
 <<gui_attr_optionsDatasource,optionsDatasource>> -
 <<gui_DateField_resolution,resolution>> -
+<<gui_Table_column_sort,sort>> -
 <<gui_Table_column_sortable,sortable>> -
 <<gui_attr_visible,visible>> -
 <<gui_Table_column_width,width>>
@@ -151,14 +164,23 @@ Elements of <<gui_Table_columns,column>>::
 <<gui_Table_column_aggregation,aggregation>> -
 <<gui_formatter,formatter>>
 
+Attributes of <<gui_Table_column_aggregation,aggregation>>::
+<<gui_Table_column_aggregation_editable,editable>> -
+<<gui_Table_column_aggregation_strategyClass,strategyClass>> -
+<<gui_Table_column_aggregation,type>> -
+<<gui_Table_column_aggregation_valueDescription,valueDescription>>
+
 Attributes of <<gui_Table_rows,rows>>::
 <<gui_attr_datasource,datasource>>
 
 API::
 <<gui_Table_ColumnCollapseListener,addColumnCollapseListener>> -
 <<gui_Table_SelectionListener,addSelectionListener>> -
+<<gui_GroupTable_getAggregationResults,getAggregationResults>> -
 <<gui_GroupTable_groupByColumns,groupByColumns>> -
+<<gui_GroupTable_AggregationDistributionProvider,setAggregationDistributionProvider>> -
 <<gui_Table_CellClickListener,setClickListener>> -
+<<gui_Table_setEmptyStateLinkClickHandler,setEmptyStateLinkClickHandler>> -
 <<gui_GroupTable_ungroup,ungroup>> -
 <<gui_GroupTable_ungroupByColumns,ungroupByColumns>>
 

@@ -1,0 +1,124 @@
+:sourcesdir: ../../../source
+
+[[proxy_configuration_tomcat]]
+=== Конфигурация прокси для Tomcat
+
+Для задач интеграции может потребоваться прокси-сервер. В этом разделе описывается конфигурация HTTP-сервера Nginx в качестве прокси для приложения на платформе CUBA.
+
+[TIP]
+====
+Если вы настраиваете прокси, то не забудьте задать значение в параметре <<cuba.webAppUrl,cuba.webAppUrl>>.
+====
+
+[[tomcat_for_proxy]]
+Настройка Tomcat::
++
+--
+В случаях, когда Tomcat используется за прокси-сервером - его тоже нужно донастроить.
+Это необходимо, чтобы Tomcat мог обработать заголовки от прокси-сервера.
+
+Сначала добавьте в конфигурационный файл Tomcat `conf/server.xml` следующий код:
+
+[source,xml]
+----
+<Valve className="org.apache.catalina.valves.RemoteIpValve"
+        remoteIpHeader="X-Forwarded-For"
+        requestAttributesEnabled="true"
+        internalProxies="127\.0\.0\.1"/>
+----
+
+Есть еще одна настройка, которую вы можете поменять в файле `conf/server.xml` - это атрибут `pattern` элемента `AccessLogValve`.
+Добавьте `%{x-forwarded-for}i` в атрибут `pattern`, чтобы в Tomcat access log записывались и IP-адреса прокси-серверов, и изначальный IP-адрес источника запроса.
+----
+<Valve className="org.apache.catalina.valves.AccessLogValve"
+    ...
+    pattern="%h %{x-forwarded-for}i %l %u %t &quot;%r&quot; %s %b" />
+----
+
+Затем перезапустите Tomcat:
+
+[source,plain]
+----
+sudo service tomcat8 restart
+----
+
+NGINX::
+
+Для Nginx предлагается 2 конфигурации проксирования, описанные ниже. Примеры подготовлены и проверены на Ubuntu 18.04.
+
+. <<direct_proxy,Прямое проксирование>>
+. <<redirect_to_path,Проксирование с перенаправлением>>
+
+К примеру, ваше веб-приложение работает по ссылке `++http://localhost:8080/app++`.
+
+[[install_nginx]]
+Установите Nginx:
+
+[source,plain]
+----
+sudo apt-get install nginx
+----
+
+Откройте в браузере ссылку `++http://localhost++` и убедитесь, что стартовая страница Nginx работает.
+
+Теперь вы можете удалить символьную ссылку на тестовый сайт Nginx:
+
+[source,plain]
+----
+rm /etc/nginx/sites-enabled/default
+----
+--
+
+Далее сконфигурируйте прокси одной из выбранных схем:
+
+[[direct_proxy]]
+Прямое проксирование::
++
+--
+В этом случае все запросы обрабатывает прокси, прозрачно перенаправляя их в приложение.
+
+Создайте конфигурационный файл Nginx `/etc/nginx/sites-enabled/direct_proxy`:
+
+[source,plain]
+----
+include::{sourcesdir}/deployment/direct_proxy.yml[]
+----
+
+и перезапустите Nginx:
+
+[source,plain]
+----
+sudo service nginx restart
+----
+
+Вы можете открыть свой сайт по ссылке `++http://localhost/app++`.
+--
+
+[[redirect_to_path]]
+Проксирование с перенаправлением::
++
+--
+В этом примере описано, как изменить путь к приложению в URL с `/app` на `/`, как если бы приложение было развёрнуто в корневом контексте (аналог `/ROOT`). Это позволит вам обращаться к приложению по адресу `++http://localhost++`.
+
+Создайте конфигурационный файл Nginx `/etc/nginx/sites-enabled/direct_proxy`:
+
+[source,plain]
+----
+include::{sourcesdir}/deployment/root_proxy[]
+----
+
+и перезапустите Nginx
+
+[source,plain]
+----
+sudo service nginx restart
+----
+
+Ваше приложение доступно по ссылке `++http://localhost++`.
+--
+
+[TIP]
+====
+Обратите внимание, что похожие инструкции развертывания прокси справедливы для конфигураций <<proxy_configuration_uberjar,Jetty>>, WildFly и др. Вам может понадобиться дополнительно настроить эти сервера.
+====
+

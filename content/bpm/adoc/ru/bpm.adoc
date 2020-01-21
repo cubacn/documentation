@@ -14,7 +14,7 @@
 :sectlinks:
 :sectanchors:
 :lang: ru
-:revnumber: 7.1
+:revnumber: 7.2
 :version-label: Версия
 :revremark: Copyright (c) 2019 Haulmont (www.haulmont.com)
 :figure-caption: Рисунок
@@ -24,6 +24,8 @@
 :!sectnums:
 
 include::preface.adoc[]
+
+include::installation.adoc[]
 
 include::quick_start.adoc[]
 

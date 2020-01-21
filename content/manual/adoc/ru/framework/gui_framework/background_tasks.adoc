@@ -5,7 +5,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="https://demo.cuba-platform.com/sampler/open?screen=normal-progressbar" class="live-demo-btn" target="_blank">ДЕМОНСТРАЦИЯ</a>
+    <a href="https://demo.cuba-platform.com/sampler/open?screen=standard-progressbar" class="live-demo-btn" target="_blank">ДЕМОНСТРАЦИЯ</a>
 </div>
 ++++
 
@@ -25,7 +25,7 @@
 
 [WARNING]
 ====
-Метод `run()` класса `BackgroundTask` нельзя использовать для чтения/изменения состояния визуальных компонентов или источников данных: вместо этого используйте методы `done()`, `progress()` и `canceled()`. При попытке установить значение для компонента UI из фонового потока будет выброшено исключение `IllegalConcurrentAccessException`.
+Метод `run()` класса `BackgroundTask` нельзя использовать для чтения/изменения состояния визуальных компонентов или контейнеров данных: вместо этого используйте методы `done()`, `progress()` и `canceled()`. При попытке установить значение для компонента UI из фонового потока будет выброшено исключение `IllegalConcurrentAccessException`.
 ====
 
 Пример:
@@ -81,3 +81,4 @@ include::{sourcesdir}/gui/backgroundtasks_2.java[]
 Если вы не используете фоновую задачу, но хотите изменять состояние UI-компонентов из не-UI потока, воспользуйтесь методами интерфейса `UIAccessor`. Получите ссылку на интерфейс `UIAccessor` методом `BackgroundWorker.getUIAccessor()` в UI-потоке, и после этого вы сможете вызывать его методы `access()` и `accessSynchronously()` из фонового потока для безопасного чтения и изменения состояния UI-компонентов.
 ====
 
+include::background_tasks/background_task_examples.adoc[]

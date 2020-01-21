@@ -24,7 +24,7 @@ image::EntityClasses.png[align="center"]
 +
 [WARNING]
 ====
-`AbstractInstance` хранит слушателей в коллекции `WeakReference`, т.е. при отсутствии внешних ссылок на добавленного слушателя, он будет немедленно уничтожен сборщиком мусора. Как правило, слушателями изменения атрибутов являются <<gui_vcl,визуальные компоненты>> и <<datasources,источники данных>> UI, на которые всегда имеются ссылки из других объектов, поэтому проблема исчезновения слушателей не возникает. Однако если слушатель создается прикладным кодом и на него никто не ссылается естественным образом, необходимо кроме добавления в `Instance` сохранить его в некотором поле объекта.
+`AbstractInstance` хранит слушателей в коллекции `WeakReference`, т.е. при отсутствии внешних ссылок на добавленного слушателя, он будет немедленно уничтожен сборщиком мусора. Как правило, слушателями изменения атрибутов являются <<gui_vcl,визуальные компоненты>> и <<gui_data,компоненты данных>>, на которые всегда имеются ссылки из других объектов, поэтому проблема исчезновения слушателей не возникает. Однако если слушатель создается прикладным кодом и на него никто не ссылается естественным образом, необходимо кроме добавления в `Instance` сохранить его в некотором поле объекта.
 ====
 
 * `BaseGenericIdEntity` - базовый класс персистентных и неперсистентных сущностей. Реализует `Entity`, но не специфицирует тип идентификатора (то есть первичного ключа) сущности.
@@ -35,7 +35,7 @@ image::EntityClasses.png[align="center"]
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/StandardEntity.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/StandardEntity.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -58,7 +58,7 @@ image::EntityClasses_Standard.png[align="center"]
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/BaseUuidEntity.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/BaseUuidEntity.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -69,7 +69,7 @@ image::EntityClasses_Uuid.png[align="center"]
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/BaseLongIdEntity.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/BaseLongIdEntity.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -80,7 +80,7 @@ image::EntityClasses_Long.png[align="center"]
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/BaseStringIdEntity.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/BaseStringIdEntity.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -91,7 +91,7 @@ image::EntityClasses_String.png[align="center"]
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/BaseIdentityIdEntity.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/BaseIdentityIdEntity.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -102,7 +102,7 @@ image::EntityClasses_Identity.png[align="center"]
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/BaseIntIdentityIdEntity.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/BaseIntIdentityIdEntity.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -113,7 +113,7 @@ image::EntityClasses_IntIdentity.png[align="center"]
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/BaseGenericIdEntity.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/BaseGenericIdEntity.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 

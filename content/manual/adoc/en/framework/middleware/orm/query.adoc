@@ -3,20 +3,9 @@
 [[query]]
 ===== Executing JPQL Queries
 
-The `Query` interface is designed to execute <<jpql,JPQL>> queries. The reference to it may be obtained from the current `EntityManager` instance by calling `createQuery()` method. If the query is supposed to be used to load entities, we recommend calling `createQuery()` with the result type as a parameter. This will create a `TypedQuery` instance.
+This section describes the `Query` interface which is designed to execute <<jpql,JPQL>> queries at the ORM level. The reference to it may be obtained from the current `EntityManager` instance by calling `createQuery()` method. If the query is supposed to be used to load entities, we recommend calling `createQuery()` with the result type as a parameter. This will create a `TypedQuery` instance.
 
-The methods of `Query` mainly correspond to the methods of the standard JPA link:http://docs.oracle.com/javaee/7/api/javax/persistence/Query.html[javax.persistence.Query] interface. Let us have a look at the differences.
-
-* `setParameter()` – sets a value to a query parameter. If the value is an entity instance, implicitly converts the instance into its identifier. For example: 
-+
-[source, java]
-----
-include::{sourcesdir}/middleware/jpqlquery_1.java[]
-----
-+
-Note that the entity is passed as a parameter while comparison in the query is done using identifier.
-+
-A variant of the method with `implicitConversions = false` does not perform such conversion.
+The methods of `Query` mainly correspond to the methods of the standard JPA link:http://docs.oracle.com/javaee/7/api/javax/persistence/Query.html[javax.persistence.Query] interface. Let's have a look at the differences.
 
 * `setView()`, `addView()` – define a <<views,view>> which is used to load data.
 
@@ -30,10 +19,23 @@ In most cases ignoring the current persistence context is acceptable, and is a p
 
 You can also set flush mode explicitly using the `setFlushMode()` method of the `Query` interface. It will override the default settings described above.
 
+[[query_soft_delete]]
+Using DELETE FROM with soft-deleted entities::
++
+The JPQL `DELETE FROM` statement throws an exception if launched for the soft-deleted entity and the <<soft_deletion,Soft Delete>> mode is on. Such statement is actually transformed to SQL which deletes all instances not marked for deletion. This confusing behavior is disabled by default and can be enabled using the <<cuba.enableDeleteStatementInSoftDeleteMode,cuba.enableDeleteStatementInSoftDeleteMode>> application property.
+
 [[query_hints]]
 Query Hints::
 +
 --
+++++
+<div class="manual-since-container">
+    <a href="http://files.cuba-platform.com/cuba/release-notes/7.1/" class="since-btn" target="_blank">
+        <span class="since-btn-caption">Since</span><span class="since-btn-version">7.1</span>
+    </a>
+</div>
+++++
+
 The `Query.setHint()` method allows you to add some hints to the generated SQL statements. The hints are usually used to specify how the query should use indexes or other database specifics. The framework defines the following constants which can be passed to this method as hint names:
 
 * `QueryHints.SQL_HINT` - the hint value is added after the generated SQL statement. Provide the full hint string here, including comment delimiters if any.

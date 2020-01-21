@@ -65,7 +65,9 @@ Used in all standard <<app_tiers,blocks>>.
 cuba.automaticDatabaseUpdate::
 +
 --
-Determines whether server should run <<db_update_server,DB update scripts>> at application start.
+Determines whether the server should run the <<db_update_server,database update scripts>> at the application start.
+
+Since CUBA 7.2, you can control the execution of database update scripts separately for the main and additional data stores: for the main data store use the `cuba.automaticDatabaseUpdate_MAIN` property, for additional data stores use properties in the form of `cuba.automaticDatabaseUpdate_<store_name>`. The concrete properties have priority over the common one.
 
 Default value: `false`
 
@@ -190,6 +192,14 @@ Used in the Middleware block.
 cuba.checkPasswordOnClient::
 +
 --
+++++
+<div class="manual-since-container">
+    <a href="http://files.cuba-platform.com/cuba/release-notes/7.0/" class="since-btn" target="_blank">
+        <span class="since-btn-caption">Since</span><span class="since-btn-version">7.0</span>
+    </a>
+</div>
+++++
+
 When set to false (which is the default), `LoginPasswordLoginProvider` of the client block sends user's password as is to the middleware `AuthenticationService.login()` method. This is appropriate if the client and middleware blocks are co-located in the same JVM. For a distributed deployment when the client block is located on a different computer on the network, the connection between the client and middleware in this case should be encrypted using SSL.
 
 If set to true, `LoginPasswordLoginProvider` loads the `User` entity by the entered login and checks the password itself. If the password matches the loaded password hash, the provider performs login as a trusted client using the password specified in the <<cuba.trustedClientPassword,cuba.trustedClientPassword>> property. This mode saves you from setting up SSL connections between clients and middleware in trusted networks, and at the same time does not exposes user passwords to the network: only hashes are transmitted. However notice that trusted client password is still transmitted over the network, so the SSL-protected connection is still more secure.
@@ -258,9 +268,7 @@ cuba.confDir::
 --
 Defines location of the <<conf_dir,configuration folder>> for an application <<app_tiers,block>>.
 
-Default value for <<fast_deployment>>: `${catalina.home}/conf/${<<cuba.webContextName,cuba.webContextName>>}`, which points to a subdirectory with the name of the web app inside the `tomcat/conf` folder, for example, `tomcat/conf/app-core`.
-
-Default value for WAR and UberJAR deployment: `${app.home}/${<<cuba.webContextName,cuba.webContextName>>}/conf`, which points to a subdirectory of the <<app_home,application home>>.
+Default value: `${app.home}/${<<cuba.webContextName,cuba.webContextName>>}/conf`, which points to a subdirectory of the <<app_home,application home>>.
 
 Interface: `GlobalConfig`
 
@@ -359,9 +367,17 @@ Used in the Middleware block.
 cuba.dataManagerBeanValidation::
 +
 --
+++++
+<div class="manual-since-container">
+    <a href="http://files.cuba-platform.com/cuba/release-notes/7.1/" class="since-btn" target="_blank">
+        <span class="since-btn-caption">Since</span><span class="since-btn-version">7.1</span>
+    </a>
+</div>
+++++
+
 Indicates that <<dataManager,DataManager>> should perform <<bean_validation,bean validation>> when saving entities.
 
-Default value: `true`
+Default value: `false`
 
 Stored in the database.
 
@@ -374,7 +390,7 @@ Used in the Middleware block.
 cuba.dataManagerChecksSecurityOnMiddleware::
 +
 --
-Indicates that <<dataManager,DataManager>> should apply <<security_subsystem,security>> restrictions when invoked on the middleware.
+Indicates that <<dataManager,DataManager>> should check entity operation <<permissions,permissions>> and in-memory <<constraints,constraints>> on the middle tier.
 
 Default value: `false`
 
@@ -402,9 +418,7 @@ cuba.dataDir::
 --
 Defines the location of the <<work_dir,work folder>> for an <<app_tiers,application block>>.
 
-Default value for <<fast_deployment>>: `${catalina.home}/work/${<<cuba.webContextName,cuba.webContextName>>}`, which points to a subdirectory with the name of the web app inside the `tomcat/work` folder, for example, `tomcat/work/app-core`.
-
-Default value for WAR and UberJAR deployment: `${app.home}/${<<cuba.webContextName,cuba.webContextName>>}/work`, which points to a subdirectory of the <<app_home,application home>>.
+Default value: `${app.home}/${<<cuba.webContextName,cuba.webContextName>>}/work`, which points to a subdirectory of the <<app_home,application home>>.
 
 Interface: `GlobalConfig`
 
@@ -596,7 +610,7 @@ Used in the Web Client block.
 cuba.entityAttributePermissionChecking::
 +
 --
-If set to `true`, turns on checking entity attribute permissions on Middleware. When `false`, attribute permissions are checked on the client tier, e.g. in <<gui_framework,Generic UI>> or {rest_man_url}[REST API].
+If set to `true`, <<dataManager,DataManager>> checks entity attribute <<permissions,permissions>>. When `false`, attribute permissions are checked only in <<gui_framework,Generic UI>> data-aware components and {rest_man_url}[REST API] endpoints.
 
 Default value: `false`
 
@@ -655,6 +669,14 @@ cuba.groovyEvaluatorImport = com.haulmont.cuba.core.global.PersistenceHelper,com
 cuba.gui.genericFilterApplyImmediately::
 +
 --
+++++
+<div class="manual-since-container">
+    <a href="http://files.cuba-platform.com/cuba/release-notes/7.1/" class="since-btn" target="_blank">
+        <span class="since-btn-caption">Since</span><span class="since-btn-version">7.1</span>
+    </a>
+</div>
+++++
+
 When set to `true`, the <<gui_Filter,generic filter>> works in the immediate mode when every change of filter parameters automatically reloads data. When set to `false`, the filter will be applied only after the *Search* button is clicked. See also <<gui_filter_immediately,applyImmediately>> filter attribute.
 
 Default value: `true`
@@ -767,7 +789,7 @@ cuba.gui.genericFilterManualApplyRequired::
 --
 Influences the behavior of the <<gui_Filter,Filter>> component.
 
-When set to `true`, the screens containing filters will not load the corresponding datasources automatically, until the user clicks the filter *Apply* button.
+When set to `true`, screens containing filters will not trigger corresponding data loaders automatically on opening, until the user clicks the filter's *Apply* button.
 
 The value of `cuba.gui.genericFilterManualApplyRequired` is ignored, when opening browser screens using an application or search folders, i.e. the filter is applied. The filter will not be applied, if the `applyDefault` value for a folder is explicitly set to `false`.
 
@@ -804,6 +826,21 @@ cuba.gui.genericFilterPopupListSize::
 Defines the number of items displayed in the popup list of the *Search* button. If the number of filters exceeds this value, Show more... action is added to the popup list. The action opens a new dialog window with a list of all possible filters.
 
 Default value: `10`
+
+Stored in the database.
+
+Interface: `ClientConfig`
+
+Used in the Web Client block.
+--
+
+[[cuba.gui.genericFilterPropertiesHierarchyDepth]]
+cuba.gui.genericFilterPropertiesHierarchyDepth::
++
+--
+Defines the properties hierarchy depth in the "Add Condition" dialog window. For example, if the depth value is 2, then you can select an entity attribute `contractor.city.country`, if the value is 3, then `contractor.city.country.name`, etc.
+
+Default value: `2`
 
 Stored in the database.
 
@@ -1114,11 +1151,9 @@ Used in all standard <<app_tiers,blocks>>.
 cuba.logDir::
 +
 --
-Defines the location of the <<log_dir,log folder>> for an <<app_tiers,application block>>.
+Specifies the location of the <<log_dir,log folder>> for an <<app_tiers,application block>>.
 
-Default value for <<fast_deployment>>: `${catalina.home}/logs`, which points to the `tomcat/logs` folder.
-
-Default value for WAR and UberJAR deployment: `${app.home}/logs`, which points to the `logs` subdirectory of the <<app_home,application home>>.
+Default value: `${app.home}/logs`, which points to the `logs` subdirectory of the <<app_home,application home>>.
 
 Interface: `GlobalConfig`
 
@@ -1198,6 +1233,14 @@ cuba.metadataConfig = +com/company/sample/metadata.xml
 cuba.passwordEncryptionModule::
 +
 --
+++++
+<div class="manual-since-container">
+    <a href="http://files.cuba-platform.com/cuba/release-notes/7.0/" class="since-btn" target="_blank">
+        <span class="since-btn-caption">Since</span><span class="since-btn-version">7.0</span>
+    </a>
+</div>
+++++
+
 Defines the name of the bean used for user password hashing. When creating new user or updating user's password, the value of this property is stored for the user in the `SEC_USER.PASSWORD_ENCRYPTION` database field.
 
 See also <<cuba.legacyPasswordEncryptionModule,cuba.legacyPasswordEncryptionModule>>.
@@ -1342,6 +1385,19 @@ Interface: `QueryCacheConfig`
 Used in the Middleware block.
 --
 
+[[cuba.rememberMeExpirationTimeoutSec]]
+cuba.rememberMeExpirationTimeoutSec::
++
+--
+Defines expiration timeout for "remember me" cookies and `RememberMeToken` entity instances.
+
+Default value: `30 * 24 * 60 * 60` (30 days)
+
+Interface: `GlobalConfig`
+
+Used in the Web Client and Middleware blocks.
+--
+
 [[cuba.remotingSpringContextConfig]]
 cuba.remotingSpringContextConfig::
 +
@@ -1433,9 +1489,7 @@ cuba.tempDir::
 --
 Defines the location of the <<temp_dir,temporary directory>> for an <<app_tiers,application block>>.
 
-Default value for <<fast_deployment>>: `${catalina.home}/temp/${<<cuba.webContextName,cuba.webContextName>>}`, which points to a subdirectory with the name of the web app inside the `tomcat/temp` folder, for example, `tomcat/temp/app-core`.
-
-Default value for WAR and UberJAR deployment: `${app.home}/${<<cuba.webContextName,cuba.webContextName>>}/temp`, which points to a subdirectory of the <<app_home,application home>>.
+Default value: `${app.home}/${<<cuba.webContextName,cuba.webContextName>>}/temp`, which points to a subdirectory of the <<app_home,application home>>.
 
 Interface: `GlobalConfig`
 
@@ -1591,9 +1645,9 @@ Used in the Middleware block.
 cuba.useLocalServiceInvocation::
 +
 --
-When set to `true`, the Web Client and Web Portal <<app_tiers,blocks>> invoke the Middleware services locally, bypassing the network stack, which has a positive impact on system performance. It is possible when Tomcat <<fast_deployment,fast deployment>> is used, as well as single <<build.gradle_buildWar,WAR>> or single <<build.gradle_buildUberJar,Uber-JAR>>. This property should be set to false for all other deployment options.
+When `true`, the Web Client and Web Portal <<app_tiers,blocks>> invoke the Middleware services locally bypassing the network stack, which has a positive impact on system performance. It is possible in the case of <<fast_deployment,fast deployment>>, single <<build.gradle_buildWar,WAR>> and single <<build.gradle_buildUberJar,Uber JAR>>. This property should be set to false for all other deployment options.
 
-Default value: `false`
+Default value: `true`
 
 Used in the Web Client and Web Portal blocks.
 --
@@ -1904,7 +1958,7 @@ Used in the Web Client block.
 cuba.web.foldersPaneEnabled::
 +
 --
-Enables the <<folders_pane,folders panel>> functionality.
+Enables the <<folders_pane,folders panel>> functionality and using <<shortcuts,keyboard shortcuts>> in the folders.
 
 Default value: `false`
 

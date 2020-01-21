@@ -10,7 +10,7 @@ image::MetadataFramework.png[align="center"]
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/chile/core/model/Session.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/chile/core/model/Session.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -32,7 +32,7 @@ assert metaClass1 == metaClass2;
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/chile/core/model/MetaModel.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/chile/core/model/MetaModel.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -44,7 +44,7 @@ Meta-classes are grouped by the root name of Java project package specified in <
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/chile/core/model/MetaClass.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/chile/core/model/MetaClass.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -56,7 +56,7 @@ Entity class metadata interface. `MetaClass` is always associated with the Java 
 
 Basic methods:
 
-* `getName()` – entity name, according to convention the first part of the name before `$` sign is the namespace code, for example, `sales$Customer`.
+* `getName()` – entity name, according to convention the first part of the name before `_` sign is the namespace code, for example, `sales_Customer`.
 
 * `getProperties()` – the list of meta-properties (`MetaProperty`).
 
@@ -89,7 +89,7 @@ assert groupNameProp.getDomain().getName().equals("sec$Group");
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/chile/core/model/MetaProperty.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/chile/core/model/MetaProperty.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 

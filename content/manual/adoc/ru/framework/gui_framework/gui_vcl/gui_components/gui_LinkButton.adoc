@@ -11,7 +11,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/LinkButton.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/LinkButton.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -22,6 +22,18 @@ XML-имя компонента: `linkButton`
 Кнопка-ссылка может содержать текст или значок (или и то и другое). На рисунке ниже отражены разные виды кнопок.
 
 image::gui_linkButtonTypes.png[align="center"]
+
+По умолчанию заголовок кнопки-ссылки разбивается на несколько строк, если по длине он превышает значение атрибута <<gui_attr_width,width>>. Поэтому для отображения многострочного заголовка достаточно указать абсолютное значение атрибута `width`. Если текст заголовка слишком длинный, а значение атрибута `width` не определено, то текст будет урезан.
+
+Чтобы отобразить заголовок кнопки-ссылки в одной строке, пользователь может изменить поведение по умолчанию:
+
+. Создать <<web_theme_extension,расширение темы>> или <<web_theme_creation,новую тему>>.
+. Определить переменную SCSS `$cuba-link-button-caption-wrap`:
++
+[source, code]
+----
+$cuba-link-button-caption-wrap: false
+----
 
 Кнопка-ссылка отличается от обычной кнопки `Button` только своим внешним видом. Все свойства и поведение идентичны описанным для <<gui_Button,Button>>.
 

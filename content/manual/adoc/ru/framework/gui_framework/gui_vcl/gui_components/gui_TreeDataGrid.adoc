@@ -4,6 +4,14 @@
 ====== TreeDataGrid
 
 ++++
+<div class="manual-since-container">
+    <a href="http://files.cuba-platform.com/cuba/release-notes/7.0/" class="since-btn" target="_blank">
+        <span class="since-btn-caption">Since</span><span class="since-btn-version">7.0</span>
+    </a>
+</div>
+++++
+
+++++
 <div class="manual-live-demo-container">
     <a href="https://demo.cuba-platform.com/sampler/open?screen=tree-datagrid" class="live-demo-btn" target="_blank">ДЕМОНСТРАЦИЯ</a>
 </div>
@@ -11,7 +19,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/TreeDataGrid.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/TreeDataGrid.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -40,6 +48,8 @@ include::{sourcesdir}/gui_vcl/gui_TreeDataGrid.xml[]
 '''
 
 Атрибуты treeDataGrid::
+<<gui_DataGrid_aggregatable,aggregatable>> -
+<<gui_DataGrid_aggregationPosition,aggregationPosition>> -
 <<gui_attr_align,align>> -
 <<gui_attr_caption,caption>> -
 <<gui_attr_captionAsHtml,captionAsHtml>> -
@@ -56,6 +66,8 @@ include::{sourcesdir}/gui_vcl/gui_TreeDataGrid.xml[]
 <<gui_DataGrid_editorCancelCaption,editorCancelCaption>> -
 <<gui_DataGrid_editorEnabled,editorEnabled>> -
 <<gui_DataGrid_editorSaveCaption,editorSaveCaption>> -
+<<gui_Table_emptyStateLinkMessage,emptyStateLinkMessage>> -
+<<gui_Table_emptyStateMessage,emptyStateMessage>> -
 <<gui_attr_enable,enable>> -
 <<gui_attr_expandRatio,box.expandRatio>> -
 <<gui_DataGrid_frozenColumnCount,frozenColumnCount>> -
@@ -98,23 +110,32 @@ include::{sourcesdir}/gui_vcl/gui_TreeDataGrid.xml[]
 <<gui_DataGrid_minimumWidth,minimumWidth>> -
 <<gui_DataGrid_property,property>> -
 <<gui_DataGrid_resizable,resizable>> -
+<<gui_Table_column_sort,sort>> -
 <<gui_DataGrid_sortable,sortable>> -
 <<gui_attr_width,width>>
 
 Элементы column::
-<<gui_formatter,formatter>>
+<<gui_DataGrid_column_aggregation,aggregation>> -
+<<gui_Table_column_aggregation_formatter,formatter>>
+
+Атрибуты <<gui_DataGrid_column_aggregation,aggregation>>::
+<<gui_Table_column_aggregation_strategyClass,strategyClass>> -
+<<gui_DataGrid_column_aggregation,type>> -
+<<gui_Table_column_aggregation_valueDescription,valueDescription>>
 
 API::
 <<gui_DataGrid_addGeneratedColumn,addGeneratedColumn>> -
 <<gui_api_settings,applySettings>> -
 <<gui_DataGrid_createRenderer,createRenderer>> -
 <<gui_DataGrid_edit,edit>> -
+<<gui_DataGrid_getAggregationResults,getAggregationResults>> -
 <<gui_api_settings,saveSettings>> -
 <<gui_DataGrid_scrollTo,getColumns>> -
 <<gui_DataGrid_setDescriptionProvider,setDescriptionProvider>> -
 <<gui_DataGrid_addCellStyleProvider,addCellStyleProvider>> -
 <<gui_DataGrid_setConverter,setConverter>> -
 <<gui_DataGrid_setDetailsGenerator,setDetailsGenerator>> -
+<<gui_Table_setEmptyStateLinkClickHandler,setEmptyStateLinkClickHandler>> -
 <<gui_DataGrid_setEnterPressAction,setEnterPressAction>> -
 <<gui_DataGrid_setItemClickAction,setItemClickAction>> -
 <<gui_DataGrid_setRenderer,setRenderer>> -
@@ -134,3 +155,11 @@ API::
 <<gui_DataGrid_ItemClickListener,ItemClickListener>> -
 <<gui_DataGrid_SelectionListener,SelectionListener>> -
 <<gui_DataGrid_SortListener,SortListener>>
+
+Предопределенные стили::
+<<gui_DataGrid_borderless,borderless>> - 
+<<gui_DataGrid_no-horizontal-lines,no-horizontal-lines>> -
+<<gui_DataGrid_no-vertical-lines,no-vertical-lines>> -
+<<gui_DataGrid_no-stripes,no-stripes>>
+
+'''

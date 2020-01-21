@@ -7,7 +7,7 @@ Attribute annotations should be set for the corresponding fields, with the follo
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/annotation/CaseConversion.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/annotation/CaseConversion.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -54,7 +54,7 @@ Parameters:
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/chile/core/annotations/Composition.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/chile/core/annotations/Composition.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -109,7 +109,7 @@ protected Address address;
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/annotation/EmbeddedParameters.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/annotation/EmbeddedParameters.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -142,7 +142,7 @@ Indicates that the attribute is the entity primary key. Typically, this annotati
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/annotation/IgnoreUserTimeZone.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/annotation/IgnoreUserTimeZone.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -243,7 +243,7 @@ private String description;
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/annotation/LocalizedValue.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/annotation/LocalizedValue.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -275,7 +275,7 @@ protected Proc proc;
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/annotation/Lookup.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/annotation/Lookup.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -287,7 +287,7 @@ Defines the lookup type settings for the reference attributes.
 
 Parameters:
 
-* `type` - the default value is `SCREEN`, so a reference is selected from a <<screen_lookup,lookup screen>>. The `DROPDOWN` value enables to select the reference from a drop-down list. If the lookup type is set to `DROPDOWN`, Studio will generate <<datasources,options datasource>> when scaffolding editor screen. Thus, the Lookup type parameter should be set before generation of an entity editor screen. Besides, the <<gui_Filter,Filter>> component will allow a user to select parameter of this type from a drop-down list instead of lookup screen.
+* `type` - the default value is `SCREEN`, so a reference is selected from a <<screen_lookup,lookup screen>>. The `DROPDOWN` value enables to select the reference from a drop-down list. If the lookup type is set to `DROPDOWN`, Studio will generate options <<gui_collection_container,collection container>> when scaffolding editor screen. Thus, the Lookup type parameter should be set before generation of an entity editor screen. Besides, the <<gui_Filter,Filter>> component will allow a user to select parameter of this type from a drop-down list instead of lookup screen.
 
 * `actions` - defines the actions to be used in a PickerField component inside the FieldGroup by default.  Possible values: `lookup`, `clear`, `open`.
 
@@ -363,7 +363,7 @@ The usage of JPA `cascade` annotation attribute is not recommended. The entities
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/chile/core/annotations/MetaProperty.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/chile/core/annotations/MetaProperty.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -381,7 +381,7 @@ Parameters (optional):
 
 * `datatype` - explicitly defines a <<datatype,datatype>> that overrides a datatype inferred from the attribute Java type.
 
-* `related` - defines the array of related persistent attributes to be fetched from the database when this property is included in a <<views,view>>.
+* `related` - defines the array of related persistent attributes to be fetched from the database when this property is included in a <<views,view>>. Also, if the annotation is applied to a getter method, i.e. the entity attribute is read-only, changes of related attributes generate `PropertyChangeEvent` for the given read-only attribute. This feature helps to update UI components displaying read-only attributes that depend on some other mutable attributes.
 
 Field example:
 
@@ -396,20 +396,16 @@ Method example:
 
 [source, java]
 ----
-@MetaProperty
-public String getLocValue() {
-    if (!StringUtils.isEmpty(messagesPack)) {
-        return AppBeans.get(Messsages.class).getMessage(messagesPack, value);
-    } else {
-        return value;
-    }
+@MetaProperty(related = "firstName,lastName")
+public String getFullName() {
+    return firstName + " " + lastName;
 }
 ----
 --
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/chile/core/annotations/NumberFormat.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/chile/core/annotations/NumberFormat.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -451,7 +447,7 @@ protected BigDecimal percentNumber;
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/annotation/OnDelete.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/annotation/OnDelete.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -473,7 +469,7 @@ private Set<Constraint> constraints;
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/annotation/OnDeleteInverse.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/annotation/OnDeleteInverse.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 

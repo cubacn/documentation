@@ -20,7 +20,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/annotation/EnableRestore.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/annotation/EnableRestore.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -42,19 +42,19 @@
 
 Параметры:
 
-* `name` - имя сущности, обязательно должно начинаться с префикса, отделенного знаком `$`. Желательно использовать в качестве префикса короткое имя проекта для формирования отдельного пространства имен.
+* `name` - имя сущности, обязательно должно начинаться с префикса, отделенного знаком `_`. Желательно использовать в качестве префикса короткое имя проекта для формирования отдельного пространства имен.
 
 Пример:
 
 [source, java]
 ----
-@Entity(name = "sales$Customer")
+@Entity(name = "sales_Customer")
 ----
 --
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/annotation/Extends.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/annotation/Extends.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -110,7 +110,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/annotation/IdSequence.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/annotation/IdSequence.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -146,7 +146,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/annotation/Listeners.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/annotation/Listeners.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -186,7 +186,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/chile/core/annotations/MetaClass.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/chile/core/annotations/MetaClass.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -198,19 +198,19 @@
 
 Параметры:
 
-* `name` - имя сущности, обязательно должно начинаться с префикса, отделенного знаком `$`. Желательно использовать в качестве префикса короткое имя проекта для формирования отдельного пространства имен.
+* `name` - имя сущности, обязательно должно начинаться с префикса, отделенного знаком `_`. Желательно использовать в качестве префикса короткое имя проекта для формирования отдельного пространства имен.
 
 Пример:
 
 [source, java]
 ----
-@MetaClass(name = "sales$Customer")
+@MetaClass(name = "sales_Customer")
 ----
 --
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/chile/core/annotations/NamePattern.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/chile/core/annotations/NamePattern.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -254,7 +254,20 @@
 
 [[postConstruct_entity_annotation]]
 @PostConstruct::
-Данная аннотация может быть указана для метода класса. Такой метод будет вызван сразу после создания экземпляра сущности через <<metadata,Metadata.create()>>. Это удобно, если для инициализации экземпляра сущности требуется вызов каких-либо <<managed_beans,бинов>>. Пример см. в <<init_values_in_class,Инициализация полей сущности>>.
++
+--
+Данная аннотация может быть указана для метода класса. Такой метод будет вызван сразу после создания экземпляра сущности методом <<metadata,Metadata.create()>> или аналогичными методами `DataManager.create()` и `DataContext.create()`.
+
+Аннотированный метод может принимать в качестве параметров Spring-бины, доступные в модуле `global`. Например:
+
+[source,java]
+----
+@PostConstruct
+public void postConstruct(Metadata metadata, SomeBean someBean) {
+    // ...
+}
+----
+--
 
 ++++
 <div class="manual-live-demo-container">
@@ -284,7 +297,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/annotation/PublishEntityChangedEvents.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/annotation/PublishEntityChangedEvents.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -294,7 +307,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/annotation/SystemLevel.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/annotation/SystemLevel.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -328,7 +341,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/annotation/TrackEditScreenHistory.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/annotation/TrackEditScreenHistory.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 

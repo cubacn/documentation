@@ -5,7 +5,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/BulkEditor.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/BulkEditor.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -17,7 +17,7 @@ XML-имя компонента: `bulkEditor`
 
 [WARNING]
 ====
-`BulkEditor` работает только в экранах, основанных на <<gui_legacy,устаревшем API>>. Аналогичная функциональность для нового API предоставляется <<gui_BulkEditAction,BulkEditAction>>.
+`BulkEditor` работает только в экранах, основанных на <<gui_legacy,устаревшем API>>. Аналогичная функциональность для нового API предоставляется <<BulkEditAction>>.
 ====
 
 Для использования `BulkEditor` у таблицы или дерева должен быть задан атрибут `multiselect="true"`.
@@ -74,6 +74,16 @@ bulkEditor.setIncludeProperties(Arrays.asList("name", "description"));
 * `useConfirmDialog` управляет отображением <<dialogs,диалогового окна>> подтверждения перед сохранением изменений. Значение по умолчанию `true`.
 +
 image::gui_BulkEditor_useConfirmDialog.png[align="center"]
+
+[[gui_BulkEditor_columnsMode]]
+* `columnsMode` − количество колонок в окне редактора `bulkEditor`, задаваемое значением перечисления `ColumnsMode`. По умолчанию `TWO_COLUMNS`. Например:
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/bulkEditor_2.xml[]
+----
+
+Внешний вид редактора `bulkEditor` можно настроить с помощью переменных SCSS с префиксом `$c-bulk-editor-*`. Эти переменные можно изменить в визуальном редакторе после <<web_theme_extension,расширения темы>> или создания <<web_theme_creation,новой темы>>.
 --
 
 '''
@@ -82,6 +92,7 @@ image::gui_BulkEditor_useConfirmDialog.png[align="center"]
 <<gui_attr_align,align>> -
 <<gui_attr_caption,caption>> -
 <<gui_attr_captionAsHtml,captionAsHtml>> -
+<<gui_BulkEditor_columnsMode,columnsMode>> -
 <<gui_attr_css,css>> -
 <<gui_attr_description,description>> -
 <<gui_attr_descriptionAsHtml,descriptionAsHtml>> -

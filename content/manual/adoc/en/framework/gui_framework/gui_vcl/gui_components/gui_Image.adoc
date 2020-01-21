@@ -11,7 +11,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/Image.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/Image.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -79,6 +79,8 @@ include::{sourcesdir}/gui_vcl/image_1.xml[]
 * `FILL` - the image will be stretched according to the size of the component.
 
 * `CONTAIN` - the image will be compressed or stretched to the minimum dimension of the component while preserving the proportions.
+
+* `COVER` - the image will be compressed or stretched to fill the entire area of the component while maintaining the component's proportions. If the image proportions do not match the component's proportions, then the image will be clipped to fit.
 
 * `SCALE_DOWN` - the content changes size by comparing the difference between `NONE` and `CONTAIN` in order to find the smallest concrete size of the object.
 

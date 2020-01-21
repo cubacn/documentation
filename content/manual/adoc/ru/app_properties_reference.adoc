@@ -65,7 +65,9 @@ cuba.anonymousSessionId::
 cuba.automaticDatabaseUpdate::
 +
 --
-Включает режим <<db_update_server,выполнения скриптов БД сервером>> на старте приложения.
+Включает режим <<db_update_server,выполнения скриптов обновления БД сервером>> на старте приложения.
+
+Начиная с CUBA 7.2 выполнением скриптов можно управлять по отдельности для главного и дополнительных хранилищ. Для главного хранилища используется свойство `cuba.automaticDatabaseUpdate_MAIN`, для дополнительных - свойства в формате `cuba.automaticDatabaseUpdate_<store_name>`. Конкретные свойства имеют приоритет над общим.
 
 Значение по умолчанию: `false`
 
@@ -188,6 +190,14 @@ cuba.checkConnectionToAdditionalDataStoresOnStartup::
 cuba.checkPasswordOnClient::
 +
 --
+++++
+<div class="manual-since-container">
+    <a href="http://files.cuba-platform.com/cuba/release-notes/7.0/" class="since-btn" target="_blank">
+        <span class="since-btn-caption">Since</span><span class="since-btn-version">7.0</span>
+    </a>
+</div>
+++++
+
 При установке в false (по умолчанию), `LoginPasswordLoginProvider` клиентских блоков пересылает пароль пользователя на средний слой в метод `AuthenticationService.login()` в исходном виде. Это нормально и не требует дополнительных мер если клиентский блок и middleware расположены в одной JVM. Для распределенного варианта развертывания, когда клиентский блок расположен на другом компьютере в сети, соединение с middleware в данном случае должно быть защищено с помощью SSL.
 
 При установке в true, `LoginPasswordLoginProvider` загружает экземпляр сущности `User` по введенному логину и проверяет пароль сам. Если пароль соответствует загруженному хэшу, производится логин с помощью пароля установленного в свойстве <<cuba.trustedClientPassword,cuba.trustedClientPassword>>. Данный режим избавляет от необходимости устанавливать SSL-соединение между клиентом и средним слоем в доверенной сети, так как пароли пользователей никогда не передаются по сети в открытом виде, передаются только хэши. Однако следует иметь в виду, что открытым передается пароль доверенного клиента, поэтому SSL-соединение все-таки обеспечивает лучшую защищенность.
@@ -256,9 +266,7 @@ cuba.confDir::
 --
 Конфигурационный параметр, задающий расположение <<conf_dir,каталога конфигурации>> данного <<app_tiers,блока приложения>>.
 
-Значение по умолчанию для <<fast_deployment,быстрого развертывания>> в Tomcat: `${catalina.home}/conf/${<<cuba.webContextName,cuba.webContextName>>}`, что означает подкаталог с именем веб-приложения в каталоге `tomcat/conf`, например `tomcat/conf/app-core`.
-
-Значение по умолчанию для WAR и UberJAR: `${app.home}/${<<cuba.webContextName,cuba.webContextName>>}/conf`, что означает расположение в подкаталоге <<app_home,домашнего каталога>> приложения.
+Значение по умолчанию: подкаталог `${app.home}/${<<cuba.webContextName,cuba.webContextName>>}/conf`, что означает расположение в подкаталоге <<app_home,домашнего каталога>> приложения.
 
 Интерфейс: `GlobalConfig`
 
@@ -357,6 +365,14 @@ cuba.crossDataStoreReferenceLoadingBatchSize::
 cuba.dataManagerBeanValidation::
 +
 --
+++++
+<div class="manual-since-container">
+    <a href="http://files.cuba-platform.com/cuba/release-notes/7.1/" class="since-btn" target="_blank">
+        <span class="since-btn-caption">Since</span><span class="since-btn-version">7.1</span>
+    </a>
+</div>
+++++
+
 Указывает, что <<dataManager,DataManager>> должен выполнять <<bean_validation,bean validation>> при сохранении сущностей.
 
 Значение по умолчанию: `false`
@@ -372,7 +388,7 @@ cuba.dataManagerBeanValidation::
 cuba.dataManagerChecksSecurityOnMiddleware::
 +
 --
-Указывает, что <<dataManager,DataManager>> должен применять <<security_subsystem,подсистемы безопасности>> когда вызывается из кода Middleware.
+Указывает, что <<dataManager,DataManager>> должен проверять <<permissions,разрешения>> на операции с сущностями и in-memory <<constraints,ограничения>>, когда вызывается из кода Middleware.
 
 Значение по умолчанию: `false`
 
@@ -400,9 +416,7 @@ cuba.dataDir::
 --
 Конфигурационный параметр, задающий расположение <<work_dir,рабочего каталога>> данного <<app_tiers,блока приложения>>.
 
-Значение по умолчанию для <<fast_deployment,быстрого развертывания>> в Tomcat: `${catalina.home}/work/${<<cuba.webContextName,cuba.webContextName>>}`, что означает подкаталог с именем веб-приложения в каталоге `tomcat/work`, например `tomcat/work/app-core`.
-
-Значение по умолчанию для WAR и UberJAR: `${app.home}/${<<cuba.webContextName,cuba.webContextName>>}/work`, что означает расположение в подкаталоге <<app_home,домашнего каталога>> приложения.
+Значение по умолчанию: `${app.home}/${<<cuba.webContextName,cuba.webContextName>>}/work`, что означает расположение в подкаталоге <<app_home,домашнего каталога>> приложения.
 
 Интерфейс: `GlobalConfig`
 
@@ -594,7 +608,7 @@ cuba.enableSessionParamsInQueryFilter::
 cuba.entityAttributePermissionChecking::
 +
 --
-При установке в `true` включает проверку прав на атрибуты сущностей на уровне Middleware. Если значением является `false`, права на атрибуты проверяются только на клиентском уровне, т.е. в <<gui_framework,Generic UI>> и {rest_man_url}[REST API].
+При установке в `true` включает в <<dataManager,DataManager>> проверку <<permissions,разрешений>> на атрибуты сущностей. Если значением является `false`, права на атрибуты проверяются только в data-aware компонентах <<gui_framework,Generic UI>> и в методах {rest_man_url}[REST API].
 
 Значение по умолчанию: `false`
 
@@ -653,6 +667,14 @@ cuba.groovyEvaluatorImport=com.haulmont.cuba.core.global.PersistenceHelper,com.a
 cuba.gui.genericFilterApplyImmediately::
 +
 --
+++++
+<div class="manual-since-container">
+    <a href="http://files.cuba-platform.com/cuba/release-notes/7.1/" class="since-btn" target="_blank">
+        <span class="since-btn-caption">Since</span><span class="since-btn-version">7.1</span>
+    </a>
+</div>
+++++
+
 Если установлено значение `true`, <<gui_Filter,универсальный фильтр>> работает в режиме немедленного применения, когда каждое изменение параметров фильтра автоматически перезагружает данные. Если установлено значение `false`, фильтр будет применен только после нажатия кнопки **Search**. См. также атрибут фильтра <<gui_filter_immediately,applyImmediately>>.
 
 Значение по умолчанию: `true`
@@ -765,7 +787,7 @@ cuba.gui.genericFilterManualApplyRequired::
 --
 Оказывает влияние на поведение компонента <<gui_Filter,Filter>>.
 
-При установке в `true` экраны, содержащие фильтры, не будут автоматически загружать соответствующие источники данных до тех пор, пока пользователь не нажмет кнопку *Применить* фильтра.
+При установке в `true` экраны, содержащие фильтры, не будут при открытии автоматически запускать соответствующие загрузчики данных до тех пор, пока пользователь не нажмет кнопку *Применить* фильтра.
 
 При открытии экрана списка с помощью папки приложения или папки поиска значение `cuba.gui.genericFilterManualApplyRequired` не учитывается, то есть в этом случае фильтр будет применяться. Фильтр не применится, если значение атрибута `applyDefault` у папки явно установлено в `false`.
 
@@ -802,6 +824,21 @@ cuba.gui.genericFilterPopupListSize::
 Определяет число элементов, отображающихся в выпадающем списке кнопки *Search*. Если количество фильтров превышает значение, к выпадающему списку добавляется действие *Show more...*. Действие открывает новое диалоговое окно со списком всех доступных фильтров.
 
 Значение по умолчанию: `10`
+
+Хранится в базе данных.
+
+Интерфейс: `ClientConfig`
+
+Используется в блоке Web Client.
+--
+
+[[cuba.gui.genericFilterPropertiesHierarchyDepth]]
+cuba.gui.genericFilterPropertiesHierarchyDepth::
++
+--
+Определят глубину вложенности атрибутов сущности в диалоговом окне "Добавить условие". Например, если значение глубины равно 2, то для условия фильтра вы можете выбрать атрибут `contractor.city.country`, если значение 3, то `contractor.city.country.name` и т.д.
+
+Значение по умолчанию: `2`
 
 Хранится в базе данных.
 
@@ -1111,11 +1148,9 @@ cuba.localeSelectVisible::
 cuba.logDir::
 +
 --
-Конфигурационный параметр, задающий расположение <<log_dir,каталога журналов>> данного <<app_tiers,блока приложения>>.
+Конфигурационный параметр, указывающий расположение <<log_dir,каталога журналов>> данного <<app_tiers,блока приложения>>.
 
-Значение по умолчанию для <<fast_deployment,быстрого развертывания>>: `${catalina.home}/logs`, что означает каталог `tomcat/logs`.
-
-Значение по умолчанию для WAR и UberJAR: `${app.home}/logs`, что означает расположение в подкаталоге `logs` <<app_home,домашнего каталога>> приложения.
+Значение по умолчанию: `${app.home}/logs`, что означает расположение в подкаталоге `logs` <<app_home,домашнего каталога>> приложения.
 
 Интерфейс: `GlobalConfig`
 
@@ -1195,6 +1230,14 @@ cuba.metadataConfig = +com/company/sample/metadata.xml
 cuba.passwordEncryptionModule::
 +
 --
+++++
+<div class="manual-since-container">
+    <a href="http://files.cuba-platform.com/cuba/release-notes/7.0/" class="since-btn" target="_blank">
+        <span class="since-btn-caption">Since</span><span class="since-btn-version">7.0</span>
+    </a>
+</div>
+++++
+
 Задает имя бина, используемого для хэширования паролей пользователей. При создании нового пользователя и при смене пароля, значение данного свойства запоминается для данного пользователя в поле `SEC_USER.PASSWORD_ENCRYPTION` базы данных.
 
 См. также <<cuba.legacyPasswordEncryptionModule,cuba.legacyPasswordEncryptionModule>>.
@@ -1338,6 +1381,19 @@ cuba.queryCache.maxSize::
 Используется в блоке Middleware.
 --
 
+[[cuba.rememberMeExpirationTimeoutSec]]
+cuba.rememberMeExpirationTimeoutSec::
++
+--
+Задает время истекания "remember me" cookies и экземпляров сущности `RememberMeToken`.
+
+Значение по умолчанию: `30 * 24 * 60 * 60` (30 дней)
+
+Интерфейс: `GlobalConfig`
+
+Используется в блоках Web Client и Middleware.
+--
+
 [[cuba.remotingSpringContextConfig]]
 cuba.remotingSpringContextConfig::
 +
@@ -1430,9 +1486,7 @@ cuba.tempDir::
 --
 Конфигурационный параметр, задающий расположение <<temp_dir,временного каталога>> данного <<app_tiers,блока приложения>>.
 
-Значение по умолчанию для <<fast_deployment,быстрого развертывания>> в Tomcat: `${catalina.home}/temp/${<<cuba.webContextName,cuba.webContextName>>}`, что означает подкаталог с именем веб-приложения в каталоге `tomcat/temp`, например `tomcat/temp/app-core`.
-
-Значение по умолчанию для WAR и UberJAR: `${app.home}/${<<cuba.webContextName,cuba.webContextName>>}/temp`, что означает расположение в подкаталоге <<app_home,домашнего каталога>> приложения.
+Значение по умолчанию: `${app.home}/${<<cuba.webContextName,cuba.webContextName>>}/temp`, что означает расположение в подкаталоге <<app_home,домашнего каталога>> приложения.
 
 Интерфейс: `GlobalConfig`
 
@@ -1587,11 +1641,11 @@ cuba.useInnerJoinOnClause::
 cuba.useLocalServiceInvocation::
 +
 --
-При установке данного свойства в `true` блоки Web Client и Web Portal вызывают сервисы Middleware в обход сетевого стека, что положительно сказывается на производительности системы. Это возможно в случае <<fast_deployment,быстрого развертывания>> в Tomcat, а также для единого <<build.gradle_buildWar,WAR>> и единого <<build.gradle_buildUberJar,Uber-JAR>>. В других вариантах развертывания данное свойство необходимо установить в `false`.
+При установке данного свойства в `true` блоки Web Client и Web Portal вызывают сервисы Middleware в обход сетевого стека, что положительно сказывается на производительности системы. Это возможно в случае <<fast_deployment,быстрого развертывания>>, единого <<build.gradle_buildWar,WAR>> и единого <<build.gradle_buildUberJar,Uber JAR>>. В других вариантах развертывания данное свойство необходимо установить в `false`.
 
 Значение по умолчанию: `true`
 
-Используется в <<app_tiers,блоках>> Web Client и Web Portal.
+Используется в блоках Web Client и Web Portal.
 --
 
 [[cuba.useReadOnlyTransactionForLoad]]
@@ -1899,7 +1953,7 @@ cuba.web.foldersPaneDefaultWidth::
 cuba.web.foldersPaneEnabled::
 +
 --
-Если `false`, то функциональность <<folders_pane,панели папок>> отключена.
+Включает отображение <<folders_pane,панели папок>> для экрана и использование <<shortcuts,горячих клавиш>> в папках.
 
 Значение по умолчанию: `false`
 

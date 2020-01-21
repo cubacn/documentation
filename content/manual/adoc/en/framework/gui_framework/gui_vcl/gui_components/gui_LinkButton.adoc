@@ -11,7 +11,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/LinkButton.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/LinkButton.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -22,6 +22,18 @@ XML name of the component: `linkButton`
 The link button can contain text or icon (or both). The figure below shows different types of buttons.
 
 image::gui_linkButtonTypes.png[align="center"]
+
+By default, the caption for `LinkButton` is split into multiple lines if its length exceeds the <<gui_attr_width,width>> value. Therefore, to display a multiline link button, it is sufficient to specify an absolute value of `width`. If the link button's caption is too long and the value of `width` is not specified, the caption will be truncated.
+
+The user can change the default behavior to display `LinkButton` caption in one row:
+
+. Create a <<web_theme_extension,theme extension>> or a <<web_theme_creation,custom theme>>.
+. Define the SCSS variable `$cuba-link-button-caption-wrap`:
++
+[source, code]
+----
+$cuba-link-button-caption-wrap: false
+----
 
 The link button differs from regular `Button` only in its appearance. All properties and behavior are identical to those described for <<gui_Button,Button>>.
 

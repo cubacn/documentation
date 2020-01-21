@@ -11,7 +11,7 @@ Programmatic access to entity statistics is available via `PersistenceManagerAPI
 
 The `EntityStatistics` attributes are described below.
 
-* `name` (`NAME` column) – the name of the entity <<metaClass,meta-class>>, for example, `sales$Customer`.
+* `name` (`NAME` column) – the name of the entity <<metaClass,meta-class>>, for example, `sales_Customer`.
 
 * `instanceCount` (`INSTANCE_COUNT` column) – the approximate number of entity instances.
 
@@ -21,7 +21,7 @@ For example, the <<gui_Filter,Filter>> component uses this number in the *Show N
 
 * `maxFetchUI` (`MAX_FETCH_UI` column) – the maximum number of entity instances that can be extracted and passed to the client tier.
 +
-This limit is applied when showing entity lists in such components as <<gui_LookupField,LookupField>> or <<gui_LookupPickerField,LookupPickerField>>, as well as tables without a <<gui_Filter,filter>>, when no limitations are applied to the connected <<datasources,datasource>> via `CollectionDatasource.setMaxResults()`. In this case the data source itself limits the number of extracted instances to `maxFetchUI`.
+This limit is applied when showing entity lists in such components as <<gui_LookupField,LookupField>> or <<gui_LookupPickerField,LookupPickerField>>, as well as tables without a <<gui_Filter,filter>>, when no limitations are applied to the connected <<gui_data_loaders,data loader>> via `CollectionLoader.setMaxResults()`. In this case the data loader itself limits the number of extracted instances to `maxFetchUI`.
 
 * `lookupScreenThreshold` (`LOOKUP_SCREEN_THRESHOLD` column) – the threshold, measured in number of entities, which determines when <<screen_lookup,lookup screens>> should be used instead of dropdowns for entity lookup.
 +
@@ -33,7 +33,7 @@ Besides, `PersistenceManagerMBean.enterStatistics()` method allows a user to ent
 
 [source, json]
 ----
-entityName: sales$Customer
+entityName: sales_Customer
 fetchUI: 1000
 maxFetchUI: 30000
 ----
@@ -42,7 +42,7 @@ Another example: suppose that you have a filter condition by the Customer entity
 
 [source, json]
 ----
-entityName: sales$Customer
+entityName: sales_Customer
 instanceCount: 2
 lookupScreenThreshold: 1
 ----

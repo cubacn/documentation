@@ -11,7 +11,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/Table.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/Table.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -122,6 +122,35 @@ role.name=<em>Name</em>
 [[gui_Table_column_sortable]]
 ** `sortable` − an optional attribute to disable sorting of the column. Takes effect if the whole table has <<gui_Table_sortable,sortable>> attribute set to `true` (which is by default).
 
+[[gui_Table_column_sort]]
+** `sort` − an optional attribute allowing to set the initial sorting of the table by the specified column according to the sort direction. Possible values:
+
+*** `ASCENDING` – ascending (e.g., A-Z, 1..9) sort order.
+*** `DESCENDING` – descending (e.g., Z-A, 9..1) sort order.
+
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/table_sort.xml[]
+----
+
+[TIP]
+====
+Pay attention: if the <<gui_attr_settingsEnabled,settingsEnabled>> attribute is `true`, the table can be sorted according to the user settings.
+====
+
+[WARNING]
+====
+Only one column can be sorted at the same time. So, the example below:
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/table_sort_exception.xml[]
+----
+raises an exception.
+
+Also, if you set `sort` and `sortable="false"` attributes simultaneously for the column, it will cause an error in the application.
+====
+
 [[gui_Table_column_maxTextLength]]
 ** `maxTextLength` – an optional attribute allowing to limit the number of characters in a cell. If the difference between the actual and the maximum allowed number of characters does not exceed the 10 character threshold, the "extra" characters remain unhidden. To see the entire record, users need to click on its visible part. An example of a column with a 10 character limitation:
 +
@@ -181,6 +210,20 @@ include::{sourcesdir}/gui_vcl/tableFormatter_1.xml[]
 * `rowsCount` − an optional element adding the `RowsCount` component for the table; this component enables loading the table data in pages. Page size can be defined by limiting the number of records in the data container using the <<gui_data_loaders,loader's>> `setMaxResults()` method. Typically, this is performed by a <<gui_Filter,Filter>> component linked to the table's data loader. However, if there is no generic filter, this method can be called directly from the screen controller.
 +
 `RowsCount` component can also show the total number of records returned by the current query from the container without extracting the records themselves. It invokes `com.haulmont.cuba.core.global.DataManager#getCount` when user clicks the *?* icon, which results in performing a database query with the same conditions as the current query, but using a `++COUNT(*)++` aggregate function instead. The number retrieved is displayed instead of the *?* icon.
++
+The `autoLoad` attribute of the `RowsCount` component set in `true` enables loading rows count automatically. It can be set in the XML descriptor:
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/datagrid_rowscount_1.xml[]
+----
++
+Also, this behavior can be enabled or disabled via `RowsCount` API in the screen controller:
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/datagrid_rowscount_2.java[]
+----
 
 [[gui_Table_actions]]
 * `actions` − an optional element describing the <<gui_Action,actions>>, related to the table. In addition to custom arbitrary actions, the element supports the following <<std_list_actions,standard actions>>, defined in the `com.haulmont.cuba.gui.actions.list` package: `create`, `edit`, `remove`, `refresh`, `add`, `exclude`, `excel`.
@@ -189,6 +232,35 @@ include::{sourcesdir}/gui_vcl/tableFormatter_1.xml[]
 * `buttonsPanel` – an optional element, which adds a <<gui_ButtonsPanel,ButtonsPanel>> container to show action buttons above the table.
 
 `table` attributes:
+
+[[gui_Table_emptyStateMessage]]
+* `emptyStateMessage` attribute enables to set the message when no data is loaded, null items are set, or empty container is used. This attribute is often used together with the <<gui_Table_emptyStateLinkMessage,emptyStateLinkMessage>> attribute. The message should contain information about why the table is empty. For example:
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/gui_Table_emptyStateMessage.xml[]
+----
++
+`emptyStateMessage` attribute supports loading message from the <<message_packs,message pack>>. If you don't want to show a message, just do not specify this attribute.
+
+[[gui_Table_emptyStateLinkMessage]]
+* `emptyStateLinkMessage` attribute enables to set the link message when no data is loaded, null items are set, or empty container is used. This attribute is often used together with the <<gui_Table_emptyStateMessage,emptyStateMessage>> attribute. The message should describe the action that needs to be performed to fill the table. For example:
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/gui_Table_emptyStateLinkMessage.xml[]
+----
++
+image::gui_table_emptyState.png[align="center"]
++
+`emptyStateLinkMessage` attribute supports loading message from the <<message_packs,message pack>>. If you don't want to show a message, just do not specify this attribute.
++
+In order to handle click on the link message you can use the <<gui_Table_setEmptyStateLinkClickHandler,setEmptyStateLinkClickHandler>> or subscribe to the corresponding event:
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/table_EmptyStateLinkClickHandler.java[]
+----
 
 [[gui_Table_multiselect]]
 * `multiselect` attribute enables setting multiple selection mode for table rows. If `multiselect` is `true`, users can select multiple rows in the table using keyboard or mouse holding *Ctrl* or *Shift* keys. By default, multiple selection mode is switched off.
@@ -217,7 +289,7 @@ You can provide your <<gui_data_comp_sort,own implementation of sorting>> if nee
 * `presentations` attribute controls the mechanism of <<gui_presentations,presentations>>. By default, the value is `false`. If the attribute value is `true`, a corresponding icon is added to the top right corner of the table image:gui_presentation.png[]. The mechanism of presentations is implemented for the *Web Client* only.
 
 [[gui_Table_columnControlVisible]]
-* If the `columnControlVisible` attribute is set to `false`, users cannot hide columns using the drop-down menu of the image:gui_table_columnControl.png[] button in the right part of the table header. Currently displayed columns are marked with checkmarks in the menu.
+* If the `columnControlVisible` attribute is set to `false`, users cannot hide columns using the drop-down menu of the image:gui_table_columnControl.png[] button in the right part of the table header. Currently displayed columns are marked with checkmarks in the menu. It is possible to show all table columns (`Select all`) or hide all columns that are possible except the first one (`Deselect all`). The first column is not hidden to display the table correctly.
 
 image::gui_table_columnControl_all.png[align="center"]
 
@@ -252,16 +324,23 @@ image::gui_table_columnControl_all.png[align="center"]
 ** `MAX` – find the maximum value 
 
 [[gui_Table_column_aggregation]]
-The `aggregation` element should be set for aggregated table columns with the `type` attribute, which sets the aggregation function. By default, only numeric data types are supported in aggregated columns, such as `Integer, Double, Long` and `BigDecimal`. The aggregated table values are shown in an additional row at the top of the table. An example of an aggregated table description:
+The `aggregation` element should be set for aggregated table columns with the `type` attribute, which sets the aggregation function. By default, only numeric data types are supported in aggregated columns, such as `Integer`, `Double`, `Long`, and `BigDecimal`. The aggregated table values are shown in an additional row at the top of the table. An example of an aggregated table description:
 
 [source, xml]
 ----
 include::{sourcesdir}/gui_vcl/tableAggregatable_1.xml[]
 ---- 
 
+[[gui_Table_column_aggregation_editable]]
+The `aggregation` element can contain the `editable` attribute. Setting the attribute to `true` in conjunction with using the <<gui_Table_AggregationDistributionProvider,setAggregationDistributionProvider()>> method allows developers to implement algorithms for the distribution of data between the rows of the table.
+
 [[gui_Table_column_aggregation_strategyClass]]
 The `aggregation` element can also contain the `strategyClass` attribute specifying a class implementing the `AggregationStrategy` interface (see below the example of setting an aggregation strategy programmatically).
 
+[[gui_Table_column_aggregation_valueDescription]]
+The `valueDescription` attribute defines a hint which is displayed in a popup when a user hovers the mouse cursor on the aggregated value. For the operations listed above (`SUM`, `AVG`, `COUNT`, `MIN`, `MAX`), popup hints are already available by default.
+
+[[gui_Table_column_aggregation_formatter]]
 A <<gui_formatter,Formatter>> can be specified to display the aggregated value in the format other than the standard for this <<datatype,Datatype>>: 
 
 [source, xml]
@@ -419,8 +498,38 @@ Example of using `CellClickListener`:
 include::{sourcesdir}/gui_vcl/gui_Table_CellClickListener.java[]
 ----
 
+[[gui_Table_AggregationDistributionProvider]]
+
+* You can use the `setAggregationDistributionProvider()` method to specify the `AggregationDistributionProvider` that defines the rules for distributing the aggregated value between rows in a table. If the user enters a value in an aggregated cell, it is distributed to the constituent cells according to a custom algorithm. Supported only for the `TOP` aggregation style. To make aggregated cells editable, use the <<gui_Table_column_aggregation_editable, editable>> attribute of the `aggregation` element.
++
+When creating a provider, you should use the `AggregationDistributionContext<E>` object, which contains the data needed to distribute the aggregated value:
++
+** `Column column` where total or group aggregation was changed;
+** `Object value` − the new aggregation value;
+** `Collection<E> scope` − a collection of entities that will be affected by changed aggregation;
+** `boolean isTotalAggregation` shows total aggregation changed, or it was group aggregation.
++
+As an example, consider a table that represents a budget. The user creates budget categories and sets for each of them the percentages according to which the amount of income should be distributed. Next, the user sets the total amount of income in the aggregated cell; after that, it distributes by category.
++
+An example of table configuration in an XML-descriptor of a screen:
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/table_aggregation_distribution.xml[]
+----
++
+An example in a screen controller:
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/table_aggregation_distribution.java[]
+----
+
+[[gui_Table_getAggregationResults]]
+* The `getAggregationResults()` method returns a map with <<gui_Table_aggregatable,aggregation>> results, where map keys are table column identifiers, and values are aggregation values.
+
 [[gui_Table_setStyleProvider]]
-*  `setStyleProvider()` method enables setting table cell display style. The method accepts an implementation of `Table.StyleProvider` interface as a parameter. `getStyleName()` method of this interface is invoked by the table for each row and each cell separately. If the method is invoked for a row, the first parameter contains the entity instance displayed by the row, the second parameter is `null`. If the method is called for a cell, the second parameter contains the name of the attribute displayed by the cell.
+* The `setStyleProvider()` method enables setting table cell display style. The method accepts an implementation of `Table.StyleProvider` interface as a parameter. `getStyleName()` method of this interface is invoked by the table for each row and each cell separately. If the method is invoked for a row, the first parameter contains the entity instance displayed by the row, the second parameter is `null`. If the method is called for a cell, the second parameter contains the name of the attribute displayed by the cell.
 +
 Example of setting a style:
 +
@@ -481,6 +590,14 @@ If such action is found, and has `enabled = true` property, the action is execut
 If such action is found, and has `enabled = true` property, the action is executed.
 --
 
+[[gui_Table_setEmptyStateLinkClickHandler]]
+* `setEmptyStateLinkClickHandler`  allows you to provide a handler which will be invoked after clicking on the <<gui_Table_emptyStateLinkMessage,empty state link message>>:
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/table_setEmptyStateLinkClickHandler.java[]
+----
+
 The appearance of the `Table` component can be customized using SCSS variables with `$cuba-table-*` prefix. You can change these variables in the visual editor after creating a <<web_theme_extension,theme extension>> or a <<web_theme_creation,custom theme>>.
 
 '''
@@ -501,6 +618,8 @@ Attributes of table::
 <<gui_attr_description,description>> -
 <<gui_attr_descriptionAsHtml,descriptionAsHtml>> -
 <<gui_Table_editable,editable>> -
+<<gui_Table_emptyStateLinkMessage,emptyStateLinkMessage>> -
+<<gui_Table_emptyStateMessage,emptyStateMessage>> -
 <<gui_attr_enable,enable>> -
 <<gui_attr_expandRatio,box.expandRatio>> -
 <<gui_attr_height,height>> -
@@ -547,17 +666,20 @@ Attributes of <<gui_Table_columns,column>>::
 <<gui_Table_column_maxTextLength,maxTextLength>> -
 <<gui_attr_optionsDatasource,optionsDatasource>> -
 <<gui_DateField_resolution,resolution>> -
+<<gui_Table_column_sort,sort>> -
 <<gui_Table_column_sortable,sortable>> -
 <<gui_attr_visible,visible>> -
 <<gui_Table_column_width,width>>
 
 Elements of <<gui_Table_columns,column>>::
 <<gui_Table_column_aggregation,aggregation>> -
-<<gui_formatter,formatter>>
+<<gui_Table_column_aggregation_formatter,formatter>>
 
 Attributes of <<gui_Table_column_aggregation,aggregation>>::
+<<gui_Table_column_aggregation_editable,editable>> -
+<<gui_Table_column_aggregation_strategyClass,strategyClass>> -
 <<gui_Table_column_aggregation,type>> -
-<<gui_Table_column_aggregation_strategyClass,strategyClass>>
+<<gui_Table_column_aggregation_valueDescription,valueDescription>>
 
 Attributes of <<gui_Table_rows,rows>>::
 <<gui_attr_datasource,datasource>>
@@ -578,11 +700,14 @@ API::
 <<gui_Table_SelectionListener,addSelectionListener>> -
 <<gui_api_settings,applySettings>> -
 <<gui_Table_generateCell,generateCell>> -
+<<gui_Table_getAggregationResults,getAggregationResults>> -
 <<gui_Table_getSelected,getSelected>> -
 <<gui_Table_requestFocus,requestFocus>> -
 <<gui_api_settings,saveSettings>> -
 <<gui_Table_scrollTo,scrollTo>> -
+<<gui_Table_AggregationDistributionProvider,setAggregationDistributionProvider>> -
 <<gui_Table_CellClickListener,setClickListener>> -
+<<gui_Table_setEmptyStateLinkClickHandler,setEmptyStateLinkClickHandler>> -
 <<gui_Table_setEnterPressAction,setEnterPressAction>> -
 <<gui_Table_setItemClickAction,setItemClickAction>> -
 <<gui_Table_setStyleProvider,setStyleProvider>>

@@ -5,7 +5,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/FileMultiUploadField.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/FileMultiUploadField.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -24,7 +24,6 @@ Below is an example of using `FileMultiUploadField`.
 include::{sourcesdir}/gui_vcl/multiupload_1.xml[]
 ----
 
-[[gui_FileMultiUploadField_QueueUploadCompleteListener]]
 * In the screen controller, inject the component itself, the <<file_upload,FileUploadingAPI>> and <<dataManager,DataManager>> interfaces.
 +
 --

@@ -11,7 +11,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/Table.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/Table.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -28,7 +28,7 @@ XML-имя компонента: `table`
 include::{sourcesdir}/gui_vcl/table_1.xml[]
 ----
 
-Здесь в элементе `data` определен <<gui_collection_container,контейнер данных>>, который выбирает сущности `Order` с помощью <<jpql,JPQL>> запроса `select o from sales$Order o order by o.date`. Для компонента `table` указывается используемый контейнер данных, а в элементе `columns` - какие атрибуты сущности, содержащейся в контейнере, использовать в качестве колонок.
+Здесь в элементе `data` определен <<gui_collection_container,контейнер данных>>, который выбирает сущности `Order` с помощью <<jpql,JPQL>> запроса `select o from sales_Order o order by o.date`. Для компонента `table` указывается используемый контейнер данных, а в элементе `columns` - какие атрибуты сущности, содержащейся в контейнере, использовать в качестве колонок.
 
 Элементы `table`:
 
@@ -121,6 +121,35 @@ role.name=<em>Name</em>
 [[gui_Table_column_sortable]]
 ** `sortable` − необязательный атрибут, позволяющий запретить сортировку колонки. Вступает в действие, если атрибут <<gui_Table_sortable,sortable>> всей таблицы установлен в `true` (что имеет место по умолчанию).
 
+[[gui_Table_column_sort]]
+** `sort` − необязательный атрибут, позволяющий задать начальную сортировку таблицы по указанной колонке в соответствии с направлением сортировки. Возможные значения:
+
+*** `ASCENDING` – сортировка по возрастанию (например, A-Z, 1..9).
+*** `DESCENDING` – сортировка по убыванию (например, Z-A, 9..1).
+
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/table_sort.xml[]
+----
+
+[TIP]
+====
+Обратите внимание: если значение атрибута <<gui_attr_settingsEnabled,settingsEnabled>> установлено в `true`, таблица сортируется в соответствии с настройками пользователя.
+====
+
+[WARNING]
+====
+В одно и то же время таблица может быть сортирована только по одной колонке. Таким образом, приведенный ниже пример:
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/table_sort_exception.xml[]
+----
+вызовет исключение.
+
+Если одновременно для колонки установить атрибуты `sort` и `sortable="false"`, это также вызовет исключение.
+====
+
 [[gui_Table_column_maxTextLength]]
 ** `maxTextLength` - необязательный атрибут, позволяет ограничивать количество символов в ячейке. При этом если разница между фактическим и допустимым количеством символов не превышает порог в 10 символов, "лишние" символы не скрываются. Для просмотра полной записи надо кликнуть на ее видимую часть. Пример колонки с ограничением в 10 символов:
 +
@@ -179,7 +208,21 @@ include::{sourcesdir}/gui_vcl/tableFormatter_1.xml[]
 [[gui_Table_rowsCount]]
 * `rowsCount` − необязательный элемент, создающий для таблицы компонент `RowsCount`, который позволяет загружать в таблицу данные постранично. Размер страницы задается путем ограничения количества записей в контейнере методом `setMaxResults()` <<gui_data_loaders,loader>>'а. Как правило, это делает связанный с загрузчиком данных таблицы компонент <<gui_Filter,Filter>>, однако при отсутствии универсального фильтра можно вызвать этот метод и напрямую из контроллера экрана.
 +
-Компонент `RowsCount` может также отобразить общее число записей, возвращаемых текущим запросом в контейнере данных, без извлечения этих записей. Для этого при щелчке пользователя на знаке "?" он вызывает метод `com.haulmont.cuba.core.global.DataManager#getCount`, что приводит к выполнению в БД запроса с такими же, как у текущего запроса условиями, но с агрегатной функцией `++COUNT(*)++` вместо результатов. Полученное число отображается вместо знака "?".
+Компонент `RowsCount` может также отобразить общее число записей, возвращаемых текущим запросом в контейнере данных, без извлечения этих записей. По клику пользователя на знак "*?*" вызывается `com.haulmont.cuba.core.global.DataManager#getCount`, что приводит к выполнению в БД запроса с такими же, как у текущего запроса условиями, но с агрегатной функцией `++COUNT(*)++` вместо результатов. Полученное число отображается вместо знака "?".
++
+Атрибут `autoLoad` компонента `RowsCount`, установленный в значение `true`, позволяет автоматически загружать общее число записей. Его можно установить в XML-дескрипторе:
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/datagrid_rowscount_1.xml[]
+----
++
+Также включить или отключить автоматическую загрузку количества записей  можно с помощью API в контроллере экрана:
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/datagrid_rowscount_2.java[]
+----
 
 [[gui_Table_actions]]
 * `actions` − необязательный элемент для описания <<gui_Action,действий>>, связанных с таблицей. Кроме описания произвольных действий, поддерживаются следующие <<std_list_actions, стандартные действия>>, определенные в пакете `com.haulmont.cuba.gui.actions.list`: `create`, `edit`, `remove`, `refresh`, `add`, `exclude`, `excel`.
@@ -188,6 +231,35 @@ include::{sourcesdir}/gui_vcl/tableFormatter_1.xml[]
 * `buttonsPanel` - необязательный элемент, создающий над таблицей контейнер <<gui_ButtonsPanel,ButtonsPanel>> для отображения кнопок действий.
 
 Атрибуты `table`:
+
+[[gui_Table_emptyStateMessage]]
+* Атрибут `emptyStateMessage` позволяет задать сообщение в тех случаях, когда нет загруженных данных, установлены нулевые значения или контейнер данных пуст. Данный атрибут часто используется совместно с атрибутом <<gui_Table_emptyStateLinkMessage,emptyStateLinkMessage>>. Сообщение может содержать информацию о том, какие данные должна содержать таблица. Например:
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/gui_Table_emptyStateMessage.xml[]
+----
++
+Атрибут `emptyStateMessage` поддерживает загрузку сообщений из <<message_packs,пакета сообщений>>. Если вы не хотите отображать сообщение, просто не указывайте этот атрибут.
+
+[[gui_Table_emptyStateLinkMessage]]
+* Атрибут `emptyStateLinkMessage` позволяет задать сообщение в виде гиперссылки в тех случаях, когда нет загруженных данных, установлены нулевые значения или контейнер данных пуст. Данный атрибут часто используется совместно с атрибутом <<gui_Table_emptyStateMessage,emptyStateMessage>>. Сообщение должно описывать действие, которое необходимо выполнить для заполнения таблицы. Например:
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/gui_Table_emptyStateLinkMessage.xml[]
+----
++
+image::gui_table_emptyState.png[align="center"]
++
+Атрибут `emptyStateLinkMessage` поддерживает загрузку сообщений из <<message_packs,пакета сообщений>>. Если вы не хотите отображать сообщение, просто не указывайте этот атрибут.
++
+Чтобы обработать событие перехода по ссылке, используйте метод <<gui_Table_setEmptyStateLinkClickHandler,setEmptyStateLinkClickHandler>> или подпишитесь на соответствующее событие в контроллере экрана:
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/table_EmptyStateLinkClickHandler.java[]
+----
 
 [[gui_Table_multiselect]]
 * Атрибут `multiselect` позволяет задать режим множественного выделения строк в таблице. Если `multiselect` равен `true`, то пользователь может выделить несколько строк с помощью клавиатуры или мыши, удерживая клавиши *Ctrl* или *Shift*. По умолчанию режим множественного выделения отключен.
@@ -216,7 +288,7 @@ include::{sourcesdir}/gui_vcl/tableSortable_1.xml[]
 * Атрибут `presentations` управляет механизмом <<gui_presentations,представлений>>. Значение по умолчанию равно `false`. Когда значение атрибута равно `true`, то в верхнем правом углу таблицы появляется значок image:gui_presentation.png[]. Механизм представлений реализован только для блока *Web Client*.
 
 [[gui_Table_columnControlVisible]]
-* Установка атрибута `columnControlVisible` в `false` запрещает пользователю скрывать колонки с помощью меню, выпадающего при нажатия на кнопку image:gui_table_columnControl.png[] в правой части шапки таблицы. Флажками в меню отмечаются отображаемые в данный момент колонки.
+* Установка атрибута `columnControlVisible` в `false` запрещает пользователю скрывать колонки с помощью меню, выпадающего при нажатия на кнопку image:gui_table_columnControl.png[] в правой части шапки таблицы. Флажками в меню отмечаются отображаемые в данный момент колонки. Существует возможность выбрать сразу все колонки для отображения (`Select all`) или спрятать все, кроме первой (`Deselect all`). Первая колонка не скрывается для правильного отображения таблицы.
 +
 image::gui_table_columnControl_all.png[align="center"]
 
@@ -251,16 +323,23 @@ image::gui_table_columnControl_all.png[align="center"]
 ** `MAX` - максимальное значение
 
 [[gui_Table_column_aggregation]]
-Для агрегируемых колонок необходимо указать элемент `aggregation` с атрибутом `type`, задающим функцию агрегации. По умолчанию в агрегируемых колонках поддерживаются только числовые типы данных, такие как `Integer, Double, Long` и `BigDecimal`. Агрегированные значения столбцов выводятся в дополнительной строке вверху таблицы. Пример описания таблицы с агрегацией:
+Для агрегируемых колонок необходимо указать элемент `aggregation` с атрибутом `type`, задающим функцию агрегации. По умолчанию в агрегируемых колонках поддерживаются только числовые типы данных, такие как `Integer`, `Double`, `Long` и `BigDecimal`. Агрегированные значения столбцов выводятся в дополнительной строке вверху таблицы. Пример описания таблицы с агрегацией:
 
 [source, xml]
 ----
 include::{sourcesdir}/gui_vcl/tableAggregatable_1.xml[]
 ---- 
 
-[[gui_Table_column_aggregation_strategyClass]]
-Элемент `aggregation` может также содержать атрибут `strategyClass`, указывающий класс, реализующий интерфейс `AggregationStrategy` interface (см. ниже пример установки стратегии агрегации программно).
+[[gui_Table_column_aggregation_editable]]
+Элемент `aggregation` может содержать атрибут `editable`. Установка атрибута в значение `true` совместно с использованием метода <<gui_Table_AggregationDistributionProvider,setAggregationDistributionProvider()>> позволяет реализовать функциональность распределения значения агрегируемой ячейки между строками таблицы.
 
+[[gui_Table_column_aggregation_strategyClass]]
+Элемент `aggregation` может также содержать атрибут `strategyClass`, указывающий класс, реализующий интерфейс `AggregationStrategy` (см. ниже пример установки стратегии агрегации программно).
+
+[[gui_Table_column_aggregation_valueDescription]]
+Атрибут `valueDescription` задает текст всплывающей подсказки, отображаемой при наведении курсора мыши по агрегированному значению. Для операций, перечисленных выше (`SUM`, `AVG`, `COUNT`, `MIN`, `MAX`), всплывающие подсказки уже есть по умолчанию.
+
+[[gui_Table_column_aggregation_formatter]]
 Для отображения агрегированного значения в виде, отличном от стандартного для данного <<datatype,Datatype>>, для него можно указать <<gui_formatter,Formatter>>: 
 
 [source, xml]
@@ -417,6 +496,36 @@ include::{sourcesdir}/gui_vcl/table_scrollTo_1.java[]
 include::{sourcesdir}/gui_vcl/gui_Table_CellClickListener.java[]
 ----
 
+[[gui_Table_AggregationDistributionProvider]]
+
+* С помощью метода `setAggregationDistributionProvider()` можно задать провайдер `AggregationDistributionProvider`, определяющий правила распределения агрегированного значения между ячейками таблицы. Если пользователь вводит значение в агрегированную ячейку, оно распределяется по составляющим ячейкам в соответствии с кастомным алгоритмом. Алгоритм может учитывать и существующие значения ячеек. Поддерживается только для стиля агрегации `TOP`. Для того чтобы сделать агрегированные ячейки редактируемыми, используйте атрибут <<gui_Table_column_aggregation_editable, editable>> элемента `aggregation`.
++
+При создании провайдера используется объект `AggregationDistributionContext<E>`, который содержит данные, необходимые для распределения агрегируемого значения:
++
+** `Column column` − колонка, в которой произошло изменение значения в общей или групповой агрегации;
+** `Object value` − новое значение агрегации;
+** `Collection<E> scope` − коллекция сущностей, на которые повлияет изменение значения агрегации;
+** `boolean isTotalAggregation` указывает, в какой агрегации произошли изменения: в общей или групповой.
++
+В качестве примера рассмотрим таблицу, представляющую бюджет. Пользователь создает категории бюджета и задает для каждой из них проценты, в соответствии с которыми должна распределяться сумма дохода. Далее в агрегируемой ячейке указывается общая сумма дохода, после чего происходит распределение по категориям.
++
+Пример описания в дескрипторе:
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/table_aggregation_distribution.xml[]
+----
++
+Реализация в контроллере:
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/table_aggregation_distribution.java[]
+----
+
+[[gui_Table_getAggregationResults]]
+* Метод `getAggregationResults()` возвращает мэп с результатами <<gui_Table_aggregatable,агрегации>>, где ключи в мэп − идентификаторы столбцов таблицы, а значения − значения агрегации.
+
 [[gui_Table_setStyleProvider]]
 * Метод `setStyleProvider()` позволяет задать стиль отображения ячеек таблицы. Параметром метода должна быть реализация интерфейса `Table.StyleProvider`. Метод `getStyleName()` этого интерфейса вызывается таблицей отдельно для каждой строки и для каждой ячейки. Если метод вызван для строки, то первый параметр содержит экземпляр сущности, отображаемый этой строкой, а второй параметр `null`. Если же метод вызван для ячейки, то второй параметр содержит имя атрибута, отображаемого этой ячейкой.
 +
@@ -480,6 +589,14 @@ include::{sourcesdir}/gui_vcl/table_addPrintable_2.java[]
 Если такое действие найдено и имеет свойство `enabled = true`, оно выполняется.
 --
 
+[[gui_Table_setEmptyStateLinkClickHandler]]
+* `setEmptyStateLinkClickHandler` позволяет задать обработчик, который будет вызван после нажатия на гиперссылку в сообщении, установленном в атрибуте <<gui_Table_emptyStateLinkMessage,emptyStateLinkMessage>>:
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/table_setEmptyStateLinkClickHandler.java[]
+----
+
 Внешний вид компонента `Table` можно настроить с помощью переменных SCSS с префиксом `$cuba-table-*`. Эти переменные можно изменить в визуальном редакторе после <<web_theme_extension,расширения темы>> или создания <<web_theme_creation,новой темы>>.
 
 '''
@@ -500,6 +617,8 @@ include::{sourcesdir}/gui_vcl/table_addPrintable_2.java[]
 <<gui_attr_description,description>> -
 <<gui_attr_descriptionAsHtml,descriptionAsHtml>> -
 <<gui_Table_editable,editable>> -
+<<gui_Table_emptyStateLinkMessage,emptyStateLinkMessage>> -
+<<gui_Table_emptyStateMessage,emptyStateMessage>> -
 <<gui_attr_enable,enable>> -
 <<gui_attr_expandRatio,box.expandRatio>> -
 <<gui_attr_height,height>> -
@@ -546,6 +665,7 @@ include::{sourcesdir}/gui_vcl/table_addPrintable_2.java[]
 <<gui_Table_column_maxTextLength,maxTextLength>> -
 <<gui_attr_optionsDatasource,optionsDatasource>> -
 <<gui_DateField_resolution,resolution>> -
+<<gui_Table_column_sort,sort>> -
 <<gui_Table_column_sortable,sortable>> -
 <<gui_attr_visible,visible>> -
 <<gui_Table_column_width,width>>
@@ -555,8 +675,10 @@ include::{sourcesdir}/gui_vcl/table_addPrintable_2.java[]
 <<gui_formatter,formatter>>
 
 Атрибуты <<gui_Table_column_aggregation,aggregation>>::
+<<gui_Table_column_aggregation_editable,editable>> -
+<<gui_Table_column_aggregation_strategyClass,strategyClass>> -
 <<gui_Table_column_aggregation,type>> -
-<<gui_Table_column_aggregation_strategyClass,strategyClass>>
+<<gui_Table_column_aggregation_valueDescription,valueDescription>>
 
 Атрибуты <<gui_Table_rows,rows>>::
 <<gui_attr_datasource,datasource>>
@@ -577,11 +699,14 @@ API::
 <<gui_Table_SelectionListener,addSelectionListener>> -
 <<gui_api_settings,applySettings>> -
 <<gui_Table_generateCell,generateCell>> -
+<<gui_Table_getAggregationResults,getAggregationResults>> -
 <<gui_Table_getSelected,getSelected>> -
 <<gui_Table_requestFocus,requestFocus>> -
 <<gui_api_settings,saveSettings>> -
 <<gui_Table_scrollTo,scrollTo>> -
+<<gui_Table_AggregationDistributionProvider,setAggregationDistributionProvider>> -
 <<gui_Table_CellClickListener,setClickListener>> -
+<<gui_Table_setEmptyStateLinkClickHandler,setEmptyStateLinkClickHandler>> -
 <<gui_Table_setEnterPressAction,setEnterPressAction>> -
 <<gui_Table_setItemClickAction,setItemClickAction>> -
 <<gui_Table_setStyleProvider,setStyleProvider>>

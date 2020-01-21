@@ -11,7 +11,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/Image.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/Image.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -79,6 +79,9 @@ include::{sourcesdir}/gui_vcl/image_1.xml[]
 * `FILL` - изображение масштабируется, чтобы заполнить всю область компонента: используется вся ширина и высота компонента.
 
 * `CONTAIN` - изображение подстраивается под размер компонента с сохранением пропорций, уменьшаясь или растягиваясь по меньшей стороне компонента.
+
+* `COVER` - изображение масштабируется так, чтобы заполнить всю область компонента, сохраняя при этом соотношения сторон. Если пропорции изображения не совпадают с пропорциями компонента, то изображение будет обрезано по размеру.
+
 
 * `SCALE_DOWN` - изображение изменяет размер, сравнивая разницу между `NONE` и `CONTAIN`, для того, чтобы найти наименьший конкретный размер объекта.
 

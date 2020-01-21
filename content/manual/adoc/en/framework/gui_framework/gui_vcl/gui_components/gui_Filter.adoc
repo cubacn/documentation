@@ -11,7 +11,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/Filter.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/Filter.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -31,9 +31,9 @@ In this section:
 
 * <<gui_Filter_fts,Full-Text Search Mode in Filter>>.
 
-The `Filter` is a versatile tool for filtering lists of entities extracted from a database to display in a tabular form. The component enables quick data filtering by arbitrary conditions, as well as creating filters for repeated use.
+The `Filter` is a versatile tool for filtering lists of entities extracted from a database to display in tables. The component enables quick data filtering by arbitrary conditions, as well as creating filters for repeated use.
 
-`Filter` should be connected to a <<gui_collection_container,CollectionContainer>> with a <<gui_data_loaders,loader>> or a <<datasources,CollectionDatasource>> containing a JPQL <<datasource_query,query>>. Its logic is based on the modification of the query in accordance with the criteria provided by the user. Thus, filtering is done at the database level when the SQL query is executed, and only selected data is loaded to the Middleware and Client <<app_tiers,tiers>>.
+`Filter` should be connected to a <<gui_data_loaders,data loader>> defined for a <<gui_collection_container,CollectionContainer>> or <<gui_keyvalue_containers,KeyValueCollectionContainer>>. The loader should contain a JPQL query. The filter operates by modifying the query in accordance with the criteria provided by the user. Thus, filtering is done at the database level when the SQL query is executed, and only selected data is loaded to the middleware and client <<app_tiers,tiers>>.
 
 [[gui_Filter_use]]
 *Using a Filter*
@@ -126,7 +126,7 @@ An example of component declaration in XML screen descriptor is shown below:
 include::{sourcesdir}/gui_vcl/filter_1.xml[]
 ---- 
 
-In the example above, a <<gui_data_containers,data container>> is defined in the `data` layer of the screen. The container selects `Car` entity instances using JPQL query. The <<gui_data_loaders,data loader>> which provides data to be filtered is specified in the `filter` component's `loader` attribute. Data is displayed using the <<gui_Table,Table>> component, which is connected to the same data container.
+In the example above, the <<gui_collection_container,data container>> holds the collection of `Car` entity instances. The <<gui_data_loaders,data loader>> loads the collection using a JPQL query. The loader's query is modified by the filter component which is connected to the loader using the `dataLoader` attribute. Data is displayed using the <<gui_Table,Table>> component, which is connected to the data container.
 
 `filter` may contain nested elements. They describe conditions available for user selection in *Add Condition* dialog:
 
@@ -291,6 +291,16 @@ select c from sample_Car c join c.repairs cr
 where (cr.description like ?)
 order by c.createTs
 ----
++
+Also, you can create a custom condition with an unrelated entity and use this entity later in the `where` section of the condition.
+In this case, you should use `", "` instead of `join` or `left join` statements in the `join` attribute value.
++
+Let us create a custom condition to find those cars that were assigned to drivers after the specified date. An example of a filter with such condition is shown below:
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/filter_8.xml[]
+----
 
 ** `paramWhere` − specifies a JPQL expression used to select the list of condition parameter values if the parameter is a related entity. See the description of the `property` element's <<gui_Filter_property_paramWhere,attribute>> of the same name.
 
@@ -351,6 +361,9 @@ image::gui_filter_apply_to.png[align="center"]
 [[gui_Filter_columnsCount]]
 * `columnsCount` - defines the number of columns for conditions on the filter panel. Default value is 3.
 
+[[gui_Filter_controlsLayoutTemplate]]
+* `controlsLayoutTemplate` - defines an internal layout of the filter controls. The layout template format can be found in the <<cuba.gui.genericFilterControlsLayout,cuba.gui.genericFilterControlsLayout>> application property description.
+
 [[gui_Filter_defaultMode]]
 * `defaultMode` - defines the filter default mode. Possible values are `generic` and `fts`. When `fts` value is set then the filter will be opened in the full text search mode (if the entity is indexed). The default value is `generic`.
 
@@ -378,6 +391,7 @@ Attributes of filter::
 <<gui_Filter_caption,caption>> -
 <<gui_attr_captionAsHtml,captionAsHtml>> -
 <<gui_Filter_columnsCount,columnsCount>> -
+<<gui_Filter_controlsLayoutTemplate,controlsLayoutTemplate>> -
 <<gui_attr_css,css>> -
 <<gui_attr_dataLoader,dataLoader>> -
 <<gui_attr_datasource,datasource>> -
@@ -470,6 +484,8 @@ The following application properties affect filter behavior:
 
 * <<cuba.gui.genericFilterPopupListSize,cuba.gui.genericFilterPopupListSize>> - defines the maximum number of items displayed in the popup list of the *Search* button.
 
+* <<cuba.gui.genericFilterPropertiesHierarchyDepth,cuba.gui.genericFilterPropertiesHierarchyDepth>> - defines the properties hierarchy depth in the "Add Condition" dialog window.
+
 * <<cuba.gui.genericFilterTrimParamValues,cuba.gui.genericFilterTrimParamValues>> - defines whether all generic text filters should trim input values.
 --
 
@@ -485,7 +501,7 @@ Then you can adjust the screen to use the filter by default. To specify a filter
 
 To set filter parameter values, pass to the screen parameters with the names equal to parameter names and their values in string format.
 
-An example of main menu item descriptor is shown below. It sets a filter with the `FilterByVIN` code to the `carsFilter` component of the `sample$Car.browse` screen which it opens. It also sets `TMA` value to the `component$carsFilter.vin79216` condition:
+An example of main menu item descriptor is shown below. It sets a filter with the `FilterByVIN` code to the `carsFilter` component of the `sample_Car.browse` screen which it opens. It also sets `TMA` value to the `component$carsFilter.vin79216` condition:
 
 [source, xml]
 ----
@@ -533,11 +549,15 @@ Note that you cannot use these methods in the <<screen_InitEvent,InitEvent>> han
 
 If a filter data container contains entities that are indexed by the full-text search subsystem (see link:{fts_man_url}[CUBA Platform. Full Text Search]), then a full-text search mode is available in the filter. Use the *Full-Text Search* checkbox to switch to this mode.
 
-image::gui_filter_fts.png[align="center"]
+image::gui_filter_fts_2.png[align="center"]
 
 In the full-text search mode, the filter contains text fields for search criteria, and the search is performed in entity fields indexed by the FTS subsystem.
 
-If a table is defined in the <<gui_Filter_applyTo,applyTo>> attribute, then placing the mouse cursor on the table row will display a tooltip with the information what entity attributes satisfy the search criteria.
+If a table is defined in the <<gui_Filter_applyTo,applyTo>> attribute, then it's possible to display an information what entity attributes satisfy the search criteria. If the `cuba.gui.genericFilterFtsDetailsActionEnabled` application property is set to `true`, then the `Full-Text Search Details` action will be added to the table. Right click on the table row and select this menu item - a dialog window with the full-text search details will be opened.
+
+If the `cuba.gui.genericFilterFtsTableTooltipsEnabled` application property is set to `true` then placing the mouse cursor on the table row will display a tooltip with the information what entity attributes satisfy the search criteria. Keep in mind that tooltip generation may take a lot of time, so it is disabled by default.
+
+image::gui_filter_fts.png[align="center"]
 
 For hiding the filter mode checkbox, set `false` value to the <<gui_Filter_modeSwitchVisible,modeSwitchVisible>> filter attribute.
 

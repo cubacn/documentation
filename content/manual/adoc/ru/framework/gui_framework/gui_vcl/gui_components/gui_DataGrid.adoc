@@ -11,7 +11,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/DataGrid.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/DataGrid.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -126,11 +126,54 @@ include::{sourcesdir}/gui_vcl/datagrid_formatter.xml[]
 * `buttonsPanel` - необязательный элемент, создающий над `DataGrid` контейнер `ButtonsPanel` для отображения кнопок действий.
 
 [[gui_DataGrid_rowsCount]]
-* `rowsCount` -  необязательный элемент, создающий для `DataGrid` компонент `RowsCount`, который позволяет загружать в `DataGrid` данные постранично. Размер страницы задается путем ограничения количества записей в data loader'е методом `CollectionLoader.setMaxResults()` в контроллере экрана. Также можно управлять количеством записей. используя универсальный компонент `Filter`, связанный с источником данных `DataGrid`.
-
-Компонент `RowsCount` может также отобразить общее число записей, возвращаемых текущим запросом в источнике данных, без извлечения этих записей. Для этого при щелчке пользователя на знаке "*?*" он вызывает метод `com.haulmont.cuba.core.global.DataManager#getCount`, что приводит к выполнению в БД запроса с такими же, как у текущего запроса, условиями, но с агрегатной функцией `++COUNT(*)++` вместо результатов. Полученное число отображается вместо знака "*?*".
+* `rowsCount` -  необязательный элемент, создающий для `DataGrid` компонент `RowsCount`, который позволяет загружать в `DataGrid` данные постранично. Размер страницы задается путем ограничения количества записей в data loader'е методом `CollectionLoader.setMaxResults()` в контроллере экрана. Также можно управлять количеством записей, используя универсальный компонент `Filter`, связанный с источником данных `DataGrid`.
++
+Компонент `RowsCount` может также отобразить общее число записей, возвращаемых текущим запросом в источнике данных, без извлечения этих записей. По клику пользователя на знак "*?*" вызывается `com.haulmont.cuba.core.global.DataManager#getCount`, что приводит к выполнению в БД запроса с такими же, как у текущего запроса, условиями, но с агрегатной функцией `++COUNT(*)++` вместо результатов. Полученное число отображается вместо знака "*?*".
++
+Атрибут `autoLoad` компонента `RowsCount`, установленный в значение `true`, позволяет автоматически загружать общее число записей. Его можно установить в XML-дескрипторе:
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/datagrid_rowscount_1.xml[]
+----
++
+Также включить или отключить автоматическую загрузку количества записей  можно с помощью API в контроллере экрана:
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/datagrid_rowscount_2.java[]
+----
 
 *Атрибуты dataGrid:*
+
+[[gui_DataGrid_aggregatable]]
+* Атрибут `aggregatable` включает режим агрегации строк в `DataGrid`. Поддерживаются следующие операции:
++
+--
+
+** `SUM` − сумма
+
+** `AVG` − среднее значение
+
+** `COUNT` − количество
+
+** `MIN` − минимальное значение
+
+** `MAX` − максимальное значение
+
+[[gui_DataGrid_column_aggregation]]
+Для агрегируемых колонок необходимо указать элемент `aggregation` с атрибутом `type`, задающим функцию агрегации. По умолчанию в агрегируемых колонках поддерживаются только числовые типы данных, такие как `Integer`, `Double`, `Long` и `BigDecimal`. Агрегированные значения столбцов выводятся в дополнительной строке вверху `DataGrid`. Агрегирование в компоненте `DataGrid` функционирует также, как и в компоненте <<gui_Table, Table>>. Это означает, что вы можете использовать <<gui_Table_column_aggregation_strategyClass,strategyClass>>, <<gui_Table_column_aggregation_valueDescription,valueDescription>> и <<gui_Table_column_aggregation_formatter,formatter>> для агрегации.
+
+Пример описания `DataGrid` с агрегацией:
+
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/datagrid_aggregation_1.xml[]
+----
+--
+
+[[gui_DataGrid_aggregationPosition]]
+* Атрибут `aggregationPosition` позволяет задать положение строки агрегации: `TOP` или `BOTTOM`. По умолчанию используется `TOP`.
 
 [[gui_DataGrid_columnResizeMode]]
 * `columnResizeMode` - устанавливает режим изменения размера колонок пользователем. Поддерживаются следующие режимы (по умолчанию ANIMATED):
@@ -273,6 +316,9 @@ image::gui_dataGrid_3.png[align="center"]
 
 * `DESCENDING` - сортировка по убыванию (например, Z-A, 9..1).
 --
+
+[[gui_DataGrid_getAggregationResults]]
+* Метод `getAggregationResults()` возвращает мэп с результатами <<gui_DataGrid_aggregatable,агрегации>>, где ключи в мэп − идентификаторы столбцов `DataGrid`, а значения − значения агрегации.
 
 *Использование всплывающих подсказок:*
 
@@ -525,11 +571,43 @@ include::{sourcesdir}/gui_vcl/datagrid_example_2.java[]
 
 image::gui_dataGrid_12.png[align="center"]
 
+*Стили DataGrid:*
+
+В веб-клиенте к компоненту `DataGrig` можно применить заданные стили. Стиль задается в XML-дескрипторе с помощью атрибута `stylename`.
+
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/datagrid_styles_1.xml[]
+----
+
+Также стиль можно задать программно в контроллере экрана.
+
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/datagrid_styles_2.java[]
+----
+
+Предопределенные стили:
+
+[[gui_DataGrid_borderless]]
+* `borderless` - удаляет внешнюю рамку.
+
+[[gui_DataGrid_no-horizontal-lines]]
+* `no-horizontal-lines` - удаляет горизонтальные строковые разделители.
+
+[[gui_DataGrid_no-vertical-lines]]
+* `no-vertical-lines` - удаляет вертикальные разделители столбцов.
+
+[[gui_DataGrid_no-stripes]]
+* `no-stripes` - отключает чередование цветов строк таблицы.
+
 Внешний вид компонента `DataGrid` можно настроить с помощью переменных SCSS с префиксом `$cuba-datagrid-*`. Эти переменные можно изменить в визуальном редакторе после <<web_theme_extension,расширения темы>> или создания <<web_theme_creation,новой темы>>.
 
 '''
 
 Атрибуты dataGrid::
+<<gui_DataGrid_aggregatable,aggregatable>> -
+<<gui_DataGrid_aggregationPosition,aggregationPosition>> -
 <<gui_attr_align,align>> -
 <<gui_attr_caption,caption>> -
 <<gui_attr_captionAsHtml,captionAsHtml>> -
@@ -549,6 +627,8 @@ image::gui_dataGrid_12.png[align="center"]
 <<gui_DataGrid_editorCrossFieldValidate,editorCrossFieldValidate>> -
 <<gui_DataGrid_editorEnabled,editorEnabled>> -
 <<gui_DataGrid_editorSaveCaption,editorSaveCaption>> -
+<<gui_Table_emptyStateLinkMessage,emptyStateLinkMessage>> -
+<<gui_Table_emptyStateMessage,emptyStateMessage>> -
 <<gui_attr_enable,enable>> -
 <<gui_attr_expandRatio,box.expandRatio>> -
 <<gui_DataGrid_frozenColumnCount,frozenColumnCount>> -
@@ -590,17 +670,25 @@ image::gui_dataGrid_12.png[align="center"]
 <<gui_DataGrid_minimumWidth,minimumWidth>> -
 <<gui_DataGrid_property,property>> -
 <<gui_DataGrid_resizable,resizable>> -
+<<gui_Table_column_sort,sort>> -
 <<gui_DataGrid_column_sortable,sortable>> -
 <<gui_attr_width,width>>
 
 Элементы column::
-<<gui_formatter,formatter>>
+<<gui_DataGrid_column_aggregation,aggregation>> -
+<<gui_Table_column_aggregation_formatter,formatter>>
+
+Атрибуты <<gui_DataGrid_column_aggregation,aggregation>>::
+<<gui_Table_column_aggregation_strategyClass,strategyClass>> -
+<<gui_DataGrid_column_aggregation,type>> -
+<<gui_Table_column_aggregation_valueDescription,valueDescription>>
 
 API::
 <<gui_DataGrid_addGeneratedColumn,addGeneratedColumn>> -
 <<gui_api_settings,applySettings>> -
 <<gui_DataGrid_createRenderer,createRenderer>> -
 <<gui_DataGrid_edit,edit>> -
+<<gui_DataGrid_getAggregationResults,getAggregationResults>> -
 <<gui_api_settings,saveSettings>> -
 <<gui_DataGrid_scrollTo,getColumns>> -
 <<gui_DataGrid_setDescriptionProvider,setDescriptionProvider>> -
@@ -608,6 +696,7 @@ API::
 <<gui_DataGrid_setConverter,setConverter>> -
 <<gui_DataGrid_setDetailsGenerator,setDetailsGenerator>> -
 <<gui_DataGrid_inlineEditorCrossFieldValidate,setEditorCrossFieldValidate>> -
+<<gui_Table_setEmptyStateLinkClickHandler,setEmptyStateLinkClickHandler>> -
 <<gui_DataGrid_setEnterPressAction,setEnterPressAction>> -
 <<gui_DataGrid_setItemClickAction,setItemClickAction>> -
 <<gui_DataGrid_setRenderer,setRenderer>> -
@@ -627,6 +716,12 @@ API::
 <<gui_DataGrid_ItemClickListener,ItemClickListener>> -
 <<gui_DataGrid_SelectionListener,SelectionListener>> -
 <<gui_DataGrid_SortListener,SortListener>>
+
+Предопределенные стили::
+<<gui_DataGrid_borderless,borderless>> - 
+<<gui_DataGrid_no-horizontal-lines,no-horizontal-lines>> -
+<<gui_DataGrid_no-vertical-lines,no-vertical-lines>> -
+<<gui_DataGrid_no-stripes,no-stripes>>
 
 '''
 

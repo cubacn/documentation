@@ -11,7 +11,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/Filter.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/Filter.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -33,7 +33,7 @@
 
 Компонент `Filter` − универсальное средство фильтрации списков сущностей, извлекаемых из базы данных для отображения в табличном виде. Компонент позволяет производить быструю фильтрацию данных по произвольному набору условий, а также создавать фильтры для многократного использования.
 
-`Filter` должен быть связан с контейнером <<gui_collection_container,CollectionContainer>> через <<gui_data_loaders,data loader>> либо с <<datasources,источником данных>> `collectionDatasource`, содержащим <<datasource_query,запрос>> на JPQL. Принцип действия фильтра основан на модификации этого запроса в соответствии с критериями, заданными пользователем. Таким образом, фильтрация осуществляется на уровне БД при выполнении транслированного из JPQL в SQL запроса, и на Middleware и клиентский <<app_tiers,уровень>> загружаются только отобранные данные.
+`Filter` должен быть связан с <<gui_data_loaders,загрузчиком данных>>, заданным для <<gui_collection_container,CollectionContainer>> или <<gui_keyvalue_containers,KeyValueCollectionContainer>>. Загрузчик должен содержать запрос на JPQL. Фильтр действует путем модификации этого запроса в соответствии с критериями, заданными пользователем. Таким образом, фильтрация осуществляется на уровне БД при выполнении транслированного из JPQL в SQL запроса, и на Middleware и клиентский <<app_tiers,уровень>> загружаются только отобранные данные.
 
 [[gui_Filter_use]]
 *Использование фильтра*
@@ -126,7 +126,7 @@ XML-имя компонента: `filter`.
 include::{sourcesdir}/gui_vcl/filter_1.xml[]
 ---- 
 
-Здесь в элементе `data` определен <<gui_data_containers,data container>>, который выбирает экземпляры сущности `Car` с помощью JPQL запроса. Для компонента `filter` в его атрибуте `loader` указан фильтруемый загрузчик <<gui_data_loaders,data loader>>. Данные отображаются компонентом <<gui_Table,Table>>, связанным с этим же контейнером.
+Здесь <<gui_collection_container,data container>> содержит коллекцию экземпляров сущности `Car`.  <<gui_data_loaders,Загрузчик>> загружает коллекцию используя JPQL-запрос. Запрос модифицируется компонентом `filter`, который соединен с загрузчиком с помощью атрибута `dataLoader`. Данные отображаются компонентом <<gui_Table,Table>>, связанным с контейнером.
 
 Элемент `filter` может содержать вложенные элементы. Все они описывают условия, доступные пользователю для выбора в диалоге добавления условий:
 
@@ -281,16 +281,25 @@ include::{sourcesdir}/gui_vcl/filter_6.xml[]
 +
 [source, jpql]
 ----
-select c from sample$Car c order by c.createTs
+select c from sample_Car c order by c.createTs
 ----
 +
 будет трансформирован в следующий:
 +
 [source, jpql]
 ----
-select c from sample$Car c join c.repairs cr
+select c from sample_Car c join c.repairs cr
 where (cr.description like ?)
 order by c.createTs
+----
++
+Кроме того, есть возможность создать прозвольное условие, содержащее несвязанную сущность, и использовать эту сущность далее в секции `where` условия. В таком случае следует использовать `", "` вместо предложений `join` или `left join` в значении атрибута `join`.
++
+Давайте создадим прозвольное условие, чтобы найти те автомобили, которые были назначены на водителей после указанной даты. Пример фильтра с таким условием показан ниже:
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/filter_8.xml[]
 ----
 
 ** `paramWhere` − задает выражение на JPQL для отбора списка значений параметра условия, если параметр является связанной сущностью. См. описание одноименного <<gui_Filter_property_paramWhere,атрибута>> элемента `property`.
@@ -352,6 +361,9 @@ image::gui_filter_apply_to.png[align="center"]
 [[gui_Filter_columnsCount]]
 * `columnsCount` - задает количество колонок с условиями для конкретного фильтра. Значение по умолчанию - 3.
 
+[[gui_Filter_controlsLayoutTemplate]]
+* `controlsLayoutTemplate` - определяет расположение элементов внутри фильтра. Формат шаблона можно увидеть в описании свойства приложения <<cuba.gui.genericFilterControlsLayout,cuba.gui.genericFilterControlsLayout>>.
+
 [[gui_Filter_defaultMode]]
 * `defaultMode` - задает режим фильтра при открытии экрана. Возможные значения: `generic` и `fts`. При указании значения `fts` фильтр будет открыт в режиме полнотекстового поиска (если сущность индексируется). Значение по умолчанию - `generic`.
 
@@ -379,6 +391,7 @@ image::gui_filter_apply_to.png[align="center"]
 <<gui_Filter_caption,caption>> -
 <<gui_attr_captionAsHtml,captionAsHtml>> -
 <<gui_Filter_columnsCount,columnsCount>> -
+<<gui_Filter_controlsLayoutTemplate,controlsLayoutTemplate>> -
 <<gui_attr_css,css>> -
 <<gui_attr_dataLoader,dataLoader>> -
 <<gui_attr_datasource,datasource>> -
@@ -471,6 +484,8 @@ API::
 
 * <<cuba.gui.genericFilterPopupListSize,cuba.gui.genericFilterPopupListSize>> - задает количество позиций в выпадающем списке кнопки *Search*.
 
+* <<cuba.gui.genericFilterPropertiesHierarchyDepth,cuba.gui.genericFilterPropertiesHierarchyDepth>> - oпределят глубину вложенности атрибутов сущности в диалоговом окне "Добавить условие".
+
 * <<cuba.gui.genericFilterTrimParamValues,cuba.gui.genericFilterTrimParamValues>> - определяет, нужно ли обрезать пробелы в начале и конце строки текстового поиска.
 --
 
@@ -486,7 +501,7 @@ API::
 
 Для установки значений параметров фильтра в экран нужно передать параметры с именами, равными именам параметров, и значения в виде строк.
 
-Пример описателя пункта главного меню, устанавливающего в открываемом экране `sample$Car.browse` в компоненте `carsFilter` фильтр с кодом `FilterByVIN`, с подстановкой в параметр условия `component$carsFilter.vin79216` значения `TMA`:
+Пример описателя пункта главного меню, устанавливающего в открываемом экране `sample_Car.browse` в компоненте `carsFilter` фильтр с кодом `FilterByVIN`, с подстановкой в параметр условия `component$carsFilter.vin79216` значения `TMA`:
 
 [source, xml]
 ----
@@ -534,11 +549,15 @@ image::gui_filter_sequential.png[align="center"]
 
 Если контейнер данных фильтра содержит сущности, индексируемые системой полнотекстового поиска (см. link:{fts_man_url}[Платформа CUBA. Полнотекстовый поиск]), то в фильтре становится доступным режим полнотекстового поиска. Чтобы переключиться в него, используйте флажок *Full-Text Search* ("Полнотекстовый поиск").
 
-image::gui_filter_fts.png[align="center"]
+image::gui_filter_fts_2.png[align="center"]
 
 В этом режиме фильтр имеет поля для ввода критериев поиска, и поиск производится по индексируемым подсистемой FTS полям сущности.
 
-Если таблица указана в атрибуте <<gui_Filter_applyTo,applyTo>>, то при наведении указателя мыши на строку таблицы во всплывающем окне будет написано, в каких полях сущности было найдено условие поиска.
+Если таблица указана в атрибуте <<gui_Filter_applyTo,applyTo>>, становится возможным отобразить информацию, в каких полях сущности было найдено условие поиска. Если свойство приложения `cuba.gui.genericFilterFtsDetailsActionEnabled` установлено в `true`, то в таблицу будет добавлено действие `Full-Text Search Details`. Если кликнуть правой кнопкой мыши на строку таблицы и выбрать данный пункт меню, то появится диалоговое окно, содержащее информацию о деталях полнотекстового поиска.
+
+Если свойство `cuba.gui.genericFilterFtsTableTooltipsEnabled` установлено в `true`, то при наведении указателя мыши на строку таблицы во всплывающем окне будет написано, в каких полях сущности было найдено условие поиска. Обратите внимание, что генерация таких всплывающих сообщений может занимать значительное время, по умолчанию она отключена.
+
+image::gui_filter_fts.png[align="center"]
 
 Для скрытия переключателя режима фильтра установите значение `false` атрибуту фильтра <<gui_Filter_modeSwitchVisible,modeSwitchVisible>>.
 
