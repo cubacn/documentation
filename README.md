@@ -83,9 +83,4 @@ After installing Tomcat and deploying a document as described above, start the s
     ./deploy/tomcat/bin/startup.sh
 
 If you build, for example, manual for version 7.1, it will be available at
-<<<<<<< HEAD
 [http://localhost:6080/manual-7.1](http://localhost:6080/manual-7.1).
-=======
-[http://localhost:6080/manual-7.1](http://localhost:6080/manual-7.1).  
-    
->>>>>>> u_master

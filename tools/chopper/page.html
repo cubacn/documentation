@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <meta name="viewport" content="width=device-width, initial-scale=0.6">
+
 <head>
     <meta charset="UTF-8">
     <title>{{pageTitle}}</title>
@@ -10,77 +11,76 @@
     <link rel="stylesheet" href="./styles/coderay-asciidoctor.css">
     {{head}}
 </head>
-<body class="book toc2 toc-left">
-<div id="header">
-    <div id="top">
-        <div id="menubutton"></div>
-        <div id="title-version">
-            <div id="title">{{title}}</div>
-            <div id="version">{{version}}</div>
-        </div>
-        <div id="editSource">
-            <a href="{{github-link}}" target="_blank"><img src="./img/gh-icon.svg" class="gh-icon"/> Edit on GitHub</a>
-        </div>
-    </div>
-    <div id="toc" class="toc2">
-        <div class="searchfield">
-            <form action="search.jsp" class="search">
-                <div class="searchbar">
-                <input id="searchTerms" type="text" name="searchTerms">
-                <input type="submit" class="submit" value="">
-                </div>
-                <div class="radiobuttons">
-<<<<<<< HEAD
-                    大小写：
-=======
-                    Case:
->>>>>>> u_master
-                    <span class="radio-container">
-                        <input name="caseSensitive" type="radio" class="radiobutton" value="yes">
-                        <span class="round"></span>
-                    </span> 区分
-                    <span class="radio-container">
-                        <input name="caseSensitive" type="radio" class="radiobutton" value="no" checked>
-                        <span class="round"></span>
-                    </span> 不区分
-                </div>
-                <!--<input type="submit" class="submit" value="{{search}}">-->
-            </form>
-        </div>
-        <div class="desktop-toc">
-            {{toc}}
-        </div>
-        <div class="mobile-toc">
-            <div id="closemenu">Close</div>
-            {{toc}}
-        </div>
-    </div>
-</div>
 
-<div id="content">
-    {{content}}
-</div>
-<div id="bottom">
-    <div id="next">{{next}}: <a href="{{next.href}}">{{next.text}}</a></div>
-</div>
-<script type="text/javascript">
-function loaded() {
-    var selEl = document.getElementsByClassName('toc-selected-item')[0];
-    if (selEl) {
-        var tocRoots = document.getElementsByClassName('toc-root');
-        for (var i = 0; i < tocRoots.length; i++) {
-            tocRoots[i].scrollTop = selEl.offsetTop;
+<body class="book toc2 toc-left">
+    <div id="header">
+        <div id="top">
+            <div id="menubutton"></div>
+            <div id="title-version">
+                <div id="title">{{title}}</div>
+                <div id="version">{{version}}</div>
+            </div>
+            <div id="editSource">
+                <a href="{{github-link}}" target="_blank"><img src="./img/gh-icon.svg" class="gh-icon" /> Edit on
+                    GitHub</a>
+            </div>
+        </div>
+        <div id="toc" class="toc2">
+            <div class="searchfield">
+                <form action="search.jsp" class="search">
+                    <div class="searchbar">
+                        <input id="searchTerms" type="text" name="searchTerms">
+                        <input type="submit" class="submit" value="">
+                    </div>
+                    <div class="radiobuttons">
+                        大小写：
+                        <span class="radio-container">
+                            <input name="caseSensitive" type="radio" class="radiobutton" value="yes">
+                            <span class="round"></span>
+                        </span> 区分
+                        <span class="radio-container">
+                            <input name="caseSensitive" type="radio" class="radiobutton" value="no" checked>
+                            <span class="round"></span>
+                        </span> 不区分
+                    </div>
+                    <!--<input type="submit" class="submit" value="{{search}}">-->
+                </form>
+            </div>
+            <div class="desktop-toc">
+                {{toc}}
+            </div>
+            <div class="mobile-toc">
+                <div id="closemenu">Close</div>
+                {{toc}}
+            </div>
+        </div>
+    </div>
+
+    <div id="content">
+        {{content}}
+    </div>
+    <div id="bottom">
+        <div id="next">{{next}}: <a href="{{next.href}}">{{next.text}}</a></div>
+    </div>
+    <script type="text/javascript">
+        function loaded() {
+            var selEl = document.getElementsByClassName('toc-selected-item')[0];
+            if (selEl) {
+                var tocRoots = document.getElementsByClassName('toc-root');
+                for (var i = 0; i < tocRoots.length; i++) {
+                    tocRoots[i].scrollTop = selEl.offsetTop;
+                }
+            }
         }
-    }
-}
-function focusSearch(e) {
-    if (e.key == 'Escape') {
-        document.getElementById('searchTerms').focus();
-    }
-}
-document.addEventListener('DOMContentLoaded', loaded);
-document.addEventListener('keydown', focusSearch);
-</script>
-{{scripts}}
+        function focusSearch(e) {
+            if (e.key == 'Escape') {
+                document.getElementById('searchTerms').focus();
+            }
+        }
+        document.addEventListener('DOMContentLoaded', loaded);
+        document.addEventListener('keydown', focusSearch);
+    </script>
+    {{scripts}}
 </body>
+
 </html>

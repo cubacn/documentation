@@ -2,6 +2,7 @@
 <html lang="en">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=0.6">
+
 <head>
     <title>{{pageTitle}}</title>
     <link rel="stylesheet" href="./styles/chopper.css">
@@ -10,60 +11,58 @@
     <link rel="stylesheet" href="./styles/coderay-asciidoctor.css">
     {{head}}
 </head>
+
 <body class="book toc2 toc-left">
-<div id="front">
-    <div id="menubutton" class="index-page"></div>
-    <div id="title">{{title}}</div>
-    <div id="version">{{version}}</div>
-</div>
-<div id="header">
-    <div id="toc" class="toc2">
-        <div class="searchfield">
-            <form action="search.jsp" class="search">
-                <div class="searchbar">
-                <input id="searchTerms" type="text" name="searchTerms" autofocus>
-                <input type="submit" class="submit" value="">
-                </div>
-                <div class="radiobuttons">
-<<<<<<< HEAD
-                    大小写：
-=======
-                    Case:
->>>>>>> u_master
-                    <span class="radio-container">
-                        <input name="caseSensitive" type="radio" class="radiobutton" value="yes">
-                        <span class="round"></span>
-                    </span> 区分
-                    <span class="radio-container">
-                        <input name="caseSensitive" type="radio" class="radiobutton" value="no" checked>
-                        <span class="round"></span>
-                    </span> 不区分
-                </div>
-            </form>
-        </div>
-        <div class="desktop-toc">
-            {{toc}}
-        </div>
-        <div class="mobile-toc">
-            <div id="closemenu">Close</div>
-            {{toc}}
+    <div id="front">
+        <div id="menubutton" class="index-page"></div>
+        <div id="title">{{title}}</div>
+        <div id="version">{{version}}</div>
+    </div>
+    <div id="header">
+        <div id="toc" class="toc2">
+            <div class="searchfield">
+                <form action="search.jsp" class="search">
+                    <div class="searchbar">
+                        <input id="searchTerms" type="text" name="searchTerms" autofocus>
+                        <input type="submit" class="submit" value="">
+                    </div>
+                    <div class="radiobuttons">
+                        大小写：
+                        <span class="radio-container">
+                            <input name="caseSensitive" type="radio" class="radiobutton" value="yes">
+                            <span class="round"></span>
+                        </span> 区分
+                        <span class="radio-container">
+                            <input name="caseSensitive" type="radio" class="radiobutton" value="no" checked>
+                            <span class="round"></span>
+                        </span> 不区分
+                    </div>
+                </form>
+            </div>
+            <div class="desktop-toc">
+                {{toc}}
+            </div>
+            <div class="mobile-toc">
+                <div id="closemenu">Close</div>
+                {{toc}}
+            </div>
         </div>
     </div>
-</div>
-<div id="bottom" class="index-bottom">
-    <div id="next"><a href="{{next.href}}">{{start}}</a></div>
-    <div id="single-page"><a href="{{docName}}.html">{{singlePageCaption}}</a></div>
-    <div id="doc-home"><a href="{{docHomeLink}}" target="_blank">{{docHomeCaption}}</a></div>
-    <div id="copyright">{{copyright}}</div>
-</div>
-<script type="text/javascript">
-function focusSearch(e) {
-    if (e.key == 'Escape') {
-        document.getElementById('searchTerms').focus();
-    }
-}
-document.addEventListener('keydown', focusSearch);
-</script>
-{{scripts}}
+    <div id="bottom" class="index-bottom">
+        <div id="next"><a href="{{next.href}}">{{start}}</a></div>
+        <div id="single-page"><a href="{{docName}}.html">{{singlePageCaption}}</a></div>
+        <div id="doc-home"><a href="{{docHomeLink}}" target="_blank">{{docHomeCaption}}</a></div>
+        <div id="copyright">{{copyright}}</div>
+    </div>
+    <script type="text/javascript">
+        function focusSearch(e) {
+            if (e.key == 'Escape') {
+                document.getElementById('searchTerms').focus();
+            }
+        }
+        document.addEventListener('keydown', focusSearch);
+    </script>
+    {{scripts}}
 </body>
+
 </html>
