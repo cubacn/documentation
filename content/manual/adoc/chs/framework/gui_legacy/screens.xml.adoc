@@ -58,11 +58,11 @@ XML schema： {xsd_url}/screens.xsd。
 ----
 <screen-config xmlns="http://schemas.haulmont.com/cuba/screens.xsd">
 
-  <screen id="sales$Customer.lookup" template="/com/sample/sales/gui/customer/customer-browse.xml"/>
-  <screen id="sales$Customer.edit" template="/com/sample/sales/gui/customer/customer-edit.xml"/>
+  <screen id="sales_Customer.lookup" template="/com/sample/sales/gui/customer/customer-browse.xml"/>
+  <screen id="sales_Customer.edit" template="/com/sample/sales/gui/customer/customer-edit.xml"/>
 
-  <screen id="sales$Order.lookup" template="/com/sample/sales/gui/order/order-browse.xml"/>
-  <screen id="sales$Order.edit" template="/com/sample/sales/gui/order/order-edit.xml"/>
+  <screen id="sales_Order.lookup" template="/com/sample/sales/gui/order/order-browse.xml"/>
+  <screen id="sales_Order.edit" template="/com/sample/sales/gui/order/order-edit.xml"/>
 
 </screen-config>
 ----

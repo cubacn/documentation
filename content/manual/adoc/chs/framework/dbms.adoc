@@ -1,19 +1,11 @@
 :sourcesdir: ../../../source
 
 [[dbms]]
-=== 数据库组件
+=== 数据库
+本节介绍如何配置数据库连接以使用特定的 DBMS。同时介绍了一种数据库迁移的机制，该机制可以创建数据库，并在应用程序开发和上线运行后的整个周期中使其保持最新。
 
-本节介绍如何配置应用程序以使用特定的 DBMS。同时描述了一种基于脚本的机制，该机制可以创建数据库，并在应用程序开发和上线运行后的整个周期中使其保持最新。
+数据库相关的组件属于 Middleware <<app_tiers,block>>；应用程序的其它 block 无法直接访问数据库。
 
-数据库组件属于中间件<<app_tiers,块(block)>>; 应用程序的其它块(block)无法直接访问数据库。
-
-有关使用数据库的一些其它信息，请参阅<<databases>>部分。
+include::dbms/db_connection.adoc[]
 
 include::dbms/dbms_types.adoc[]
-
-include::dbms/db_scripts.adoc[]
-
-include::dbms/db_update_gradle.adoc[]
-
-include::dbms/db_update_server.adoc[]
-

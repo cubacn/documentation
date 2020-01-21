@@ -20,7 +20,7 @@
 
 * <<cuba.web.ldap.userLoginField,cuba.web.ldap.userLoginField>>.
 
-Web 客户端的 <<app_properties_files,local.app.properties>> 文件示例：
+<<app_properties_files,local.app.properties>> 文件示例：
 
 [source, properties]
 ----

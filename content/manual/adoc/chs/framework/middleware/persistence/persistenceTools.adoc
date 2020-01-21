@@ -3,7 +3,7 @@
 [[persistenceTools]]
 ===== PersistenceTools
 
-<<managed_beans,托管 Bean>>，包含了与数据存储功能相关的辅助方法。可以通过调用 `Persistence.getTools()` 方法获得，或者像任何其它 bean 一样，通过注入或 `AppBeans` 类来获得。
+<<managed_beans, Spring bean>>，包含了与数据存储功能相关的辅助方法。可以通过调用 `Persistence.getTools()` 方法获得，或者像任何其它 bean 一样，通过注入或 `AppBeans` 类来获得。
 
 `PersistenceTools` bean 有以下方法：
 

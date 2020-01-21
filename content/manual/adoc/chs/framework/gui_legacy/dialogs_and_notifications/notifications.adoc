@@ -3,9 +3,9 @@
 [[notifications]]
 ===== 通知消息
 
-[TIP]
+[WARNING]
 ====
-对 v.7.0 之后的新版本 API，请参阅 <<gui_notifications>>。
+这是旧版本的 API。对于从 7.0 开始的新 API，请参阅 <<gui_notifications>>。
 ====
 
 通知消息可以通过 `Frame` 接口的 `showNotification()` 方法来调用。由于<<screen_controller,界面控制器>>都实现了这个接口，所以可以直接在界面控制器调用此方法。

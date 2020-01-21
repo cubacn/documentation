@@ -3,6 +3,14 @@
 [[url_history_navigation]]
 ==== URL 历史及导航
 
+++++
+<div class="manual-since-container">
+    <a href="http://files.cuba-platform.com/cuba/release-notes/7.0/" class="since-btn" target="_blank">
+        <span class="since-btn-caption">最低版本</span><span class="since-btn-version">7.0</span>
+    </a>
+</div>
+++++
+
 CUBA URL 历史和导航功能可以提供浏览器历史记录和导航功能，这对于很多 web 应用程序来说是最基本的功能。此功能包含以下部分：
 
 * *历史* –  支持浏览器的 *后退(Back)* 按钮。但是不支持 *前进(Forward)* 按钮，因为没法重现打开界面的所有条件。

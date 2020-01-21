@@ -3,6 +3,11 @@
 [[datasource_query_case_insensitive]]
 ====== 不区分大小写查找
 
+[WARNING]
+====
+这是旧版本的 API。对于从 7.0 开始的新 API，请参阅 <<gui_data>>。
+====
+
 在数据源中可以使用 JPQL 查询语句的一个特殊功能，在 *Middleware* 层级的 <<query,Query>> 接口中有描述：可以使用 `(?i)` 前缀来轻松创建大小写不敏感的包含任意子串的查询条件。但是由于查询的值通常是显式传入的，所以会有以下不同：
 
 * `(?i)` 前缀需要放置在参数名称之前而不是放置在参数值内。
@@ -15,7 +20,7 @@
 
 [source, sql]
 ----
-select c from sales$Customer c where c.name like :(?i)component$customerNameField
+select c from sales_Customer c where c.name like :(?i)component$customerNameField
 ----
 
 从 `customerNameField` 组件拿到的参数会被自动转化成小写，并且前后放置 `%` 字符，然后在数据库会执行 `lower(C.NAME) like ?` 这样的 SQL 查询语句。

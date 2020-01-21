@@ -3,20 +3,9 @@
 [[query]]
 ===== 执行 JPQL 查询
 
-`Query` 接口用于执行 <<jpql,JPQL>> 查询。可以通过调用 `createQuery()` 方法从当前的 `EntityManager` 实例获得其引用。如果该查询用于加载实体，建议使用结果类型作为参数调用 `createQuery()`。这将创建一个 `TypedQuery` 实例。
+本章节介绍 `Query` 接口，该接口用于在 ORM 级别执行 <<jpql,JPQL>> 查询。可以通过调用 `createQuery()` 方法从当前的 `EntityManager` 实例获得其引用。如果查询语句用于加载实体，建议使用结果类型作为参数调用 `createQuery()`。这将创建一个 `TypedQuery` 实例。
 
-`Query` 的方法主要对应于标准 JPA link:http://docs.oracle.com/javaee/7/api/javax/persistence/Query.html[javax.persistence.Query] 接口的方法。但有以下差异：
-
-* `setParameter()` – 为查询参数设置值。如果该值是实体实例，则隐式将实例转换为它的标识符。例如：
-+
-[source, java]
-----
-include::{sourcesdir}/middleware/jpqlquery_1.java[]
-----
-+
-请注意，虽然参数中传递了一个实体实例，但是查询中的比较使用的是实例的标识符。
-+
-使用了 `implicitConversions = false` 的重载方法不执行此类转换。
+`Query` 的方法主要对应于标准 JPA link:http://docs.oracle.com/javaee/7/api/javax/persistence/Query.html[javax.persistence.Query] 接口的方法。我们了解下之间的差异。
 
 * `setView()` 、`addView()` – 定义用于加载数据的<<views,视图>>。
 
@@ -30,10 +19,23 @@ include::{sourcesdir}/middleware/jpqlquery_1.java[]
 
 还可以使用 `Query` 接口的 `setFlushMode()` 方法显式设置刷新（flush）模式，这样将覆盖上述默认设置。
 
+[[query_soft_delete]]
+对软删除的实体使用 DELETE FROM 语句::
++
+如果开启了<<soft_deletion,软删除>>模式，然后对已经软删除的实体执行 `DELETE FROM` 的 JPQL 语句的话会抛出异常。这种语句在翻译成 SQL 时，会删除所有没有标记删除的数据。这种不好理解的行为默认是关闭的，可以通过 <<cuba.enableDeleteStatementInSoftDeleteMode,cuba.enableDeleteStatementInSoftDeleteMode>> 应用程序属性开启。
+
 [[query_hints]]
 查询提示::
 +
 --
+++++
+<div class="manual-since-container">
+    <a href="http://files.cuba-platform.com/cuba/release-notes/7.1/" class="since-btn" target="_blank">
+        <span class="since-btn-caption">最低版本</span><span class="since-btn-version">7.1</span>
+    </a>
+</div>
+++++
+
 使用 `Query.setHint()` 方法可以为生成的 SQL 语句添加 hints - 提示。提示通常用来设置查询语句应如何使用索引或其它数据库特性。框架定义了下面这些常量，可以用来传递给该方法作为提示名称：
 
 * `QueryHints.SQL_HINT` - 提示的值添加在生成的 SQL 语句后面。这里需要提供全部的提示字符串，也包括注释分隔符。

@@ -3,6 +3,11 @@
 [[list_actions]]
 ==== 集合的标准行为（历史版本）
 
+[WARNING]
+====
+这是旧版本 API。从 7.0 版本开始的新 API，请参考 <<std_list_actions>>。
+====
+
 对于 `ListComponent` 的继承者们（<<gui_Table,Table>>，<<gui_GroupTable,GroupTable>>，<<gui_TreeTable,TreeTable>> 和 <<gui_Tree,Tree>>），标准的行为是通过 `ListActionType` 枚举类型来定义的；这些操作的实现类在 `com.haulmont.cuba.gui.components.actions` 包。
 
 在表格中使用标准行为的示例：
@@ -30,7 +35,7 @@ include::{sourcesdir}/gui/listActions_1.xml[]
 include::{sourcesdir}/gui/createAction_1.xml[]
 ----
 
-* `setWindowId()` 可以设置实体编辑界面的标识符。默认情况下，使用 `++{entity_name}.edit++`，比如 `sales$Customer.edit`。
+* `setWindowId()` 可以设置实体编辑界面的标识符。默认情况下，使用 `++{entity_name}.edit++`，比如 `sales_Customer.edit`。
 
 * `setWindowParams()` 可以设置传递给编辑界面的 `init()` 方法的参数。这些参数可以通过 `@WindowParam` 注解<<screen_controller_injection,注入>>到界面控制器中，或者也可以在<<datasource_query_params_param,数据源查询>>中通过 `param$` 前缀直接使用。
 
@@ -93,7 +98,7 @@ include::{sourcesdir}/gui/createAction_3.java[]
 include::{sourcesdir}/gui/editAction_1.xml[]
 ---- 
 
-* `setWindowId()` 可以设置实体编辑界面的标识符。默认情况下，使用 `++{entity_name}.edit++`，比如 `sales$Customer.edit`。
+* `setWindowId()` 可以设置实体编辑界面的标识符。默认情况下，使用 `++{entity_name}.edit++`，比如 `sales_Customer.edit`。
 
 * `setWindowParams()` 可以设置传递给编辑界面的 `init()` 方法的参数。这些参数可以通过 `@WindowParam` 注解<<screen_controller_injection,注入>>到界面控制器中，或者也可以在<<datasource_query_params_param,数据源查询>>中通过 `param$` 前缀直接使用。
 
@@ -208,7 +213,7 @@ include::{sourcesdir}/gui/refreshAction_1.java[]
 include::{sourcesdir}/gui/addaction_1.xml[]
 ----
 
-* `setWindowId()` 可以设置实体查找界面的标识符。默认情况下，使用 `++{entity_name}.lookup++`，比如 `sales$Customer.lookup`。如果不存在这种类型的界面，则会尝试打开 `++{entity_name}.browse++` 界面，比如 `sales$Customer.browse`。
+* `setWindowId()` 可以设置实体查找界面的标识符。默认情况下，使用 `++{entity_name}.lookup++`，比如 `sales_Customer.lookup`。如果不存在这种类型的界面，则会尝试打开 `++{entity_name}.browse++` 界面，比如 `sales_Customer.browse`。
 
 * `setWindowParams()` 可以设置传递给查找界面的 `init()` 方法的参数。这些参数可以通过 `@WindowParam` 注解<<screen_controller_injection,注入>>到界面控制器中，或者也可以在<<datasource_query_params_param,数据源查询>>中通过 `param$` 前缀直接使用。
 

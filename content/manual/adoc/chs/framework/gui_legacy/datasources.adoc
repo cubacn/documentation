@@ -5,7 +5,7 @@
 
 [WARNING]
 ====
-从 v7.0 开始的新数据 API 请参考 <<gui_data>>。
+这是旧版本 API。从 v7.0 开始的新数据 API 请参考 <<gui_data>>。
 ====
 
 数据源为数据感知组件提供数据。
@@ -41,37 +41,37 @@ include::{sourcesdir}/gui/datasources_1.java[]
 .数据源接口
 image::Datasources.png[align="center"]
 
-* http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/data/Datasource.html[Datasource] 是一个简单的数据源，用来绑定一个实体实例。实例通过 `setItem()` 方法设置，通过 `getItem()` 方法访问。
+* http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/data/Datasource.html[Datasource] 是一个简单的数据源，用来绑定一个实体实例。实例通过 `setItem()` 方法设置，通过 `getItem()` 方法访问。
 +
 `DatasourceImpl` 类是这种数据源的标准实现，这个类会用在比如说实体的<<screen_edit,编辑界面>>，作为主数据源。
 
-* http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/data/CollectionDatasource.html[CollectionDatasource] 是一个绑定实体实例集合的数据源。数据集合会通过调用 `refresh()` 方法加载，实例的主键可以通过 `getItemIds()` 方法访问。`setItem()` 方法只能设置集合中“当前”的实例，并且通过 `getItem()` 方法获取这个实例（比如，跟当前选中的表格中一行对应的实例）。
+* http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/data/CollectionDatasource.html[CollectionDatasource] 是一个绑定实体实例集合的数据源。数据集合会通过调用 `refresh()` 方法加载，实例的主键可以通过 `getItemIds()` 方法访问。`setItem()` 方法只能设置集合中“当前”的实例，并且通过 `getItem()` 方法获取这个实例（比如，跟当前选中的表格中一行对应的实例）。
 +
 根据具体实现决定加载数据集合的方式。最典型的方式是通过 <<dataManager,DataManager>> 从 Middleware 加载；这样的话，使用 `setQuery()`，`setQueryFilter()` 来组建 JPQL 查询。
 +
 `CollectionDatasourceImpl` 类是这种数据源的标准实现，使用在带有实体列表的界面。
 
-** http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/data/GroupDatasource.html[GroupDatasource] 是 `CollectionDatasource` 的子类型，用来跟 <<gui_GroupTable,GroupTable>> 组件一起工作。
+** http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/data/GroupDatasource.html[GroupDatasource] 是 `CollectionDatasource` 的子类型，用来跟 <<gui_GroupTable,GroupTable>> 组件一起工作。
 +
 这种数据源的标准实现是 `GroupDatasourceImpl` 类。
 
-** http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/data/HierarchicalDatasource.html[HierarchicalDatasource] 是 `CollectionDatasource` 的子类型，用来跟 <<gui_Tree,Tree>> 和 <<gui_TreeTable,TreeTable>> 组件一起工作。
+** http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/data/HierarchicalDatasource.html[HierarchicalDatasource] 是 `CollectionDatasource` 的子类型，用来跟 <<gui_Tree,Tree>> 和 <<gui_TreeTable,TreeTable>> 组件一起工作。
 +
 这种数据源的标准实现是 `HierarchicalDatasourceImpl` 类。
 
-* http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/data/NestedDatasource.html[NestedDatasource] 是一个用来绑定实体中关联到实体的属性加载对应的实例的数据源。这样的话，那个绑定父实体的数据源可以通过 `getMaster()` 方法访问；包含这个数据源对应实例的那个父属性的<<metaProperty,元属性>>可以通过 `getProperty()` 方法访问。
+* http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/data/NestedDatasource.html[NestedDatasource] 是一个用来绑定实体中关联到实体的属性加载对应的实例的数据源。这样的话，那个绑定父实体的数据源可以通过 `getMaster()` 方法访问；包含这个数据源对应实例的那个父属性的<<metaProperty,元属性>>可以通过 `getProperty()` 方法访问。
 +
 比如一个 `Order` 实例包含了指向 `Customer` 实例的引用，`Order` 实例通过 `dsOrder` 数据源绑定。然后，如需绑定 `Customer` 实例到可视化组件，只需创建以 `dsOrder` 为父数据源的 `NestedDatasource`，并且创建 meta property 指向 `Order.customer` 属性。
 
-** http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/data/PropertyDatasource.html[PropertyDatasource] 是 `NestedDatasource` 的子类型，用来跟单实例或者没有嵌套关系的关联实体集合绑定。
+** http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/data/PropertyDatasource.html[PropertyDatasource] 是 `NestedDatasource` 的子类型，用来跟单实例或者没有嵌套关系的关联实体集合绑定。
 +
 标准实现：跟单实例绑定 - `PropertyDatasourceImpl`。跟集合绑定 - `CollectionPropertyDatasourceImpl`, `GroupPropertyDatasourceImpl`, `HierarchicalPropertyDatasourceImpl`。跟集合绑定的数据源同时还实现了 `CollectionDatasource` 接口，但是 `CollectionDatasource` 接口中一些不相关、不支持的方法比如 `setQuery()` 会直接抛出 `UnsupportedOperationException` 异常。
 
-** http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/data/EmbeddedDatasource.html[EmbeddedDatasource] 是 `NestedDatasource` 的子类型，包含了一个嵌套实体的实例。
+** http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/data/EmbeddedDatasource.html[EmbeddedDatasource] 是 `NestedDatasource` 的子类型，包含了一个嵌套实体的实例。
 +
 标准实现是 `EmbeddedDatasourceImpl` 类。
 
-* http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/data/RuntimePropsDatasource.html[RuntimePropsDatasource] 是个特殊的数据源，用来操作实体的<<dynamic_attributes,动态属性>>。
+* http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/data/RuntimePropsDatasource.html[RuntimePropsDatasource] 是个特殊的数据源，用来操作实体的<<dynamic_attributes,动态属性>>。
 
 一般情况下，数据源在<<screen_xml,界面描述文件>>的 `dsContext` 部分声明。
 

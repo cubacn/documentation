@@ -3,25 +3,33 @@
 [[record_set]]
 ===== 记录集
 
-如果<<gui_Filter,过滤器>>在 `applyTo` 属性中定义了相应的<<gui_Table,表格>>组件，则可以在界面中使用记录集。例如：
+如要在界面中使用记录集，按照下列步骤操作。
+
+. 将 <<gui_Filter,过滤器>> 组件与 <<gui_Table,表格>> 组件通过 `applyTo` 属性进行关联。
+. 为表格添加预定义的 `addToSet` 操作。之后，用户可以使用表格的右键菜单将实体添加到记录集。
+. 在按钮面板添加按钮提供此操作。
+
+示例：
 
 [source, xml]
 ----
 <layout>
-  <filter id="customerFilter"
-          datasource="customersDs"
+  <filter id="customerFilter" dataLoader="customersDl"
           applyTo="customersTable"/>
 
-  <groupTable id="customersTable"
-              width="100%">
+  <groupTable id="customersTable" dataContainer="customersDc">
+      <actions>
+          <action id="addToSet" type="addToSet"/>
+          ...
+      </actions>
       <buttonsPanel>
-          <button action="customersTable.create"/>
-...
+          <button action="customersTable.addToSet"/>
+          ...
       </buttonsPanel>
 ...
 ----
 
-*Add to set* 或 *Add to current set* / *Remove from set* 会出现在表格右键菜单中。如果一个表格包含 `buttonsPanel`（如上例所示），则还会添加相应的表格按钮。
+当界面展示某些记录集的时候，比如是通过文件夹面板点击记录集打开，表格会在右键菜单自动显示 *Add to current set* / *Remove from set*。如果一个表格包含 `buttonsPanel`（如上例所示），则还会添加相应的表格按钮。
 
 记录集是 `SearchFolder` 实体的实例，存储在相关的 *SYS_FOLDER* 和 *SEC_SEARCH_FOLDER* 表。
 

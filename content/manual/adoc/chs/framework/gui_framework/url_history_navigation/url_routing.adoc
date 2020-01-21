@@ -74,7 +74,7 @@ UI 状态与 URL 的映射::
 --
 导航过滤器可以用来阻止切换到某些路由。
 
-导航过滤器是实现了 `NavigationFilter` 接口的托管 bean。可以使用 `@Order` 注解来配置所有导航过滤器的调用顺序。常量 `NavigationFilter.HIGHEST_PLATFORM_PRECEDENCE` 和 `NavigationFilter.LOWEST_PLATFORM_PRECEDENCE` 用来定义框架中的过滤器优先级范围。
+导航过滤器是实现了 `NavigationFilter` 接口的 Spring bean。可以使用 `@Order` 注解来配置所有导航过滤器的调用顺序。常量 `NavigationFilter.HIGHEST_PLATFORM_PRECEDENCE` 和 `NavigationFilter.LOWEST_PLATFORM_PRECEDENCE` 用来定义框架中的过滤器优先级范围。
 
 `NavigationFilter` 接口有 `allowed()` 方法，可以使用两个输入参数：当前导航状态 `fromState` 和请求的导航状态 `toState`。此方法返回 `AccessCheckResult` 实例并检查是否允许从当前导航状态切换到请求导航状态。
 

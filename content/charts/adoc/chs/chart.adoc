@@ -7,7 +7,7 @@ CUBA 框架的图表展示扩展支持多样化的图表类型：饼图，折线
 
 图表扩展是基于 AmCharts 类库开发的，并且在一定的许可下进行发布使用，如果保留到 AmCharts 网站的链接的话，许可范围内可以免费使用。或者，可以为项目 http://www.amcharts.com/online-store[购买^] AmCharts 的许可，这样可以移除链接。
 
-include::chart/chart_dependency.adoc[]
+首先，按照 <<installation, 安装>> 章节的介绍使用 CUBA *Add-Ons* 窗口为项目添加 *Charts* 扩展。
 
 include::chart/chart_configuration.adoc[]
 

@@ -11,7 +11,7 @@
 
 `LoggedEntity` 定义了需要记录日志的实体类型。`LoggedEntity` 具有以下属性：
 
-* `name` ( *NAME* 列) – 实体<<metaClass,元类>>名称，例如 `sales$Customer`。
+* `name` ( *NAME* 列) – 实体<<metaClass,元类>>名称，例如 `sales_Customer`。
 
 * `auto` ( *AUTO* 列) – 定义当使用 `auto = true` 参数调用 EntityLogAPI 时（即通过<<entity_listeners,实体监听器>>调用）系统是否应记录变更。
 
@@ -24,7 +24,7 @@
 [source, sql]
 ----
 insert into SEC_LOGGED_ENTITY (ID, CREATE_TS, CREATED_BY, NAME, AUTO, MANUAL)
-values ('25eeb644-e609-11e1-9ada-3860770d7eaf', now(), 'admin', 'sales$Customer', true, true);
+values ('25eeb644-e609-11e1-9ada-3860770d7eaf', now(), 'admin', 'sales_Customer', true, true);
 
 insert into SEC_LOGGED_ATTR (ID, CREATE_TS, CREATED_BY, ENTITY_ID, NAME)
 values (newid(), now(), 'admin', '25eeb644-e609-11e1-9ada-3860770d7eaf', 'name');

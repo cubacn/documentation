@@ -5,11 +5,11 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/global/MetadataTools.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/global/MetadataTools.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
-`MetadataTools` 是一个<<managed_beans,托管 Bean>>，包含了处理元数据的其它方法。可以通过使用 `Metadata.getTools()` 方法访问 `MetadataTools` 接口，也可以像其它 bean 一样，通过注入或 `AppBeans` 类来获取。
+`MetadataTools` 是一个<<managed_beans, Spring bean>>，包含了处理元数据的其它方法。可以通过使用 `Metadata.getTools()` 方法访问 `MetadataTools` 接口，也可以像其它 bean 一样，通过注入或 `AppBeans` 类来获取。
 
 `MetadataTools` 接口的方法:
 

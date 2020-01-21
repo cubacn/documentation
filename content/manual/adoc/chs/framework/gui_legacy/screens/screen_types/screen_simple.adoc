@@ -3,6 +3,11 @@
 [[screen_simple]]
 ====== 简单界面
 
+[WARNING]
+====
+这是旧版本的 API。对于从 7.0 开始的新 API，请参阅 <<screen_controllers>>。
+====
+
 简单界面可以用来展示和编辑信息，包括单一实体实例或者实体列表。这种类型的界面只能在应用程序主窗口打开并且使用<<datasources,数据源>>的核心功能。
 
 简单界面的控制器必须从 <<abstractWindow,AbstractWindow>> 类继承。

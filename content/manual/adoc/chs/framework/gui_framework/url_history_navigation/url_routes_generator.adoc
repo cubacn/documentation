@@ -3,6 +3,14 @@
 [[url_routes_generator]]
 ===== URL 路由生成器
 
+++++
+<div class="manual-since-container">
+    <a href="http://files.cuba-platform.com/cuba/release-notes/7.1/" class="since-btn" target="_blank">
+        <span class="since-btn-caption">最低版本</span><span class="since-btn-version">7.1</span>
+    </a>
+</div>
+++++
+
 有时候，需要使用合适的 URL 通过 email 发给用户或者展示给用户。生成 URL 最简单的方法就是使用 URL 路由生成器。
 
 URL 路由生成器提供 API 用来生成 URL 链接：

@@ -11,8 +11,7 @@
 
 ** *CTRL-SHIFT-PAGE_UP* – 切换到上一个标签页。由 `cuba.gui.previousTabShortcut` 属性定义。
 
-* 文件夹面板。
-
+* 文件夹面板。要使用文件夹的快捷键，需要设置 <<cuba.web.foldersPaneEnabled,cuba.web.foldersPaneEnabled>> 属性为 `true`。
 
 ** *ENTER* – 打开选择的<<folders_pane,文件夹>>。
 

@@ -5,15 +5,15 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/mainwindow/AppMenu.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/mainwindow/AppMenu.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
-`AppMenu` 应用程序菜单组件提供了在<<main_window_layout,主窗口布局>>中自定义主菜单的方式，通过它可以动态管理菜单项。
+`AppMenu` 应用程序菜单组件提供了在<<gui_MainScreen,主几面>>中自定义主菜单的方式，通过它可以动态管理菜单项。
 
 image::gui_AppMenu.png[align="center"]
 
-CUBA 框架提供标准的 `mainWindow` screen - 主窗口界面；CUBA Studio 也基于这个主窗口界面提供了界面模板。这个模板扩展了 `AppMainWindow` 类，通过它可以直接访问 `AppMenu` - 应用程序菜单实例：
+CUBA Studio 基于标准的 `MainScreen` 主窗口界面提供了一些界面模板。下面的例子中，这个模板扩展了 `MainScreen` 类，通过它可以直接访问 `AppMenu` 实例：
 
 [source, java]
 ----

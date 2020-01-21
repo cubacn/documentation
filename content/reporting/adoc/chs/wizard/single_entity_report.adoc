@@ -53,34 +53,14 @@ image::single_entity_step_3.png[align="center"]
 .报表浏览
 image::single_entity_reports_list.png[align="center"]
 
-此外，我们可以在出版物浏览界面上调用报表运行功能。为此，我们将在 `bookpublication-browse.xml` 界面描述添加 *Print details* 按钮：
+此外，我们可以在出版物浏览界面上调用报表运行功能。为此，我们将在 `bookpublication-browse.xml` 界面描述中声明一个标准的 <<list_print_form_action,ListPrintFormAction>>：
 
 [source, xml]
 ----
-<groupTable id="bookPublicationsTable"
-    ...
-    <buttonsPanel>
-        ...
-        <button id="printDetails"
-                caption="msg://printDetails"/>
+include::{sourcesdir}/single_entity_report_example_1.xml[]
 ----
 
-然后我们需要在控制器中实现 `TablePrintFormAction`：
-
-[source, java]
-----
-@Inject
-private Button printDetails;
-
-@Subscribe
-private void onInit(InitEvent event) {
-    TablePrintFormAction action = new TablePrintFormAction("report", bookPublicationsTable);
-    bookPublicationsTable.addAction(action);
-    printDetails.setAction(action);
-}
-----
-
-最后，我们应该将报表与 `BookPublication` 浏览界面关联起来。打开报表编辑界面，切换到 *Roles and Screens* 标签页，并从下拉列表中将 `library$BookPublication.lookup` 界面添加到下表：
+然后我们应该将报表与 `BookPublication` 浏览界面关联起来。打开报表编辑界面，切换到 *Roles and Screens* 标签页，并从下拉列表中将 `library$BookPublication.browse` 界面添加到表格：
 
 .添加界面
 image::single_entity_screens.png[align="center"]

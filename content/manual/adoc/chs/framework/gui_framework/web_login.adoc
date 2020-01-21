@@ -23,7 +23,7 @@ Web 登录子系统的主要接口是 `Connection`，它包含以下关键方法
 
 成功登录后，*Connection* 将 *UserSession* 对象存储到 `VaadinSession` 的属性中并设置 `SecurityContext`。*Connection* 对象被绑定到 `VaadinSession`，因此无法从非 UI 线程使用它，如果在非 UI 线程调用 `login/logout` ，则会抛出 *IllegalConcurrentAccessException*。
 
-通常，登录是通过 `AppLoginWindow` 界面执行的，该界面支持使用用户名/密码和“记住我”凭据登录。
+通常，登录是通过 `LoginScreen` 界面执行的，该界面支持使用用户名/密码和 “记住我” 凭据登录。
 
 `Connection` 的默认实现是 `ConnectionImpl`，它将登录委托给 `LoginProvider` 实例链。`LoginProvider` 是一个可以处理特定 `Credentials` 实现的登录模块，它还有一个特殊的 `supports()` 方法，允许调用者查询它是否支持给定的 `Credentials` 类型。
 
@@ -45,7 +45,7 @@ image::WebLoginProcedure.png[align="center"]
 
 * `Connection` 创建一个 `SecurityContext` 实例并将其设置为 `AppContext`。
 
-* `Connection` 触发 `StateChangeEvent`，此事件会触发 UI 更新和 `AppMainWindow` 初始化。
+* `Connection` 触发 `StateChangeEvent`，此事件会触发 UI 更新和 `MainScreen` 初始化。
 
 所有 `LoginProvider` 实现必须：
 

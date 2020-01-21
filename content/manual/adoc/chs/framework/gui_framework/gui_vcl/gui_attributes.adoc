@@ -94,6 +94,14 @@ colspan - 占列数目::
 contextHelpText - 内容提示文字::
 +
 --
+++++
+<div class="manual-since-container">
+    <a href="http://files.cuba-platform.com/cuba/release-notes/7.0/" class="since-btn" target="_blank">
+        <span class="since-btn-caption">最低版本</span><span class="since-btn-version">7.0</span>
+    </a>
+</div>
+++++
+
 设置内容提示文字，如果设置了，那么一个特别的 *?* 图标会添加在组件里。如果组件有外部的标题，比如设置了 <<gui_attr_caption,caption>> 或者 <<gui_attr_icon,icon>> 属性，那么这个内容提示的图标会显示在标题旁边，否则会显示在这个控件本身的旁边：
 
 image::gui_attr_contextHelpIcon.png[align="center"]
@@ -113,6 +121,14 @@ image::gui_attr_contextHelp.png[align="center"]
 contextHelpTextHtmlEnabled - 是否启用 HTML 格式内容提示::
 +
 --
+++++
+<div class="manual-since-container">
+    <a href="http://files.cuba-platform.com/cuba/release-notes/7.0/" class="since-btn" target="_blank">
+        <span class="since-btn-caption">最低版本</span><span class="since-btn-version">7.0</span>
+    </a>
+</div>
+++++
+
 定义内容提示是否可以通过 HTML 格式显示。
 
 [source, xml]
@@ -132,6 +148,14 @@ image::gui_attr_contextHelpHtml.png[align="center"]
 css::
 +
 --
+++++
+<div class="manual-since-container">
+    <a href="http://files.cuba-platform.com/cuba/release-notes/7.0/" class="since-btn" target="_blank">
+        <span class="since-btn-caption">最低版本</span><span class="since-btn-version">7.0</span>
+    </a>
+</div>
+++++
+
 为 UI 组件提供声明式的方式来设置 CSS 属性。这个属性可以跟 <<gui_attr_stylename,stylename>> 属性一起使用，参阅下面的例子。
 
 .XML 定义:
@@ -193,7 +217,7 @@ datatype - 数据类型::
 --
 如果控件不与实体属性相关联（比如没有设置数据容器和属性名称），则需要设置数据类型。该属性的值可以是注册在应用程序元数据中的一个数据类型 - 参考 <<datatype>>。
 
-这些组件可以使用该属性： <<gui_TextField,TextField>>, <<gui_DateField,DateField>>, <<gui_DatePicker,DatePicker>>, <<gui_TimeField,TimeField>> 。
+这些组件可以使用该属性： <<gui_TextField,TextField>>，<<gui_DateField,DateField>>，<<gui_DatePicker,DatePicker>>，<<gui_TimeField,TimeField>>，<<gui_Slider,Slider>> 。
 --
 
 [[gui_attr_description]]

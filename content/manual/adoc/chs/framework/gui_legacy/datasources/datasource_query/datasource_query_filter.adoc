@@ -3,6 +3,11 @@
 [[datasource_query_filter]]
 ====== 查询条件过滤
 
+[WARNING]
+====
+这是旧版本的 API。对于从 7.0 开始的新 API，请参阅 <<gui_data>>。
+====
+
 根据用户输入的条件不同，可以在运行时改变数据源的查询结果。因而可以有效的在数据库级别做数据过滤。
 
 提供此功能最简单的方法就是将数据源连接到一个特殊的可视化组件上：<<gui_Filter,过滤器控件>>。
@@ -35,7 +40,7 @@ include::{sourcesdir}/gui/datasources_13.xml[]
 
 [source, jpql]
 ----
-select distinct d from app$GeneralDoc d, app$DocRole dr
+select distinct d from app_GeneralDoc d, app_DocRole dr
 where
 (
   (dr.doc.id = d.id and d.processState = :custom$state)
@@ -50,7 +55,7 @@ or
 
 [source, jpql]
 ----
-select distinct d from app$GeneralDoc d, app$DocRole dr
+select distinct d from app_GeneralDoc d, app_DocRole dr
 where
 (dr.doc.id = d.id and dr.user.id = :custom$initiator)
 ----

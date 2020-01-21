@@ -11,7 +11,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/TwinColumn.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/TwinColumn.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -35,6 +35,9 @@ include::{sourcesdir}/gui_vcl/twincolumn_1.xml[]
 
 [[gui_TwinColumn_columns_rows]]
 `columns` 属性设置一行中可显示的字符数，`rows` 属性– 配置每个列表中的行数。
+
+[[gui_TwinColumn_reorderable]]
+`reorderable` 属性设置在进行选择之后，这些条目是否需要重新排序。默认开启重新排序。此时，条目会在选择之后重新排序以符合数据源中元素的顺序。如果该属性是 `false`，条目会按照选择的顺序进行添加。
 
 [[gui_TwinColumn_captions]]
 `leftColumnCaption` 和 `rightColumnCaption` 属性 – 分别配置左列和右列的名称。
@@ -70,6 +73,7 @@ twinColumn 组件的属性::
 <<gui_attr_optionsContainer,optionsContainer>> -
 <<gui_attr_optionsDatasource,optionsDatasource>> -
 <<gui_attr_property,property>> -
+<<gui_TwinColumn_reorderable,reorderable>> -
 <<gui_attr_required,required>> -
 <<gui_attr_requiredMessage,requiredMessage>> -
 <<gui_TwinColumn_captions,rightColumnCaption>> -

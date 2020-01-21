@@ -5,28 +5,7 @@
 
 本章提供了使用报表生成器的实际操作示例。大部分示例都基于示例 *Library* 应用程序，该应用程序可在 CUBA Studio 示例项目 https://github.com/cuba-platform/sample-library-cuba7[GitHub] 中获取。
 
-首先，在 CUBA Studio 中打开 *Project Properties* 编辑器：点击 *CUBA* → *Project Properties* 主菜单项。在 *App components* 列表中添加 *reports* 应用程序组件。
-
-为了快速可以开始，报表生成器附带有报表向导 - 一种用于快速创建报表的可视化工具，包括数据结构和模板设计。使用向导创建报表后，可以再对生成的报表进行进行分析，了解<<structure,数据集>>如何创建、查看报表<<parameters,参数>>、修改<<template,模板>>或<<template_to_output,输出类型>>，这些内容在本手册的其它部分描述。
-
-要运行向导，请单击 *Reports* 界面中的 *Create* -> *Using wizard*。
-
-.调用报表向导
-image::reports_wizard_main.png[align="center"]
-
-使用向导可以创建三种类型的报表：
-
-. 单个实体的报表。
-. 给定实体列表的报表。
-. 通过查询过滤的实体列表的报表。
-
-报表设计分为三个步骤：
-
-. 创建报表的数据结构。
-. 编辑报表区域。
-. 保存报表。
-
-可以使用报表编辑器以常规方式修改创建的报表，并通过<<run_common,通用报表浏览界面>>运行，或使用 `TablePrintFormAction` 和 `EditorPrintFormAction` <<run_actions,操作>>来调用。
+include::wizard/project_setup_report.adoc[]
 
 include::wizard/single_entity_report.adoc[]
 

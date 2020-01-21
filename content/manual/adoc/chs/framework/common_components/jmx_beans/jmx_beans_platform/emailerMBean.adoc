@@ -3,7 +3,7 @@
 [[emailerMBean]]
 ====== EmailerMBean
 
-http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/jmx/EmailerMBean.html[EmailerMBean] 能够查看当前配置的<<email_sending,邮件发送>>参数，并可以发送测试消息。
+http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/jmx/EmailerMBean.html[EmailerMBean] 能够查看当前配置的<<email_sending,邮件发送>>参数，并可以发送测试消息。
 
 
 JMX 对象名: `app-core.cuba:type=Emailer`

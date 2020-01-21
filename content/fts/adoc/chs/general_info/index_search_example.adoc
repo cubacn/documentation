@@ -8,7 +8,7 @@
 .数据模型
 image::Example1Classes.png[align="center"]
 
-在这种情况下，如果所有对象属性都被编入索引，则对 `Order` 和`Customer` 的两个相关实例建立索引将创建两个 Lucene 文档，其中包含以下内容：
+在这种情况下，如果所有对象属性都被编入索引，则对 `Order` 和 `Customer` 的两个相关实例建立索引将创建两个 Lucene 文档，其中包含以下内容：
 
 [source, plain]
 ----

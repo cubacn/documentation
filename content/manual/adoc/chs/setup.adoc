@@ -3,9 +3,9 @@
 
 系统要求::
 
-* 64-bit 操作系统： *Windows*，*Linux* 或者 *macOS*
-* 内存 – 至少 4GB，推荐 8GB
-* 硬盘空间 – 至少 5 GB
+* 64-bit 操作系统： *Windows*，*Linux* 或者 *macOS* 。
+* 内存 – 使用 *CUBA Studio* 开发，8GB。
+* 硬盘空间 – 10 GB
 
 Java SE Development Kit (JDK)::
 +

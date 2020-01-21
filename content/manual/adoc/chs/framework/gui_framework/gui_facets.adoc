@@ -3,6 +3,14 @@
 [[gui_facets]]
 ==== 非可视化组件
 
+++++
+<div class="manual-since-container">
+    <a href="http://files.cuba-platform.com/cuba/release-notes/7.1/" class="since-btn" target="_blank">
+        <span class="since-btn-caption">最低版本</span><span class="since-btn-version">7.1</span>
+    </a>
+</div>
+++++
+
 界面还可以包含定义在 XML 描述中 `facets` 元素内的非可视化组件。CUBA 框架提供以下非可视化组件：
 
 * <<gui_Timer,Timer - 定时器>>

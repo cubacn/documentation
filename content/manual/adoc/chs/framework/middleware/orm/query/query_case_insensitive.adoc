@@ -7,7 +7,7 @@
 
 [source, jpql]
 ----
-select c from sales$Customer c where c.name like :name
+select c from sales_Customer c where c.name like :name
 ----
 
 如果传递字符串 `(?i)%doe%` 作为 `name` 参数的值，则查询将返回 `John Doe`，如果数据库中存在此类记录，即使字符的大小写不同。出现这种结果是因为 ORM 将执行条件为 `lower(C.NAME) like ?` 的 SQL 查询。

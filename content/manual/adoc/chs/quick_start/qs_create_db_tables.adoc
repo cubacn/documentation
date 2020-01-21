@@ -3,7 +3,7 @@
 [[qs_create_db_tables]]
 === 创建数据库表
 
-通过主菜单的 *CUBA > Generate Database Scripts* 来<<db_update_in_dev,创建数据库表>>。之后，会弹出 *Database Scripts* 页。
+通过主菜单的 *CUBA > Generate Database Scripts* 来 {studio_man_url}/#database_migration[创建数据库表]。之后，会弹出 *Database Scripts* 页。
 
 包含针对当前数据库状态的增量 DB 更新脚本会展示在 *Updates* 标签页：
 

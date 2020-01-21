@@ -5,7 +5,9 @@
 
 建议按以下方式配置<<roles,角色>>和<<permissions,权限许可>> ：
 
-. 创建一个 `*Default - 默认*` 角色，这个角色禁止所有系统权限。最简单的方法是创建一个 *Denying - 拒绝* 类型的角色。然后为其勾选 *Default role* 默认复选框，这样所有新用户都默认带有该角色。
+. 创建一个 `*Default - 默认*` 角色，取消所有的应用程序权限。最简单的方法是创建一个 *Denying - 拒绝* 或 *Strictly denying - 严格拒绝* 类型的角色。如果是使用 {rest_man_url}[REST API] 访问应用程序数据则推荐使用后面这种角色。参考 <<data_access_checks>> 了解合适会检查数据访问权限。
++
+然后为其勾选 *Default role* 默认复选框，这样所有新用户都默认带有该角色。
 
 . 为各类用户类别创建一系列允许特定权限的角色，有两种策略：
 +
@@ -150,7 +152,7 @@ Email History - 邮件历史::
 Server Log - 服务器日志::
 +
 --
-查看并下载应用的<<logging_setup_tomcat,日志文件>>。
+查看并下载应用的<<logging,日志文件>>。
 
 * 实体: `sys$FileDescriptor`.
 

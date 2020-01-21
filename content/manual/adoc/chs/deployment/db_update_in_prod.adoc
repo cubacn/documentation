@@ -1,0 +1,11 @@
+:sourcesdir: ../../../source
+
+[[db_update_in_prod]]
+=== 在生产环境中创建和更新数据库
+
+本节介绍在应用程序部署和运行期间创建和更新数据库的几种方法。要了解有关数据库脚本结构的更多信息，请参阅<<db_scripts>>。
+
+include::db_update_in_prod/db_update_in_prod_by_server.adoc[]
+
+include::db_update_in_prod/db_update_in_prod_cmdline.adoc[]
+

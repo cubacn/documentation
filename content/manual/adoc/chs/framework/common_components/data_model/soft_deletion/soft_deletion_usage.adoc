@@ -11,11 +11,11 @@
 
 实现 `SoftDelete` 接口的实例的默认行为是，查询或按 id 搜索不返回软删除的实体。如果需要，可以使用以下方法动态关闭此特性：
 
-* 当前 <<entityManager,EntityManager>> 实例调用 `setSoftDeletion(false)`。
+* 当前<<entityManager,EntityManager>>实例调用 `setSoftDeletion(false)`。
 
-* 通过 <<dataManager,DataManager>> 请求数据时，`LoadContext` 对象调用 `setSoftDeletion(false)` 方法。
+* 通过<<dataManager,DataManager>>请求数据时，`LoadContext` 对象调用 `setSoftDeletion(false)` 方法。
 
-* 在<<datasources,数据源>>级别 - 在界面的 <<screen_xml,XML 描述>>中调用 `CollectionDatasource.setSoftDeletion(false)` 方法或设置 `collectionDatasource` 元素的 `softDeletion="false"` 属性。
+* 在<<gui_data_loaders,数据加载器>>级别 - 调用 `DataLoader.setSoftDeletion(false)` 方法或在界面的 XML 描述中设置 `loader` 元素的 `softDeletion="false"` 属性。
 
-在软删除模式下，平台在按标识符加载实例时、使用 <<jpql, JPQL 查询>>加载实例时以及在实体的集合属性中都会自动过滤掉被删除的实例。但是，在单一值（*ToOne）关联实体的时候却会加载相关联的实体，不管这个关联的实体是否已经被删除。
+在软删除模式下，平台在按标识符加载实例时、使用<<jpql, JPQL 查询>>加载实例时以及在实体的集合属性中都会自动过滤掉被删除的实例。但是，在单一值（*ToOne）关联实体的时候却会加载相关联的实体，不管这个关联的实体是否已经被删除。
 

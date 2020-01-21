@@ -15,10 +15,10 @@
 
 [source, xml]
 ----
-<screen id="sales$Product.lookup"
+<screen id="sales_Product.lookup"
       template="/com/haulmont/cuba/gui/app/core/entityinspector/entity-inspector-browse.xml">
   <param name="entity"
-         value="sales$Product"/>
+         value="sales_Product"/>
 </screen>
 ----
 
@@ -26,7 +26,7 @@
 
 [source, xml]
 ----
-<item id="sales$Product.lookup"/>
+<item id="sales_Product.lookup"/>
 ----
 
 界面标识符定义为 `++{entity_name}.lookup++` 时将允许<<gui_PickerField,PickerField>>和<<gui_LookupPickerField,LookupPickerField>>组件在 `PickerField.LookupAction` 标准操作中使用此界面。

@@ -41,7 +41,7 @@ BeforeDeleteEntityListener::
 AfterDeleteEntityListener::
 `onAfterDelete()` 方法从数据库中删除记录后（在<<soft_deletion,软删除>>的情况下是在更新记录之后），但在事务提交之前调用。此方法不允许修改当前持久化上下文，但是，可以使用 `QueryRunner` 实现对数据库的更改。
 
-实体监听器必须是<<managed_beans,托管 Bean>>，因此可以在字段和 setters 方法上使用注入。对于特定类的所有实例，一种类型的监听器只会创建一个实例，因此监听器应该是无状态的。
+实体监听器必须是<<managed_beans,Spring Bean>>，因此可以在字段和 setters 方法上使用注入。对于特定类的所有实例，一种类型的监听器只会创建一个实例，因此监听器应该是无状态的。
 
 需要知道，对于 `BeforeInsertEntityListener`，框架只会保证传入监听器的根实体为<<entity_states,托管状态>>。该实体内对象关系图中其它对象的引用可能是 _游离（detached）_ 状态。所以如果需要更新这些对象，需要用 `EntityManager.merge()` 方法，或者使用 `EntityManager.find()` 来访问其所有属性。示例：
 

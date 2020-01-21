@@ -11,7 +11,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/SplitPanel.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/SplitPanel.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -103,6 +103,12 @@ include::{sourcesdir}/gui_vcl/splitpanel_4.java[]
 
 * 如果从组件的另一侧设置位置，那么 `isSplitPositionReversed()` 方法会返回 `true`。
 
+[[gui_SplitPanel_getMinMaxSplitPosition]]
+* `getMinSplitPosition()` 和 `getMaxSplitPosition()` 方法分别返回当前分隔条位置的<<gui_SplitPanel_minmax,最小>>或<<gui_SplitPanel_minmax,最大>>值。
+
+[[gui_SplitPanel_getMinMaxSplitPositionSizeUnit]]
+* `getMinSplitPositionSizeUnit()` 和 `getMaxSplitPositionSizeUnit()` 方法分别返回分隔条位置的<<gui_SplitPanel_minmax,最小>>或<<gui_SplitPanel_minmax,最大>>值的单位。可能单位是：`Component.UNITS_PIXELS` 和 `Component.UNITS_PERCENTAGE`。
+
 `SplitPanel` 的展示可以使用带 `$cuba-splitpanel-*` 前缀的 SCSS 变量进行自定义。可以在创建一个 <<web_theme_extension,主题扩展>> 或者一个 <<web_theme_creation,自定义主题>> 之后在可视化编辑器里修改这些变量的值。
 
 '''
@@ -138,6 +144,10 @@ API::
 <<gui_api_getComponent,getComponent>> -
 <<gui_api_getComponentNN,getComponentNN>> -
 <<gui_api_getComponents,getComponents>> -
+<<gui_SplitPanel_getMinMaxSplitPosition,getMaxSplitPosition>> -
+<<gui_SplitPanel_getMinMaxSplitPositionSizeUnit,getMaxSplitPositionSizeUnit>> -
+<<gui_SplitPanel_getMinMaxSplitPosition,getMinSplitPosition>> -
+<<gui_SplitPanel_getMinMaxSplitPositionSizeUnit,getMinSplitPositionSizeUnit>> -
 <<gui_api_getOwnComponent,getOwnComponent>> -
 <<gui_api_getOwnComponents,getOwnComponents>> -
 <<gui_api_remove,remove>> -

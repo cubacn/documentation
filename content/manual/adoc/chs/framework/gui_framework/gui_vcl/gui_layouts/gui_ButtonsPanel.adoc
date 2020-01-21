@@ -11,7 +11,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/ButtonsPanel.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/ButtonsPanel.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -35,6 +35,18 @@ include::{sourcesdir}/gui_vcl/buttonspanel_1.xml[]
 
 [[gui_ButtonsPanel_alwaysVisible]]
 使用 `Frame.openLookup()` 打开查找界面时，可以利用 `alwaysVisible` 属性禁止隐藏按钮面板。如果属性值为 `true`，则不会隐藏按钮面板。默认情况下，属性值为 `false`。
+
+默认情况下，`buttonsPanel` 中的按钮是水平的放置并带有换行。如果一行中没有足够的空间，放不下的按钮会被放置在下一行。
+
+可以修改这个默认的行为，将 `buttonsPanel` 内的按钮显示在一行：
+
+. 创建 <<web_theme_extension,主题扩展>> 或者 <<web_theme_creation,自定义主题>>。
+. 定义 SCSS 变量 `$cuba-buttonspanel-flow`：
++
+[source, code]
+----
+$cuba-buttonspanel-flow: false
+----
 
 [[gui_ButtonsPanel_LayoutClickListener]]
 可以使用 `LayoutClickListener` 接口拦截对 `buttonsPanel` 区域的点击。
@@ -60,7 +72,6 @@ buttonsPanel 的属性::
 <<gui_attr_description,description>> -
 <<gui_attr_descriptionAsHtml,descriptionAsHtml>> -
 <<gui_attr_enable,enable>> -
-<<gui_attr_expand,expand>> -
 <<gui_attr_expandRatio,box.expandRatio>> -
 <<gui_attr_height,height>> -
 <<gui_attr_id,id>> -

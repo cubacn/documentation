@@ -11,7 +11,7 @@
 
 `EntityStatistics` 有如下属性：
 
-* `name` (`NAME` 列) – 实体<<metaClass,元类>>名称，例如 `sales$Customer`。
+* `name` (`NAME` 列) – 实体<<metaClass,元类>>名称，例如 `sales_Customer`。
 
 * `instanceCount` (`INSTANCE_COUNT` 列) – 实体实例的近似数量。
 
@@ -21,7 +21,7 @@
 
 * `maxFetchUI` ( `MAX_FETCH_UI` 列) – 允许获取并传递到客户端的实体实例的最大数量。
 +
-在某些组件上显示实体列表时会应用此限制，这些组件包括 <<gui_LookupField,LookupField>>、<<gui_LookupPickerField,LookupPickerField>> 以及不带<<gui_Filter,过滤器>>的表格，表格没有通过 `CollectionDatasource.setMaxResults()` 方法限制连接的<<datasources,数据源>>。在这种情况下，数据源本身将获取实例的数量限制为 `maxFetchUI`。
+在某些组件上显示实体列表时会应用此限制，这些组件包括 <<gui_LookupField,LookupField>>、<<gui_LookupPickerField,LookupPickerField>> 以及不带<<gui_Filter,过滤器>>的表格，表格没有通过 `CollectionLoader.setMaxResults()` 方法限制连接的<<gui_data_loaders,数据加载器>>。在这种情况下，数据源本身将获取实例的数量限制为 `maxFetchUI`。
 
 * `lookupScreenThreshold` ( `LOOKUP_SCREEN_THRESHOLD` 列) – 以实体数量衡量的阈值，确定何时应使用<<screen_lookup,查找界面>>而不是下拉列表查找实体。
 +
@@ -33,7 +33,7 @@
 
 [source, json]
 ----
-entityName: sales$Customer
+entityName: sales_Customer
 fetchUI: 1000
 maxFetchUI: 30000
 ----
@@ -42,7 +42,7 @@ maxFetchUI: 30000
 
 [source, json]
 ----
-entityName: sales$Customer
+entityName: sales_Customer
 instanceCount: 2
 lookupScreenThreshold: 1
 ----

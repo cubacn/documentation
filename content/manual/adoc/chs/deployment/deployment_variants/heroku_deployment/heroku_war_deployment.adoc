@@ -76,7 +76,7 @@ URI postgres://nmmd:9c05@compute.amazonaws.com:5432/d2tk
 --
 * 假设 CUBA 项目使用的是 PostgreSQL 数据库。
 
-* 在 Studio 打开 CUBA 项目，在 CUBA 项目视图的 *Deployment* 部分双击 *WAR settings* 打开 *WAR settings* 窗口，按照下面的介绍对选项进行配置。
+* 在 Studio 打开 CUBA 项目，在 CUBA 项目树选择 *Deployment*，打开 *WAR Settings* 对话框，按照下面的介绍对选项进行配置。
 +
 ** 勾选 *Build WAR*
 ** 设置 application home 目录为 `.`（当前目录）
@@ -100,20 +100,19 @@ include::{sourcesdir}/deployment/war-context.xml[]
 ]
 ----
 +
-** 保存部署设置。
+** 保存部署设置，等待 Gradle 刷新项目结构。
 --
 
 构建 WAR 文件::
 +
 --
-执行 `buildWar` Gradle 任务构建 WAR 文件：
+双击新的 *Build WAR* 项目树节点或者执行 `buildWar` Gradle 任务构建 WAR 文件：
 
 [source,plain]
 ----
 gradlew buildWar
 ----
 
-通过 Studio 的 *Build* 菜单命令可以预先创建 Gradle wrapper 以便在命令行窗口使用 `gradlew` 命令。
 --
 
 应用程序配置::

@@ -5,7 +5,7 @@
 
 确定配置和部署参数的属性在特定的属性文件中指定，这些文件以 `++*app.properties++` 模式命名。每个应用程序<<app_tiers,block>>都包含一组此类文件，定义在<<web.xml,web.xml>>的 `appPropertiesConfig` 参数中。
 
-例如，中间件 block 的属性文件在 *core* 模块的 `web/WEB-INF/web.xml` 文件中指定，如下所示：
+例如，中间件 block 的属性文件在 `core` 模块的 `web/WEB-INF/web.xml` 文件中指定，如下所示：
 
 [source, xml]
 ----
@@ -14,16 +14,16 @@
     <param-value>
         classpath:com/company/sample/app.properties
         /WEB-INF/local.app.properties
-        "file:${catalina.base}/conf/app-core/local.app.properties"
+        "file:${app.home}/local.app.properties"
     </param-value>
 </context-param>
 ----
 
-`classpath:` 前缀表示在 Java 类路径中查找相应的文件，而 `file:` 前缀表示它应该从文件系统加载。没有此前缀的路径表示相对于 Web 应用程序根目录的路径。可以使用 Java 系统属性：在此示例中，`catalina.home` 是 Tomcat 安装路径。
+`classpath:` 前缀表示在 Java 类路径中查找相应的文件，而 `file:` 前缀表示它应该从文件系统加载。没有此前缀的路径表示相对于 Web 应用程序根目录的路径。可以使用 Java 系统属性：在此示例中，`app.home` 指向<<app_home,应用程序主目录>>。
 
-声明文件的顺序很重要，因为在每个后续文件中指定的值将覆盖前面文件中指定的相同名称的属性值。
+声明文件的顺序很重要，因为在每个后续文件中指定的值将覆盖前面文件中指定的相同名称的属性值。如果其中有任何指定的文件不存在，则会忽略该文件。
 
-上面集合中的最后一个文件是 `local.app.properties`。它可用于在部署时覆盖应用程序属性。如果该文件不存在，则会忽略该它。可以在应用程序服务器上创建此文件，在其中定义特定于该环境的所有属性。这样，配置信息将与应用程序分离，能够做到更新应用程序而不必担心丢失特定于环境的配置信息。<<tomcat_in_prod>>部分包含使用 `local.app.properties` 文件的示例。
+上面集合中的最后一个文件是 `local.app.properties`。它可用于在部署特定环境时设置或者覆盖应用程序属性。
 
 [TIP]
 ====

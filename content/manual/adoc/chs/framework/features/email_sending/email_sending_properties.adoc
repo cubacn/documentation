@@ -9,140 +9,98 @@
 所有电子邮件发送参数均可通过 `EmailerConfig` 配置接口获取。
 
 [[cuba.email.fromAddress]]
-
 * `cuba.email.fromAddress` – 默认发件人地址。如果没有指定 `EmailInfo.from` 属性时使用它。
 +
 默认值：`DoNotReply@localhost`
 
 [[cuba.email.smtpHost]]
-
 * `cuba.email.smtpHost` – SMTP 服务器的地址。
-
 +
 默认值：`test.host`
 
 [[cuba.email.smtpPort]]
-
 * `cuba.email.smtpPort` – SMTP 服务器的端口。
-
 +
 默认值：`25`
 
 [[cuba.email.smtpAuthRequired]]
-
 * `cuba.email.smtpAuthRequired` 标记 SMTP 服务器是否需要身份认证。对应 `mail.smtp.auth` 参数，该参数在创建 `javax.mail.Session` 对象时传递。
-
 +
 默认值：`false`
 
 [[cuba.email.smtpSslEnabled]]
-
 * `cuba.email.smtpSslEnabled` 标记 SMTP 是否启用了 `SSL` 协议。对应于带有 `smtps` 值的 `mail.transport.protocol` 参数，该值在创建 `javax.mail.Session` 对象时传递。
-
 +
 默认值：`false`
 
 [[cuba.email.smtpStarttlsEnable]]
-
-
 * `cuba.email.smtpStarttlsEnable` – 标记在 SMTP 服务器上进行身份验证时使用 `STARTTLS` 命令。对应 `mail.smtp.starttls.enable` 参数，该参数在创建 `javax.mail.Session` 对象时传递。
-
-
 +
 默认值：`false`
 
 [[cuba.email.smtpUser]]
-
 * `cuba.email.smtpUser` – SMTP 服务器身份验证的用户名。
 
 [[cuba.email.smtpPassword]]
-
 * `cuba.email.smtpPassword` – SMTP 服务器身份验证的用户密码。
 
 [[cuba.email.delayCallCount]]
-
 * `cuba.email.delayCallCount` – 用于邮件的异步发送，以便在服务器启动后跳过对 `EmailManager.queueEmailsToSend()` 的前几次调用，这样可以减少应用程序初始化期间的负荷。电子邮件发送将从下一次调用开始。
-
 +
 默认值：`2`
 
 [[cuba.email.messageQueueCapacity]]
-
 * `cuba.email.messageQueueCapacity` – 用于异步发送，从队列中读取并在调用一次 `EmailManager.queueEmailsToSend()` 时发送的最大消息数。
-
 +
 默认值：`100`
 
 [[cuba.email.defaultSendingAttemptsCount]]
-
 * `cuba.email.defaultSendingAttemptsCount` 用于异步发送，发送电子邮件的默认尝试次数。如果在调用 `Emailer.sendEmailAsync()` 时未指定 `attemptsCount` 参数则使用它。
-
 +
 默认值：`10`
 
 [[cuba.email.maxSendingTimeSec]]
-
 * `cuba.email.maxSendingTimeSec` – 将电子邮件发送到 SMTP 服务器所需的最长预期时间（以秒为单位）。用于异步发送，优化从 DB 队列选择 `SendingMessage` 对象。
-
 +
 默认值：120
 
 [[cuba.email.sendAllToAdmin]]
 * `cuba.email.sendAllToAdmin` – 表示无论指定的收件人地址如何指定，都应将所有消息发送到 cuba.email.adminAddress 地址。建议在系统开发和调式期间使用此参数。
-
-
 +
 默认值：`false`
 
 [[cuba.email.adminAddress]]
-
 * `cuba.email.adminAddress` – 如果启用 `cuba.email.sendAllToAdmin` 属性，则所有消息都会被发送到这个地址。
-
 +
 默认值：`admin@localhost`
 
 [[cuba.emailerUserLogin]]
-
 * `cuba.emailerUserLogin` –系统用户的登录名，由异步电子邮件发送代码使用，以便能够将信息保存到数据库中。建议创建没有密码的单独的用户（例如，`emailer`），这样的话此用户不能在用户界面使用用户名登录。这也便于在服务端日志中搜索与电子邮件发送相关的消息。
-
 +
 默认值：`admin`
 
 [[cuba.email.exceptionReportEmailTemplateBody]]
-
 * `cuba.email.exceptionReportEmailTemplateBody` - 异常报告邮件正文的 `*.gsp` 模板路径。
-
 +
 --
-
 模板基于 Groovy 的 `SimpleTemplateEngine` 语法，因此可以在模板内容中使用 Groovy 代码块：
 
 ** `toHtml()` 方法通过转义和替换特殊符号将字符串转换为 HTML 字符串，
-
 ** `timestamp` - 最后一次尝试发送电子邮件的日期，
-
 ** `errorMessage` - 错误消息，
-
-** `stacktrace` - 错误的堆栈跟踪。
+** `stacktrace` - 错误的堆栈跟踪，
+** `user` - `User` 对象的引用。
 
 模板文件的示例：
 
 [source, html]
 ----
-<html>
-<body>
-<p>${timestamp}</p>
-<p>${toHtml(errorMessage)}</p>
-<p>${toHtml(stacktrace)}</p>
-</body>
-</html>
+include::{sourcesdir}/features/email/sending_emails_template.html[]
 ----
 --
 
 [[cuba.email.exceptionReportEmailTemplateSubject]]
-
 * `cuba.email.exceptionReportEmailTemplateSubject` - 异常报告邮件主题的 `*.gsp` 模板路径。
-
 +
 --
 
@@ -156,6 +114,4 @@
 
 还可以使用 JavaMail API 中的属性，将它们添加到 *core* 模块的 `app.properties` 文件中。在创建 `javax.mail.Session` 对象时将传递 `mail.*` 属性。
 
-
 可以使用 `app-core.cuba:type=Emailer` JMX bean 查看当前参数值并发送测试消息。
-

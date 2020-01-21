@@ -9,6 +9,8 @@
 
 * 实现 `DbmsFeatures` 、 `SequenceSupport`  、 `DbTypeConverter` 接口，实现类用以下格式命名：`<Type>DbmsFeatures`  、 `<Type>SequenceSupport` 和 `<Type>DbTypeConverter`，其中 `Type` 是 DBMS 类型代码。实现类的包必须与接口的包相同。
 
+* 如果在应用程序中配置了数据源，按照 <<db_connection>> 章节的介绍和要求的格式配置连接 URL 的全路径。
+
 * 在以 DBMS 类型代码命名的目录中创建数据库初始化和更新脚本。初始化脚本必须创建平台实体所需的所有数据库对象（可以从现有的 `10-cuba` 等目录中复制并修改这些脚本，使其适用于新的 DBMS 类型）。
 
 * 要通过 Gradle 任务创建和更新数据库，需要在 `build.gradle` 中为这些任务指定额外的参数：

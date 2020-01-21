@@ -10,24 +10,12 @@
 设置代理的时候，别忘了设置 <<cuba.webAppUrl,cuba.webAppUrl>> 的值。
 ====
 
-NGINX::
-
-对于 Nginx，下面有两种配置方法，所有示例都在 Ubuntu 16.04 测试通过。
-
-. <<direct_proxy,Direct Proxy - 直接代理>>
-. <<redirect_to_path,Redirect to Path - 转发路径>>
-
-假设，web 应用程序运行在 `++http://localhost:8080/app++`。
-
-[TIP]
-====
-<<tomcat_for_proxy,Tomcat>> 也需要增加一点配置。
-====
-
 [[tomcat_for_proxy]]
 Tomcat 配置::
 +
 --
+如果 Tomcat 是在一个代理服务的后面工作，也许要进行一些配置，以便 Tomcat 能正确的分发代理服务器的请求头。
+
 首先，在 Tomcat 配置文件 `conf/server.xml` 中添加 `Valve` 属性，拷贝粘贴以下代码：
 
 [source,xml]
@@ -35,7 +23,15 @@ Tomcat 配置::
 <Valve className="org.apache.catalina.valves.RemoteIpValve"
         remoteIpHeader="X-Forwarded-For"
         requestAttributesEnabled="true"
-        internalProxies="127\.0\.0\.1"  />
+        internalProxies="127\.0\.0\.1"/>
+----
+
+`conf/server.xml` 文件中还有另一个配置需要考虑是否修改 - `AccessLogValve` 模式。
+可以在模式中添加 `%{x-forwarded-for}i`，这样 Tomcat 的访问日志会记录源 IP 地址和代理服务器 IP 地址：
+----
+<Valve className="org.apache.catalina.valves.AccessLogValve"
+    ...
+    pattern="%h %{x-forwarded-for}i %l %u %t &quot;%r&quot; %s %b" />
 ----
 
 然后重启 Tomcat 服务：
@@ -45,10 +41,18 @@ Tomcat 配置::
 sudo service tomcat8 restart
 ----
 
-这个配置可以使得不需要修改 web 应用程序的情况下使用 Tomcat 来分发 Nginx headers。
+NGINX::
+
+Nginx 这边有下面两个配置。示例都在 Ubuntu 18.04 上测试通过。
+
+. <<direct_proxy,直接代理>>
+. <<redirect_to_path,重定向至路径>>
+
+比如，你的应用程序在地址：`++http://localhost:8080/app++`
+
 
 [[install_nginx]]
-然后安装 Nginx：
+运行下面命令安装 Nginx：
 
 [source,plain]
 ----
@@ -115,6 +119,6 @@ sudo service nginx restart
 
 [TIP]
 ====
-类似的部署指令对于 <<proxy_configuration_uberjar,Jetty>>，`WildFly` 等等 web 服务器也有效。但是可能也需要对这些 web 服务器添加一些额外的配置。
+类似的部署指令对于 <<proxy_configuration_uberjar,Jetty>>，`WildFly` 等等 web 服务器也有效。但是可能也需要对这些 web 服务器添加一些附加的配置。
 ====
 

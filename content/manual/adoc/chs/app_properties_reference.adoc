@@ -8,7 +8,7 @@
 cuba.additionalStores::
 +
 --
-定义应用中使用的额外<<data_store,数据存储>>的名称。
+定义应用中使用的附加<<data_store,数据存储>>的名称。
 
 在所有标准的 <<app_tiers,blocks>> 中都可以使用。
 
@@ -66,6 +66,8 @@ cuba.automaticDatabaseUpdate::
 +
 --
 定义服务器是否在应用程序启动时运行<<db_update_server,数据库更新脚本>>。
+
+从 CUBA 7.2 开始，可以控制为主数据存储和附加数据存储分别执行数据库更新脚本：对主数据存储，使用 `cuba.automaticDatabaseUpdate_MAIN` 应用程序属性，对于附加数据存储，使用 `cuba.automaticDatabaseUpdate_<store_name>` 格式的应用程序属性。特定的属性比通用的邮件及更高。
 
 默认值： `false`
 
@@ -190,6 +192,14 @@ cuba.checkConnectionToAdditionalDataStoresOnStartup::
 cuba.checkPasswordOnClient::
 +
 --
+++++
+<div class="manual-since-container">
+    <a href="http://files.cuba-platform.com/cuba/release-notes/7.0/" class="since-btn" target="_blank">
+        <span class="since-btn-caption">最低版本</span><span class="since-btn-version">7.0</span>
+    </a>
+</div>
+++++
+
 当设置为 false（默认值）时，客户端块 block 的 `LoginPasswordLoginProvider` 将用户密码明文发送给中间件的 `AuthenticationService.login()` 方法。在客户端和中间件 block 共同位于同一 JVM 中的情况下，这是合适的处理方式。对于客户端块(block)位于网络上的其它计算机上的分布式部署的情况，客户端和中间件之间的连接应使用 SSL 加密。
 
 如果设置为 true，`LoginPasswordLoginProvider`本身将通过输入的登录名加载 `User` 实体并检查密码。如果密码与加载的密码哈希匹配，则提供程序使用<<cuba.trustedClientPassword,cuba.trustedClientPassword>> 属性中指定的密码作为可信客户端执行登录。此模式使您无需在受信任网络中的客户端和中间件之间设置 SSL 连接，同时不会向网络公开用户密码：仅传输哈希值。但请注意，可信客户端密码仍然通过网络传输，因此受 SSL 保护的连接仍然更加安全。
@@ -258,9 +268,7 @@ cuba.confDir::
 --
 为应用程序 <<app_tiers,block>> 设置<<conf_dir,配置文件目录>>的位置。
 
-对于 <<fast_deployment>>，默认值：`${catalina.home}/conf/${<<cuba.webContextName,cuba.webContextName>>}`，指向 `tomcat/conf` 目录下 web app 名称的目录，比如 `tomcat/conf/app-core`。
-
-对于 WAR 和 UberJAR 部署情况：`${app.home}/${<<cuba.webContextName,cuba.webContextName>>}/conf`，指向<<app_home,应用程序根目录>>下的一个目录。
+默认值： `${app.home}/${<<cuba.webContextName,cuba.webContextName>>}/conf`，指向<<app_home,应用程序根目录>>下的一个目录。
 
 配置接口： `GlobalConfig`
 
@@ -359,9 +367,17 @@ cuba.crossDataStoreReferenceLoadingBatchSize::
 cuba.dataManagerBeanValidation::
 +
 --
+++++
+<div class="manual-since-container">
+    <a href="http://files.cuba-platform.com/cuba/release-notes/7.1/" class="since-btn" target="_blank">
+        <span class="since-btn-caption">最低版本</span><span class="since-btn-version">7.1</span>
+    </a>
+</div>
+++++
+
 设置 <<dataManager,DataManager>> 在保存实体时需要进行 <<bean_validation,bean 验证>> 。
 
-默认值： `true`
+默认值： `false`
 
 保存在数据库。
 
@@ -374,7 +390,7 @@ cuba.dataManagerBeanValidation::
 cuba.dataManagerChecksSecurityOnMiddleware::
 +
 --
-配置在 Middleware 调用 <<dataManager,DataManager>> 时是否启用<<security_subsystem,安全>>限制。
+配置在 Middleware，确定 <<dataManager,DataManager>> 是否检查实体操作的 <<permissions,权限>> 和内存<<constraints,约束>>
 
 默认值： `false`
 
@@ -402,9 +418,7 @@ cuba.dataDir::
 --
 为应用程序 <<app_tiers,block>> 设置<<work_dir,工作目录>>的位置。
 
-对于 <<fast_deployment>>，默认值：`${catalina.home}/work/${<<cuba.webContextName,cuba.webContextName>>}`，指向 `tomcat/work` 目录下 web app 名称的目录，比如 `tomcat/work/app-core`。
-
-对于 WAR 和 UberJAR 部署情况：`${app.home}/${<<cuba.webContextName,cuba.webContextName>>}/work`，指向<<app_home,应用程序根目录>>下的一个目录。
+默认值： `${app.home}/${<<cuba.webContextName,cuba.webContextName>>}/work`，指向<<app_home,应用程序根目录>>下的一个目录。
 
 配置接口： `GlobalConfig`
 
@@ -596,7 +610,7 @@ cuba.enableSessionParamsInQueryFilter::
 cuba.entityAttributePermissionChecking::
 +
 --
-如果设置为 `true`，在 Middleware 开启实体属性权限检查。如果设置为 `false`，属性权限检查则在客户端层做，比如在 <<gui_framework,Generic UI>> 或者 {rest_man_url}[REST API]。
+如果设置为 `true`，<<dataManager,DataManager>>会做实体属性权限检查。如果设置为 `false`，属性权限检查则在 <<gui_framework,Generic UI>>中的数据感知组件和 {rest_man_url}[REST API] 中。
 
 默认值： `false`
 
@@ -655,6 +669,14 @@ cuba.groovyEvaluatorImport = com.haulmont.cuba.core.global.PersistenceHelper,com
 cuba.gui.genericFilterApplyImmediately::
 +
 --
+++++
+<div class="manual-since-container">
+    <a href="http://files.cuba-platform.com/cuba/release-notes/7.1/" class="since-btn" target="_blank">
+        <span class="since-btn-caption">最低版本</span><span class="since-btn-version">7.1</span>
+    </a>
+</div>
+++++
+
 当设置成 `true` 时，过滤器会以即时模式工作，每个对于过滤器参数的调整都会立即生效，数据会自动刷新。当设置成 `false` 时，过滤器会使用显式操作模式。此时，过滤器只有在点击 *Search* 按钮时才会生效。参阅 <<gui_filter_immediately,applyImmediately>> 过滤器属性。
 
 默认值： `true`
@@ -767,7 +789,7 @@ cuba.gui.genericFilterManualApplyRequired::
 --
 影响<<gui_Filter,过滤器组件>>的行为。
 
-当设置为 `true`，包含过滤器的界面不会自动加载相应的数据源，需要用户手动点击过滤器的 *Apply* 按钮。
+当设置为 `true`，包含过滤器的界面不会在打开时触发相应的数据加载器，需要用户手动点击过滤器的 *Apply* 按钮。
 
 当使用应用或者查找目录打开界面的时候，`cuba.gui.genericFilterManualApplyRequired` 的设置会被忽略，因为此时过滤器已经生效了。但是对于某个查找目录如果它的 `applyDefault` 设置为 `false`，过滤器不会生效。
 
@@ -804,6 +826,21 @@ cuba.gui.genericFilterPopupListSize::
 定义在 *Search* 按钮的弹窗列表中显示项目的数量。如果过滤器的数量超过了这个值，则会添加 `Show more...` 到列表最后，这个行为会打开一个新的弹窗用来显示其它的过滤器。
 
 默认值： `10`
+
+保存在数据库。
+
+配置接口： `ClientConfig`
+
+可以在 Web 客户端 block 使用。
+--
+
+[[cuba.gui.genericFilterPropertiesHierarchyDepth]]
+cuba.gui.genericFilterPropertiesHierarchyDepth::
++
+--
+定义“添加查询条件”对话框窗口中属性层级的深度。例如，如果深度是 2，那么可以选择实体属性 `contractor.city.country`，如果深度是 3，可以选择 `contractor.city.country.name` 等。
+
+默认值： `2`
 
 保存在数据库。
 
@@ -1116,9 +1153,7 @@ cuba.logDir::
 --
 为应用程序 <<app_tiers,block>> 设置<<log_dir,日志目录>>的位置。
 
-对于 <<fast_deployment>>，默认值：`${catalina.home}/logs`，指向 `tomcat/logs` 目录。
-
-对于 WAR 和 UberJAR 部署情况：`${app.home}/logs`，指向<<app_home,应用程序根目录>>下的 `logs` 目录。
+默认值： `${app.home}/logs`，指向<<app_home,应用程序根目录>>下的 `logs` 目录。
 
 配置接口： `GlobalConfig`
 
@@ -1198,6 +1233,14 @@ cuba.metadataConfig = +com/company/sample/metadata.xml
 cuba.passwordEncryptionModule::
 +
 --
+++++
+<div class="manual-since-container">
+    <a href="http://files.cuba-platform.com/cuba/release-notes/7.0/" class="since-btn" target="_blank">
+        <span class="since-btn-caption">最低版本</span><span class="since-btn-version">7.0</span>
+    </a>
+</div>
+++++
+
 定义用作用户密码 Hash 的 bean 名称。创建新用户或更新用户密码时，将在 `SEC_USER.PASSWORD_ENCRYPTION` 数据库字段中为该用户存储此属性的值。
 
 参阅 <<cuba.legacyPasswordEncryptionModule,cuba.legacyPasswordEncryptionModule>>。
@@ -1342,6 +1385,19 @@ cuba.queryCache.maxSize::
 可以在 Middleware block 使用。
 --
 
+[[cuba.rememberMeExpirationTimeoutSec]]
+cuba.rememberMeExpirationTimeoutSec::
++
+--
+定义 "记住我" cookie 和 `RememberMeToken` 实体实例的过期时间。
+
+默认值： `30 * 24 * 60 * 60` (30 days)
+
+配置接口： `GlobalConfig`
+
+可以在 Web 客户端和 Middleware block 使用。
+--
+
 [[cuba.remotingSpringContextConfig]]
 cuba.remotingSpringContextConfig::
 +
@@ -1433,9 +1489,7 @@ cuba.tempDir::
 --
 为应用程序 <<app_tiers,block>> 设置<<temp_dir,临时目录>>的位置。
 
-对于 <<fast_deployment>>，默认值：`${catalina.home}/temp/${<<cuba.webContextName,cuba.webContextName>>}`，指向 `tomcat/temp` 目录下 web app 名称的目录，比如 `tomcat/temp/app-core`。
-
-对于 WAR 和 UberJAR 部署情况：`${app.home}/${<<cuba.webContextName,cuba.webContextName>>}/temp`，指向<<app_home,应用程序根目录>>下的一个目录。
+默认值： `${app.home}/${<<cuba.webContextName,cuba.webContextName>>}/temp`，指向<<app_home,应用程序根目录>>下的一个目录。
 
 配置接口： `GlobalConfig`
 
@@ -1592,9 +1646,9 @@ EclipseLink <<orm,ORM>> 会在 inner join 中使用 `JOIN ON` 从句，而不会
 cuba.useLocalServiceInvocation::
 +
 --
-当设置为 `true`，Web 客户端和 Web Portal <<app_tiers,blocks>> 会在本地调用 Middleware 服务，避开网络堆栈，这样有利于系统性能。这个情况在 Tomcat <<fast_deployment,快速部署>>和单一 <<build.gradle_buildWar,WAR>> 或者单一 <<build.gradle_buildUberJar,UberJAR>> 部署的时候可以用到。对于其它的部署形式，这个值需要设置成 false。
+当设置为 `true`，Web 客户端和 Web Portal <<app_tiers,blocks>> 会在本地调用 Middleware 服务，避开网络堆栈，这样有利于提高系统性能。这个情况在 <<fast_deployment,快速部署>>、单一 <<build.gradle_buildWar,WAR>> 或者单一 <<build.gradle_buildUberJar,UberJAR>> 部署的时候可以用到。对于其它的部署形式，这个值需要设置成 false。
 
-默认值： `false`
+默认值： `true`
 
 可以在 Web 客户端和 Web Portal blocks 使用。
 --
@@ -1905,7 +1959,7 @@ cuba.web.foldersPaneDefaultWidth::
 cuba.web.foldersPaneEnabled::
 +
 --
-启用<<folders_pane,文件夹面板>>功能。
+启用<<folders_pane,文件夹面板>>功能并在文件夹中使用<<shortcuts,键盘快捷键>>。
 
 默认值： `false`
 

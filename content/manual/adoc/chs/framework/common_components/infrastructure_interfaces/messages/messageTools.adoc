@@ -5,11 +5,11 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/global/MessageTools.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/global/MessageTools.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
-`MessageTools` 接口是一个<<managed_beans,托管 Bean>>，包含用于处理<<localization,本地化消息>>的其它方法。可以使用 `Messages.getTools()`  方法访问 `MessageTools` 接口，或像任何其它任何 bean 一样，通过注入的方式或 `AppBeans` 类来访问。
+`MessageTools` 接口是一个<<managed_beans, Spring bean>>，包含用于处理<<localization,本地化消息>>的其它方法。可以使用 `Messages.getTools()`  方法访问 `MessageTools` 接口，或像任何其它任何 bean 一样，通过注入的方式或 `AppBeans` 类来访问。
 
 `MessageTools` 的方法:
 

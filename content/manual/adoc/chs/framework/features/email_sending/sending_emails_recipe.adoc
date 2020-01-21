@@ -22,6 +22,16 @@
 ----
 include::{sourcesdir}/features/email/sending_emails_1.java[]
 ----
+<1> - 指示在当前编辑器中是否有新 item。
+<2> - 当新 item 初始化时调用此方法。
+<3> - data context 提交之后调用此方法。
+<4> - 如果新实体保存到数据库，询问用户是否发送邮件。
+<5> - 添加邮件至队列，异步发送。
+<6> - 收件人
+<7> - 标题
+<8> - 从 <<cuba.email.fromAddress,cuba.email.fromAddress>> 应用程序属性获取 `from - 发送` 地址 
+<9> - 邮件体模板路径
+<10> - 模板参数
 
 在上面的代码中，在 `sendByEmail()` 方法中调用 `EmailService` 并传递描述邮件消息的 `EmailInfo` 实例给 `sendEmailAsync` 方法。邮件消息的主体将基于 `news_item.txt` 模板创建。
 --

@@ -1,7 +1,12 @@
 :sourcesdir: ../../../../source
 
 [[polymer_ui]]
-==== Polymer 用户界面
+==== Polymer 用户界面（废弃）
+
+[WARNING]
+====
+从平台 7.2 开始，Polymer UI 会被废弃，推荐使用 <<react_ui,React UI>>。
+====
 
 基于 https://polymer-library.polymer-project.org[Polymer] 库，提供跟手机端浏览器紧密集成的功能，可以添加 web 应用程序到设备主页面或者离线工作。
 

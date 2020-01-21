@@ -1,7 +1,0 @@
-:sourcesdir: ../../../source
-
-[[chart_dependency]]
-=== 添加图表依赖
-
-要在项目中使用图表，在 {studio_man_url}/index.html[CUBA Studio] 中打开 *Project properties* 编辑器：点击 *CUBA -> Project Properties* 主菜单项，在 *App components* 列表中，选中 *charts* 应用程序组件。Studio 提示重建 Gradle 脚本时，点击确定。
-

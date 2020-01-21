@@ -6,7 +6,7 @@
 
 事务监听器旨在对事务生命周期事件做出响应。与<<entity_listeners,实体监听器>>不同，它们不与何实体类型绑定，可以被每个事务调用。
 
-监听器是一个<<managed_beans,托管 Bean>>，它实现了 `BeforeCommitTransactionListener` 或 `AfterCompleteTransactionListener` 接口或者同时实现这两个接口。
+监听器是一个<<managed_beans, Spring bean>>，它实现了 `BeforeCommitTransactionListener` 或 `AfterCompleteTransactionListener` 接口或者同时实现这两个接口。
 
 BeforeCommitTransactionListener::
 +

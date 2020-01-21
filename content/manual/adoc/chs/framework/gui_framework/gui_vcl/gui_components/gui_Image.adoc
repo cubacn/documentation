@@ -11,7 +11,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/Image.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/Image.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -79,6 +79,8 @@ include::{sourcesdir}/gui_vcl/image_1.xml[]
 * `FILL` - 根据组件大小拉伸图片。
 
 * `CONTAIN` - 保留长宽比压缩图片到能刚好在组件中全部展示。
+
+* `COVER` - 图片会被压缩或者拉升以适应组件的整个区域，维持组件本身的比例。如果图片的比例和组件的比例不匹配，会将图片做裁剪以适配组件的比例。
 
 * `SCALE_DOWN` - 在 `NONE` 和 `CONTAIN` 中选择图片能全部展示并且尺寸最小的方式。
 

@@ -14,13 +14,13 @@ include::{sourcesdir}/gui/data_comp/data_comp_1.xml[]
 
 这个例子中，会创建下列数据组件：
 
-* `DataContext` 实例。
-
-* 使用 `orderDc` 作为 id 的 `InstanceContainer` 以及 `InstanceLoader` ，用来加载 `Order` 实体。
-
-* 为 `OrderLines` 实体创建的使用 `linesDc` 作为 id 的 `CollectionPropertyContainer`。绑定到 `Order.lines` 集合属性。
-
-* 为 `Customer` 实体创建的使用 `customersDc` id 的 `CollectionContainer`。通过 `CollectionLoader` 使用指定的查询语句加载。
+<1> - `DataContext` 实例。
+<2> - `Order` 实体的 `InstanceContainer`。
+<3> - 容器内实体实例的内联 <<views,view>>。内联视图也可以继承共享视图（定义在 `views.xml`）。
+<4> - 加载 `Order` 实例的 `InstanceLoader`。
+<5> - 加载内嵌实体 `OrderLines` 的 `CollectionPropertyContainer` ，是绑定到 `Order.lines` 属性的实体。
+<6> - 加载 `Customer` 实体的 `CollectionContainer` 。`view` 属性可以绑定某个共享视图。
+<7> - `CollectionLoader` 使用指定的查询加载 `Customer` 实体。
 
 数据容器可以在可视化组件中这样使用：
 

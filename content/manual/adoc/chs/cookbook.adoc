@@ -1,9 +1,0 @@
-[[cookbook]]
-== Cookbook
-
-本节包含一些实际操作的例子，手册中其它地方没有找到合适的章节来介绍这些例子，也（还）没有包含在 https://www.cuba-platform.com/guides[向导] 中。
-
-include::cookbook/databases.adoc[]
-
-include::cookbook/images_recipe.adoc[]
-

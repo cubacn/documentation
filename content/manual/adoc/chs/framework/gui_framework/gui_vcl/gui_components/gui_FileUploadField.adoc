@@ -5,7 +5,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/FileUploadField.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/FileUploadField.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -37,7 +37,6 @@ include::{sourcesdir}/gui_vcl/upload_0.xml[]
 include::{sourcesdir}/gui_vcl/upload_1.xml[]
 ---- 
 
-[[gui_FileUploadField_FileUploadSucceedListener]]
 * 在界面控制器中，需要注入该控件本身，还需要注入 <<file_upload,FileUploadingAPI>> 和 <<dataManager,DataManager>> 这两个接口。订阅 `InitEvent` 事件并且添加事件监听器，这样可以对文件上传成功或者出错做出相应的操作：
 +
 [source, java]

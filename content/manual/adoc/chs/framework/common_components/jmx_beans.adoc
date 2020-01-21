@@ -3,12 +3,12 @@
 [[jmx_beans]]
 ==== JMX Beans
 
-有时，有必要让系统管理员能够在运行时查看和更改某些<<managed_beans,托管 bean>> 的状态。在这种情况下，建议创建一个 JMX bean - 一个具有 <<jmx, JMX>> 接口的程序组件。JMX bean 通常是一个包装器，代理了对托管 bean 的调用，但实际上还是由托管 bean 维护状态：比如缓存、配置数据或统计信息。
+有时，有必要让系统管理员能够在运行时查看和更改某些<<managed_beans, Spring bean>> 的状态。在这种情况下，建议创建一个 JMX bean - 一个具有 <<jmx, JMX>> 接口的程序组件。JMX bean 通常是一个包装器，代理了对托管 bean 的调用，但实际上还是由托管 bean 维护状态：比如缓存、配置数据或统计信息。
 
 .JMX Bean Class Diagram
 image::JMXBeans.png[align="center"]
 
-从图中可以看出，JMX bean 由接口和实现类组成。实现类应该是一个<<managed_beans,托管 bean>>，即应该具有 `@Component` 注解和唯一名称。JMX bean 的接口以一种特殊的方式在 <<spring.xml,spring.xml>> 中注册，以便在当前 JVM 中创建 JMX 接口。
+从图中可以看出，JMX bean 由接口和实现类组成。实现类应该是一个<<managed_beans, Spring bean>>，即应该具有 `@Component` 注解和唯一名称。JMX bean 的接口以一种特殊的方式在 <<spring.xml,spring.xml>> 中注册，以便在当前 JVM 中创建 JMX 接口。
 
 使用 Spring AOP 通过 `MBeanInterceptor` <<interceptor,拦截器>>类拦截对所有 JMX bean 接口方法的调用，该类在当前线程中设置正确的 `ClassLoader`  并对未处理异常进行日志记录。
 

@@ -1,0 +1,44 @@
+:sourcesdir: ../../../source
+
+[[project_setup_reports]]
+=== Project Setup
+
+. https://github.com/cuba-platform/sample-library-cuba7/archive/master.zip[下载] 并解压 *Library* 应用程序，或使用 git clone：
++
+----
+  git clone https://github.com/cuba-platform/sample-library-cuba7
+----
+. 按照 {studio_man_url}/index.html[CUBA Studio 用户手册] {studio_man_url}/open_project.html[打开已有项目] 章节的描述打开 *Library* 项目。
+
+. 按照 <<installation, 安装>> 章节的描述，通过 **CUBA Add-Ons** 窗口为项目添加 *Reporting* 扩展。
+
+. 在本地 *HyperSQL* 服务创建数据库：Studio 主菜单 *CUBA* -> *Create database*
+
+. 在主工具栏点击 *CUBA Application* 配置旁边的 image:run_button.png[] 按钮启动应用程序。
+
+. 点击 CUBA 项目树 *Runs at...* 部分的链接。
+
+. 使用 `admin` / `admin` 作为用户名和密码登录 *Library* 应用程序。
+
+为了快速可以开始，报表生成器附带有报表向导 - 一种用于快速创建报表的可视化工具，包括数据结构和模板设计。使用向导创建报表后，可以再对生成的报表进行进行分析，了解<<structure,数据集>>如何创建、查看报表<<parameters,参数>>、修改<<template,模板>>或<<template_to_output,输出类型>>，这些内容在本手册的其它部分描述。
+
+要运行向导，请单击 *Reports* 界面中的 *Create* -> *Using wizard*。
+
+.报表向导
+
+.调用报表向导
+image::reports_wizard_main.png[align="center"]
+
+使用向导可以创建三种类型的报表：
+
+. 单个实体的报表。
+. 给定实体列表的报表。
+. 通过查询过滤的实体列表的报表。
+
+报表设计分为三个步骤：
+
+. 创建报表的数据结构。
+. 编辑报表区域。
+. 保存报表。
+
+可以使用报表编辑器以常规方式修改创建的报表，并通过<<run_common,通用报表浏览界面>>运行，或使用特定的<<run_actions,操作>>（`ListPrintFormAction`、`EditorPrintFormAction` 等）运行。

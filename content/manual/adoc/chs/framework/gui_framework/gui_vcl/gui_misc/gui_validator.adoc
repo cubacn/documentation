@@ -99,14 +99,14 @@ include::{sourcesdir}/gui_vcl/validator_4.java[]
 [[gui_validator_DecimalMaxValidator]]
 DecimalMaxValidator::
 +
-检查值必须小于等于指定的最大值。
+检查值小于等于指定的最大值。
 支持的类型：`BigDecimal`、`BigInteger`、`Long`、`Integer` 以及使用当前 locale 表示 `BigDecimal` 的 `String` 类型。
 +
 它有如下属性：
 +
 --
 * `value` − 最大值（必须）；
-* `inclusive` − 当设置成 `true` 时，值必须小于或等于指定的最大值。默认值是 `true`。
+* `inclusive` − 当设置成 `true` 时，值应当小于或等于指定的最大值。默认值是 `true`。
 * `message` − 自定义的消息，用于在验证失败时展示给用户。该消息可以包含 `$value` 和 `$max` 关键字，用于格式化输出。
 --
 +
@@ -133,14 +133,14 @@ include::{sourcesdir}/gui_vcl/validatorDecimalMax.java[]
 [[gui_validator_DecimalMinValidator]]
 DecimalMinValidator::
 +
-检查值必须大于等于指定的最小值。
+检查值大于等于指定的最小值。
 支持的类型：`BigDecimal`、`BigInteger`、`Long`、`Integer` 以及使用当前 locale 表示 `BigDecimal` 的 `String` 类型。
 +
 它有如下属性：
 +
 --
 * `value` − 最小值（必须）；
-* `inclusive` − 当设置成 `true` 时，值必须大于或等于指定的最小值。默认值是 `true`。
+* `inclusive` − 当设置成 `true` 时，值应当大于或等于指定的最小值。默认值是 `true`。
 * `message` − 自定义的消息，用于在验证失败时展示给用户。该消息可以包含 `$value` 和 `$min` 关键字，用于格式化输出。
 --
 +
@@ -167,7 +167,7 @@ include::{sourcesdir}/gui_vcl/validatorDecimalMin.java[]
 [[gui_validator_DigitsValidator]]
 DigitsValidator::
 
-检查值必须是一个指定范围内的数字。
+检查值是一个指定范围内的数字。
 支持的类型：`BigDecimal`、`BigInteger`、`Long`、`Integer` 以及使用当前 locale 表示 `BigDecimal` 的 `String` 类型。
 +
 它有如下属性：
@@ -264,7 +264,7 @@ include::{sourcesdir}/gui_vcl/validatorFuture.java[]
 [[gui_validator_MaxValidator]]
 MaxValidator::
 +
-检查值必须小于或等于指定的最大值。
+检查值小于或等于指定的最大值。
 支持的类型：`BigDecimal`、`BigInteger`、`Long`、`Integer`。
 +
 它有如下属性：
@@ -296,7 +296,7 @@ include::{sourcesdir}/gui_vcl/validatorMax.java[]
 [[gui_validator_MinValidator]]
 MinValidator::
 +
-检查值必须大于等于指定的最小值。
+检查值大于等于指定的最小值。
 支持的类型：`BigDecimal`、`BigInteger`、`Long`、`Integer`。
 +
 它有如下属性：
@@ -328,7 +328,7 @@ include::{sourcesdir}/gui_vcl/validatorMin.java[]
 [[gui_validator_NegativeOrZeroValidator]]
 NegativeOrZeroValidator::
 +
-检查值必须小于等于 0。
+检查值小于等于 0。
 支持的类型：`BigDecimal`、`BigInteger`、`Long`、`Integer`、`Double`、`Float`。
 +
 它有如下属性：
@@ -359,7 +359,7 @@ include::{sourcesdir}/gui_vcl/validatorNegativeOrZero.java[]
 [[gui_validator_NegativeValidator]]
 NegativeValidator::
 +
-检查值必须小于 0。
+检查值严格小于 0。
 支持的类型：`BigDecimal`、`BigInteger`、`Long`、`Integer`、`Double`、`Float`。
 +
 它有如下属性：
@@ -546,7 +546,7 @@ include::{sourcesdir}/gui_vcl/validatorPastOrPresent.java[]
 [[gui_validator_PositiveOrZeroValidator]]
 PositiveOrZeroValidator::
 +
-检查值必须大于等于 0。
+检查值大于等于 0。
 支持的类型：`BigDecimal`、`BigInteger`、`Long`、`Integer`、`Double`、`Float`。
 +
 它有如下属性：
@@ -577,7 +577,7 @@ include::{sourcesdir}/gui_vcl/validatorPositiveOrZero.java[]
 [[gui_validator_PositiveValidator]]
 PositiveValidator::
 +
-检查值必须严格大于 0。
+检查值严格大于 0。
 支持的类型：`BigDecimal`、`BigInteger`、`Long`、`Integer`、`Double`、`Float`。
 +
 它有如下属性：

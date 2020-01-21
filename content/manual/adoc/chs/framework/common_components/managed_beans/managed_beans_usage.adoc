@@ -1,7 +1,7 @@
 :sourcesdir: ../../../../../source
 
 [[managed_beans_usage]]
-===== 使用托管 Bean
+===== 使用 Spring bean
 
 托管给 Spring 的 bean 可以通过注入或者通过 `AppBeans` 类获取。作为使用 bean 的示例，看看 `OrderService` bean 的实现，它将具体的执行代理给了 `OrderWorker` bean 来做：
 

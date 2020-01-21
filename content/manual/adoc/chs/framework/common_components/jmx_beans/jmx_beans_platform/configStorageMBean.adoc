@@ -3,7 +3,7 @@
 [[configStorageMBean]]
 ====== ConfigStorageMBean
 
-`ConfigStorageMBean` 能在 http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/jmx/ConfigStorageMBean.html[中间件] 、 http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/web/jmx/ConfigStorageMBean.html[Web 客户端] 和 http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/portal/jmx/ConfigStorageMBean.html[Web 门户] 模块中查看和设置<<app_properties,应用程序属性>>的值。
+`ConfigStorageMBean` 能在 http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/jmx/ConfigStorageMBean.html[中间件] 、 http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/web/jmx/ConfigStorageMBean.html[Web 客户端] 和 http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/portal/jmx/ConfigStorageMBean.html[Web 门户] 模块中查看和设置<<app_properties,应用程序属性>>的值。
 
 该接口具有独立的一组操作，用于处理存储在文件 (`*AppProperties`) 中和存储在数据库 (`*DbProperties`) 中的属性。这些操作只显示在对应的存储中明确设置了值的属性。也就是说如果配置接口定义了属性和其默认值，但未在数据库(或文件)中设置该值，则这些方法将不显示该属性及其当前值。
 

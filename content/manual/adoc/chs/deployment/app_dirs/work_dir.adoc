@@ -7,5 +7,5 @@
 
 比如，<<file_storage,文件存储>>机制默认使用工作目录的 `filestorage` 子目录。还有，中间件模块会将启动时自动生成的 <<persistence.xml,persistence.xml>> 和 `orm.xml` 保存到工作目录。
 
-工作目录是由 <<cuba.dataDir,cuba.dataDir>> 应用程序属性指定。在 Tomcat 的<<fast_deployment,快速部署>>模式下，这个目录是 `tomcat/work` 下面的一个用应用程序名字命名的目录。如果是其它的部署方式，这个目录会在<<app_home,应用程序主目录>>里。
+工作目录是由 <<cuba.dataDir,cuba.dataDir>> 应用程序属性指定。默认情况，工作目录在应用程序主目录下。
 

@@ -3,7 +3,7 @@
 [[tomcat_war_deployment]]
 ==== 部署 WAR 至 Tomcat Windows 服务
 
-. 在 <<build.gradle,build.gradle>> 末尾添加 <<build.gradle_buildWar, buildWar>> 任务：
+. 使用 CUBA Studio 中的 *Project* > *Deployment* > *WAR Settings* 窗口或在 <<build.gradle,build.gradle>> 末尾添加 <<build.gradle_buildWar, buildWar>> 任务：
 +
 --
 [source, groovy]
@@ -11,14 +11,14 @@
 include::{sourcesdir}/deployment/warDeployment_2.groovy[]
 ----
 
-如果目标 Tomcat 服务的参数跟<<fast_deployment,快速部署>>里用到的本地 Tomcat 的参数不同，需要提供相应的应用程序属性。比如，如果目标 Tomcat 运行在 9999 端口，任务定义会是这样：
+如果目标 Tomcat 服务的参数跟<<fast_deployment,快速部署>>里用到的本地 Tomcat 的参数不同，需要提供相应的应用程序属性。比如，如果目标 Tomcat 运行在 9999 端口并且使用分离的 WAR 包，任务定义会是这样：
 
 [source, groovy]
 ----
 include::{sourcesdir}/deployment/warDeployment_3.groovy[]
 ----
 
-可以指定另外一个 `context.xml` 文件用来设置生产环境的数据库，示例：
+可以指定另外一个 `context.xml` 文件用来设置生产环境的数据库，或者之后在服务器提供这个文件，示例：
 
 [source, groovy]
 ----
@@ -26,25 +26,47 @@ include::{sourcesdir}/deployment/warDeployment_4.groovy[]
 ----
 --
 
-. 执行 `buildWar` Gradle 任务。会在项目 `build/distributions` 目录生成 `app.war` 和 `app-core.war` 文件。
+. 执行 `buildWar` Gradle 任务。会在项目 `build/distributions` 目录生成 `app.war` 文件（或者几个文件，如果选择的是分离的 WAR）
 +
 [source, plain]
 ----
 gradlew buildWar
 ----
+. 创建<<app_home,应用程序主目录>>，比如，`C:\app_home`。
 
-. 下载并执行 Tomcat 8 Windows Service Installer。
+. 从 https://tomcat.apache.org/download-90.cgi[Apache Tomcat 官网] 下载并安装 Tomcat 9 Windows Service Installer。
 
-. 切换到安装好的服务的 `bin` 目录，使用管理员权限执行 `tomcat8w.exe`。
-在 *Java* 标签页，设置 *Maximum memory pool* 为 1024MB。然后在 *General* 标签页重启服务。
+. 切换到安装好的服务的 `bin` 目录，使用管理员权限执行 `tomcat9w.exe`，以便设置 Tomcat 服务配置。
+.. 在 *Java* 标签页设置 *Maximum memory pool* 为 1024MB。
+.. _Java Options_ 字段，添加 `-Dfile.encoding=UTF-8`，配置 Tomcat 使用 UTF-8 编码。
+.. _Java Options_ 字段，添加 `-Dapp.home=c:/app_home`，指定应用程序主目录。
 +
-image::tomcatPropeties.jpg[align="center"]
+image::tomcat-service-settings.png[align="center"]
 
-. 在 _Java Options_ 字段添加 `-Dfile.encoding=UTF-8`。
+. 如需提供一个本地文件配置生产环境数据库连接属性的话，可以在 Tomcat 服务的子目录 `conf\Catalina\localhost` 内创建配置文件。根据 WAR 文件的不同，配置文件名不一样，比如，对于单一 WAR 部署，`app.xml` 就可以。对于多个 WAR 部署，名称为 `app-core.xml`。复制 `context.xml` 的内容至该文件。
 
-. 拷贝项目生成的 `app.war` 和 `app-core.war` 文件到 Tomcat 服务的 `webapps` 目录。
+. 使用默认配置的情况下，所有的应用程序日志消息都添加在 `logs/tomcat9-stdout.log` 文件内。有两个选择可以自定义日志的配置：
 
-. 启动 Tomcat 服务。
+* 在项目中创建 logback 配置文件。然后在 <<build.gradle_buildWar, buildWar>> 任务设置 `logbackConfigurationFile` 参数指定该文件的路径（手动设置或者通过 Studio 的 *WAR Settings* 窗口配置）。
+* 在生产环境服务器创建日志配置文件。
++
+从开发环境的 Tomca（项目中的 `deploy/tomcat/conf` 子目录）复制 `logback.xml` 至<<app_home,应用程序主目录>>并且修改文件中的 `logDir` 属性：
++
+[source, xml]
+----
+<property name="logDir" value="${app.home}/logs"/>
+----
++
+在 Tomcat 9 Windows 服务的 _Java Options_ 字段添加下面这行，指定日志的配置文件路径：
++
+[source,plain]
+----
+-Dlogback.configurationFile=C:/app_home/logback.xml
+----
+
+. 拷贝项目生成的 WAR 文件（或多个 WAR）到 Tomcat 服务的 `webapps` 目录。
+
+. 重启 Tomcat 服务。
 
 . 在浏览器打开 `++http://localhost:8080/app++`。
 

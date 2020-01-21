@@ -3,7 +3,7 @@
 [[wildfly_war_deployment]]
 ==== 部署 WAR 到 WildFly
 
-CUBA 应用程序的 WAR 包可以部署在 *WildFly* 应用服务中。下面这个示例是部署使用 PostgreSQL 9.6 的 CUBA 应用程序到 Windows 的 WildFly 14.0.0。
+CUBA 应用程序的 WAR 包可以部署在 *WildFly* 应用服务中。下面这个示例是部署使用 PostgreSQL 的 CUBA 应用程序到 Windows 的 WildFly 18.0.0。
 
 . 编辑 `build.gradle` 并在 *global* 模块的 `dependencies` 部分添加依赖：
 +
@@ -41,17 +41,17 @@ set "JAVA_OPTS=%JAVA_OPTS% -Dapp.home=%USERPROFILE%/app_home -Dlogback.configura
 
 这行里将 `app.home` 系统属性指向之前创建的应用程序主目录，并且设置日志的配置文件指向先前创建的 `logback.xml` 文件。也可以使用绝对路径替换 `%USERPROFILE%` 变量。
 
-* 对比一下 WildFly 的 Hibernate Validator 版本跟 CUBA 的有没有不同，如果 CUBA 使用的是比较新的版本，那么用 `tomcat\shared\lib` 下面的版本（比如 `hibernate-validator-5.4.2.Final.jar`）替换掉 `C:\wildfly\modules\system\layers\base\org\hibernate\validator\main\hibernate-validator-x.y.z-sometext.jar`。
+* 对比一下 WildFly 的 Hibernate Validator 版本跟 CUBA 的有没有不同，如果 CUBA 使用的是比较新的版本，那么用 `tomcat\shared\lib` 下面的版本（比如 `hibernate-validator-6.0.16.Final.jar`）替换掉 `C:\wildfly\modules\system\layers\base\org\hibernate\validator\main\hibernate-validator-x.y.z-sometext.jar`。
 
 * 在 `\wildfly\modules\system\layers\base\org\hibernate\validator\main\module.xml` 文件中更新一下替换的 JAR 包的版本。
 
-* 在 WildFly 中注册 PostgreSQL 驱动，从 `tomcat\lib` 目录拷贝 `postgresql-9.4.1212.jar` 到 `C:\wildfly\standalone\deployments` 目录。
+* 在 WildFly 中注册 PostgreSQL 驱动，从 `tomcat\lib` 目录拷贝 `postgresql-42.2.5.jar` 到 `C:\wildfly\standalone\deployments` 目录。
 
 * 配置 WildFly logger：打开 `\wildfly\standalone\configuration\standalone.xml` 文件，在 `<subsystem xmlns="urn:jboss:domain:logging:{version}"` 区域添加下面两行：
 +
 [source, xml]
 ----
-<subsystem xmlns="urn:jboss:domain:logging:6.0">
+<subsystem xmlns="urn:jboss:domain:logging:8.0">
     <add-logging-api-dependencies value="false"/>
     <use-deployment-logging-config value="false"/>
     . . .
@@ -72,7 +72,7 @@ set "JAVA_OPTS=%JAVA_OPTS% -Dapp.home=%USERPROFILE%/app_home -Dlogback.configura
 ----
 Name: Cuba
 JNDI Name: java:/jdbc/CubaDS
-JDBC Driver: postgresql-9.4.1212.jar
+JDBC Driver: postgresql-42.2.5.jar
 Driver Module Name: org.postgresql
 Driver Class Name: org.postgresql.Driver
 Connection URL: your database URL
@@ -85,16 +85,22 @@ Password: your database password
 点击 *Test connection* 按钮测试数据库连接。
 
 * 启用这个数据源。
+
+* 或者，可以使用 `bin/jboss-cli.bat` 命令行工具创建 JDBC 数据源：
++
+[source, plain]
+----
+include::{sourcesdir}/deployment/wildfly-jboss-cli.txt[]
+----
+
 --
 
 . 构建应用程序
 +
 --
-* 在 Studio 打开 *Deployment > *WAR settings*。
+* 在 Studio 中打开 CUBA 项目树 > *Project* > *Deployment > WAR Settings* 窗口。
 
 * 勾选 *Build WAR* 复选框。
-
-* 在 *Application home directory* 字段设置 `${app.home}`。
 
 * 保存设置。
 

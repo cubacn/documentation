@@ -5,7 +5,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/global/DataManager.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/global/DataManager.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -105,7 +105,22 @@ include::{sourcesdir}/common/dataManager_8.java[]
 查询::
 +
 --
-JPQL 查询的规则与 <<query>> 中描述的规则类似。不同之处在于，通过 `DataManager` 执行的查询只能使用命名参数，不支持位置参数。
+当系统使用关系型数据库时，用<<jpql,JPQL>>查询语句加载数据。参阅 <<jpql_functions>>、<<query_case_insensitive>> 和 <<jpql_macro>> 章节了解 CUBA 中的 JPQL 和 JPA 标准之间的差异。另外需要注意，`DataManager` 只能执行 "select" 查询。
+
+流式接口的 `query()` 方法可以接收完整的或者省略的查询语句。如果使用省略的查询语句，需要符合下面的规则：
+
+* 可以省略 `"select <alias>"` 子句。
+* 如果 `"from"` 子句包含单一实体，而且又不想用实体别名，则可以省略 `"from <entity> <alias> where"` 子句。此时，框架会使用 `e` 作为该实体的别名。
+* 可以使用位置标记查询条件并同时将调价值作为额外的参数传递给 `query()` 方法。
+
+示例：
+
+[source, java]
+----
+include::{sourcesdir}/common/dataManager_9.java[]
+----
+
+需要注意的是，位置标记条件参数只在流式接口支持。`LoadContext.Query` 还是只支持命名条件参数。
 --
 
 [[dm_transactions]]

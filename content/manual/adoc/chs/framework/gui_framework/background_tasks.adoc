@@ -5,7 +5,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="https://demo.cuba-platform.cn/sampler/open?screen=normal-progressbar" class="live-demo-btn" target="_blank">在线示例</a>
+    <a href="https://demo.cuba-platform.cn/sampler/open?screen=standard-progressbar" class="live-demo-btn" target="_blank">在线示例</a>
 </div>
 ++++
 
@@ -25,7 +25,7 @@
 
 [WARNING]
 ====
-UI 组件的状态和数据源不能在 `BackgroundTask` `run()` 方法中读取/更新：使用 `done()` 、 `progress()` 和 `canceled()` 回调方法代替。如果尝试从后台线程设置 UI 组件的值，则会抛出 `IllegalConcurrentAccessException`。
+UI 组件的状态和数据容器不能在 `BackgroundTask` `run()` 方法中读取/更新：使用 `done()` 、 `progress()` 和 `canceled()` 回调方法代替。如果尝试从后台线程设置 UI 组件的值，则会抛出 `IllegalConcurrentAccessException`。
 ====
 
 示例:
@@ -81,3 +81,4 @@ include::{sourcesdir}/gui/backgroundtasks_2.java[]
 如果不使用后台任务，但想要从非 UI 线程更新 UI 状态，请使用 `UIAccessor` 接口的方法。应该在 UI 线程中使用 `BackgroundWorker.getUIAccessor()` 方法获取对 `UIAccessor` 的引用，之后可以从后台线程中调用它的 `access()` 和 `accessSynchronously()` 方法来安全地读取或修改 UI 组件的状态。
 ====
 
+include::background_tasks/background_task_examples.adoc[]

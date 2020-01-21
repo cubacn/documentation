@@ -7,6 +7,8 @@
 
 该示例程序是基于 *petclinic - 宠物诊所* 应用程序，源码可以在 https://github.com/cuba-platform/cuba-petclinic[GitHub] 找到。
 
+. 按照 {studio_man_url}/#add_ons[Studio 文档] 中的描述，通过 **CUBA Add-Ons** 窗口为项目添加 *Charts* 扩展。
+
 . 如前一章所述开始创建报表。
 +
 .向导中的图表模板 - 第一步

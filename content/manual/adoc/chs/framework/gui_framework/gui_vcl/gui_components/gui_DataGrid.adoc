@@ -11,7 +11,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/DataGrid.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/DataGrid.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -126,10 +126,54 @@ include::{sourcesdir}/gui_vcl/datagrid_formatter.xml[]
 [[gui_DataGrid_rowsCount]]
 
 * `rowsCount` - 可选元素，会为数据网格控件创建一个行数( `RowsCount` )控件。行数控件会启用数据分页，在界面控制器中调用 `CollectionLoader.setMaxResults()` 方法可以控制数据加载器中的数据量，进而能控制每页最大行数。另外，绑定到相同数据源的通用过滤器组件也能实现此功能。
-
-行数控件也会显示数据结果总数，但不需要把这些数据全部加载出来。用户可以点击 "*?*" 按钮, 它会调用 `com.haulmont.cuba.core.global.DataManager#getCount` 方法，该方法使用相同的参数请求数据库，同时使用 `++COUNT(*)++` 聚合函数代替加载数据。返回的数值会显示在 "*?*" 位置。
++
+`rowsCount` 控件也会显示数据结果总数，但不需要把这些数据全部加载出来。用户可以点击 "*?*" 按钮, 它会调用 `com.haulmont.cuba.core.global.DataManager#getCount` 方法，该方法使用相同的参数请求数据库，同时使用 `++COUNT(*)++` 聚合函数代替加载数据。返回的数值会显示在 "*?*" 位置。
++
+`RowsCount` 组件的 `autoLoad` 属性如果设置为 `true`，启用自动加载行数。可以在 XML 描述中设置：
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/datagrid_rowscount_1.xml[]
+----
++
+另外，在界面控制器中也可以通过 `RowsCount` API 启用或禁用该功能：
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/datagrid_rowscount_2.java[]
+----
 
 *数据网格控件属性:*
+
+[[gui_DataGrid_aggregatable]]
+* `aggregatable` 属性可以启用对 `DataGrid` 的行进行聚合运算，支持下列运算符：
++
+--
+
+** `SUM` − 和
+
+** `AVG` − 均值
+
+** `COUNT` − 计数
+
+** `MIN` − 最小值
+
+** `MAX` − 最大值
+
+[[gui_DataGrid_column_aggregation]]
+聚合 `DataGrid` 列的 `aggregation` 元素需要设置 `type` 属性，表示聚合的函数。
+默认情况下，聚合列只支持数字类型，比如 `Integer`、`Double`、`Long` 和 `BigDecimal`。聚合值会显示在 `DataGrid` 顶部的附加行内。聚合的功能与 <<gui_Table, 表格>> 组件一致。也就是说，同样可以使用 <<gui_Table_column_aggregation_strategyClass,strategyClass>>、<<gui_Table_column_aggregation_valueDescription,valueDescription>> 和  <<gui_Table_column_aggregation_formatter,formatter>>。
+
+带聚合列的 `DataGrid` XML 描述示例：
+
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/datagrid_aggregation_1.xml[]
+----
+--
+
+[[gui_DataGrid_aggregationPosition]]
+* `aggregationPosition` 属性可以设置聚合值行的位置： `TOP` 或 `BOTTOM`。默认为 `TOP`。
 
 [[gui_DataGrid_columnResizeMode]]
 * `columnResizeMode` - 设置调整列宽时的动画效果。支持两种效果：
@@ -272,6 +316,9 @@ image::gui_dataGrid_3.png[align="center"]
 
 * `DESCENDING` - 降序 (Z-A, 9..1)。
 --
+
+[[gui_DataGrid_getAggregationResults]]
+* `getAggregationResults()` 方法返回<<gui_DataGrid_aggregatable,聚合>>结果的映射（map），键值为 `DataGrid` 的列标识符，值为聚合值。
 
 *使用描述提供者:*
 
@@ -525,11 +572,43 @@ include::{sourcesdir}/gui_vcl/datagrid_example_2.java[]
 
 image::gui_dataGrid_12.png[align="center"]
 
+*数据网格样式：*
+
+在 Web 客户端，可以在 XML 描述中使用 `stylename` 属性为 `DataGrid` 组件设置预定义样式。
+
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/datagrid_styles_1.xml[]
+----
+
+或者在界面控制器使用编程的方式设置。
+
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/datagrid_styles_2.java[]
+----
+
+预定义样式：
+
+[[gui_DataGrid_borderless]]
+* `borderless` - DataGrid 无边线。
+
+[[gui_DataGrid_no-horizontal-lines]]
+* `no-horizontal-lines` - DataGrid 行之间无水平分割线。
+
+[[gui_DataGrid_no-vertical-lines]]
+* `no-vertical-lines` - DataGrid 列之间无垂直分割线。
+
+[[gui_DataGrid_no-stripes]]
+* `no-stripes` - 每行背景颜色统一。
+
 `DataGrid` 的展示可以使用带 `$cuba-datagrid-*` 前缀的 SCSS 变量进行自定义。可以在创建一个 <<web_theme_extension,主题扩展>> 或者一个 <<web_theme_creation,自定义主题>> 之后在可视化编辑器里修改这些变量的值。
 
 '''
 
 DataGrid 的属性列表::
+<<gui_DataGrid_aggregatable,aggregatable>> -
+<<gui_DataGrid_aggregationPosition,aggregationPosition>> -
 <<gui_attr_align,align>> -
 <<gui_attr_caption,caption>> -
 <<gui_attr_captionAsHtml,captionAsHtml>> -
@@ -549,6 +628,8 @@ DataGrid 的属性列表::
 <<gui_DataGrid_editorCrossFieldValidate,editorCrossFieldValidate>> -
 <<gui_DataGrid_editorEnabled,editorEnabled>> -
 <<gui_DataGrid_editorSaveCaption,editorSaveCaption>> -
+<<gui_Table_emptyStateLinkMessage,emptyStateLinkMessage>> -
+<<gui_Table_emptyStateMessage,emptyStateMessage>> -
 <<gui_attr_enable,enable>> -
 <<gui_attr_expandRatio,box.expandRatio>> -
 <<gui_DataGrid_frozenColumnCount,frozenColumnCount>> -
@@ -590,17 +671,25 @@ column 元素的属性列表::
 <<gui_DataGrid_minimumWidth,minimumWidth>> -
 <<gui_DataGrid_property,property>> -
 <<gui_DataGrid_resizable,resizable>> -
+<<gui_Table_column_sort,sort>> -
 <<gui_DataGrid_column_sortable,sortable>> -
 <<gui_attr_width,width>>
 
 column 的元素::
-<<gui_formatter,formatter>>
+<<gui_DataGrid_column_aggregation,aggregation>> -
+<<gui_Table_column_aggregation_formatter,formatter>>
+
+<<gui_DataGrid_column_aggregation,aggregation>> 的属性::
+<<gui_Table_column_aggregation_strategyClass,strategyClass>> -
+<<gui_DataGrid_column_aggregation,type>> -
+<<gui_Table_column_aggregation_valueDescription,valueDescription>>
 
 API::
 <<gui_DataGrid_addGeneratedColumn,addGeneratedColumn>> -
 <<gui_api_settings,applySettings>> -
 <<gui_DataGrid_createRenderer,createRenderer>> -
 <<gui_DataGrid_edit,edit>> -
+<<gui_DataGrid_getAggregationResults,getAggregationResults>> -
 <<gui_api_settings,saveSettings>> -
 <<gui_DataGrid_scrollTo,getColumns>> -
 <<gui_DataGrid_setDescriptionProvider,setDescriptionProvider>> -
@@ -608,6 +697,7 @@ API::
 <<gui_DataGrid_setConverter,setConverter>> -
 <<gui_DataGrid_setDetailsGenerator,setDetailsGenerator>> -
 <<gui_DataGrid_inlineEditorCrossFieldValidate,setEditorCrossFieldValidate>> -
+<<gui_Table_setEmptyStateLinkClickHandler,setEmptyStateLinkClickHandler>> -
 <<gui_DataGrid_setEnterPressAction,setEnterPressAction>> -
 <<gui_DataGrid_setItemClickAction,setItemClickAction>> -
 <<gui_DataGrid_setRenderer,setRenderer>> -
@@ -628,3 +718,10 @@ DataGrid 监听器::
 <<gui_DataGrid_SelectionListener,SelectionListener>> -
 <<gui_DataGrid_SortListener,SortListener>>
 
+预定义样式::
+<<gui_DataGrid_borderless,borderless>> - 
+<<gui_DataGrid_no-horizontal-lines,no-horizontal-lines>> -
+<<gui_DataGrid_no-vertical-lines,no-vertical-lines>> -
+<<gui_DataGrid_no-stripes,no-stripes>>
+
+'''

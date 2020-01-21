@@ -10,7 +10,7 @@
 
 该机制的工作原理如下：
 
-* 当 <<dataManager,DataManager>> 加载一个实体时，它会找到实现 `SetupAttributeAccessHandler` 接口的所有托管 bean，并传递 `SetupAttributeAccessEvent` 对象作为参数调用它们的 `setupAccess()` 方法。此对象包含处于托管状态的已加载实例，以及三个用于存储属性名称的集合：只读属性集合、隐藏属性集合和必须属性集合（这些集合最初为空）。
+* 当 <<dataManager,DataManager>> 加载一个实体时，它会找到实现 `SetupAttributeAccessHandler` 接口的所有 Spring bean，并传递 `SetupAttributeAccessEvent` 对象作为参数调用它们的 `setupAccess()` 方法。此对象包含处于托管状态的已加载实例，以及三个用于存储属性名称的集合：只读属性集合、隐藏属性集合和必须属性集合（这些集合最初为空）。
 
 * `SetupAttributeAccessHandler` 接口的实现类分析实体的状态并适当地填充事件对象中的属性名称集合。这些类实际上是用于定义给定实例的属性访问规则的容器。
 
@@ -20,7 +20,7 @@
 
 要为特定实体类型创建规则，请执行以下操作：
 
-* 在项目的 *core* 模块中创建<<managed_beans,托管 Bean>> 并实现 `SetupAttributeAccessHandler` 接口。使用被处理实体的类型对接口进行参数化。bean 范围(scope)必须是默认的单例(singleton)。必须实现接口方法：
+* 在项目的 *core* 模块中创建<<managed_beans, Spring Bean>> 并实现 `SetupAttributeAccessHandler` 接口。使用被处理实体的类型对接口进行参数化。bean 范围(scope)必须是默认的单例(singleton)。必须实现接口方法：
 
 ** `supports(Class)` 如果处理器设计为处理给定的实体类，则返回 true。
 

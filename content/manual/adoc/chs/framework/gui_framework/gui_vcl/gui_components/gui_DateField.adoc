@@ -11,7 +11,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/DateField.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/DateField.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -71,6 +71,11 @@ include::{sourcesdir}/gui_vcl/datefield_4.xml[]
 +
 image::gui_datefield_month_range.png[align="center"]
 
+[[gui_DateField_autofill]]
+* `autofill` 属性设置为 `true` 则会支持在输入了 “日” 之后会自动填充年和月。如果该属性未启用，且日期没有填全，DateField 会清空值。
++
+如果 `autofill` 启用，并且设置了 `rangeStart` 或 `rangeEnd`，会在自动填写日期时考虑这两个值的设置。
+
 * `DateField` 组件值的变化，跟其它实现了 `Field` 接口的组件一样，都可以用 `ValueChangeListener` 来监听。可以使用<<gui_api_UserOriginated,isUserOriginated()>> 方法跟踪  `ValueChangeEvent` 的来源。
 
 [[gui_DateField_resolution]]
@@ -109,6 +114,7 @@ include::{sourcesdir}/gui_vcl/datefield_6.java[]
 
 dateField 的属性::
 <<gui_attr_align,align>> -
+<<gui_DateField_autofill,autofill>> - 
 <<gui_attr_caption,caption>> -
 <<gui_attr_captionAsHtml,captionAsHtml>> -
 <<gui_attr_contextHelpText,contextHelpText>> -

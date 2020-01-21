@@ -3,6 +3,11 @@
 [[screen_combined]]
 ====== 组合界面
 
+[WARNING]
+====
+这是旧版本的 API。对于从 7.0 开始的新 API，请参阅 <<screen_controllers>>。
+====
+
 通过组合界面可以在界面左边部分显示实体列表，在界面右边部分显示编辑选择实例的表格。所以组合界面是组合了<<screen_lookup,查找>>和<<screen_edit,编辑>>界面。
 
 组合界面控制器必须从 <<entityCombinedScreen,EntityCombinedScreen>> 类继承。

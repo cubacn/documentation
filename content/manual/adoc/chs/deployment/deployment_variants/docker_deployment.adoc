@@ -14,7 +14,7 @@
 
 首先，将数据库类型改为 PostgreSQL：
 
-. 在主菜单点击 *CUBA > Project Properties* 然后切换到 *Data Stores* 标签页。
+. 在主菜单点击 *CUBA > Main Data Store Settings…​*。
 . 在 *Database type* 字段选择 *PostgreSQL* 然后点击 *OK*。
 . 在主菜单点击 *CUBA > Generate Database Scripts*。Studio 打开包含自动生成脚本的 *Database Scripts* 窗口。点击 *Save and close*。
 . 在主菜单点击 *CUBA > Create Database*。Studio 会在本地 PostgreSQL 服务创建 `sales` 数据库。
@@ -99,12 +99,14 @@ services:
       - POSTGRES_DB=sales
       - POSTGRES_USER=cuba
       - POSTGRES_PASSWORD=cuba
-    volumes:
-      - /Users/me/sales-home:/opt/sales-home
     ports:
       - "5433:5432"
   web:
+    depends_on:
+      - postgres
     image: sales
+    volumes:
+      - /Users/me/sales-home:/opt/sales-home
     ports:
       - "8080:8080"
 ----
@@ -128,4 +130,3 @@ pg_dump -Fc -h localhost -p 5433 -d sales -U cuba > /Users/me/sales.backup
 docker-compose up
 ----
 --
-

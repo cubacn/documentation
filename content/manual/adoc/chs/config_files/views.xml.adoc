@@ -3,7 +3,7 @@
 [[views.xml]]
 === views.xml
 
-这个类型的文件用来描述视图（views），参考 <<views,>>。
+这个类型的文件用来描述共享视图（views），参考 <<views_creation>>。
 
 XML schema： {xsd_url}/view.xsd.
 
@@ -18,9 +18,9 @@ XML schema： {xsd_url}/view.xsd.
 
 * `class` – 实体类。
 
-* `entity` – 实体名称，比如 `sales$Order`。这个属性可以用来替代 `class` 属性。
+* `entity` – 实体名称，比如 `sales_Order`。这个属性可以用来替代 `class` 属性。
 
-* `name` – 视图名称，实体范围内需要名称唯一。
+* `name` – 仓库中的视图名称，实体范围内需要名称唯一。
 
 * `systemProperties` – 启用包含定义在持久化实体 `BaseEntity` 基类和 `Updatable` 接口中的<<entity_base_classes,基础接口>>系统属性。此参数为可选参数，默认为 `true`。
 

@@ -3,6 +3,11 @@
 [[abstractEditor]]
 ====== AbstractEditor
 
+[WARNING]
+====
+这是旧版本的 API。对于从 7.0 开始的新 API，请参阅 <<screen_controllers>>。
+====
+
 `AbstractEditor` 是<<screen_edit,编辑界面>>控制器的基类，<<abstractWindow,AbstractWindow>> 的子类。
 
 创建控制器类时，推荐使用需要编辑的实体作为 `AbstractEditor` 的泛型参数。这样会使 `getItem()` 和 `initNewItem()` 方法能操作指定的实体类型，应用程序代码也不需要做额外的类型转换。示例：

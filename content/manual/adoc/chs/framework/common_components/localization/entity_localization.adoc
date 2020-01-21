@@ -8,7 +8,7 @@
 
 * 实体名称键 – 简单类名（不带包名）。
 
-* 属性名称键 – 简单类名，后面跟上以句号分隔的属性名。
+* 属性名称键 – 简单类名，后面跟上以点分隔的属性名。
 
 
 `com.abc.sales.entity.Customer` 实体的默认英文本地化示例 – `/com/abc/sales/entity/messages.properties` 文件：

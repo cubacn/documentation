@@ -5,7 +5,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/FileMultiUploadField.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/FileMultiUploadField.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -24,7 +24,6 @@ image::gui_multipleUpload.png[align="center"]
 include::{sourcesdir}/gui_vcl/multiupload_1.xml[]
 ----
 
-[[gui_FileMultiUploadField_QueueUploadCompleteListener]]
 * 在界面控制器中，需要注入该组件本身，还需要注入 <<file_upload,FileUploadingAPI>> 和 <<dataManager,DataManager>> 这两个接口。
 +
 --

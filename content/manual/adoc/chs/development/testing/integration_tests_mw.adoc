@@ -5,31 +5,53 @@
 
 中间件继承测试运行在具有完整功能的 Spring 容器里，而且可以连接数据库。在这些测试类里面，可以运行中间件里面各细分层的代码，比如从 ORM 层到 Service 层。
 
-为了在测试中配置和启动中间件 Spring 容器，需要在项目中创建 `com.haulmont.cuba.testsupport.TestContainer` 的子类，并且在测试用例中使用其实例作为 JUnit Rule。
+Studio 创建新项目之后，可以在 `core` 模块的包内找到两个类：一个测试容器类和一个测试示例类。测试容器类会启动中间件的 Spring 容器，该容器用来做测试。测试示例类使用这个容器并演示如何用实体测试一些操作。
 
-下面是容器类和<<quick_start>>中提到的 Sales 项目的一个集成测试的示例。所有的类必须在 `core` 模块的 `test` 目录。
+我们看看生成的测试容器类，怎么能满足我们的需求。
 
-[source, java]
-----
-include::{sourcesdir}/development/testing_3.java[]
-----
+该类必须继承 CUBA 提供的 `TestContainer` 类。在构造器中，需要做下面这些事：
 
-自定义 `test-app.properties` 文件的示例：
+* 需要在 `appComponents` 列表中添加项目中使用的 <<app_components_recipes,应用程序组件>>（扩展插件）。
+* 如果需要，在 `appPropertiesFiles` 列表指定附加的应用程序属性文件。
+* 调用 `autoConfigureDataSource()` 方法使用来自应用程序属性或者 <<context.xml,context.xml>> 的信息初始化测试数据源。
 
-[source, properties]
-----
-include::{sourcesdir}/development/testing_11.properties[]
-----
+生成的测试容器会提供与应用程序相同的数据库连接，所以即使修改了类型或者 JDBC 数据源的定义，测试用例还是会使用主数据存储运行。
 
-推荐使用单独的测试数据库，可以通过 `build.gradle` 里面定义的 <<build.gradle_createDb, createDb>> 任务来创建：
+使用同一个数据库进行测试和运行应用程序有一个弊端：手动输入的数据会干扰测试数据并有可能破坏测试用例的执行。避免的方法就是为测试单独配置一个数据库。我们建议使用和主数据存储同类型的数据库作为测试数据库，以便使用同一组 <<db_scripts,数据库迁移脚本>>。下面是在本地 PostgreSQL 配置测试数据库的一个示例。
+
+首先，在 `build.gradle` 添加测试数据库创建的 <<build.gradle_createDb,任务>>：
 
 [source, groovy]
 ----
 include::{sourcesdir}/development/testing_4.groovy[]
 ----
 
-这个测试容器应当在测试类里面作为 `@ClassRule` 注解指定的 JUnit 规则（rule）：
-    
+然后在测试源码的根包（比如 `modules/core/test/com/company/demo/test-app.properties`）内创建 `test-app.properties` 文件，并制定测试数据库的连接属性：
+
+[source,properties]
+----
+cuba.dataSource.host = localhost
+cuba.dataSource.dbName = demo_test
+cuba.dataSource.username = cuba
+cuba.dataSource.password = cuba
+----
+
+添加该文件至测试容器的 `appPropertiesFiles` 列表：
+
+[source,java]
+----
+include::{sourcesdir}/development/testing_1.java[]
+----
+
+运行测试用例之前，执行这个任务创建测试数据库：
+
+[source]
+----
+./gradlew createTestDb
+----
+
+这个测试容器应当在测试类里面作为 `@RegisterExtension` 注解指定的 JUnit 5 扩展：
+
 [source, java]
 ----
 include::{sourcesdir}/development/testing_5.java[]
@@ -38,25 +60,27 @@ include::{sourcesdir}/development/testing_5.java[]
 几个有用的测试容器方法::
 +
 --
-`TestContainer` 类包含了以下几个方法，可以在测试类里面使用（参考上面的 `CustomerLoadTest` 例子）：
+`TestContainer` 类包含了以下几个方法，可以在测试类里面使用（参考上面的 `CustomerTest` 例子）：
 
 * `persistence()` – 返回 <<persistence,Persistence>> 接口的引用。
 
 * `metadata()` – 返回 <<metadata,Metadata>> 接口的引用。
 
 * `deleteRecord()` – 这一组重载方法的目的是在 `@After` 方法里面使用，在测试完成后清理数据库。
+
+还有，可以按照上面例子中的方法使用 `AppBeans.get()` 静态方法获取任何 bean。
 --
 
 日志::
 +
 --
-测试容器根据平台提供的 `test-logback.xml` 文件来配置日志。这个文件在 `cuba-core-tests` 工件的根目录。
+测试容器根据平台提供的 `test-logback.xml` 文件来配置日志。
 
 可以通过以下方法配置测试的日志级别：
 
-* 从平台的包里面拷贝 `test-logback.xml` 到项目 `core` 模块 `test` 根目录下，比如可以重命名为 `my-test-logback.xml`。
+* 在项目 `core` 模块的 `test` 目录内创建 `my-test-logback.xml` 文件。
 
-* 在 `my-test-logback.xml` 里面配置 appenders 和 loggers。
+* 在 `my-test-logback.xml` 里面配置 appenders 和 loggers。可以从 `cuba-core-tests` 工件内的 `test-logback.xml` 文件复制默认的文件内容。
 
 * 在测试容器里面添加一段静态初始化代码，这段代码通过设置 `logback.configurationFile` 这个系统属性来指定日志配置文件的位置：
 +
@@ -70,14 +94,7 @@ include::{sourcesdir}/development/testing_9.java[]
 附加数据存储::
 +
 --
-如果项目使用了<<data_store,附加数据存储>>，需要在测试容器里创建相应的 JDBC 数据源。比如，如果有名为 `mydb` 的数据存储，而且是 PostgreSQL 的数据库，则需要在测试容器中添加如下代码：
-
-[source, java]
-----
-include::{sourcesdir}/development/testing_10.java[]
-----
-
-还有，如果额外的数据库类型跟主数据库不一致，需要在 `build.gradle` 的 `core` 模块将数据库的驱动添加到 `testRuntime` 依赖中。示例：
+如果项目使用了<<data_store,附加数据存储>>，并且附加数据库类型与主数据库不同，需要在 `build.gradle` 的 `core` 模块将数据库的驱动添加到 `testRuntime` 依赖中。示例：
 
 [source, java]
 ----

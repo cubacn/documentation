@@ -42,6 +42,60 @@ reporting.enableTabSymbolInDataSetEditor::
 用于客户端 block。
 --
 
+[[reporting.executionHistory.cleanup.days]]
+reporting.executionHistory.cleanup.days::
++
+--
+计划任务会删除留存时间大于指定天数的所有<<execution_history,执行历史记录>>。如果该属性的值是 0，计划任务在删除记录时，不会考虑该值的设定。参阅 <<execution_history_cleanup, 清理历史记录>>了解设置计划任务的详情。
+
+默认值： `730`
+
+保存在数据库。
+
+用于 *Middleware* block。
+
+--
+
+[[reporting.executionHistory.cleanup.itemsPerReport]]
+reporting.executionHistory.cleanup.itemsPerReport::
++
+--
+计划任务会为每个报表保留不多于指定数量的<<execution_history,执行历史记录>>。不建议为该属性设置大于 1000 的值。如果该属性的值是 0，计划任务在删除记录时，不会考虑该值的设定。对于经常运行的报表，比如邮件模板、账单模板等，该参数很有用。参阅 <<execution_history_cleanup, 清理历史记录>>了解设置计划任务的详情。
+
+默认值： `1000`
+
+保存在数据库。
+
+用于 *Middleware* block。
+--
+
+[[reporting.executionHistory.enabled]]
+reporting.executionHistory.enabled::
++
+--
+启用 <<execution_history, 报表执行历史记录>> 的机制。
+
+默认值： `false`
+
+保存在数据库。
+
+用于 *Middleware* block。
+
+--
+
+[[reporting.executionHistory.saveOutputDocument]]
+reporting.executionHistory.saveOutputDocument::
++
+--
+如果设置为 true，并且 <<reporting.executionHistory.enabled,reporting.executionHistory.enabled>> 属性开启，报表结果文件会保存到 {main_man_url}/file_storage.html[文件存储]。参阅 <<history_output_documents,输出文档>> 了解详情。
+
+默认值： `false`
+
+保存在数据库。
+
+用于 *Middleware* block。
+--
+
 [[reporting.fontsDir]]
 reporting.fontsDir::
 +

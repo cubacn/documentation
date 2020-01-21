@@ -24,7 +24,7 @@ include::{sourcesdir}/common/configinterface_2.java[]
 
 [WARNING]
 ====
-配置接口不是常规的 Spring 托管 bean。它们只能通过显式接口注入或通过 `Configuration.getConfig()` 获取，但不能通过 `AppBeans.get()` 获取。
+配置接口不是常规的 Spring bean。它们只能通过显式接口注入或通过 `Configuration.getConfig()` 获取，但不能通过 `AppBeans.get()` 获取。
 ====
 
 include::config_interfaces/config_interface_usage.adoc[]

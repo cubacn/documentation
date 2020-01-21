@@ -3,9 +3,14 @@
 [[screen_edit]]
 ====== 编辑界面
 
+[WARNING]
+====
+这是旧版本的 API。对于从 7.0 开始的新 API，请参阅 <<screen_controllers>>。
+====
+
 编辑界面用来展示和编辑实体实例。编辑界面通过需要编辑的实体来做界面初始化，并且包含<<gui_Action,操作>>，能把对实体的改动保存到数据库。编辑界面需要通过 `openEditor()` 方法打开，此方法接收一个实体的实例作为参数。
 
-默认情况下，标准的 <<createAction,CreateAction - 创建>>和 <<editAction,EditAction - 编辑>>操作会打开编辑界面，编辑界面使用 `{entity_name}.edit` 标识符注册在 <<screens.xml,screens.xml>> 文件内，比如，`sales$Customer.edit`。
+默认情况下，标准的 <<createAction,CreateAction - 创建>>和 <<editAction,EditAction - 编辑>>操作会打开编辑界面，编辑界面使用 `{entity_name}.edit` 标识符注册在 <<screens.xml,screens.xml>> 文件内，比如，`sales_Customer.edit`。
 
 编辑界面控制器必须从 <<abstractEditor,AbstractEditor>> 类继承。
 

@@ -51,7 +51,7 @@ cuba.security.resetPasswordTemplateBody = <relative path to your file>
 cuba.security.resetPasswordTemplateSubject = <relative path to your file>
 ----
 
-为了在生产线上更容易的配置模板，可以通过<<conf_dir,配置目录>>配置或重定义位置, 将属性配置到 `local.app.properties` 文件。
+生产环境中，可以在<<conf_dir,配置目录>>放置模板, 将属性配置到 `local.app.properties` 文件。
 --
 
 用户编辑界面描述如下：

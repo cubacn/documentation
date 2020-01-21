@@ -128,7 +128,7 @@ ${demo_ApprovalHelper.updateState(entityId, 'Approved')}
 ${demo_ApprovalHelper.updateState(entityId, 'Not approved')}
 ----
 
-Activiti 引擎已经与 Spring 框架集成，因此我们可以使用名称访问 Spring 托管 bean。`entityId` 是一个流程变量，用于存储关联到流程的合同的标识符。它的值在流程开始时设置。
+Activiti 引擎已经与 Spring 框架集成，因此我们可以使用名称访问 Spring bean。`entityId` 是一个流程变量，用于存储关联到流程的合同的标识符。它的值在流程开始时设置。
 
 使用 *End event* 连接两种服务类型的任务并单击保存按钮。到此，模型已准备就绪，现在我们可以继续进行模型部署。
 

@@ -11,7 +11,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/PickerField.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/PickerField.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -34,7 +34,6 @@ include::{sourcesdir}/gui_vcl/pickerfield_1.xml[]
 [[gui_PickerField_actions]]
 * 对于 `PickerField`，可以定义任意数量的<<gui_Action,操作>>，这些操作在组件右侧显示为按钮。
 +
-[[gui_PickerField_addAction]]
 操作的定义可以使用 `actions` 嵌套元素在 XML 描述中完成，也可以使用 `addAction()` 方法在控制器中以编程方式完成。
 
 ** 平台提供一组标准的 <<standard_actions,PickerField 操作>> ：`picker_lookup` 、`picker_clear` 、`picker_open`。它们分别执行关联实体的选择、清空组件以及打开所选关联实体的编辑界面。在 XML 中声明标准操作时，应当定义操作的标识符并使用 `type` 属性定义操作类型。
@@ -113,7 +112,7 @@ include::{sourcesdir}/gui_vcl/pickerfield_8.xml[]
 include::{sourcesdir}/gui_vcl/pickerfield_9.java[]
 ----
 +
-image::gui_pickerField_icon.png[align="center"]
+image::gui_pickerField_icons.png[align="center"]
 
 '''
 

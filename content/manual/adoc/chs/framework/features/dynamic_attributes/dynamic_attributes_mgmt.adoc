@@ -41,8 +41,8 @@ image::runtimePropertyEditor.png[align="center"]
 对于除 `Boolean` 之外的所有值类型，还有一个 *Is collection* 复选框。允许为所选类型创建多值动态属性。
 
 对于所有的数字类型：`Double`、`Fixed-point number`、`Integer` - 可以用下列字段：
-* *Minimum value* – 当输入属性值时，会检查属性值必须大于等于指定的最小值。
-* *Maximum value* – 当输入属性值时，会检查属性值必须小于等于指定的最大值。
+* `Minimum value` – 当输入属性值时，会检查属性值必须大于等于指定的最小值。
+* `Maximum value` – 当输入属性值时，会检查属性值必须小于等于指定的最大值。
 
 对于 `Fixed-point number` 值类型，可以使用 *Number format pattern* 字段设置格式模板。模板按照 https://docs.oracle.com/javase/8/docs/api/java/text/DecimalFormat.html[DecimalFormat] 介绍的规则设置。
 

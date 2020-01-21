@@ -3,7 +3,19 @@
 [[build.gradle_createDb]]
 ===== 创建数据库
 
-`createDb` – `CubaDbCreation` 类型的任务，通过执行相应的<<db_scripts,数据库脚本>>来创建应用程序数据库。在 `build.gradle` 里的 *core* 模块里面声明这个任务。支持参数：
+`createDb` – `CubaDbCreation` 类型的任务，通过执行相应的<<db_scripts,数据库脚本>>来创建应用程序数据库。定义在 `core` 模块。
+
+如果<<db_connection_app,使用应用程序属性>>配置数据源，下面这些参数会自动从应用程序属性中获取，所以任务定义可以为空：
+
+[source, groovy]
+----
+task createDb(dependsOn: assemble, description: 'Creates local database', type: CubaDbCreation) {
+}
+----
+
+当然也可以显式的设置这些参数：
+
+* `storeName` - 附加数据存储的名称。如果未设置，任务会在主数据存储上运行。
 
 * `dbms` – <<dbms_types, 数据库类型>>，`hsql`，`postgres`，`mssql` 或者 `oracle`。
 

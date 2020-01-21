@@ -1,7 +1,7 @@
 :sourcesdir: ../../../source
 
 [[security_components]]
-=== 安全子系统组件
+=== 安全组件
 
 CUBA 安全子系统主要组件展示在下图。
 
@@ -16,23 +16,11 @@ _Login screen - 登录界面_ − 系统<<login_screen,登录>>窗口。通过�
 
 登录时会创建 <<userSession,UserSession>> 对象。这是当前认证用户主要的安全元素，包含了用户数据访问权限的信息。
 
-用户登录过程的描述，请参考 <<login,>>。
+用户登录过程的描述，请参考 <<login,>> 章节。
 
-_Roles - 角色_ − 用户角色。<<roles,角色>>是一个系统对象，一方面用来匹配进行特殊功能操作的权限，另一方面用来限定一组用户必须拥有这些权限。
+_Roles - 角色_ − 用户角色。<<roles,角色>>是一个对象，定义了一组 <<permissions,权限>>。一个用户可以有多个角色。
 
-有以下类型的权限：
-
-* _Screen Permissions - 界面权限_ − 打开界面的权限。
-
-* _Entity Operation Permissions - 实体操作权限_ − 对实体进行 CRUD 操作的权限。
-
-* _Entity Attribute Permissions - 实体属性权限_ − 访问任意实体属性的权限，包括：修改，只读，禁止访问。也可参考 <<entity_attribute_access,>>。
-
-* _Specific Permissions - 特殊权限_ − 对一些定义了名称的功能的访问权限控制。
-
-* _UI Permissions - UI 组件权限_ − 控制对于界面元素的访问。
-
-_Access Groups - 访问组_ − 用户访问组。<<groups,组>>拥有层级关系的结构，每个组定义一组<<constraints,约束>>，允许用来控制对单个实体实例的访问（数据表的行级别）。比如，用户只能查看他们部门创建的文档。
+_Access Groups - 访问组_ − 用户访问组。<<groups,组>>拥有层级关系的结构，每个组定义一组<<constraints,约束>>，允许用来控制对单个实体实例的访问（数据表的行级别）。
 
 include::security_components/login_screen.adoc[]
 

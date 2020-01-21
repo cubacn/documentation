@@ -12,9 +12,91 @@
 include::{sourcesdir}/development/logging_1.java[]
 ----
 
-中间件，web 客户端和 web protal <<app_tiers,blocks>> 的日志在应用程序服务级别配置，<<fast_deployment,快速部署>>模式下，这个服务就是 Tomcat。
+日志配置::
++
+--
+日志配置在 `logback.xml` 文件中定义。
 
-include::logging/logging_setup_tomcat.adoc[]
+* 在开发阶段，<<fast_deployment>>之后，可以在项目的 `deploy/app_home` 目录找到该文件。日志文件都创建在 `deploy/app_home/logs` 目录。
++
+注意，`deploy` 目录不包含在版本控制中，并且可以随时创建和删除，所以在 `deploy/app_home/logback.xml` 内做的改动很容易丢失。
++
+如果需要对开发环境的日志配置做持久的改动，创建 `etc/logback.xml`（可以复制原始的 `deploy/app_home/logback.xml` 文件，再做必要的改动）。该文件会每次在 Studio 运行应用或者执行 `deploy` Gradle 任务时复制到 `deploy/app_home`：
++
+[source]
+----
+my_project/
+    deploy/
+        app_home/
+            logback.xml
+    ...
+    etc/
+        logback.xml - if exists, will be automatically copied to deploy/app_home
+----
+
+* 当创建 WAR 或者 UberJAR 包时，可以在 <<build.gradle_buildWar,buildWar>> 或 <<build.gradle_buildUberJar,buildUberJar>> 任务的 `logbackConfigurationFile` 参数指定 `logback.xml` 的相对路径。如果未指定该参数，默认的输出至控制台日志配置会被包含进 WAR/UberJAR。
++
+注意，开发环境创建的 `etc/logback.xml` 不会默认给 WAR/UberJar 使用，必须显式指定一个日志配置文件，示例：
++
+[source]
+----
+my_project/
+    etc/
+        logback.xml
+        war-logback.xml
+----
++
+.build.gradle
+[source,groovy]
+----
+task buildWar(type: CubaWarBuilding) {
+    // ...
+    logbackConfigurationFile = 'etc/war-logback.xml'
+}
+----
+
+* 生产环境，可以在 <<app_home,应用程序主目录>> 放置 `logback.xml` 文件重写 WAR 或者 UberJAR 中嵌入的日志配置。
++
+[WARNING]
+====
+应用程序主目录的 `logback.xml` 文件只有在命令行设置了 `app.home` Java 系统参数之后才会被识别。所以如果应用程序主目录是使用自动的 `tomcat/work/app_home` 或 `~/.app_home` 的话，这个配置不会生效。
+====
+--
+
+logback.xml 的结构::
++
+--
+`logback.xml` 文件结构如下：
+
+* `appender` 元素定义了日志的 “输出设备”。主要的 appenders 有 `FILE - 文件` 和 `CONSOLE - 终端`。`ThresholdFilter` 的 `level` 参数定义了消息的阈值。文件输出的默认值是 `DEBUG`，终端输出的默认值是 `INFO`。也就是说 `ERROR`，`WARN`，`INFO` 和 `DEBUG` 消息会输出到文件，但是只有 `ERROR`，`WARN` 和 `INFO` 级别的消息输出到终端。
++
+内嵌的 `file` 参数定义了文件输出目标文件的路径。
+
+* `logger` 元素定义了编码打印消息的 logger 参数。Logger 名称是有级别的，比如对于 `com.company.sample` logger 的设置也会影响 `com.company.sample.core.CustomerServiceBean` 和 `com.company.sample.web.CustomerBrowse` 的 logger，前提是这两个类没有显式的声明他们各自的 logger 参数。
++
+日志的打印级别是通过 `level` 属性来定义最低级别。比如，如果定义的是 `INFO` 级别，那么 `DEBUG` 和 `TRACE` 类型的消息就不会被日志记录。需要注意的一点就是，在 appender 里面设置的级别也会影响日志的打印。
+
+可以在 web 客户端的 *Administration > Server Log* 界面快速修改正在运行的服务的 logger 级别和 appender 的阈值。任何对日志的改动只会影响正在运行的服务，设置并不会保存在文件里。这个界面也支持从<<log_dir,日志目录>> (tomcat/logs)查看和加载 Tomcat 服务的日志。
+--
+
+Log 消息格式::
++
+--
+平台会自动添加以下信息到基于文件的日志消息中：
+
+* _application_ – 打印消息的应用程序名称。这个信息可以帮助定位消息是从哪个 block 打印的(Middleware, Web Client)，因为这两个模块写的是同一个日志文件。
+
+* _user_ – 调用打印消息代码的登录用户名。用来在日志里跟踪具体用户的行为。如果打印消息的代码没有被特定用户的会话调用，就不会在日志里添加用户信息。
+
+比如，下面这个消息是被 `admin` 会话下调用的中间件（`app-core`）代码写入的：
+
+[source, log]
+----
+16:12:20.498 DEBUG [http-nio-8080-exec-7/app-core/admin] com.haulmont.cuba.core.app.DataManagerBean - loadList: ...
+----
+--
+
 
 include::logging/logging_useful_loggers.adoc[]
 
+include::logging/logging_conf_int.adoc[]

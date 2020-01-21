@@ -1,62 +1,77 @@
 :sourcesdir: ../../../../source
 
 [[fast_deployment]]
-==== Tomcat 快速部署
+==== 快速部署
 
 快速部署在开发程序的时候是默认的部署方式，因为快速部署的构建用时最少，能自动安装并且启动应用服务。生产环境也可以用这种方式部署。
 
-快速部署是使用 `build.gradle` 文件中的 *core* 和 *web* 模块的 <<build.gradle_deploy,deploy>> 任务。在第一次执行 `deploy` 之前，应当先执行 <<build.gradle_setupTomcat,setupTomcat>> 任务来安装并且初始化本地 Tomcat 服务。
+快速部署是指在 Studio 中运行/调试应用程序或者点击主菜单的 *CUBA > Build Tasks > Deploy*。其实底层机制是 Studio 执行 <<build.gradle_deploy,deploy>> Gradle 任务，该任务在 `build.gradle` 文件中，分别为 `core` 和 `web` 模块做了任务声明。在第一次执行 `deploy` 前，它还会运行 <<build.gradle_setupTomcat,setupTomcat>> 任务安装和初始化本地的 Tomcat 服务。也可以不使用 Studio 手动运行这些任务。
 
 [WARNING]
 ====
 需要确保系统环境没有 `CATALINA_HOME`，`CATALINA_BASE` 和 `CLASSPATH` 这三个环境变量。这些环境变量可能会导致启动 Tomcat 出问题并且在日志里没有任何提示。移除这些环境变量后需要重启机器。
 ====
 
-快速部署之后，会在 Tomcat 目录下创建以下目录结构（只列出重要的目录和文件），Tomcat 目录是由 `build.gradle` 脚本的 `cuba.tomcat.dir` 参数指定：
+快速部署会在 `deploy` 目录创建如下目录结构（只列出重要的文件和目录）：
 
 [source, plain]
 ----
-bin/
-    setenv.bat, setenv.sh
-    startup.bat, startup.sh
-    debug.bat, debug.sh
-    shutdown.bat, shutdown.sh
+deploy/
+    app_home/
+        app/
+            conf/
+            temp/
+            work/
+        app-core/
+            conf/
+            temp/
+            work/
+        logs/
+            app.log
+        local.app.properties
+        logback.xml
 
-conf/
-    catalina.properties
-    server.xml
-    logback.xml
-    logging.properties
-    Catalina/
-        localhost/
-    app/
-    app-core/
-
-lib/
-    hsqldb-2.2.9.jar
-
-logs/
-    app.log
-
-shared/
-    lib/
-
-temp/
-    app/
-    app-core/
-
-webapps/
-    app/
-    app-core/
-
-work/
-    app/
-    app-core/
+    tomcat/
+        bin/
+            setenv.bat, setenv.sh
+            startup.bat, startup.sh
+            debug.bat, debug.sh
+            shutdown.bat, shutdown.sh
+        conf/
+            catalina.properties
+            server.xml
+            logging.properties
+            Catalina/
+                localhost/
+        lib/
+            hsqldb-2.4.1.jar
+        logs/
+        shared/
+            lib/
+        webapps/
+            app/
+            app-core/
 ----
 
-* `bin` – 包含配置、启动和停止 Tomcat 服务的工具：
+* `deploy/app_home` - <<app_home,应用程序主目录>>。
 
-** `setenv.bat`, `setenv.sh` – 这两个脚本用来设置环境变量。这些脚本可以用来设置 JVM 内存参数、<<logging_setup_tomcat,logging>> 日志的配置文件、配置<<jmx_remote_access,访问 JMX>>，以及<<debug_setup,连接调试器>>的参数。
+** `app/conf`, `app-core/conf` - web 客户端和中间件应用程序的<<conf_dir,配置目录>>。
+
+** `app/temp`, `app-core/temp` – web 客户端和中间件应用程序的<<temp_dir,临时目录>>。
+
+** `app/work`, `app-core/work` – web 客户端和中间件应用程序的<<work_dir,工作目录>>。
+
+** `logs` - 日志目录。应用程序的默认主日志文件为 `app.log`。
+
+** `local.app.properties` - 为此次部署设置特殊的应用程序属性的文件。
+
+** `logback.xml` - <<logging,日志>>配置。
+
+* `deploy/tomcat` - 本地 Tomcat 目录。
+
+** `bin` – 包含配置、启动和停止 Tomcat 服务的脚本：
+
+*** `setenv.bat`, `setenv.sh` – 这两个脚本用来设置环境变量。这些脚本可以用来设置 JVM 内存参数、配置<<jmx_remote_access,访问 JMX>>，以及<<debug_setup,连接调试器>>的参数。
 +
 [TIP]
 ====
@@ -67,7 +82,7 @@ CATALINA_OPTS="$CATALINA_OPTS -Djava.security.egd=file:/dev/./urandom"
 ----
 ====
 
-** `startup.bat`, `startup.sh` – 启动 Tomcat 服务的脚本。在 *Windows* 环境，Tomcat 会在一个单独的终端窗口启动，但是在 ***nix** 系统服务会在后台启动。
+*** `startup.bat`, `startup.sh` – 启动 Tomcat 服务的脚本。在 Windows 环境，Tomcat 会在一个单独的终端窗口启动，但是在类 Unix 系列的系统服务会在后台启动。
 +
 需要在当前终端窗口启动服务，使用以下命令代替 `++startup.*++`：
 +
@@ -75,48 +90,50 @@ CATALINA_OPTS="$CATALINA_OPTS -Djava.security.egd=file:/dev/./urandom"
 +
 `$ ./catalina.sh run`
 
-** `debug.bat`, `debug.sh` – 跟 `++startup.*++` 类似，但是会启动能连接调试器的 Tomcat 服务。这些脚本会在执行构建脚本中的 <<build.gradle_start,start>> 任务的时候使用。
+*** `debug.bat`, `debug.sh` – 跟 `++startup.*++` 类似，但是会启动能连接调试器的 Tomcat 服务。这些脚本会在执行构建脚本中的 <<build.gradle_start,start>> 任务的时候使用。
 
-** `shutdown.bat`, `shutdown.sh` – 停止 Tomcat 服务。
+*** `shutdown.bat`, `shutdown.sh` – 停止 Tomcat 服务。
 
-* `conf` – 包含 Tomcat 的配置文件和部署的应用程序。
+** `conf` – 包含 Tomcat 的配置文件。
 
-** `catalina.properties` – Tomcat 属性文件。如果需要从 `shared/lib` 目录加载共享库（参阅后面），这个文件需要配置下面这行：
+*** `catalina.properties` – Tomcat 属性文件。如果需要从 `shared/lib` 目录加载共享库（参阅下文），这个文件需要配置下面这行：
 +
 [source,plain]
 ----
 shared.loader=${catalina.home}/shared/lib/*.jar
 ----
 
-** `server.xml` – Tomcat 配置描述文件。
+*** `server.xml` – Tomcat 配置文件。
 
-** `logback.xml` – 应用程序<<logging_setup_tomcat,日志>>配置描述文件。
+*** `logging.properties` – Tomcat 服务日志配置文件。
 
-** `logging.properties` – Tomcat 服务日志配置描述文件。
-
-** `Catalina/localhost` – 这个目录下可以放置 <<context.xml,context.xml>> 应用程序部署描述文件。这个目录下放置的描述文件会比 `META-INF` 目录下的描述文件优先级高。这种机制可以用在生产环境。比如，通过这种机制可以配置跟应用程序本身不同的数据库连接参数，从而达到生产环境连接不同数据库的要求。
+*** `Catalina/localhost` – 这个目录下可以放置 <<context.xml,context.xml>> 应用程序部署描述文件。这个目录下放置的描述文件会比 `META-INF` 目录下的描述文件优先级高。这种机制可以用在生产环境。比如，通过这种机制可以配置跟应用程序本身不同的数据库连接参数，从而达到生产环境连接不同数据库的要求。
 +
 针对不同服务的描述文件需要有不同服务的应用程序名称和 `.xml` 扩展名。所以，如果是为 `app-core` 创建部署描述文件，需要拷贝 `webapps/app-core/META-INF/context.xml` 文件成 `conf/Catalina/localhost/app-core.xml` 文件，然后通过修改 `conf/Catalina/localhost/app-core.xml` 内容覆盖设置。
 
-** `app` – web 客户端应用程序<<conf_dir,配置目录>>。
+** `lib` – 服务的 _通用类加载器（common classloader）_ 加载类库的目录。这些类库可以被这个 Tomcat 服务和所有部署在其中的 web 应用程序加载。还有，这个目录应该有数据库的 JDBC 驱动（`hsqldb-XYZ.jar`, `postgresql-XYZ.jar` 等）。
 
-** `app-core` – 中间件应用程序<<conf_dir,配置目录>>。
+** `logs` – Tomcat 日志目录。
 
-* `lib` – 服务的 _通用类加载器（common classloader）_ 加载类库的目录。这些类库可以被这个 Tomcat 服务和所有部署在其中的 web 应用程序加载。还有，这个目录应该有数据库的 JDBC 驱动（`hsqldb-XYZ.jar`, `postgresql-XYZ.jar` 等）。
-
-* `logs` – 应用程序和 Tomcat 服务的<<logging,日志>>目录。应用程序的主要日志文件是 `app.log`（参考<<logging_setup_tomcat,为 Tomcat 设置日志>>）。
-
-* `shared/lib` – 所有部署的应用可访问的类库目录。服务的 _共享类加载器（shared classloader）_ 会加载这些类库。使用这个目录的方法在上面 `conf/catalina.properties` 文件中提到过。
+** `shared/lib` – 所有部署的应用可访问的类库目录。服务的 _共享类加载器（shared classloader）_ 会加载这些类库。使用这个目录的方法在上面 `conf/catalina.properties` 文件中提到过。
 +
 构建脚本的 <<build.gradle_deploy,deploy>> 任务会拷贝所有不在 `jarNames` 参数列举的类库到这个目录。
 
-* `temp/app`, `temp/app-core` – web 客户端和中间件应用程序的<<temp_dir,临时目录>>。
-
-* `webapps` – web 应用程序目录。每个应用程序在它自己的子目录里，子目录按照 _展开成文件夹的 WAR（exploded WAR）_ 形式命名。
+** `webapps` – web 应用程序目录。每个应用程序在它自己的子目录里，子目录按照 _展开成文件夹的 WAR（exploded WAR）_ 形式命名。
 +
 构建脚本的 <<build.gradle_deploy,deploy>> 任务会按照 `appName` 参数来创建应用程序子目录，除了其它的文件之外，还会拷贝列在 `jarNames` 参数的类库到每个应用程序的 `WEB-INF/lib` 目录。
 
-* `work/app`, `work/app-core` – web 客户端和中间件应用的<<work_dir,工作目录>>。
+可以在 `build.gradle` 里指定 Tomcat 的路径和应用程序主目录的路径，分别使用 `cuba.tomcat.dir` 和 `cuba.appHome` 属性，示例：
+
+[source,groovy]
+----
+cuba {
+    // ...
+    tomcat {
+        dir = "$project.rootDir/some_path/tomcat"
+    }
+    appHome = "$project.rootDir/some_path/app_home"
+}
+----
 
 include::fast_deployment/tomcat_in_prod.adoc[]
-

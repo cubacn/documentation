@@ -3,12 +3,20 @@
 [[integration_tests_client]]
 ==== Web 集成测试
 
+++++
+<div class="manual-since-container">
+    <a href="http://files.cuba-platform.com/cuba/release-notes/7.1/" class="since-btn" target="_blank">
+        <span class="since-btn-caption">最低版本</span><span class="since-btn-version">7.1</span>
+    </a>
+</div>
+++++
+
 Web 集成测试运行在 Web 客户端 block 的 Spring 容器中。测试容器独立于中间件工作，因为框架会自动为所有中间件服务创建桩代码。测试基础设施由 `com.haulmont.cuba.web.testsupport` 及其内部包的下列类组成：
 
 * `TestContainer` - Spring 容器的包装器，用来作为项目特定容器的基类。
 * `TestServiceProxy` - 为中间件服务提供默认的桩代码。该类可以用来注册为特定用例 mock 的服务，参考其 `mock()` 静态方法。
 * `DataServiceProxy` - `DataManager` 的默认桩代码。其包含一个 `commit()` 方法的实现，能模拟真正的数据存储的行为：能让新实体 detach，增加实体版本，等等。加载方法返回 null 和空集合。
-* `TestUiEnvironment` - 提供一组方法用来配置和获取 `TestContainer。该类的实例在测试中需要作为 JUnit Rule 来使用。
+* `TestUiEnvironment` - 提供一组方法用来配置和获取 `TestContainer`。该类的实例在测试中需要作为 JUnit 5 的扩展来使用。
 * `TestEntityFactory` - 测试中为方便创建实体实例的工厂。可以通过 `TestContainer` 获取工厂。
 
 尽管框架为服务提供了默认桩代码，但是在测试中也许需要自己创建服务的 mock。要创建 mock，可以使用任何 mocking 框架，通过添加其为依赖即可，如<<testing,上节>>所说。服务的 mock 均使用 `TestServiceProxy.mock()` 方法注册。

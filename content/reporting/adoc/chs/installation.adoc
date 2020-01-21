@@ -1,0 +1,24 @@
+:sourcesdir: ../../source
+
+[[installation]]
+== 安装
+
+依据下面的介绍在项目中安装扩展。
+
+. 在 CUBA 项目树中双击 *Add-ons*。
++
+image::addons.png[]
++
+. 选择 *Marketplace* 标签页，然后找到 *Reporting* 扩展。
++
+image::reporting_addon.png[]
++
+. 点击 *Install* 按钮，然后选择 *Apply & Close*。
++
+image::addon_install.png[]
++
+. 在对话框中点击 *Continue* 。
++
+image::addon_continue.png[]
+
+然后会安装与当前平台版本兼容的扩展版本。

@@ -11,11 +11,11 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/PopupView.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/PopupView.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
-`PopupView` 是一个允许用容器打开弹出窗口的控件。可以通过单击简要值或以编程方式打开弹窗。可以通过鼠标移出或点击外部区域来关闭弹窗。
+`PopupView` 是一个允许用容器打开弹出窗口的控件。可以通过单击简要值链接或以编程方式打开弹窗。可以通过鼠标移出或点击外部区域来关闭弹窗。
 
 典型的 `PopupView` 如下所示：
 
@@ -57,6 +57,51 @@ include::{sourcesdir}/gui_vcl/popup_view_3.java[]
 ----
 include::{sourcesdir}/gui_vcl/popup_view_4.java[]
 ----
+--
+* `PopupView` 组件提供设置弹出框位置的方法。由 `top` 和 `left` 值决定弹出框左上角的位置。可以使用标准值或者自定义值设置这两个属性，标准值是：
+
+** `++TOP_RIGHT++`
+
+** `++TOP_LEFT++`
+
+** `++TOP_CENTER++`
+
+** `++MIDDLE_RIGHT++`
+
+** `++MIDDLE_LEFT++`
+
+** `++MIDDLE_CENTER++`
+
+** `++BOTTOM_RIGHT++`
+
+** `++BOTTOM_LEFT++`
+
+** `++BOTTOM_CENTER++`
++
+`++DEFAULT++` 值设置弹窗位置为简要值链接的中间。
++
+设置弹窗位置的 Java 方法：
++
+** `void setPopupPosition(int top, int left)` - 设置 `top` 和 `left` 弹窗位置。
+** `void setPopupPositionTop(int top)` - 设置 `top` 弹窗位置。
+** `void setPopupPositionLeft(int left)` - 设置 `left` 弹窗位置。
+** `void setPopupPosition(PopupPosition position)` - 使用标准值设置弹窗位置。
++
+[source, java]
+----
+include::{sourcesdir}/gui_vcl/popup_view_5.java[]
+----
++
+如果使用标准值设置弹窗位置，则会重置 `left` 和 `top` 的值，反之亦然。
+--
+
+* 使用标准值显示的弹窗会有一点点的缩进。可以通过在样式中重写 `$popup-horizontal-margin` 和 `$popup-vertical-margin` 的值去掉缩进。
+
+* 使用下面的 Java 方法获取弹窗位置：
+
+*** `int getPopupPositionTop()` - 返回 `top` 弹窗位置。
+*** `int getPopupPositionLeft()` - 返回 `left` 弹窗位置。
+*** `PopupPosition getPopupPosition()` - 如果不是用标准值设置的位置，返回 null。
 --
 
 `PopupView` 的属性:

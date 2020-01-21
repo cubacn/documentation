@@ -11,7 +11,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/Accordion.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/Accordion.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -43,7 +43,7 @@ include::{sourcesdir}/gui_vcl/accordion_1.xml[]
 [[gui_accordion_tab_lazy]]
 * `lazy` – 设置标签内容延迟加载。
 +
-在打开界面时，延迟加载的标签页不会立即加载其内容，这样可以减少内存中的组件数量。仅当用户选择标签页时，才会加载标签页中的组件。此外，如果延迟标签页中包含的可视化组件带有连接到 JPQL 查询的<<datasources,数据源>>，则也不会执行此查询。因此，界面可以更快地打开，只有当用户选中标签页请求数据时才会加载数据。
+在打开界面时，延迟加载的标签页不会立即加载其内容，这样可以减少内存中的组件数量。仅当用户选择标签页时，才会加载标签页中的组件。此外，如果延迟标签页中包含的可视化组件连接到带有<<gui_data_loaders,加载器>>的数据容器，加载器也不会被触发。因此，界面可以更快地打开，只有当用户选中标签页请求数据时才会加载数据。
 +
 [[gui_accordion_SelectedTabChangeListener]]
 请注意，刚打开界面时，延迟加载标签页上包含的组件并不存在。因此，这些组件不能被<<screen_controller_injection,注入>>到控制器，也不能在控制器的 `init()` 方法中使用  `getComponent()` 方法来获取。只有在用户打开延迟加载的标签页后，才能访问其中的组件。可以使用 `Accordion.SelectedTabChangeListener` 处理标签页选中事件，例如：

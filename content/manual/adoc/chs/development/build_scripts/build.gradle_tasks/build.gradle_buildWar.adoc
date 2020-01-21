@@ -26,8 +26,6 @@ include::{sourcesdir}/development/build_gradle_buildWar_2.groovy[]
 
 * `appName` - web 应用程序的名称，默认值是读取 *Modules prefix*，比如 `app`。
 
-* `appHome` – 指向<<app_home,应用程序主目录>>。可以使用绝对目录，或者相对于 home 目录的相对目录，亦或是 Java 系统变量的占位符，系统变量需要在服务启动时设置。
-
 * `appProperties` - 定义<<app_properties,应用程序属性>>键值对。这些属性会以 WAR 包里面的 `/WEB-INF/local.app.properties` 文件为基础增加。
 +
 `appProperties = ['cuba.automaticDatabaseUpdate': 'true']` 会在应用程序第一次启动的时候创建数据库，如果没有现成的数据库，需要设置这个参数。
@@ -58,13 +56,16 @@ include::{sourcesdir}/development/build_gradle_buildWar_2.groovy[]
 include::{sourcesdir}/development/build_gradle_buildWar_4.groovy[]
 ----
 
-* `logbackConfigurationFile` - 日志配置文件的相对目录。
+* `logbackConfigurationFile` - <<logging,日志>>配置文件的相对目录。
 +
 示例:
 +
 [source, groovy]
 ----
-logbackConfigurationFile = "/modules/global/src/logback.xml"
+task buildWar(type: CubaWarBuilding) {
+    // ...
+    logbackConfigurationFile = 'etc/war-logback.xml'
+}
 ----
 
 * `useDefaultLogbackConfiguration` - 当设置成 `true` （也是默认值）的时候，这个任务会拷贝标准的 `logback.xml` 配置文件。
@@ -96,7 +97,7 @@ include::{sourcesdir}/development/build_gradle_buildWar_1.groovy[]
 include::{sourcesdir}/development/build_gradle_buildWar_3.xml[]
 ----
 
-单个 WAR 包部署时所有的 sevlets 和 filters 需要通过编程的方式注册，参考<<servlet_registration_single_war,单一 WAR 包部署注册 Servlets>>。
+单个 WAR 包部署时所有的 sevlets 和 filters 需要通过编程的方式注册，参考<<servlet_registration>>。
 
 单一 WAR 包只包含 *core* 和 *web 客户端* 模块。如果需要部署 *portal* 模块，需要用另外的 WAR 包。
 --

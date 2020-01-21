@@ -3,6 +3,11 @@
 [[abstractLookup]]
 ====== AbstractLookup
 
+[WARNING]
+====
+这是旧版本的 API。对于从 7.0 开始的新 API，请参阅 <<screen_controllers>>。
+====
+
 `AbstractLookup` 是<<screen_lookup,查找界面>>控制器的基类，<<abstractWindow,AbstractWindow>> 的子类。定义了下列方法：
 
 [[abstractLookup_setLookupComponent]]

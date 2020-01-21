@@ -3,6 +3,11 @@
 [[datasource_query]]
 ===== 集合数据源查询
 
+[WARNING]
+====
+这是旧版本的 API。对于从 7.0 开始的新 API，请参阅 <<gui_data>>。
+====
+
 `CollectionDatasourceImpl` 类及其子类 `GroupDatasourceImpl` 和 `HierarchicalDatasourceImpl` 都是数据源的标准实现类，用来处理实体实例的集合。这些数据源发送 JPQL 查询语句给 `DataManager` 来加载数据。下面介绍这些查询语句的格式。
 
 include::datasource_query/datasource_query_results.adoc[]

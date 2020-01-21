@@ -3,6 +3,11 @@
 [[dsContext]]
 ===== DsContext
 
+[WARNING]
+====
+这是旧版本的 API。对于从 7.0 开始的新 API，请参阅 <<gui_data>>。
+====
+
 所有通过声明式方法创建的数据源都在界面的 `DsContext` 对象中注册。`DsContext` 的引用可以通过在界面控制器中调用 `getDsContext()` 方法获得，也可以通过 <<screen_controller_injection>> 获得。
 
 `DsContext` 是为以下任务设计的：

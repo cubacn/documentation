@@ -1,0 +1,76 @@
+:sourcesdir: ../../../../../source
+
+[[background_task_examples]]
+===== 后台任务使用示例
+
+[[background_task_example_BackgroundWorkProgressWindow]]
+使用 BackgroundWorkProgressWindow 展示和控制后台任务::
++
+--
+启动后台任务时，我们一般会要显示一个简单的 UI 界面：
+[loweralpha]
+. 展示给用户，请求的任务还在执行中，
+. 允许用户退出长时间执行的任务，
+. 如果能获取任务执行进度的话，展示目前的进度。
+
+平台通过 `BackgroundWorkWindow` 和 `BackgroundWorkProgressWindow` 工具类满足了这些需求。
+这些类带有静态方法，可以用来将后台任务和一个模态窗相关联，这个模态窗带有标题、描述、进度条以及一个可选的 `Cancel` 按钮。
+这两个类的区别在于，`BackgroundWorkProgressWindow` 使用了一个确定的进度条，应当在能估算任务进度的情况下使用。相反，`BackgroundWorkWindow` 应当在无法估算任务时长的情况使用。
+
+下面我们用一个开发任务作为示例：
+
+- 一个给定的界面包含展示学生列表的表格，可以多选。
+- 当用户按下某个按钮时，系统会给这些选中的学生发送邮件，而且此时 UI 不会被 block 住，并能取消发送邮件的操作。
+
+image::gui_bg_tasks/bg-task-emails.png[align="center"]
+
+示例实现：
+[source, java]
+----
+include::{sourcesdir}/gui/backgroundtasks_sample_emails.java[]
+----
+<1> - 启动任务并显示模态进度窗口
+<2> - 设置对话框选项：进度条的总数、用户可以取消任务、展示进度百分比
+<3> - 任务进度单位是 `Integer`（已处理的表格项），结果类型是 `Void`，因为该任务不会产生结果
+<4> - 选中的表格项保存在一个变量中，变量在任务的构造器初始化。这是必须要的，因为 `run()` 方法会在一个后台进程中执行并且没法访问 UI 组件
+<5> - 设置超时时限为 10 分钟
+<6> - 周期性的检查 `isCancelled()`，这样用户按下 `Cancel` 按钮时能立即结束任务
+<7> - 每封邮件发出后更新进度条的位置
+
+--
+
+[[background_task_example_BackgroundTaskWrapper]]
+周期性的在后台使用定时器和 BackgroundTaskWrapper 刷新界面数据::
++
+--
+`BackgroundTaskWrapper` 是一个 `BackgroundWorker` 的很小的工具包装类。
+提供了简单的 API 用来重复的启动、重启和取消同类型的后台任务。
+
+下面这个开发任务示例展示了使用方法：
+
+- 一个排名监控界面需要展示并自动更新数据。
+- 数据加载很慢，所以需要在后台加载。
+- 在界面展示最新的数据更新时间。
+- 数据通过简单的过滤器（复选框）进行过滤。
+
+image::gui_bg_tasks/bg-ranks-ok.png[align="center"]
+
+- 由于某些原因，如果数据刷新失败了，界面应当告诉用户：
+
+image::gui_bg_tasks/bg-ranks-error.png[align="center"]
+
+示例实现：
+[source, java]
+----
+include::{sourcesdir}/gui/backgroundtasks_sample_ranks.java[]
+----
+<1> - 用无参数构造函数初始化 `BackgroundTaskWrapper` 实例；每次迭代都会提供一个新的任务实例
+<2> - 复选框值变化时，立即触发一次后台数据更新
+<3> - 每次计时器刷新触发后台数据更新
+<4> - 任务不会发布状态信息，所以状态单元是 `Void`；任务结果类型为 `List<Rank>`
+<5> - 复选框状态保存在一个变量中，变量在任务的构造器初始化。这是必须要的，因为 `run()` 方法会在一个后台进程中执行并且没法访问 UI 组件
+<6> - 调用自定义的服务加载数据（这是需要在后台执行的长时间任务）
+<7> - 将成功获取的结果展示到界面组件
+<8> - 如果数据加载超时，更新 UI：在界面的一个角落展示通知消息
+<9> - 用通知消息告知用户数据加载失败
+--

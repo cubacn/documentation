@@ -22,6 +22,24 @@ cuba.ftsConfig::
 cuba.ftsConfig = +com/company/sample/fts.xml
 ----
 
+[[cuba.gui.genericFilterFtsTableTooltipsEnabled]]
+cuba.gui.genericFilterFtsTableTooltipsEnabled:: 该标记可以启用在表格和数据网格组件中生成提示窗。提示窗包含搜索到实体的属性信息。生成提示窗会耗费很长时间，所以默认关闭。
++
+配置接口： `ClientConfig`
++
+保存在数据库。
++
+默认值： `false`
+
+[[cuba.gui.genericFilterFtsDetailsActionEnabled]]
+cuba.gui.genericFilterFtsDetailsActionEnabled:: 使用通用过滤器组件对表格或者数据网格进行全文检索后，使用该标记可以启用 "全文检索详情" 右键操作。
++
+配置接口： `ClientConfig`
++
+保存在数据库。
++
+默认值： `true`
+
 下面描述的所有属性都是存储在数据库中的运行时参数，可通过 `FtsConfig` 配置接口在应用程序代码中使用。
 
 [[fts.enabled]]
@@ -60,9 +78,3 @@ fts.maxSearchResults::
 搜索结果中实体的最大数。
 +
 默认值: `100`
-
-[[fts.searchResultsBatchSize]]
-fts.searchResultsBatchSize::
-搜索结果中单批次的元素个数。用户需要在结果界面上单击 *More* 以查看下一批次结果。
-+
-默认值: `5`

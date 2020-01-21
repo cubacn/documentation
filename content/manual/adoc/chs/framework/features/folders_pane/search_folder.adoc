@@ -3,9 +3,9 @@
 [[search_folder]]
 ===== 搜索文件夹
 
-用户可以创建与应用程序文件夹类似的搜索文件夹。分组文件夹可以直接通过文件夹面板的右键菜单创建。链接到界面的文件夹可以使用 *Filter...* 按钮菜单上的“Save as search folder”选项创建。
+用户可以创建与应用程序文件夹类似的搜索文件夹。分组文件夹可以直接通过<<folders_pane,文件夹面板>>的右键菜单创建。链接到界面的文件夹可以使用 *Filter...* 按钮菜单上的“Save as search folder”选项创建。
 
-要创建全局搜索文件夹，要求用户具有 *Create/edit global search folders* 权限（`cuba.gui.searchFolder.global`）。
+要创建全局搜索文件夹，要求用户具有 *Create/edit global search folders* <<permissions,权限>>（`cuba.gui.searchFolder.global`）。这种权限在<<roles,角色>>编辑界面的 **Specific - 特殊权限** 标签页设置。
 
 可以在创建文件夹后再次编辑搜索文件夹的过滤器：打开文件夹并更改 *Folder:{folder name}* 过滤器，保存过滤器的同时会更改文件夹过滤器。
 

@@ -1,7 +1,7 @@
-:sourcesdir: ../../../../source
+:sourcesdir: ../../../../../source
 
 [[db_update_server]]
-==== 在 web Server 中执行数据库脚本
+===== 在 web Server 中执行数据库脚本
 
 Web Server 执行数据库脚本的机制用于更新数据库，这个操作在应用程序服务启动、中间件块(block)初始化期间激活。显然，应用程序应该已经构建并部署在 Web Server 上，即在生产环境或开发人员的 Tomcat 实例中。
 
@@ -9,10 +9,9 @@ Web Server 执行数据库脚本的机制用于更新数据库，这个操作在
 
 Web Server 中执行脚本的机制如下：
 
-* 这些脚本是从<<db_dir,数据库脚本目录>>中提取的，该目录由<<cuba.dbDir,cuba.dbDir>>应用程序属性定义，该属性的默认设置为 `tomcat/webapps/app-core/WEB-INF/db`。
+* 应用程序从<<db_dir,数据库脚本目录>>读取脚本，该目录由<<cuba.dbDir,cuba.dbDir>>应用程序属性定义，该属性的默认设置为 `WEB-INF/db`。
 
 * 如果数据库没有 `SEC_USER` 表，则被视为空数据库，会使用创建脚本运行完整初始化过程。执行初始化脚本后，这些脚本的名称会存储在 `SYS_DB_CHANGELOG` 表中。所有可用的更新脚本的名称也存储在同一个表中，__但是并没有执行过这些更新脚本__。
-
 
 * 如果数据库有 `SEC_USER` 表，但没有 `SYS_DB_CHANGELOG` 表（当在现有生产环境数据库上首次启动这里描述的机制时就会出现这种情况），这种情况下__不执行任何脚本__，而是创建 `SYS_DB_CHANGELOG` 表，并存储所有当前可用的创建和更新脚本的名称。
 
@@ -22,9 +21,7 @@ Web Server 中执行脚本的机制如下：
 
 通过<<cuba.automaticDatabaseUpdate,cuba.automaticDatabaseUpdate>>应用程序属性启用在服务器启动时执行脚本的机制。
 
-在运行中的应用程序中，可以使用 *`update`* 作为参数调用 `app-core.cuba:type=PersistenceManager` JMX bean 的 `updateDatabase()` 方法来启动脚本执行机制。显然，这种方式只能更新现有的 DB，因为无法登录只有空 DB 的系统来运行 JMX bean 方法。
-请注意，如果部分在中间件启动或用户登录期间初始化数据模型与数据架构不匹配的话，会发生不可恢复的错误。这就是一般都在服务器启动时数据模型初始化前执行数据库自动更新的原因。
-
+在运行中的应用程序中，可以使用 `update` 作为参数调用 `app-core.cuba:type=PersistenceManager` JMX bean 的 `updateDatabase()` 方法来启动脚本执行机制。显然，这种方式只能更新现有的 DB，因为无法登录只有空 DB 的系统来运行 JMX bean 方法。请注意，如果部分在中间件启动或用户登录期间初始化数据模型与数据架构不匹配的话，会发生不可恢复的错误。这就是一般都在服务器启动时数据模型初始化前执行数据库自动更新的原因。
 
 JMX `app-core.cuba:type=PersistenceManager` bean 还有一个与 DB 更新机制相关的方法： `findUpdateDatabaseScripts()`。它返回目录中可用的但未在 DB 中注册（尚未执行）新的更新脚本列表。
 

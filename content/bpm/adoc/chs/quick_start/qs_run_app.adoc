@@ -3,7 +3,7 @@
 [[qs_run_app]]
 === 创建数据库并运行应用程序
 
-在主菜单点击 *CUBA > Generate Database Scripts* {main_man_url}/db_update_in_dev.html[创建数据库表] 。然后，会打开 *Database Scripts* 界面。
+在主菜单点击 *CUBA > Generate Database Scripts* {studio_man_url}/#database_migration[创建数据库表] 。然后，会打开 *Database Scripts* 界面。
 
 点击 *Save and close* 按钮保存生成的数据库脚本。
 

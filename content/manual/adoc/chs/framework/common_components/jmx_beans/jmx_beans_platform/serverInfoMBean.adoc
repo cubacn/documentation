@@ -4,7 +4,7 @@
 ====== ServerInfoMBean
 
 
-http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/jmx/ServerInfoMBean.html[ServerInfoMBean] 提供了有关此中间层模块的通用信息：内部版本号、 构建日期 和 <<serverId,服务器 ID>>.
+http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/jmx/ServerInfoMBean.html[ServerInfoMBean] 提供了有关此中间层模块的通用信息：内部版本号、 构建日期 和 <<serverId,服务器 ID>>.
 
 JMX 对象名: `app-core.cuba:type=ServerInfo`
 

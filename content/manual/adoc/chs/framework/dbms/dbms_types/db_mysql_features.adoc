@@ -1,21 +1,11 @@
-:sourcesdir: ../../../../source
+:sourcesdir: ../../../../../source
 
 [[db_mysql_features]]
-==== MySQL 数据库特性
+===== MySQL 数据库特性
 
-由于许可限制，MySQL JDBC 驱动程序不随 CUBA Studio 一起分发，因此应该执行以下操作：
-
-* 从 https://dev.mysql.com/downloads/connector/j 下载驱动程序存档文件
-
-* 解压缩 JAR 文件并将其重命名为 `mysql-connector-java.jar`
-
-* 将 JAR 文件复制到 `Program Files/Haulmont/CUBA Studio 2018.3/plugins/cuba-studio/lib/` 目录以及已安装的 Tomcat 服务的 `lib` 子目录
-
-* 通过在命令行中执行 `gradle --stop` 停止 Gradle 守护进程，然后再次启动 Studio
-
-[TIP]
+[WARNING]
 ====
-对于不使用 UTF-8 字符集的数据库，不能执行框架中带有约束的数据脚本。此时需要修改数据库的 _Charset_ 和 _Collation name_ 属性，可以通过在项目属性的 *Connection params* 字段传递以下参数实现：
+对于不使用 UTF-8 字符集的数据库，不能执行框架中带有约束的数据脚本。此时需要修改数据库的 _Charset_ 和 _Collation name_ 属性，可以通过 *Data Store Properties* 窗口的 *Connection params* 字段传递以下参数实现：
 
 [source, plain]
 ----

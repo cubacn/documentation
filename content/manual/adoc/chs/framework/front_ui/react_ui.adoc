@@ -3,4 +3,4 @@
 [[react_ui]]
 ==== 基于 React 的用户界面
 
-React UI 的文档放在 `front` 模块的 `README.md` 中。最新版可以在 https://github.com/cuba-platform/front-generator/tree/{git_branch}/src/generators/react-typescript/app/template[GitHub] 找到。
+相关文档在代码仓库的 https://github.com/cuba-platform/frontend#table-of-contents[README] 文件中。

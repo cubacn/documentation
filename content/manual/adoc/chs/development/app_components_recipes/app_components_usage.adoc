@@ -65,8 +65,13 @@ dependencies {
 
 . 在 Studio 中打开项目，然后在 *Project > Properties* 中选上 *Use local Maven repository*。
 
-. 在 *App components* 面板上，单击 *Custom components* 旁边的加号按钮，然后在对话框底部的下拉列表中选择扩展组件。扩展组件的坐标将显示在顶部的字段中。
+. 使用 Studio 中的 *CUBA Add-ons* 界面将扩展安装至项目中。参考 *Studio 用户手册* 的 {studio_man_url}/#add_ons[管理扩展] 章节的 *使用坐标安装扩展* 部分内容了解更多细节。
 
 . 单击对话框中的 *OK* 并保存项目属性。
 --
+
+[TIP]
+====
+如果一个项目使用了多个包含 **web-toolkit** 模块的扩展组件，那么项目本身也必须要有 **web-toolkit** 模块。如果没有的话，只会为应用程序从一个扩展中加载一个 widgetset。所以如果要集成所有的 widgetset，必须要有 **web-toolkit** 模块。
+====
 

@@ -5,3 +5,12 @@
 
 `updateDb` – `CubaDbUpdate` 类型的任务，通过执行相应的<<db_scripts,数据库脚本>>文件来更新数据库。跟 `createDb` 任务类似，只是没有 `dropDbSql` 和 `createDbSql` 这两个参数。
 
+如果<<db_connection_app,使用应用程序属性>>配置数据源，下面这些参数会自动从应用程序属性中获取，所以任务定义可以为空：
+
+[source, groovy]
+----
+task updateDb(dependsOn: assembleDbScripts, description: 'Updates local database', type: CubaDbUpdate) {
+}
+----
+
+也可以按照 <<build.gradle_createDb,createDb>> 中描述的参数显式设置（除了 `dropDbSql` 和 `createDbSql`）。

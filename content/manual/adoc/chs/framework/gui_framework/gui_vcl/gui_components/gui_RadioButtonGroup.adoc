@@ -4,6 +4,14 @@
 ====== 单选按钮组
 
 ++++
+<div class="manual-since-container">
+    <a href="http://files.cuba-platform.com/cuba/release-notes/7.0/" class="since-btn" target="_blank">
+        <span class="since-btn-caption">最低版本</span><span class="since-btn-version">7.0</span>
+    </a>
+</div>
+++++
+
+++++
 <div class="manual-live-demo-container">
     <a href="https://demo.cuba-platform.cn/sampler/open?screen=radiobuttongroup-simple" class="live-demo-btn" target="_blank">在线示例</a>
 </div>
@@ -11,7 +19,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/RadioButtonGroup.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/RadioButtonGroup.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 

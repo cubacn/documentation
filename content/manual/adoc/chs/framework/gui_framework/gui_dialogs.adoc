@@ -105,5 +105,24 @@ include::{sourcesdir}/gui/dialogs/gui_input_dialog_4.java[]
 ----
 <1> - 需要自定义校验确保至少输入了一个参数。
 <2> - 在校验器中，参数值可以通过上下文对象获取。
+
+. 带有 `FileDescriptor` 参数的输入对话框：
++
+[source, java]
+----
+include::{sourcesdir}/gui/dialogs/gui_input_dialog_5.java[]
+----
+<1> - 指定一个 `FileDescriptor` 参数。
+<2> - 关闭事件包含输入的值，可以用参数标识符获取。
+
+. 带有 `Optional` 类型结果值的输入对话框：
++
+[source, java]
+----
+include::{sourcesdir}/gui/dialogs/gui_input_dialog_6.java[]
+----
+<1> - `getOptional()` 方法返回一个 `Optional` 结果值，可以用参数标识符获取。
++
+用户可以从 `InputDialog`、`InputDialogCloseEvent`、`InputDialogResult` 和 `ValidationContext` 获取 `Optional` 类型结果值。
 --
 

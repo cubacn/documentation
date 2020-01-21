@@ -1,7 +1,7 @@
 :sourcesdir: ../../../../source
 
 [[front_in_studio]]
-==== 在 Studio 中添加前端 UI
+==== 使用 Studio 添加前端 UI
 
 如需在项目中添加前端客户端模块：
 
@@ -9,6 +9,4 @@
 * 右键点击 *Modules* 节点；
 * 选择 *Manage modules > Create 'front' module* 条目。
 
-Studio 会在 `modules/front/generation` 目录安装 https://github.com/cuba-platform/front-generator/tree/{git_branch}[前端生成器] （也许要花一些时间）。然后会出现提示，需要选择前端使用什么技术（<<polymer_ui, Polymer>> 还是 <<react_ui,React>>）。
-
-在创建模块完成之后，启动应用程序，并在浏览器打开 `++http://localhost:8080/app-front++`。会展示一个登录表单。登录之后，会显示带有垂直菜单栏以及响应式布局的主窗口。
+Studio 会在 `modules/front/generation` 目录安装 https://github.com/cuba-platform/front-generator/tree/{git_branch}[前端生成器] （也许要花一些时间）。然后会出现提示，需要选择前端使用什么技术：<<react_ui,React>> 或 <<polymer_ui, Polymer（废弃）>>。

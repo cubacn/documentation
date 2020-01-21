@@ -5,7 +5,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/CurrencyField.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/CurrencyField.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -17,12 +17,12 @@ image::gui_currencyField.png[align="center"]
 
 基本上，`CurrencyField` 跟 <<gui_TextField,TextField>> 的功能是一样的。可以给这个字段手动设置一个<<datatype,数据类型>>，但是只支持从 `NumericDatatype` 继承的数字类型。如果提供的数据类型不能解析，程序会抛出异常。
 
-`CurrencyField` 也可以通过 `datasource` 和 `property` 属性绑定<<datasources,数据源>> ：
+`CurrencyField` 也可以通过 <<gui_attr_dataContainer,dataContainer>> 和 <<gui_attr_property,property>> 属性绑定<<gui_data_containers,数据容器>> ：
 
 [source,xml]
 ----
 <currencyField currency="$"
-               datasource="orderDs"
+               dataContainer="orderDc"
                property="amount"/>
 ----
 

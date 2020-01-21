@@ -1,0 +1,28 @@
+:sourcesdir: ../../../source
+
+[[execution_history_cleanup]]
+=== 清理历史记录
+
+可以配置执行历史记录清理程序来删除不需要的数据并组织表格的无限增长。
+
+. 创建并激活一个 {main_man_url}/scheduled_tasks_cuba.html[计划任务]。在你的应用程序中，切换至 *Administration > Scheduled Tasks* 界面。创建一个新的任务并设置以下参数：
++
+--
+* *Bean Name* = `reporting_ExecutionHistoryRecorder`
+* *Method Name* = `cleanupHistory()`
+* *Cron* = 夜间，比如， `0 0 1 * * *`
+* *Singleton* – yes（对于集群式中间件服务很重要）
+--
++
+保存任务并点击 *Activate* 。
++
+如果还没有为项目配置计划任务的执行，该计划任务也不会立即执行，直到使用 {main_man_url}/app_properties_reference.html#cuba.schedulingActive[cuba.schedulingActive] 应用程序属性启动了整个项目的计划任务机制。
+
+. 配置属性：
++
+--
+* <<reporting.executionHistory.cleanup.days,reporting.executionHistory.cleanup.days>> – 默认 730 天。
+* <<reporting.executionHistory.cleanup.itemsPerReport,reporting.executionHistory.cleanup.itemsPerReport>> – 默认 1000。
+--
+
+当报表执行历史记录被清理后，相关联的报表输出文档也从文件存储中删除了。

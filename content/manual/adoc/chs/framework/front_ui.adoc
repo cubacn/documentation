@@ -5,10 +5,10 @@
 
 前端界面客户端<<app_tiers,block>>提供了使用移动端优先的响应式 webUI 快速创建面向客户的门户的能力。
 
-使用基于 Node.js 的 https://github.com/cuba-platform/front-generator[包] 来创建前端客户端及其界面。
+使用 https://www.npmjs.com/package/@cuba-platform/front-generator[@cuba-platform/front-generator] https://www.npmjs.com/[npm] 包创建前端客户端以及界面。
 
 include::front_ui/front_in_studio.adoc[]
 
-include::front_ui/polymer_ui.adoc[]
-
 include::front_ui/react_ui.adoc[]
+
+include::front_ui/polymer_ui.adoc[]

@@ -3,19 +3,13 @@
 [[log_dir]]
 ==== 日志目录
 
-日志文件的内容是由 *Logback* 框架的配置决定的。平台在 classpath 的根目录提供了默认的配置文件 `logback.xml`。根据这个文件的设定，日志信息会在标准输出打印。
+日志目录是应用程序创建日志文件的位置。其地址和内容是由 *Logback* 框架的配置决定，配置由 `logback.xml` 提供。参阅 <<logging>> 了解细节。
 
-如果要做自定义的日志配置，可以通过 Java 系统属性 <<logback.configurationFile,logback.configurationFile>> 来指向自定义的配置文件。参考 <<logging_setup_tomcat,Tomcat 日志配置>>了解如何在<<fast_deployment,快速部署>>中进行配置。
-
-日志配置决定了日志文件的位置。可以是 Tomcat 下一个特定的目录（快速部署下的 `tomcat/logs` 目录），或者是<<app_home,应用程序主目录>>的一个目录。可以通过修改项目目录下 `deploy/tomcat/conf` 里面的 `logback.xml` 来控制日志目录，修改 `logDir` 属性即可，示例：
+日志文件的位置一般用<<app_home,应用程序主目录>>的相对位置指定，示例：
 
 [source,xml]
 ----
 include::{sourcesdir}/deployment/log_dir_1.xml[]
 ----
 
-应用程序需要知道日志文件存放在哪里，以便系统管理员通过 *Administration > Server Log* 界面加载和查看日志。所以，需要设置 <<cuba.logDir,cuba.logDir>> 这个应用程序属性与 `logback.xml` 里面配置的目录一致。
-
-参考<<logging,日志>>。
-
-
+还需要设置 <<cuba.logDir,cuba.logDir>> 这个应用程序属性与 `logback.xml` 里面配置的目录一致。这样管理员可以通过 *Administration > Server Log* 界面加载和查看日志。

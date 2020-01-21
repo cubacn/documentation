@@ -3,6 +3,11 @@
 [[datasource_listeners]]
 ===== 数据源监听器
 
+[WARNING]
+====
+这是旧版本的 API。对于从 7.0 开始的新 API，请参阅 <<gui_data>>。
+====
+
 通过<<datasources,数据源>>监听器接收数据源及其包含实体的状态变化的消息通知。
 
 一共有四种类型的监听器。其中三个，`ItemPropertyChangeListener`，`ItemChangeListener` 和 `StateChangeListener` 都是定义在 `Datasource` 接口中的，可以在任何数据源使用。`CollectionChangeListener` 定义在 `CollectionDatasource` 里，只能在集合数据源使用。

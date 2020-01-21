@@ -37,40 +37,14 @@ image::list_of_entities_editor.png[align="center"]
 
 一旦报表被保存，就可以从<<run_common, 通用报表浏览器>>运行报表。
 
-此外，可以添加一个按钮来从书籍条目浏览界面运行报表，可以通过单击出版物浏览界面中的 *Show items* 按钮打开该界面。为此，将书籍实例表格的 `multiselect` 属性设置为 `true`，以便能够为报表指定一组记录，然后添加按钮的源代码：
+此外，可以添加一个按钮来从书籍条目浏览界面运行报表，通过单击出版物浏览界面中的 *Show items* 按钮打开该界面。为此，将书籍实例表格的 `multiselect` 属性设置为 `true`，以便能够为报表指定一组记录，然后声明一个标准的 <<list_print_form_action,ListPrintFormAction>>：
 
 [source, xml]
 ----
-<groupTable id="bookInstancesTable"
-            multiselect="true">
-            ...
-    <buttonsPanel>
-    ...
-        <button id="printList"
-                caption="msg://printList"/>
+include::{sourcesdir}/list_of_entities_report_example.xml[]
 ----
 
-之后，在界面控制器中注入 `Button` 组件：
-
-[source, java]
-----
-@Inject
-private Button printList;
-----
-
-接下来，订阅 `InitEvent` 事件并添加以下代码：
-
-[source, java]
-----
-@Subscribe
-private void onInit(InitEvent event) {
-    TablePrintFormAction action = new TablePrintFormAction("report", bookInstancesTable);
-    bookInstancesTable.addAction(action);
-    printList.setAction(action);
-}
-----
-
-最后，应该将 *Book items location* 报表与图书条目浏览界面相关联。打开报表编辑界面，切换到 *Roles and Screens* 标签页，然后从界面下拉列表中添加 `library$BookInstance.lookup` 界面到下表：
+然后我们需要将 *Book items location* 报表和书籍浏览界面相关联。打开报表编辑器，切换到 *Roles and Screens* 标签页从界面下拉列表选择 `library$BookInstance.browse` 并添加 至表格中：
 
 .添加界面
 image::list_of_entities_screens.png[align="center"]

@@ -5,7 +5,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/Component.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/Component.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -24,7 +24,7 @@ com.vaadin.ui.TextField vTextField = textField.unwrap(com.vaadin.ui.TextField.cl
 
 这两个方法支持所有可视化组件。
 --
-http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/Buffered.html[Buffered-缓冲写入模式接口] ::
+http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/Buffered.html[Buffered-缓冲写入模式接口] ::
 +
 --
 [[gui_api_commit]]
@@ -63,7 +63,7 @@ if (textArea.isModified()) {
 <<gui_TimeField,TimeField>>
 --
 
-http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/Collapsable.html[Collapsable-可折叠接口] ::
+http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/Collapsable.html[Collapsable-可折叠接口] ::
 +
 --
 [[gui_api_expanded]]
@@ -84,7 +84,7 @@ protected void onGroupBoxExpandedStateChange(Collapsable.ExpandedStateChangeEven
 <<gui_GroupBoxLayout,GroupBoxLayout>>
 --
 
-http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/ComponentContainer.html[ComponentContainer-组件容器接口] ::
+http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/ComponentContainer.html[ComponentContainer-组件容器接口] ::
 +
 --
 [[gui_api_add]]
@@ -127,7 +127,7 @@ http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components
 <<gui_TabSheet,TabSheet>>
 --
 
-http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/OrderedContainer.html[OrderedContainer-有序容器接口] ::
+http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/OrderedContainer.html[OrderedContainer-有序容器接口] ::
 +
 --
 [[gui_api_indexOf]]
@@ -142,7 +142,7 @@ http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components
 <<gui_ScrollBoxLayout,ScrollBoxLayout>> -
 --
 
-http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/HasContextHelp.html[HasContextHelp-内容提示接口] ::
+http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/HasContextHelp.html[HasContextHelp-内容提示接口] ::
 +
 --
 [[gui_api_contextHelp]]
@@ -203,6 +203,7 @@ textArea.setContextHelpIconClickHandler(contextHelpIconClickEvent ->
 <<gui_RichTextArea,RichTextArea>> -
 <<gui_ScrollBoxLayout,ScrollBoxLayout>> -
 <<gui_SearchPickerField,SearchPickerField>> -
+<<gui_Slider,Slider>> - 
 <<gui_SourceCodeEditor,SourceCodeEditor>> -
 <<gui_SplitPanel,SplitPanel>> -
 <<gui_SuggestionField,SuggestionField>> -
@@ -219,7 +220,7 @@ textArea.setContextHelpIconClickHandler(contextHelpIconClickEvent ->
 <<gui_TwinColumn,TwinColumn>>
 --
 
-http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/HasSettings.html[HasSettings-用户设置接口] ::
+http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/HasSettings.html[HasSettings-用户设置接口] ::
 +
 --
 [[gui_api_settings]]
@@ -237,7 +238,7 @@ http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components
 <<gui_TextArea,TextArea>>
 --
 
-http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/HasUserOriginated.html[HasUserOriginated-事件来源接口] ::
+http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/HasUserOriginated.html[HasUserOriginated-事件来源接口] ::
 +
 --
 [[gui_api_UserOriginated]]
@@ -272,7 +273,7 @@ protected void onCustomersTableSelection(Table.SelectionEvent<Customer> event) {
 * `ValueChangeEvent`，所属组件：所有实现了 `HasValue` 接口的组件 (参阅： <<gui_api_addValueChangeListener,ValueChangeListener>>)。
 --
 
-http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/HasValue.html[HasValue-有值处理接口] ::
+http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/HasValue.html[HasValue-有值处理接口] ::
 +
 --
 [[gui_api_addValueChangeListener]]
@@ -332,6 +333,7 @@ protected void onTextFieldValueChange(HasValue.ValueChangeEvent<String> event) {
 <<gui_RadioButtonGroup,RadioButtonGroup>> -
 <<gui_RichTextArea,RichTextArea>> -
 <<gui_SearchPickerField,SearchPickerField>> -
+<<gui_Slider,Slider>> - 
 <<gui_SourceCodeEditor,SourceCodeEditor>> -
 <<gui_SuggestionField,SuggestionField>> -
 <<gui_SuggestionPickerField,SuggestionPickerField>> -
@@ -342,7 +344,7 @@ protected void onTextFieldValueChange(HasValue.ValueChangeEvent<String> event) {
 <<gui_TwinColumn,TwinColumn>>
 --
 
-http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/LayoutClickNotifier.html[LayoutClickNotifier-布局点击通知接口] ::
+http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/LayoutClickNotifier.html[LayoutClickNotifier-布局点击通知接口] ::
 +
 --
 [[gui_api_addLayoutClickListener]]
@@ -376,7 +378,7 @@ protected void onVboxLayoutClick(LayoutClickNotifier.LayoutClickEvent event) {
 <<gui_GridLayout,GridLayout>>
 --
 
-http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/HasMargin.html[HasMargin-容器边距接口] ::
+http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/HasMargin.html[HasMargin-容器边距接口] ::
 +
 --
 [[gui_api_margin]]
@@ -414,7 +416,7 @@ vbox.setMargin(new MarginInfo(true, false, false, true));
 <<gui_ScrollBoxLayout,ScrollBoxLayout>>
 --
 
-http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/HasOuterMargin.html[HasOuterMargin-组件外边距接口] ::
+http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/HasOuterMargin.html[HasOuterMargin-组件外边距接口] ::
 +
 --
 [[gui_api_outerMargin]]
@@ -448,7 +450,7 @@ groupBox.setOuterMargin(new MarginInfo(true, false, false, true));
 <<gui_GroupBoxLayout,GroupBoxLayout>>
 --
 
-http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/HasSpacing.html[HasSpacing-留白接口] ::
+http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/HasSpacing.html[HasSpacing-留白接口] ::
 +
 --
 [[gui_api_spacing]]
@@ -469,7 +471,7 @@ vbox.setSpacing(true);
 <<gui_ScrollBoxLayout,ScrollBoxLayout>>
 --
 
-http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/ShortcutNotifier.html[ShortcutNotifier-快捷键接口] ::
+http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/ShortcutNotifier.html[ShortcutNotifier-快捷键接口] ::
 +
 --
 [[gui_api_shortcut]]

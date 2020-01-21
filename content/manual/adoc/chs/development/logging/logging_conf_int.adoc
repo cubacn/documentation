@@ -1,0 +1,36 @@
+:sourcesdir: ../../../../source
+
+[[logging_conf_int]]
+==== 日志配置的内部机制
+
+++++
+<div class="manual-since-container">
+    <a href="http://files.cuba-platform.com/cuba/release-notes/7.2/" class="since-btn" target="_blank">
+        <span class="since-btn-caption">最低版本</span><span class="since-btn-version">7.2</span>
+    </a>
+</div>
+++++
+
+该章节介绍 Logback 配置的内部运行机制，对排查问题很有帮助。
+
+平台提供 `LogbackConfigurator` 类，作为 `Configurator` 的一个实现钩入标准的 Logback 初始化 https://logback.qos.ch/manual/configuration.html#auto_configuration[过程] 。 这个 Configurator 执行以下步骤寻找配置源：
+
+* 在 应用程序主目录（即通过 `app.home` 系统参数指定的目录）寻找 `logback.xml` 。
+* 如果没找到，在 classpath 根目录寻找 `app-logback.xml` 。
+* 如果没找到，执行基本的配置：输出至命令行，使用 WARN 阈值。
+
+需要记住的是，这个过程只有在 classpath 中没找到 `logback.xml` 才会生效。
+
+`setupTomcat` Gradle 任务会在 `deploy/app_home` 目录创建 `logback.xml`，所以上面解释的初始化过程会在第一步就找到了日志文件。结果就是，所有的开发环境会有一个默认的 logback 配置，将日志写入 `deploy/app_home/logs` 目录。
+
+`deploy` Gradle 任务会复制 `etc/logback.xml` 项目文件（如果存在）至 `deploy/app_home`，所以开发者可以在项目中创建并自定义 logback 配置，之后会被自动使用在开发环境的 Tomcat 中。
+
+`buildWar` 和 `buildUberJar` Gradle 任务会在 classpath 根目录（对于 WAR：`/WEB-INF/classes`，对于 UberJAR：`/`）创建 `app-logback.xml`，其来源为下列文件：
+
+* 如果设置了 `logbackConfigurationFile` 任务参数，则从此获取。
+
+* 如果设置 `useDefaultLogbackConfiguration` 任务参数为 true（默认值），则从 `cuba-gradle-plugin` 内的 `logback.xml` 获取。
+
+如果 `logbackConfigurationFile` 没指定，并且 `useDefaultLogbackConfiguration` 设置为 false，包内不会包含任何 logback 配置。
+
+假设 classpath 中没有 `logback.xml`，基于上面介绍的 `LogbackConfigurator` 的初始化过程，嵌入 WAR/UberJAR 的配置可以通过应用程序主目录的 `logback.xml` 文件覆盖。这样的话，可以实现自定义生产环境的日志，而不需要重新构建 WAR/UberJAR。

@@ -11,6 +11,9 @@ CUBA 应用程序可以使用众所周知的方式进行测试：单元测试、
 ----
 include::{sourcesdir}/development/testing_jmockit_dep.groovy[]
 ----
+<1> - 添加 mocking 框架
+<2> - 如果使用的 JMockit， 在运行测试用例时，需要指定 `-javaagent` 参数
+<3> - 在 classpath 搜索 JMockit JAR 并且构造 `-javaagent` 值的一个类。
 
 集成测试运行在 Spring 容器中，所以可以用来测试应用程序的各个方面，包括与数据库和 UI 界面的交互。本章节介绍如何在中间层和 web 层创建集成测试。
 

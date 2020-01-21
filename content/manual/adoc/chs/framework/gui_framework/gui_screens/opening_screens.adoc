@@ -3,7 +3,7 @@
 [[opening_screens]]
 ===== 打开界面
 
-可以通过<<menu.xml,主菜单>>、<<url_history_navigation,URL 导航>>或从另外一个界面以编程方式打开。在本节，将介绍如何以编程的方式打开界面。
+可以通过<<menu.xml,主菜单>>、<<url_history_navigation,URL 导航>>、<<standard_actions,标准操作>>（当使用浏览和编辑实体界面时）或从另外一个界面以编程方式打开。在本节，将介绍如何以编程的方式打开界面。
 
 '''
 
@@ -71,7 +71,7 @@ include::{sourcesdir}/gui/screens/screens_3.java[]
 include::{sourcesdir}/gui/screens/screenBuilders_withAfterCloseListener.java[]
 ----
 
-下面我们看看如何操作编辑界面和查找界面。
+下面我们看看如何操作编辑界面和查找界面。注意，在大多数情况下你会使用 <<standard_actions,标准操作>>（比如 <<CreateAction>> 或 <<LookupAction>>）来打开这类界面，所以并不是非要直接用 `ScreenBuilders` API。但是，如果不用标准的操作而是想通过 <<baseAction>> 或者 <<gui_Button>> 处理打开界面的话，可以参考下面的例子。
 
 为 `Customer` 实体实例打开默认编辑界面的示例：
 
@@ -82,7 +82,7 @@ include::{sourcesdir}/gui/screens/screenBuilders_editor.java[]
 
 在这种情况下，编辑界面将更新实体，但调用界面将不会接收到更新后的实例。
 
-最常见的情况是需要编辑某些用 `Table` 或 `DataGrid` 组件显示的实体。那么应该使用以下调用方式，它更简洁且能自动更新表格组件：
+我们经常需要编辑某些用 `Table` 或 `DataGrid` 组件显示的实体。那么应该使用以下调用方式，它更简洁且能自动更新表格组件：
 
 [source, java]
 ----
@@ -101,7 +101,7 @@ include::{sourcesdir}/gui/screens/screenBuilders_editor_3.java[]
 默认编辑界面的确定过程如下：
 
 . 如果存在使用<<PrimaryEditorScreen_annotation,@PrimaryEditorScreen>>注解的编辑界面，则使用它。
-. 否则，使用 id 是 `++{entity_name}.edit++` 的编辑界面（例如，`sales_Customer.edit`）。
+. 否则，使用 id 是 `++<entity_name>.edit++` 的编辑界面（例如，`sales_Customer.edit`）。
 ====
 
 界面构建器提供了许多方法来设置被打开界面的可选参数。例如，以下代码以对话框的方式打开的特定编辑界面，同时新建并初始化实体：
@@ -132,8 +132,8 @@ include::{sourcesdir}/gui/screens/screenBuilders_lookup_2.java[]
 默认查找界面的确定过程如下：
 
 . 如果存在使用<<PrimaryLookupScreen_annotation,@PrimaryLookupScreen>>注解的查找界面，则使用它。
-. 否则，如果存在 id 为 `++{entity_name}.lookup++` 的界面，则使用它（例如，`sales_Customer.lookup`）。
-. 否则，使用 id 为 `++{entity_name}.browse++` 的界面（例如，`sales_Customer.browse`）。
+. 否则，如果存在 id 为 `++<entity_name>.lookup++` 的界面，则使用它（例如，`sales_Customer.lookup`）。
+. 否则，使用 id 为 `++<entity_name>.browse++` 的界面（例如，`sales_Customer.browse`）。
 ====
 
 与使用编辑界面一样，使用构建器方法设置打开界面的可选参数。例如，以下代码以对话框的方式打开特定的查找界面，在这个界面中查找 `User` 实体：
@@ -157,6 +157,8 @@ include::{sourcesdir}/gui/screens/screenBuilders_lookup_3.java[]
 include::{sourcesdir}/gui/screens/passing_parameters_1.java[]
 ----
 
+如果使用类似 <<CreateAction>> 的标准操作打开界面，可以用它的 `screenConfigurer` 处理器通过界面的公共 setters 传递参数。
+
 另一个方式是为参数定义一个特殊的类，然后在界面构造器中将该类的实例传递给标准的 `withOptions()` 方法。参数类必需实现 `ScreenOptions` 标记接口。示例：
 
 [source, java]
@@ -179,6 +181,8 @@ include::{sourcesdir}/gui/screens/passing_options_3.java[]
 ----
 
 可以看到，这个方式需要在控制界接收参数的时候进行类型转换，所以需要考虑清楚再使用。推荐还是用上面介绍的类型安全的使用 setter 的方式。
+
+如果使用类似 <<CreateAction>> 的标准操作打开界面，可以用它的 `screenOptionsSupplier` 处理器创建并初始化所需的 `ScreenOptions` 对象。
 
 如果界面是基于<<abstractFrame_openWindow,legacy API>>从另一个界面打开的，那么使用 `ScreenOptions` 对象是唯一能获取到参数的方法。此时，参数对象是 `MapScreenOptions` 类型的，可以在打开的界面中按照如下处理：
 
@@ -206,18 +210,20 @@ include::{sourcesdir}/gui/screens/return_values_1.java[]
 include::{sourcesdir}/gui/screens/return_values_2.java[]
 ----
 
-事件对象能提供关于界面是如何关闭的信息：其 `getCloseAction()` 方法返回带 `CloseAction` 接口的对象。界面控制器实现的 `FrameOwner` 接口包含几个常量，定义了框架使用的 `CloseAction` 接口的实现。在应用程序中，可以直接使用这些常量或者创建自己的实现。
+事件对象能提供关于界面是如何关闭的信息。信息可以有两种方式获取：一种是检测界面是否通过 `StandardOutcome` 枚举类型定义的一种标准输出关闭，另一种是获取 `CloseAction` 对象。前一种方法比较简单，但是后一种方法比较灵活。
 
-看一个简单的自定义界面：
+先看看第一种方式：使用标准输出关闭界面然后在调用代码内进行检测。
+
+将调用下面这个界面：
 
 [source, java]
 ----
 include::{sourcesdir}/gui/screens/return_values_3.java[]
 ----
-<1> - 在点击 "OK" 按钮时，设置一些结果状态，并使用标准的 `WINDOW_COMMIT_AND_CLOSE_ACTION` 操作关闭界面。
-<2> - 在点击 "Cancel" 按钮时，使用默认操作关闭界面。
+<1> - 在点击 "OK" 按钮时，设置一些结果状态，并使用 `StandardOutcome.COMMIT` 枚举值关闭界面。
+<2> - 在点击 "Cancel" 按钮时，使用 `StandardOutcome.CLOSE` 关闭界面。
 
-于是，在 `AfterCloseEvent` 监听器我们能分析界面是如何关闭的，并且如果需要的话可以读取结果：
+在 `AfterCloseEvent` 监听器使用事件的 `closedWith()` 方法检查界面是如何关闭的，并且需要的话可以读取结果：
 
 [source, java]
 ----
@@ -236,6 +242,15 @@ include::{sourcesdir}/gui/screens/return_values_5.java[]
 [source, java]
 ----
 include::{sourcesdir}/gui/screens/return_values_6.java[]
+----
+<1> - 在点击 "OK" 按钮时，创建自定义关闭操作，并设置结果值。
+<2> - 在点击 "Cancel" 按钮时，使用框架提供的默认操作关闭界面。
+
+在 `AfterCloseEvent` 监听器从事件获取 `CloseAction` 并读取结果：
+
+[source, java]
+----
+include::{sourcesdir}/gui/screens/return_values_7.java[]
 ----
 
 可以看到，当使用自定义的 `CloseAction` 返回值时，调用方不需要知道打开的界面类是什么，因为不会调用具体的界面控制器内的方法。所以界面可以只通过其字符串 id 来创建。

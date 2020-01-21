@@ -3,6 +3,11 @@
 [[screen_lookup]]
 ====== 查找界面
 
+[WARNING]
+====
+这是旧版本的 API。对于从 7.0 开始的新 API，请参阅 <<screen_controllers>>。
+====
+
 查找界面设计用来选择并且返回实体实例或者实体列表。可视化组件中的 <<gui_PickerField,PickerField>> 和 <<gui_LookupPickerField,LookupPickerField>> 使用的标准 <<lookupAction,LookupAction>> 就是调用查找界面来选择相关的实体。
 
 当通过 `openLookup()` 方法调用查找界面的时候，界面会包含一个面板以及用来选择的一些按钮。当用户选择了一个实例或者多个实例的时候，查找界面调用之前传递给它的处理器函数，从而能将查找结果返回给调用者的代码。当通过 `openWindow()` 方法或者比如说通过主菜单打开查找界面的时候，用来选择的面板不会显示，查找界面会被有效的转化成一个<<screen_simple,简单界面>>。
@@ -14,7 +19,7 @@
 可以在 Studio 里使用 *Entity browser* 或者 *Entity combined screen* 模板来创建实体的查找界面。
 ====
 
-默认情况下，<<lookupAction,LookupAction>> 会使用注册在 <<screens.xml,screens.xml>> 文件中的一个查找界面，注册的标识符是 `{entity_name}.lookup` 或者 `{entity_name}.browse`，比如，`sales$Customer.lookup`。所以在使用上面提到的组件的时候，确保有个查找界面已经注册。Studio 会使用 `{entity_name}.browse` 标识符注册浏览界面，所以这些界面会被默认当作查找界面使用。
+默认情况下，<<lookupAction,LookupAction>> 会使用注册在 <<screens.xml,screens.xml>> 文件中的一个查找界面，注册的标识符是 `{entity_name}.lookup` 或者 `{entity_name}.browse`，比如，`sales_Customer.lookup`。所以在使用上面提到的组件的时候，确保有个查找界面已经注册。Studio 会使用 `{entity_name}.browse` 标识符注册浏览界面，所以这些界面会被默认当作查找界面使用。
 
 [[screen_lookup_customization]]
 自定义查找界面样式和行为::

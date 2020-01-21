@@ -3,6 +3,11 @@
 [[datasource_custom_class]]
 ====== 自定义实现类
 
+[WARNING]
+====
+这是旧版本的 API。对于从 7.0 开始的新 API，请参阅 <<gui_data>>。
+====
+
 如果需要实现使用自定义方法来加载实体，可以创建自定义的数据源类，从 `CustomCollectionDatasource`，`CustomGroupDatasource`, 或者 `CustomHierarchicalDatasource` 继承，然后实现 `getEntities()` 方法。
 
 示例：

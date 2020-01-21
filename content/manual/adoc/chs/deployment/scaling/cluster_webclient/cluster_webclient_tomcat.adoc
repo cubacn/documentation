@@ -25,7 +25,7 @@
 </Server>
 ----
 
-. 在 `tomcat/conf/app/local.app.properties` 中设置下列应用程序属性：
+. 在 `app_home/local.app.properties` 中设置下列应用程序属性：
 +
 [source, properties]
 ----
@@ -34,8 +34,7 @@ cuba.connectionUrlList = http://host3:8080/app-core
 
 cuba.webHostName = host1
 cuba.webPort = 8080
-cuba.webContextName = app
 ----
 +
-<<cuba.webHostName,cuba.webHostName>>, <<cuba.webPort,cuba.webPort>> 和 <<cuba.webContextName,cuba.webContextName>> 参数对于 Web 客户端集群来说不是必须的，但是这些参数为在平台的其它功能中辨识服务器提供了方便，比如 <<jmx_console, JMX 控制台>>。另外 *User Sessions* 界面的 *Client Info* 属性会显示用户目前使用的 Web 客户端的标识符。
+<<cuba.webHostName,cuba.webHostName>> 和 <<cuba.webPort,cuba.webPort>> 参数对于 Web 客户端集群来说不是必须的，但是这些参数为在平台的其它功能中辨识服务器提供了方便，比如 <<jmx_console, JMX 控制台>>。另外 *User Sessions* 界面的 *Client Info* 属性会显示用户目前使用的 Web 客户端的标识符。
 

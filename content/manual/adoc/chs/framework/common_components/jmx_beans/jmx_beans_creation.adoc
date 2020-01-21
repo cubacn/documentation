@@ -40,7 +40,7 @@ String calculateTotals();
 include::{sourcesdir}/common/jmxbean_2.java[]
 ----
 +
-`@Component` 注解将类定义为具有 `++sales_OrdersMBean++` 名称的托管 bean，该名称直接在注解中指定而不是在常量中，因为不需要从 Java 代码访问 JMX bean。
+`@Component` 注解将类定义为具有 `++sales_OrdersMBean++` 名称的 Spring bean，该名称直接在注解中指定而不是在常量中，因为不需要从 Java 代码访问 JMX bean。
 +
 下面概述一下 `calculateTotals()` 方法的实现。
 

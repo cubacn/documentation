@@ -11,7 +11,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/Button.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/Button.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -90,10 +90,18 @@ include::{sourcesdir}/gui_vcl/button_6.xml[]
 
 [TIP]
 ====
-如果给 `Button` 定义了 `Action` 实例，那么按钮会从操作获取以下属性： <<gui_attr_caption,caption>> 、 <<gui_attr_description,description>> 、<<gui_attr_icon,icon>>, <<gui_attr_enable,enable>> 、  <<gui_attr_visible,visible>> 。其中 `caption` 、 `description` 和 `icon` 属性只有在 `Button` 本身没有设置时才会使用操作的对应属性，其它的 `Action` 的属性比 `Button` 的相同属性有更高的优先级。
+如果给 `Button` 定义了 `Action` 实例，那么按钮会从操作获取以下属性：<<gui_attr_caption,caption>>、<<gui_attr_description,description>>、<<gui_attr_icon,icon>>、<<gui_attr_enable,enable>>、<<gui_Button_shortcut,shortcut>>、<<gui_attr_visible,visible>>。其中 `caption` 、 `description` 和 `icon` 属性只有在 `Button` 本身没有设置时才会使用操作的对应属性，其它的 `Action` 的属性比 `Button` 的相同属性有更高的优先级。
 
 如果 `操作` 的属性在其被指定给 `Button` 之后发生了改变, 那么 `Button` 的相应属性也会跟着改变，也就是说按钮监听 `操作` 的变化。这种情况下，如果操作的 `caption` 、 `description` 和 `icon` 改变的话，即便按钮本身也定义了这些属性，这些属性还是会跟随操作的属性变化而变化。
 ====
+
+[[gui_Button_shortcut]]
+`shortcut` 属性用来为按钮指定一个快捷键组合，使用字符串来定义。可选的功能键为：`ALT`、`CTRL`、`SHIFT`，使用 "-" 与其他键分隔。示例：
+
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/button_8.xml[]
+----
 
 [[gui_Button_stylenames]]
 按钮样式::
@@ -172,6 +180,7 @@ include::{sourcesdir}/gui_vcl/button.java[]
 <<gui_attr_icon,icon>> -
 <<gui_attr_id,id>> -
 <<gui_Button_invoke,invoke>> -
+<<gui_Button_shortcut,shortcut>> -
 <<gui_attr_stylename,stylename>> -
 <<gui_attr_tabIndex,tabIndex>> -
 <<gui_attr_visible,visible>> -

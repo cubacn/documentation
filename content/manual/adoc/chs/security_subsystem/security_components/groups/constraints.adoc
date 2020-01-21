@@ -10,7 +10,7 @@ Constraints - 约束 限制用户访问实体实例。与应用到 _类_ 级别�
 配置到用户访问组的约束，及其树形层级以上的访问组的约束都会对该用户生效。所以，当用户所在访问组树形层级越低，给用户配置的约束会越多。
 ====
 
-所有客户端层通过标准 <<dataManager,DataManager>> 发起的操作都会触发约束检查. 如果实体不满足约束，添加、更改或删除的时候会抛出 `RowLevelSecurityException` 异常。
+所有客户端层通过标准 <<dataManager,DataManager>> 发起的操作都会触发约束检查。如果实体不满足约束，添加、更改或删除的时候会抛出 `RowLevelSecurityException` 异常。参阅 <<data_access_checks>> 章节了解框架中不同机制如何使用安全约束。
 
 约束检查有三种类型：数据库约束检查，内存约束检查，数据库加内存约束检查。
 
@@ -71,7 +71,7 @@ include::{sourcesdir}/security/constraints_2.groovy[]
 
 * `isPermitted(Entity, String)` - 根据输入字符串检查是否约束。
 
-也可以基于 `ItemTrackingAction` 连接 action 和特定约束。在 `action` 的 XML 节点中设置 `constraintOperationType` 属性或者使用 `setConstraintOperationType()` 方法设置。
+也可以基于 `ItemTrackingAction` 连接 action 和特定约束。在 `action` 的 XML 节点中设置 `constraintOperationType` 属性或者使用 `setConstraintOperationType()` 方法设置。注意，约束的代码会在客户端层执行，所以不能使用中间层的类。
 
 示例：
 [source, xml]
@@ -81,6 +81,5 @@ include::{sourcesdir}/security/constraints_1.xml[]
 
 [TIP]
 ====
-违反约束时，会弹出<<notifications,通知>>给用户。每个约束的提示标题与内容可以在运行时重写，在 *Access Groups - 访问组* 界面的 *Constraints - 约束* 标签页，点击 *Localization - 本地化*，然后就可以设置通知的标题和内容文本了。
+违反约束时，会弹出通知给用户。每个约束的提示标题与内容可以在运行时重写，在 *Access Groups - 访问组* 界面的 *Constraints - 约束* 标签页，点击 *Localization - 本地化*，然后就可以设置通知的标题和内容文本了。
 ====
-

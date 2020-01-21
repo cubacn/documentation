@@ -10,7 +10,7 @@
 ----
 . 按照 {studio_man_url}/index.html[CUBA Studio 用户手册] 中 {studio_man_url}/open_project.html[打开已有项目] 部分的描述打开 Library 项目。
 
-. 在 CUBA Studio中打开 *Project Properties* 编辑器：点击 *CUBA* -> *Project Properties* 主菜单项。在 *App components* 列表中添加 *fts* 应用程序组件。当 Studio 建议重新创建 Gradle 脚本时，确认即可。Studio 将会下载需要的源代码和二进制 {main_man_url}/glossary.html#artifact[工件] 。如果项目没有自动同步 Gradle 文件，可以点击 *Gradle* 工具窗口的 image:refresh_button.png[] 按钮手动同步。
+. 按照 <<installation, 安装>> 章节的描述，通过 **CUBA Add-Ons** 窗口为项目添加 *Full Text Search* 扩展。
 
 . 在本地 *HyperSQL* 服务创建数据库：在主菜单点击 *CUBA* -> *Create database*。
 

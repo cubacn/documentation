@@ -3,7 +3,7 @@
 [[transactions_decl]]
 ===== 声明式事务管理
 
-中间件<<managed_beans,托管 Bean>>的任何方法都可以使用 `@org.springframework.transaction.annotation.Transactional` 进行注解，这将在调用方法时自动创建事务。因此这种方法不需要调用 `Persistence.createTransaction()`，可以直接获取 `EntityManager` 进行使用。
+中间件<<managed_beans, Spring bean>>的任何方法都可以使用 `@org.springframework.transaction.annotation.Transactional` 进行注解，这将在调用方法时自动创建事务。因此这种方法不需要调用 `Persistence.createTransaction()`，可以直接获取 `EntityManager` 进行使用。
 
 `@Transactional` 注解支持多个参数，包括：
 

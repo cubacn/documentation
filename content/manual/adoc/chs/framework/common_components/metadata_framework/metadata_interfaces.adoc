@@ -10,7 +10,7 @@ image::MetadataFramework.png[align="center"]
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/chile/core/model/Session.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/chile/core/model/Session.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -33,7 +33,7 @@ assert metaClass1 == metaClass2;
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/chile/core/model/MetaModel.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/chile/core/model/MetaModel.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -44,7 +44,7 @@ MetaModel::
 元类按照 <<metadata.xml,metadata.xml>> 文件中指定的 Java 项目包的根名称进行分组。
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/chile/core/model/MetaClass.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/chile/core/model/MetaClass.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -56,7 +56,7 @@ MetaClass::
 
 基本方法：
 
-* `getName()` – 实体名称，根据惯例，在 `$` 符号之前名称的第一部分是项目命名空间代码，例如 `sales$Customer`。
+* `getName()` – 实体名称，根据惯例，在 `_` 符号之前名称的第一部分是项目命名空间代码，例如 `sales_Customer`。
 
 * `getProperties()` – 元属性列表（`MetaProperty`）。
 
@@ -89,7 +89,7 @@ assert groupNameProp.getDomain().getName().equals("sec$Group");
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/chile/core/model/MetaProperty.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/chile/core/model/MetaProperty.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 

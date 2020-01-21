@@ -1,0 +1,29 @@
+:sourcesdir: ../../source
+
+[[execution_history]]
+== 报表执行记录
+
+平台提供报表执行记录管理的几个功能：
+
+. 存储每个报表的执行记录。系统管理员可以使用报表执行记录查找每个报表的执行频率，每个报表的执行时间、执行人以及当报表运行时发生了什么错误。
+. 清楚过期的报表执行记录。
+
+报表执行记录默认是不启用的，可以通过设置 <<reporting.executionHistory.enabled,reporting.executionHistory.enabled>> 应用程序属性为 true 来启用。可以在 *Administration > Application Properties* 界面操作。
+
+报表执行记录界面是管理员性质的界面，所以没有添加到主菜单。要查看执行记录，切换到报表浏览界面（*Reports>Reports* 菜单项），然后点击 *Execution history* 按钮。
+
+如果在 *Reports* 表格选中了任何报表，则执行记录只会显示这些选中报表相关的。
+如果没有选中，执行记录会显示所有报表的记录。
+
+.报表执行记录界面
+image::report_execution_history.png[align="center"]
+
+"Report name" 和 "Report code" 是两个反规范化字段，在执行时记录，为的是在报表即便被删除的情况下也能保留这两个数据。"Cancelled" 标志标明用户以后台任务的形势启动报表，然后又取消了。
+
+报表执行历史记录也记录那些从报表编辑器直接运行（点击 *Run* 按钮）还没有保存到数据库的报表。
+
+include::execution_history/history_output_documents.adoc[]
+
+include::execution_history/execution_history_cleanup.adoc[]
+
+include::execution_history/execution_history_protection.adoc[]

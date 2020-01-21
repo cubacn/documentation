@@ -3,6 +3,11 @@
 [[datasource_creation]]
 ===== 创建数据源
 
+[WARNING]
+====
+这是旧版本的 API。对于从 7.0 开始的新 API，请参阅 <<gui_data>>。
+====
+
 数据源对象可以通过两种方式创建，一种是在界面的 XML 描述中通过声明式的方式，另一种是在界面控制器通过编程的方式创建。通常情况下，创建的数据源默认会使用其标准实现，但是如果需要的话，也可以通过继承标准实现类来自定义数据源。
 
 include::datasource_creation/datasource_decl_creation.adoc[]

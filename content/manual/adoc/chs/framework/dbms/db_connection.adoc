@@ -1,0 +1,94 @@
+:sourcesdir: ../../../../source
+
+[[db_connection]]
+==== 连接至数据库
+
+CUBA 应用程序通过 JDBC `DataSource-数据源` 获取数据库的连接。一个数据源可以在应用程序中配置，也可以通过 JNDI 获取。获取数据源的方法通过应用程序属性 `cuba.dataSourceProvider` 来指定：可以设置为 `application` 或 `jndi`。
+
+使用 CUBA Studio 可以很方便的配置主数据库连接和附加数据存储，参阅 {studio_man_url}/#data_stores[文档] 。下面的信息对于排查问题很有帮助，也可以用来定义那些 Studio 中没有的参数，比如连接池配置。
+
+[[db_connection_app]]
+在应用程序中配置数据源::
++
+--
+++++
+<div class="manual-since-container">
+    <a href="http://files.cuba-platform.com/cuba/release-notes/7.2/" class="since-btn" target="_blank">
+        <span class="since-btn-caption">Since</span><span class="since-btn-version">7.2</span>
+    </a>
+</div>
+++++
+
+当在应用程序中配置数据源时，框架会使用 https://github.com/brettwooldridge/HikariCP[HikariCP] 创建一个连接池。连接参数和连接池配置都通过 `core` 模块 `app.properties` 中的<<app_properties,应用程序属性>>来配置。如果不需要特别指定由应用程序服务提供的连接池，推荐直接使用这种配置。
+
+下列应用程序属性定义数据库类型和连接参数：
+
+* `cuba.dbmsType` - 定义 <<dbms_types,DBMS 类型>>。
+* `cuba.dataSourceProvider` - `application` 值表示数据源必须使用应用程序属性来配置。
+* `cuba.dataSource.username` - 数据库的用户名称。
+* `cuba.dataSource.password` - 数据库的用户密码。
+* `cuba.dataSource.dbName` - 数据库的名称。
+* `cuba.dataSource.host` - 数据库的地址。
+* `cuba.dataSource.port` - 可选参数，设定数据库端口，如果使用了非标准端口的话。
+* `cuba.dataSource.jdbcUrl` - 可选参数，设置 JDBC URL 的全路径，如果需要一些额外的连接参数。注意，对于数据迁移<<db_update_gradle,任务>>，所有以上的单独属性还是需要配置的。
+
+如需配置连接池参数，使用 `cuba.dataSource.` 前缀指定 HikariCP 的属性，比如 `cuba.dataSource.maximumPoolSize` 或 `cuba.dataSource.connectionTimeout`。参考 HikariCP https://github.com/brettwooldridge/HikariCP#frequently-used[文档] 了解所有支持的参数及其默认值。
+
+如果应用程序使用了附加<<data_store,数据存储>>，需要同样为每个数据存储定义一组参数。数据存储的名称添加到每个属性名称的第二部分：
+
+示例：
+[source, properties]
+----
+include::{sourcesdir}/dbms/db_connection_1.properties[]
+----
+
+另外，对于每个附加数据存储，`core` 模块的 `spring.xml` 文件必须包含一个 `CubaDataSourceFactoryBean` bean 的定义，该定义需要使用合适的 `storeName` 参数，示例：
+
+[source,xml]
+----
+include::{sourcesdir}/dbms/db_connection_2.xml[]
+----
+
+如果在应用程序中配置数据源，数据库迁移的 Gradle 任务可能没有参数，因为这些参数会通过应用程序属性获取。这是在应用程序中配置数据源的另外一个好处。示例：
+
+[source,groovy]
+----
+include::{sourcesdir}/dbms/db_connection_3.groovy[]
+----
+--
+
+[[db_connection_jndi]]
+从 JNDI 获取数据源::
++
+--
+如果需要通过 JNDI 使用由应用程序服务提供的数据源，需要在 `core` 模块的 `app.properties` 文件定义以下应用程序属性：
+
+* `cuba.dbmsType` - 定义 <<dbms_types,DBMS 类型>>。
+* `cuba.dataSourceProvider` - `jndi` 值表示数据源必须通过 JNDI 获取。
+
+数据源的 JNDI 名称通过 <<cuba.dataSourceJndiName,cuba.dataSourceJndiName>> 应用程序属性指定，默认为 `java:comp/env/jdbc/CubaDS`。对于附加数据存储，定义同样的属性，但是需要添加数据存储名称。
+
+示例：
+[source, properties]
+----
+include::{sourcesdir}/dbms/db_connection_4.properties[]
+----
+
+另外，对于每个附加数据存储，`core` 模块的 `spring.xml` 文件必须包含一个 `CubaDataSourceFactoryBean` bean 的定义，该定义需要使用合适的 `storeName` 参数和 `jndiNameAppProperty` 参数，示例：
+
+[source,xml]
+----
+include::{sourcesdir}/dbms/db_connection_5.xml[]
+----
+
+通过 JNDI 提供的数据源需要根据应用程序服务做特殊的配置。在 Tomcat 中，配置在 <<context.xml>> 文件。CUBA Studio 会将连接参数写入 `modules/core/web/META-INF/context.xml` 并在开发应用程序时通过<<fast_deployment,标准部署>>过程使用该文件。
+
+如果数据源配置在 `context.xml`，数据库迁移的 Gradle 任务必须有定义数据库连接的参数，示例：
+
+[source,groovy]
+----
+include::{sourcesdir}/dbms/db_connection_6.groovy[]
+----
+--
+
+include::db_connection/db_schema_connection.adoc[]

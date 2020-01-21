@@ -3,11 +3,11 @@
 [[application_folder]]
 ===== 应用程序文件夹
 
-创建或编辑应用程序文件夹需要特殊的<<permissions,权限>>(`cuba.gui.appFolder.global`)。
+创建或编辑应用程序文件夹需要特殊的<<permissions,权限>> *Create/modify application folders* （`cuba.gui.appFolder.global`）。这种权限在<<roles,角色>>编辑界面的 **Specific - 特殊权限** 标签页设置。
 
 可以通过文件夹面板右键菜单创建一个简单的应用程序文件夹。这类文件夹不会链接到系统界面，只用于对文件夹树中的其它文件夹进行分组。
 
-打开带有过滤器界面的文件夹可以按以下方式创建：
+打开带有<<gui_Filter,过滤器>>界面的文件夹可以按以下方式创建：
 
 * 打开界面并根据需要过滤记录。
 
@@ -37,7 +37,7 @@ userSession.currentOrSubstitutedUser.login == 'admin'
 [source, java]
 ----
 def em = persistence.getEntityManager()
-def q = em.createQuery('select count(o) from sales$Order o')
+def q = em.createQuery('select count(o) from sales_Order o')
 def count = q.getSingleResult()
 
 style = count > 0 ? 'emphasized' : null

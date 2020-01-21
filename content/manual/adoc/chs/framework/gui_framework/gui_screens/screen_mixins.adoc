@@ -26,7 +26,7 @@ include::{sourcesdir}/gui/screens/mixin_usage_1.java[]
 
 Mixin 可以使用以下类来处理界面和界面基础架构：
 
-* `com.haulmont.cuba.gui.screen.Extensions` 提供静态方法，用来保存和获取 mixin 使用的界面状态，还能访问 `BeanLocator`，这可以用来获取任何 Spring 管理的 bean。
+* `com.haulmont.cuba.gui.screen.Extensions` 提供静态方法，用来保存和获取 mixin 使用的界面状态，还能访问 `BeanLocator`，这可以用来获取任何 Spring bean。
 
 * `UiControllerUtils` 提供对界面UI和数据组件的访问。
 

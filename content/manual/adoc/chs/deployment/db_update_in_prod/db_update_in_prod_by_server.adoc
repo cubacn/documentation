@@ -1,26 +1,20 @@
-:sourcesdir: ../../../../../source
+:sourcesdir: ../../../../source
 
 [[db_update_in_prod_by_server]]
-===== 在服务器上执行数据库脚本
+==== 在服务器上执行数据库脚本
 
 <<db_update_server,服务器执行数据脚本>>机制可用于初始化数据库及后续对应用程序开发期间发生的数据库架构调整进行更新。
 
-[TIP]
-这里的“服务器”指的是生产环境的服务器
-
-
 按照以下操作完成对新数据库的初始化：
 
-* 通过将以下行添加到中间件 block 的<<app_properties_files,local.app.properties>>文件中以启用<<cuba.automaticDatabaseUpdate,cuba.automaticDatabaseUpdate>>应用程序属性：
+* 通过将下面这行内容添加到<<app_home,应用程序主目录>>的 `local.app.properties` 文件（如果没有在项目的 `app.properties` 中添加的话），启用<<cuba.automaticDatabaseUpdate,cuba.automaticDatabaseUpdate>>应用程序属性：
 +
 [source, properties]
 ----
 cuba.automaticDatabaseUpdate = true
 ----
-+
-对于<<fast_deployment,快速部署>>的 Tomcat，该文件位于 `tomcat/conf/app-core` 目录中。如果该文件不存在，请创建它。
 
-* 创建一个与<<context.xml,context.xml>>中的数据源描述中指定的 URL 对应的空数据库。
+* 按照<<db_connection,定义数据源>>创建一个空数据库。
 
 * 启动包含中间件 block 的应用程序服务。在应用程序启动时，数据库将被初始化并准备就绪。
 
@@ -30,13 +24,13 @@ cuba.automaticDatabaseUpdate = true
 
 * 如果在运行脚本时发生任何错误，则中间件 block 将停止初始化并变得不可用。客户端 block 会生成关于无法连接到中间件的错误提示消息。
 +
-检查位于<<log_dir,服务器日志文件夹>>中的 app.log 文件，从 `com.haulmont.cuba.core.sys.DbUpdaterEngine` 日志中获取关于 SQL 执行的消息，可能会有其它可以用来识别错误原因的错误消息。
+检查位于<<log_dir,服务器日志文件夹>>中的 `app.log` 文件，从 `com.haulmont.cuba.core.sys.DbUpdaterEngine` 日志中获取关于 SQL 执行的消息，可能会有其它可以用来识别错误原因的错误消息。
 
 * 更新脚本和脚本中用 `"^"` 分隔的 DDL 和 SQL 命令一样在单独的事务中执行。这就是为什么当更新失败时，仍然很有可能一部分脚本甚至最后一个脚本的个别命令已被执行并提交给数据库。
 +
 考虑到这一点，强烈建议在启动服务之前创建数据库的备份。然后，更新脚本的错误得到修复时，可以恢复数据库并重新进行数据库更新。
 +
-如果没有进行备份，则应在错误修复后确定脚本的哪些部分已被执行并已提交。如果整个脚本执行失败，则简单地重启服务并运行自动更新即可。如果错误出现之前的一些用 `"^"` 字符分隔的命令已在单独的事务中执行并且提交，这种情况下只需运行脚本中剩余未执行的命令，同时手动在 *SYS_DB_CHANGELOG* 中注册这个手动执行的脚本。之后，可以启动服务，自动更新机制将继续处理下一个未执行的脚本。
+如果没有进行备份，则应在错误修复后确定脚本的哪些部分已被执行并已提交。如果整个脚本执行失败，则简单地重启服务并运行自动更新即可。如果错误出现之前的一些用 `"^"` 字符分隔的命令已在单独的事务中执行并且提交，这种情况下只需运行脚本中剩余未执行的命令，同时手动在 `SYS_DB_CHANGELOG` 中注册这个手动执行的脚本。之后，可以启动服务，自动更新机制将继续处理下一个未执行的脚本。
 +
 CUBA Studio 为所有数据库类型生成带有 ";" 分隔符的更新脚本，除了 Oracle。如果更新脚本命令由分号分隔，则脚本在一个事务中执行，并在发生错误时完全回滚。此行为可确保数据库架构与已执行的更新脚本列表之间的一致性。
 

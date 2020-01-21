@@ -9,9 +9,9 @@
 
 * *Defined by* – 描述哪个软件对象实现该任务。可能的值是：
 
-** *Bean* – 该任务由 Spring<<managed_beans,托管 bean>>的方法实现。额外属性：
+** *Bean* – 该任务由 Spring<<managed_beans,bean>>的方法实现。额外属性：
 
-*** *Bean name* – 托管 bean 的名称。
+*** *Bean name* – Spring bean 的名称。
 +
 [WARNING]
 ====

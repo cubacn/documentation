@@ -3,6 +3,11 @@
 [[datasource_prog_creation]]
 ====== 编程方式创建
 
+[WARNING]
+====
+这是旧版本的 API。对于从 7.0 开始的新 API，请参阅 <<gui_data>>。
+====
+
 如果需要在 Java 代码中创建数据源，推荐使用一个特殊的类 - `DsBuilder`。
 
 `DsBuilder` 是通过流式接口调用链的方式传递参数的。如果设置了 `master` 和 `property` 参数，会创建 `NestedDatasource`，否则，创建 `Datasource` 或者 `CollectionDatasource`。

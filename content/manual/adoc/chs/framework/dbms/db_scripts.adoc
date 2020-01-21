@@ -3,7 +3,7 @@
 [[db_scripts]]
 ==== 创建和更新数据库的脚本
 
-CUBA 应用程序项目总是包含两组脚本（另请参阅<<db_update_in_dev>>）：
+CUBA 应用程序项目总是包含两组脚本：
 
 * 用于__创建__数据库的脚本，该脚本用于从零开始创建数据库。它们包含一组 DDL 和 DML 操作，这些操作会创建一个空数据库结构，该结构与应用程序<<data_model,数据模型>>的当前状态完全一致。这些脚本还可以使用必要的初始化数据填充数据库。
 
@@ -29,9 +29,9 @@ include::{sourcesdir}/dbms/dbscripts_2.sql[]
 请注意，Studio 更新脚本生成器不会跟踪属性 *Column definition* 和自定义<<datatype,数据类型>>的 `sqlType` 的更改。因此，如果更改了它们，请手动创建相应的更新脚本。
 ====
 
-创建的脚本位于 *core* 模块的 `/db/init` 目录下。对于应用程序支持的每种类型的 DBMS，都会创建一组单独的脚本，这些脚本位于<<cuba.dbmsType,cuba.dbmsType>>应用程序属性中指定的子目录中，例如 `/db/init/postgres`。创建脚本的名称应该符合以下格式：`++{optional_prefix}create-db.sql++`。
+主数据存储的创建脚本位于 *core* 模块的 `/db/init` 目录下。附加数据存储（如果有）的创建脚本位于 `/db/init_<datastore_name>` 目录。对于应用程序支持的每种类型的 DBMS，都会创建一组单独的脚本，这些脚本位于<<cuba.dbmsType,cuba.dbmsType>>应用程序属性中指定的子目录中，例如 `/db/init/postgres`。创建脚本的名称应该符合以下格式：`++{optional_prefix}create-db.sql++`。
 
-更新脚本位于 *core* 模块的 `/db/update` 目录中。对于应用程序支持的每种类型的 DBMS，都会创建一组单独的脚本，这些脚本位于<<cuba.dbmsType,cuba.dbmsType>>应用程序属性中指定的子目录中，例如 `/db/update/postgres`。
+主数据存储的更新脚本位于 *core* 模块的 `/db/update` 目录中。附加数据存储（如果有）的更新脚本位于 `/db/update_<datastore_name>` 目录。对于应用程序支持的每种类型的 DBMS，都会创建一组单独的脚本，这些脚本位于<<cuba.dbmsType,cuba.dbmsType>>应用程序属性中指定的子目录中，例如 `/db/update/postgres`。
 
 更新脚本有两种类型：使用 `++*.sql++` 扩展名或 `++*.groovy++` 扩展名。更新数据库的主要方法是使用 SQL 脚本。Groovy 脚本仅由<<db_update_server,数据库脚本服务器执行机制>>执行，因此它们主要用于生产环境，在数据迁移或导入无法使用纯 SQL 实现时。如果要跳过 Groovy 更新脚本，可以在命令行中运行以下命令：
 
@@ -51,4 +51,8 @@ delete from sys_db_changelog where script_name like '%groovy' and create_ts > (n
 include::db_scripts/db_scripts_sql.adoc[]
 
 include::db_scripts/db_scripts_groovy.adoc[]
+
+include::db_scripts/db_update_gradle.adoc[]
+
+include::db_scripts/db_update_server.adoc[]
 

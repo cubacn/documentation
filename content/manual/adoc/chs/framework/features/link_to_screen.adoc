@@ -41,9 +41,9 @@ http://localhost:8080/app/open?screen=sec$User.edit&item=NEW-sec$User
 +
 [source, url]
 ----
-http://localhost:8080/app/open?screen=sales$Customer.lookup&params=p1:v1,p2:v2
+http://localhost:8080/app/open?screen=sales_Customer.lookup&params=p1:v1,p2:v2
 
-http://localhost:8080/app/open?screen=sales$Customer.lookup&params=p1:sales$Customer-01e37691-1a9b-11de-b900-da881aea47a6
+http://localhost:8080/app/open?screen=sales_Customer.lookup&params=p1:sales_Customer-01e37691-1a9b-11de-b900-da881aea47a6
 ----
 
 如果要提供其它 URL 命令，请执行以下操作：

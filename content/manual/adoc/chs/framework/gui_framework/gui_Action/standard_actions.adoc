@@ -5,45 +5,97 @@
 
 框架提供了一些标准<<gui_Action,操作>>用于处理常见任务，例如为表格中选择的实体调用编辑界面。通过在 `type` 属性中指定其类型，就可以在界面 XML 描述中声明标准操作，例如：
 
+有两种类型的标准操作：
+
+[[standard_list_actions]]
+* 列表操作，处理展示在表格或者树中的实体集合，<<CreateAction>>，<<EditAction>>，<<ViewAction>>，<<RemoveAction>>，<<AddAction>>，<<ExcludeAction>>，<<RefreshAction>>，<<ExcelAction>>，<<BulkEditAction>>。
++
+当表格、树或者数据网格添加了列表操作之后，可以从组件的右键菜单或者预定义的快捷键调用这些操作。通常也会使用添加在按钮面板的一个按钮调用操作。
++
 [source, xml]
 ----
 include::{sourcesdir}/gui/std_actions/std_actions_1.xml[]
 ----
 
-标准操作根据自身的类型和所关联的组件对自身进行配置，有情况下需要指定额外的配置参数。
-
-标准操作分为两类：
-
-* 对表格或树中显示的实体<<std_list_actions,集合的操作>>。
-
-* <<std_picker_actions,选择器类的字段操作>>。
-
-可以在项目中创建相似的操作或覆盖现有的标准操作类型。
-
-例如，假设需要一个操作来显示表中当前所选实体的实例名称，并且希望通过仅指定其类型在多个界面中使用此操作。以下是创建此类操作的步骤。
-
-. 创建一个操作类添加 `@ActionType` 注解，在这个注解里指定操作名称：
+[[standard_picker_actions]]
+* 选取器控件操作, 处理空间的内容，<<LookupAction>>，<<OpenAction>>，<<OpenCompositionAction>>，<<ClearAction>>。
 +
+当选取器控件添加了操作之后，自动使用控件内嵌的按钮进行操作。
++
+[source, xml]
+----
+include::{sourcesdir}/gui/std_actions/std_actions_1_1.xml[]
+----
+
+每个标准操作都通过一个使用了 `@ActionType("<some_type>")` 注解的类实现。该类定义了操作的默认属性和行为。
+
+可以通过制定基本操作的 XML 属性来覆盖通用的属性：caption、icon、shortcut 等。示例：
+
+[source,xml]
+----
+<action id="create" type="create" caption="Create customer" icon="USER_PLUS"/>
+----
+
+从 CUBA 7.2 开始，标准操作带有额外的参数可以在 XML 进行设置或者在 Java 中用 setter 方法进行设置。在 XML 中，使用嵌套的 `<properties>` 元素设置额外的属性，其中每个 `<property>` 元素对应一个操作类中的 setter 方法：
+
+[source,xml]
+----
+include::{sourcesdir}/gui/std_actions/std_actions_3.xml[]
+----
+
+在 Java 控制器也可以做同样的设置：
+
+[source,java]
+----
+@Named("customersTable.create")
+private CreateAction createAction;
+
+@Subscribe
+public void onInit(InitEvent event) {
+    createAction.setOpenMode(OpenMode.DIALOG);
+    createAction.setScreenClass(CustomerEdit.class);
+}
+----
+
+如果一个 setter 接受功能接口参数，可以在界面控制器安装一个处理方法。比如，`CreateAction` 有 `setAfterCommitHandler(Consumer)` 方法，设置一个处理方法会在创建的实体提交之后调用。那么可以按照下面的方式提供处理器：
+
 [source, java]
 ----
-include::{sourcesdir}/gui/std_actions/std_actions_2.java[]
+include::{sourcesdir}/gui/std_actions/std_actions_3.java[]
 ----
 
-. 在 `web-spring.xml` 文件中，添加 `<gui:actions>` 元素，其中 `base-packages` 属性指向一个包，在这个包里可以找到带注解的操作类：
-+
-[source, xml]
+所有的操作都有一个通用的 `enabledRule` 处理器，可以根据不同的情景设置操作的 “启用” 状态。下面的例子中，对某些实体禁用了 RemoveAction：
+
+[source, java]
 ----
-include::{sourcesdir}/gui/std_actions/std_actions_2_1.xml[]
+include::{sourcesdir}/gui/std_actions/std_actions_4.java[]
 ----
 
-. 现在，可以通过指定操作类型的名称在界面描述中声明这个操作：
-+
-[source, xml]
-----
-include::{sourcesdir}/gui/std_actions/std_actions_2_2.xml[]
-----
+参考下面的章节了解框架提供的操作详情。参考 <<custom_action_types>> 章节了解如何创建自己的操作类型或重载已有的操作类型。
 
-include::standard_actions/std_list_actions.adoc[]
+include::standard_actions/AddAction.adoc[]
 
-include::standard_actions/std_picker_actions.adoc[]
+include::standard_actions/BulkEditAction.adoc[]
+
+include::standard_actions/ClearAction.adoc[]
+
+include::standard_actions/CreateAction.adoc[]
+
+include::standard_actions/EditAction.adoc[]
+
+include::standard_actions/ExcelAction.adoc[]
+
+include::standard_actions/ExcludeAction.adoc[]
+
+include::standard_actions/LookupAction.adoc[]
+
+include::standard_actions/OpenAction.adoc[]
+
+include::standard_actions/OpenCompositionAction.adoc[]
+
+include::standard_actions/RefreshAction.adoc[]
+
+include::standard_actions/RemoveAction.adoc[]
+
+include::standard_actions/ViewAction.adoc[]
 

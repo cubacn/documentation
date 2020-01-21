@@ -24,6 +24,11 @@
 
 * 如果 `@Source` 值是 `SourceType.DATABASE`，则可以在平台提供的 *Administration > Application Properties* 界面上编辑该属性。可以使用 `@Secret` 注解以掩码的方式在界面上显示属性值（将使用<<gui_PasswordField,PasswordField>>而不是常规的文本字段）。
 
+[TIP]
+====
+配置接口必须定义在应用程序的根包内（或者根包的内部包内）。
+====
+
 例如:
 
 [source, java]

@@ -3,6 +3,14 @@
 [[gui_data]]
 ==== 数据组件
 
+++++
+<div class="manual-since-container">
+    <a href="http://files.cuba-platform.com/cuba/release-notes/7.0/" class="since-btn" target="_blank">
+        <span class="since-btn-caption">最低版本</span><span class="since-btn-version">7.0</span>
+    </a>
+</div>
+++++
+
 数据组件是界面的不可见元素，用来从中间层加载数据，然后绑定数据到可视化组件，也可将数据改动保存回中间层。有以下数据组件：
 
 * <<gui_data_containers,数据容器>>作为实体和具有数据感知能力的可视化组件之间薄薄的一层，不同类型的容器包含单一实体实例或者实体的集合。

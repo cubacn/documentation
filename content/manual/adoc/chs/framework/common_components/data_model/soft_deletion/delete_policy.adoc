@@ -46,9 +46,9 @@ protected List<Order> orders;
 
 * `deletePolicy.references.message` - 通知消息。
 
-* `deletePolicy.caption.sales$Customer` - 具体实体的通知标题。
+* `deletePolicy.caption.sales_Customer` - 具体实体的通知标题。
 
-* `deletePolicy.references.message.sales$Customer` - 具体实体的通知消息。
+* `deletePolicy.references.message.sales_Customer` - 具体实体的通知消息。
 --
 
 . 关联集合元素的级联删除：删除 `Role` 实例也会导致所有 `Permission` 实例被删除。

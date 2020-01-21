@@ -1,13 +1,15 @@
 :sourcesdir: ../../../../../source
 
 [[declarative_actions]]
-===== 声明式创建操作
+===== 声明式操作
 
 可以在 XML 界面描述中为任何实现了 `Component.ActionsHolder` 接口的组件指定一组<<gui_Action,操作>>，包括整个窗口或 frame。 操作的定义使用 `actions` 元素完成，它包含嵌套的 `action` 元素。
 
 `action` 元素有以下属性：
 
 * `id` − 标识符，在 `ActionsHolder` 组件中应该是唯一的。
+
+* `type` - 定义指定的操作类型。如果设置了该属性，框架会搜索带有 `@ActionType` 注解以及指定类型的类，并用该类实例化此操作。如果未指定类型，框架会创建一个<<baseAction,BaseAction>>类的实例。参阅 <<standard_actions>> 了解如何使用框架提供的操作类型，以及 <<custom_action_types>> 了解如何创建自己的操作类型。
 
 * `caption` – 操作名称。
 

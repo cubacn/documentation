@@ -24,7 +24,7 @@ image::EntityClasses.png[align="center"]
 +
 [WARNING]
 ====
-`AbstractInstance` 以弱引用的方式存储监听器，如果添加的监听器没有外部引用，将立即被 GC 销毁。通常情况下，属性更改监听器是<<gui_vcl,可视化组件>>和 <<datasources,UI 数据源>>，必定有其它对象引用，因此没有监听器丢失的问题。但是，如果监听器是由应用程序代码创建的，并且没有任何对象以自然方式引用它，则除了将其添加到 `Instance` 之外，还必须将其保存在某个对象字段中。
+`AbstractInstance` 以弱引用的方式存储监听器，如果添加的监听器没有外部引用，将立即被 GC 销毁。通常情况下，属性更改监听器是<<gui_vcl,可视化>>和 <<gui_data,数据>>组件，必定有其它对象引用，因此没有监听器丢失的问题。但是，如果监听器是由应用程序代码创建的，并且没有任何对象以自然方式引用它，则除了将其添加到 `Instance` 之外，还必须将其保存在某个对象字段中。
 ====
 
 * `BaseGenericIdEntity` – 持久化和非持久化实体的基础类。实现了 `Entity` 接口但没有指定实体标识符（即主键）的类型。
@@ -35,7 +35,7 @@ image::EntityClasses.png[align="center"]
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/StandardEntity.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/StandardEntity.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -58,7 +58,7 @@ image::EntityClasses_Standard.png[align="center"]
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/BaseUuidEntity.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/BaseUuidEntity.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -69,7 +69,7 @@ image::EntityClasses_Uuid.png[align="center"]
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/BaseLongIdEntity.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/BaseLongIdEntity.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -80,7 +80,7 @@ image::EntityClasses_Long.png[align="center"]
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/BaseStringIdEntity.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/BaseStringIdEntity.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -91,7 +91,7 @@ image::EntityClasses_String.png[align="center"]
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/BaseIdentityIdEntity.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/BaseIdentityIdEntity.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -103,7 +103,7 @@ image::EntityClasses_Identity.png[align="center"]
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/BaseIntIdentityIdEntity.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/BaseIntIdentityIdEntity.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -114,7 +114,7 @@ image::EntityClasses_IntIdentity.png[align="center"]
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/BaseGenericIdEntity.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/BaseGenericIdEntity.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 

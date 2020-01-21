@@ -13,7 +13,9 @@ XML schema： {xsd_url}/menu.xsd
 
 `menu` 元素的属性：
 
-** `id` – 元素的标识符，菜单元素的本地化标题通过 id 来决定（参考<<menu.xml_localized,如下>>）。
+** `id` – 元素的标识符。
+
+** `caption` - 菜单元素的名称。如果未设置，名称会按照<<menu.xml_localized,下文>>介绍的规则确定。
 
 ** `description` - 光标悬浮提示窗的内容。可以使用主语言包里面的本地化语言。
 
@@ -25,11 +27,18 @@ XML schema： {xsd_url}/menu.xsd
 
 `item` 元素的属性：
 
-** `id` – 元素的唯一标识符，菜单元素的本地化标题通过 id 来决定（参考<<menu.xml_localized,如下>>）。如果没有定义任何 `screen`，`bean`，`class` 属性，此 id 用来指向具有相同 id 值的界面。当用户点击菜单项时，会在程序主窗口打开对应的界面。
+** `id` – 元素的唯一标识符。如果没有定义任何 `screen`，`bean`，`class` 属性，此 id 用来指向具有相同 id 值的界面。当用户点击菜单项时，会在程序主窗口打开对应的界面。
 +
 [source, xml]
 ----
 <item id="sample_Foo.browse"/>
+----
+
+** `caption` - 菜单元素的名称。如果未设置，名称会按照<<menu.xml_localized,下文>>介绍的规则确定。
++
+[source, xml]
+----
+<item id="sample_Foo.browse" caption="mainMsg://fooBrowseCaption"/>
 ----
 
 ** `screen` - 界面标识符。可以用这个标识符在菜单中多次包含同一界面。当用户点击菜单项时，会在程序主窗口打开对应的界面。
@@ -115,11 +124,11 @@ shortcut="${sales.menu.customer}"
 
 *** `target` – 用来检查权限的对象（object）。根据权限类型会不同：
 
-**** `SCREEN` – 界面标识符，比如 `sales$Customer.lookup`。
+**** `SCREEN` – 界面标识符，比如 `sales_Customer.lookup`。
 
-**** `++ENTITY_OP++` – 使用 `++{entity_name}:{op}++` 格式的字符串，这里 `{op}` 可以是：`read`, `create`, `update`, `delete`。比如 `sales$Customer:create`。
+**** `++ENTITY_OP++` – 使用 `++{entity_name}:{op}++` 格式的字符串，这里 `{op}` 可以是：`read`, `create`, `update`, `delete`。比如 `sales_Customer:create`。
 
-**** `++ENTITY_ATTR++` – 使用 `++{entity_name}:{attribute}++` 格式的字符串，比如 `sales$Customer:name`。
+**** `++ENTITY_ATTR++` – 使用 `++{entity_name}:{attribute}++` 格式的字符串，比如 `sales_Customer:name`。
 
 **** `SPECIFIC` – 特定的权限标识符，比如 `sales.runInvoicing`。
 
@@ -137,12 +146,12 @@ include::{sourcesdir}/config_files/menu_1.xml[]
 <4> - 调用 `StandardEditor` 的 `setEntityToEdit()` 方法，传递使用给定 id 和视图加载的实体实例。
 
 [[menu.xml_localized]]
-菜单项的本地化语言名称可以通过这种方式来定义：`menu-config` 前缀加上一个点放到元素标识符前面；这个拼出来的字符串作为<<main_message_pack,主语言包>>的一个键值。示例：
+如果 `caption` 属性未指定，菜单项的本地化语言名称可以通过这种方式来定义：`menu-config` 前缀加上一个点放到元素标识符前面；这个拼出来的字符串作为<<main_message_pack,主语言包>>的一个键值。示例：
 
 [source, properties]
 ----
 menu-config.sales=Sales
-menu-config.sales$Customer.lookup=Customers
+menu-config.sales_Customer.lookup=Customers
 ----
 
 如果没设置 `id`，菜单元素的名称会通过类名（如果设置了 `class` 属性）或者 bean 名称和 bean 方法名称（如果设置了 `bean` 属性）生成，因此，推荐设置 `id` 属性。

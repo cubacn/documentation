@@ -3,7 +3,7 @@
 [[cluster_mw_server]]
 ===== 配置多个 Middleware 服务交互
 
-多个 Middleware 服务器可以共同维护<<userSession,用户会话>>共享列表和其它类对象，还能协调处理过期的缓存。每个中间件服务都需要开启 <<cuba.cluster.enabled,cuba.cluster.enabled>> 参数启用这个功能。以下是 `tomcat/conf/app-core/local.app.properties` 文件的示例：
+多个 Middleware 服务器可以共同维护<<userSession,用户会话>>共享列表和其它类对象，还能协调处理过期的缓存。每个中间件服务都需要开启 <<cuba.cluster.enabled,cuba.cluster.enabled>> 参数启用这个功能。以下是 `app_home/local.app.properties` 文件的示例：
 
 [source,plain]
 ----
@@ -11,10 +11,9 @@ cuba.cluster.enabled = true
 
 cuba.webHostName = host3
 cuba.webPort = 8080
-cuba.webContextName = app-core
 ----
 
-对于中间件服务来说，需要设定正确的 <<cuba.webHostName,cuba.webHostName>>，<<cuba.webPort,cuba.webPort>> 和 <<cuba.webContextName,cuba.webContextName>> 这三个属性的值，这样能用这三个属性组成唯一的<<serverId,服务器 ID>>。
+对于中间件服务来说，需要设定正确的 <<cuba.webHostName,cuba.webHostName>> 和 <<cuba.webPort,cuba.webPort>> 这两个属性的值，这样能用这两个属性组成唯一的<<serverId,服务器 ID>>。
 
 服务之间的交互机制是基于 link:http://www.jgroups.org[JGroups]。平台为 JGroups 提供了两个配置文件：
 

@@ -5,7 +5,7 @@
 
 [WARNING]
 ====
-对于从 v.7.0 开始的新 API，请参阅 <<gui_screens>>。
+这是旧版本的 API。对于从 7.0 开始的新 API，请参阅 <<gui_screens>>。
 ====
 
 通过一个 <<screen_xml,XML 描述>>和一个<<screen_controller,界面控制器>>来定义一个通用 UI 界面。XML 描述中含有对控制器类的链接。

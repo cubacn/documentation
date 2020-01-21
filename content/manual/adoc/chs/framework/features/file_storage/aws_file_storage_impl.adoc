@@ -5,30 +5,8 @@
 
 标准文件存储实现可以使用云存储服务代替。建议为云部署使用单独的云文件存储服务，因为部署应用的云服务器通常不能保证外部文件在其硬盘上的永久存储。
 
-平台提供了开箱即用的 Amazon S3 文件存储服务支持。如果要支持其它服务就需要实现自定义逻辑。
+https://github.com/cuba-platform/cuba-aws[AWS 文件存储] 扩展提供了针对 Amazon S3 文件存储服务的开箱即用支持。如要支持其他的服务，需要自己实现自定义逻辑。
 
-要添加 Amazon S3 支持，首先，需要在 *core* 模块的 `spring.xml` 文件中注册 `AmazonS3FileStorage` 类：
-
-[source, xml]
-----
-<bean name="cuba_FileStorage"
-          class="com.haulmont.cuba.core.app.filestorage.amazon.AmazonS3FileStorage"/>
-----
-
-接下来，应该在 *core* 模块的 `app.properties` 文件中定义 Amazon 设置：
-
-[source, plain]
-----
-cuba.amazonS3.accessKey = <Access Key>
-cuba.amazonS3.secretAccessKey = <Secret Access Key>
-cuba.amazonS3.region = <Region>
-cuba.amazonS3.bucket = <Bucket Name>
-----
-
-[TIP]
-====
-`accessKey` 和 `secretAccessKey` 应该是 AWS IAM 用户的帐户，而不是 AWS 帐户。可以在 AWS 控制台的 *Users* 标签页上找到正确的凭据。
-====
+如需在应用程序中使用 Amazon S3 支持，请按照 https://github.com/cuba-platform/cuba-aws/blob/master/README.md[README] 的介绍进行安装和配置。
 
 存储文件夹结构的组织方式与<<file_storage_impl,标准实现>>类似。
-

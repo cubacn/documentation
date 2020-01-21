@@ -11,7 +11,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/GroupTable.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/GroupTable.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -73,6 +73,16 @@ groupTable.ungroupByColumns("department");
 
 [[gui_GroupTable_ungroup]]
 * `ungroup()` - 取消所有分组。
+
+[[gui_GroupTable_AggregationDistributionProvider]]
+* `setAggregationDistributionProvider()` 方法与 `Table` 组件的<<gui_Table_AggregationDistributionProvider,同名>>方法类似，不同之处在于，当创建 provider 时，会使用 `GroupAggregationDistributionContext<V>` 对象，包含了附加的信息：
++
+[[gui_GroupTable_groupInfo]]
+** `GroupInfo groupInfo` – 带有分组行信息的对象：分组的所有列的属性及其值。
+
+[[gui_GroupTable_getAggregationResults]]
+* `getAggregationResults()` 方法会为特定的 <<gui_GroupTable_groupInfo,GroupInfo>> 对象返回一个聚合值的映射（map），键值为表格列的标识符，值为聚合值。
+
 --
 
 `GroupTable` 分组表格的其它功能类似于普通<<gui_Table,表格>>.
@@ -94,6 +104,8 @@ GroupTable 的属性列表::
 <<gui_attr_description,description>> -
 <<gui_attr_descriptionAsHtml,descriptionAsHtml>> -
 <<gui_Table_editable,editable>> -
+<<gui_Table_emptyStateLinkMessage,emptyStateLinkMessage>> -
+<<gui_Table_emptyStateMessage,emptyStateMessage>> -
 <<gui_attr_enable,enable>> -
 <<gui_attr_expandRatio,box.expandRatio>> -
 <<gui_attr_height,height>> -
@@ -143,6 +155,7 @@ GroupTable 的元素::
 <<gui_Table_column_maxTextLength,maxTextLength>> -
 <<gui_attr_optionsDatasource,optionsDatasource>> -
 <<gui_DateField_resolution,resolution>> -
+<<gui_Table_column_sort,sort>> -
 <<gui_Table_column_sortable,sortable>> -
 <<gui_attr_visible,visible>> -
 <<gui_Table_column_width,width>>
@@ -151,14 +164,23 @@ GroupTable 的元素::
 <<gui_Table_column_aggregation,aggregation>> -
 <<gui_formatter,formatter>>
 
+<<gui_Table_column_aggregation,aggregation>> 的属性::
+<<gui_Table_column_aggregation_editable,editable>> -
+<<gui_Table_column_aggregation_strategyClass,strategyClass>> -
+<<gui_Table_column_aggregation,type>> -
+<<gui_Table_column_aggregation_valueDescription,valueDescription>>
+
 <<gui_Table_rows,rows 行集合>>的属性::
 <<gui_attr_datasource,datasource>>
 
 API::
 <<gui_Table_ColumnCollapseListener,addColumnCollapseListener>> -
 <<gui_Table_SelectionListener,addSelectionListener>> -
+<<gui_GroupTable_getAggregationResults,getAggregationResults>> -
 <<gui_GroupTable_groupByColumns,groupByColumns>> -
+<<gui_GroupTable_AggregationDistributionProvider,setAggregationDistributionProvider>> -
 <<gui_Table_CellClickListener,setClickListener>> -
+<<gui_Table_setEmptyStateLinkClickHandler,setEmptyStateLinkClickHandler>> -
 <<gui_GroupTable_ungroup,ungroup>> -
 <<gui_GroupTable_ungroupByColumns,ungroupByColumns>>
 

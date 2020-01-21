@@ -33,9 +33,6 @@ CUBA 框架使用 *Spring 框架* 的容器。
 *DB - 数据库*::
 关系型数据库。
 
-*Datasource - 数据源*::
-参考 <<datasources,>>.
-
 *Dependency Injection - 依赖注入*::
 也称反转控制（IoC）。一个用来获取使用的对象链接的机制，这个机制会假设一个对象只需要声明它依赖的那些对象，而由容器来帮助创建所有需要的对象并将这些对象注入到依赖他们的对象中去。
 +
@@ -77,9 +74,7 @@ Java Persistence API – <<orm,ORM>> 技术的一套标准规范。CUBA 框架�
 
 [[jpql]]
 *JPQL*::
-平台独立的面向对象的查询语言，是 JPA 规范的一部分。
-+
-更多细节可以参考 https://en.wikibooks.org/wiki/Java_Persistence/JPQL
+数据库独立的面向对象的查询语言，是 JPA 规范的一部分。参考 https://en.wikibooks.org/wiki/Java_Persistence/JPQL 。
 
 *Lazy loading - 懒加载*::
 参考 <<lazy_loading,>>.
@@ -92,7 +87,7 @@ Java Persistence API – <<orm,ORM>> 技术的一套标准规范。CUBA 框架�
 参考 <<message_packs,>>。翻译时有时候简称语言包，本地化语言包等。
 
 *Managed Beans - 托管 bean*::
-包含应用程序业务逻辑的组件。
+托管至<<container,容器>>的组件，包含应用程序业务逻辑。
 +
 参考 <<managed_beans,>>.
 
@@ -100,7 +95,7 @@ Java Persistence API – <<orm,ORM>> 技术的一套标准规范。CUBA 框架�
 参考 <<main_message_pack,>>.
 
 *MBeans*::
-带有 JMX 接口的<<managed_beans,托管 bean>>。典型情况下，这些 bean 包含一个内部状态（比如可以是缓存，配置数据或者统计数据），这个内部状态需要通过 JMX 访问。
+带有 JMX 接口的<<managed_beans,Spring bean>>。典型情况下，这些 bean 包含一个内部状态（比如可以是缓存，配置数据或者统计数据），这个内部状态需要通过 JMX 访问。
 
 [[middleware_glossentry]]
 *Middleware - 中间件*::
@@ -130,7 +125,7 @@ Java Persistence API – <<orm,ORM>> 技术的一套标准规范。CUBA 框架�
 参考 <<screen_controller,>>.
 
 *Services - 服务*::
-中间件服务为客户端调用提供业务接口并且形成中间件壁垒。服务可以封装业务逻辑或者将执行过程代理给 <<managed_beans,Managed Beans>>。
+中间件服务为客户端调用提供业务接口并且形成中间件壁垒。服务可以封装业务逻辑或者将执行过程代理给其他的<<managed_beans, Spring Beans>>。
 +
 参考 <<services,>>.
 
@@ -145,6 +140,6 @@ Java Persistence API – <<orm,ORM>> 技术的一套标准规范。CUBA 框架�
 
 [[screen_xml_glossentry]]
 *XML-descriptor - 界面 XML 描述*::
-包含界面可视化组件布局和数据源的 XML 文件。
+包含界面可视化组件布局和数据组件的 XML 文件。
 +
 参考 <<screen_xml,>>.

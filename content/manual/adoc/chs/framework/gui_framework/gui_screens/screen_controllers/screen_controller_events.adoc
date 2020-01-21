@@ -48,7 +48,7 @@ include::{sourcesdir}/gui/screens/screen_AfterShowEvent.java[]
 include::{sourcesdir}/gui/screens/screen_BeforeCloseEvent.java[]
 ----
 +
-还有一个同名的事件，它定义在 `Window` 接口内。此事件会在界面被外部（界面控制器之外）操作关闭之前发送，比如点击窗口标签页的关闭按钮或者按下 Esc 键。可以使用 `getCloseOrigin()` 方法获取窗口关闭的类型，此方法返回一个实现了 `CloseOrigin` 接口的对象。`CloseOrigin` 接口的默认实现是`CloseOriginType`，有三个值：
+还有一个同名的事件，它定义在 `Window` 接口内。此事件会在界面被外部（界面控制器之外）操作关闭之前发送，比如点击窗口标签页的关闭按钮或者按下 Esc 键。可以使用 `getCloseOrigin()` 方法获取窗口关闭的类型，此方法返回一个实现了 `CloseOrigin` 接口的对象。`CloseOrigin` 接口的默认实现是 `CloseOriginType`，有三个值：
 +
 ** `BREADCRUMBS` - 界面通过点击面包屑链接关闭。
 ** `CLOSE_BUTTON` - 界面通过窗口顶部的关闭按钮关闭，或者通过窗口标签页的关闭按钮或右键菜单的操作：关闭、关闭全部、关闭其它。

@@ -1,13 +1,13 @@
 :sourcesdir: ../../../../source
 
 [[managed_beans]]
-==== 托管 Bean
+==== Spring Beans
 
-_Managed Beans - 托管 bean_ 是用于实现应用程序业务逻辑的程序组件。这里，Managed 意味着实例的创建和依赖关系的管理都由<<container,容器>>处理，容器是 *Spring* 框架的主要部分。
+_Spring Beans_ 是一些类，它们实例的创建和依赖关系的管理都由 Spring 框架容器处理。Beans 设计用于实现应用程序业务逻辑。
 
 [TIP]
 ====
-默认情况下，托管 Bean 是 _单例_，即每个应用程序 block 中只存在此类的一个实例。如果单例 bean 在字段中包含可变数据（换句话说，具有状态），对这些数据的访问必须同步。
+默认情况下，Spring Bean 是 _单例_，即每个应用程序 block 中只存在此类的一个实例。如果单例 bean 在字段中包含可变数据（换句话说，具有状态），对这些数据的访问必须同步。
 ====
 
 include::managed_beans/managed_beans_creation.adoc[]

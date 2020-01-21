@@ -15,5 +15,5 @@
 
 * Groovy 脚本、类，或者 Java 源代码 - 程序会通过 <<scripting,Scripting>> 接口使用
 
-配置文件目录通过 <<cuba.confDir,cuba.confDir>> 应用程序属性指定。在 Tomcat 的<<fast_deployment,快速部署>>模式下，这个目录是 `tomcat/conf` 下面的一个用应用程序名字命名的目录，比如中间件的 `tomcat/conf/app-core` 目录。如果是其它的部署方式，这个目录会在<<app_home,应用程序主目录>>里。
+配置文件目录通过 <<cuba.confDir,cuba.confDir>> 应用程序属性指定。默认情况下，配置目录在 <<app_home,应用程序主目录>> 内。
 

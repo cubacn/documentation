@@ -3,6 +3,14 @@
 [[gui_anonymous_access]]
 ==== 匿名访问界面
 
+++++
+<div class="manual-since-container">
+    <a href="http://files.cuba-platform.com/cuba/release-notes/7.1/" class="since-btn" target="_blank">
+        <span class="since-btn-caption">最低版本</span><span class="since-btn-version">7.1</span>
+    </a>
+</div>
+++++
+
 默认情况下，匿名（未认证）用户会话只能访问登录界面。通过扩展登录界面，可以在界面上添加任何信息，甚至添加 `WorkArea` 组件，然后便能在该组件内为匿名用户打开其它界面。但是一旦用户登录了，所有在匿名模式下打开的界面都会关闭。
 
 有时也许我们需要将某些应用程序的界面呈现给用户而无论用户是否进行登录认证。比如下面这个需求：

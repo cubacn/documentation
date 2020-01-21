@@ -19,9 +19,9 @@ image::project_structure_global.png[align="center"]
 
 *core* 模块包含以下目录：
 
-* `db` – 包含数据库<<db_scripts,创建和更新脚本>>。
+* `db` – 包含数据库<<db_scripts,迁移脚本>>。
 
-* `src` – 源代码目录；这个目录的根目录包含了 *Middleware* block 的<<app_properties_files,应用程序属性>>文件和 <<spring.xml,spring.xml>> 配置文件。`com.samples.sales.core` 包包含了 *Middleware* 的类：<<services,services>> 的实现类，<<managed_beans,托管 beans>> 和 <<jmx_beans,JMX beans>>。
+* `src` – 源代码目录；这个目录的根目录包含了 *Middleware* block 的<<app_properties_files,应用程序属性>>文件和 <<spring.xml,spring.xml>> 配置文件。`com.samples.sales.core` 包包含了 *Middleware* 的类：<<services,services>> 的实现类，<<managed_beans,Spring beans>> 和 <<jmx_beans,JMX beans>>。
 
 * `test` - 中间件集成<<testing,测试>>源码目录。
 

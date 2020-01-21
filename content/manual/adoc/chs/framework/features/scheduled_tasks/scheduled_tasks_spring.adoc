@@ -14,7 +14,7 @@ Spring Framework 手册的 *Task Execution and Scheduling* 部分详细描述了
 include::{sourcesdir}/features/scheduled_tasks_1.xml[]
 ----
 
-在上面的例子中，声明了两个任务，它们调用 `++sales_Processor++`  bean 的 `someMethod()` 方法和 `someOtherMethod()` 方法。从应用程序启动时起，将以固定的时间间隔（60 秒）调用 `someMethod()` 方法。根据 Cron 表达式定义的时间表调用 `someOtherMethod()` 方法（有关此表达式格式的描述，请参阅 http://quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger ）。
+在上面的例子中，声明了两个任务，它们调用 `++sales_Processor++`  bean 的 `someMethod()` 方法和 `someOtherMethod()` 方法。从应用程序启动时起，将以固定的时间间隔（60 秒）调用 `someMethod()` 方法。根据 Cron 表达式定义的时间表调用 `someOtherMethod()` 方法（有关此表达式格式的描述，请参阅 https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/scheduling/support/CronSequenceGenerator.html ）。
 
 任务的实际启动由 `scheduled-tasks` 元素的 `scheduler` 属性中指定的 bean 执行。它是 `CubaThreadPoolTaskScheduler` 类型的 bean，在 *cuba* 应用程序组件的 *core* 和 *web* 模块中配置（参阅 `cuba-spring.xml` 、 `cuba-web-spring.xml` ）。该类提供处理一些 CUBA 框架内特定任务的功能。
 

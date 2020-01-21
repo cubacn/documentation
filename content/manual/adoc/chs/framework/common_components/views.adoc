@@ -5,7 +5,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/global/View.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/global/View.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -25,7 +25,25 @@ _视图_ 机制通过从数据库中检索并向客户端传输有深度和属�
 
 * 在数据加载过程中，调用方提供所需的视图以及 <<jpql,JPQL>> 查询语句或实体标识符。
 
-* 所谓的 _FetchGroup_ 是在视图的基础上产生的 - 这是 *EclipseLink* 框架基础<<orm,ORM>>层的一个特殊功能。FetchGroup 在两方面影响对数据库的 SQL 查询语句的生成：返回的字段列表以及与包含关联实体的其它表的连接。
+* 所谓的 _FetchGroup_ 是在视图的基础上产生的 - 这是 EclipseLink 框架基础<<orm,ORM>>层的一个特殊功能。FetchGroup 在两方面影响对数据库的 SQL 查询语句的生成：返回的字段列表以及与包含关联实体的其它表的连接。
+
+[TIP]
+====
+无论视图中的属性如何定义，始终会加载以下属性：
+
+* `id` – 实体标识符。
+* `version` – 用于版本化( `Versioned` ) 实体的乐观锁。
+* `deleteTs` 、 `deletedBy` – 用于实现了<<soft_deletion,软删除>>的实体。
+====
+
+[WARNING]
+====
+尝试获取或设置未加载属性的值（未包含在视图中）会引发异常。您可以使用 `EntityStates.isLoaded()` 方法检查属性是否已加载。
+====
+
+参考<<views_creation,下一>>章节了解如何定义视图。
+
+下面解释一些视图机制的内部原理。
 
 .View 类
 image::View.png[align="center"]
@@ -65,19 +83,4 @@ image::View.png[align="center"]
 +
 如果未指定 `fetch` 属性，则应用 `AUTO` 模式。如果引用是一个<<entity_cache,可缓存的>>实体，则无论视图中指定的什么值，都将使用 `UNDEFINED`。
 
-[TIP]
-====
-无论视图中的属性如何定义，始终会加载以下属性：
-
-* `id` – 实体标识符。
-* `version` – 用于版本化( `Versioned` ) 实体的乐观锁。
-* `deleteTs` 、 `deletedBy` – 用于实现了<<soft_deletion,软删除>>的实体。
-====
-
-[WARNING]
-====
-尝试获取或设置未加载属性的值（未包含在视图中）会引发异常。您可以使用 `EntityStates.isLoaded()` 方法检查属性是否已加载。
-====
-
 include::views/views_creation.adoc[]
-

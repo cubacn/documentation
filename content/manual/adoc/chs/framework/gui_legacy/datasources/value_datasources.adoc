@@ -3,11 +3,16 @@
 [[value_datasources]]
 ===== 值数据源
 
+[WARNING]
+====
+这是旧版本的 API。对于从 7.0 开始的新 API，请参阅 <<gui_data>>。
+====
+
 通过值数据源可以执行返回纯数值或者数值聚合（aggregates）的查询语句。比如，可以为 customer 做一些数据统计：
 
 [source, sql]
 ----
-select o.customer, sum(o.amount) from demo$Order o group by o.customer
+select o.customer, sum(o.amount) from demo_Order o group by o.customer
 ----
 
 值数据源通过称为 `KeyValueEntity` 的特殊类型的实体跟其它实体交互。这种类型的实体可以在运行时包含任意数量的属性。所以在上面的例子中，`KeyValueEntity` 实例会包含两个属性：第一个是 `Customer` 类型的属性，第二个是 `BigDecimal` 类型的属性。

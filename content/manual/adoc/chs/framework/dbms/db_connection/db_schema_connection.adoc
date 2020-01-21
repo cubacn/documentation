@@ -1,0 +1,76 @@
+:sourcesdir: ../../../../../source
+
+[[db_schema_connection]]
+===== 连接到非默认数据库schema
+
+PostgreSQL 和 Microsoft SQL Server 支持连接到指定的数据库架构。默认情况下，PostgreSQL 会连接到 `public`，SQL Server 会连接到 `dbo`。
+
+PostgreSQL::
++
+--
+如果使用的 Studio，在 *Data Store Properties* 窗口的 *Connection params* 字段添加 `currentSchema` 连接参数。Studio 会根据数据源的配置方法自动更新项目文件。否则，需要按照下面的介绍手动配置连接参数。
+
+如果在应用程序中配置数据源，添加 URL 属性全路径，示例：
+
+[source,properties]
+----
+cuba.dataSource.jdbcUrl = jdbc:postgresql://localhost/demo?currentSchema=my_schema
+----
+
+如果是从 JNDI 获取数据源，需要在数据源定义的连接 URL 添加参数 `currentSchema`（Tomcat 中是在 `context.xml` 文件），还需要为 <<build.gradle_createDb,createDb>> 和 <<build.gradle_updateDb,updateDb>> Gradle 任务添加 `connectionParams` 属性。示例：
+
+[source, groovy]
+----
+include::{sourcesdir}/database/db_schema_connection_1.groovy[]
+----
+
+现在可以更新或者重新创建数据库，所有的表格会在指定的 schema 中创建。
+--
+
+Microsoft SQL Server::
++
+--
+此时，只提供一个连接属性就不够了，需要将 schema 和用户做关联。下面是创建一个新数据库并使用非默认 schema 的例子。
+
+* 创建一个 login：
++
+[source, sql]
+----
+create login JohnDoe with password='saPass1'
+----
+
+* 创建一个新数据库：
++
+[source, sql]
+----
+create database my_db
+----
+
+* 用 `sa` 连接至新数据库，创建一个 schema，然后创建用户并赋予权限：
++
+[source, sql]
+----
+create schema my_schema
+
+create user JohnDoe for login JohnDoe with default_schema = my_schema
+
+exec sp_addrolemember 'db_owner', 'JohnDoe'
+----
+
+如果是使用 Studio，在 *Data Store Properties* 窗口的 *Connection params* 字段添加 `currentSchema` 连接参数。Studio 会根据数据源的配置方法自动更新项目文件。否则，需要按照下面的介绍手动配置连接参数。
+
+如果在应用程序中配置数据源，添加 URL 属性全路径，示例：
+
+[source,properties]
+----
+cuba.dataSource.jdbcUrl = jdbc:sqlserver://localhost;databaseName=demo;currentSchema=my_schema
+----
+
+如果是从 JNDI 获取数据源，需要在数据源定义的连接 URL 添加参数 `currentSchema`（Tomcat 中是在 `context.xml` 文件），还需要为 <<build.gradle_createDb,createDb>> 和 <<build.gradle_updateDb,updateDb>> Gradle 任务添加 `connectionParams` 属性。
+[source, groovy]
+----
+include::{sourcesdir}/database/db_schema_connection_2.groovy[]
+----
+
+请注意，由于 SQL Server 的特性 - 非默认 schema 需要与用户关联，所以无法从 Studio 或在命令行中执行 `createDb` 来重新创建 SQL Server 数据库。但是，如果在 Studio 中运行 *Update database* 或在命令行中运行 `updateDb`，则现有数据库中指定 schema 下所有必须的表都会被创建。
+--

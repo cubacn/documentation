@@ -3,6 +3,11 @@
 [[dataSupplier]]
 ===== DataSupplier
 
+[WARNING]
+====
+这是旧版本的 API。对于从 7.0 开始的新 API，请参阅 <<gui_data>>。
+====
+
 `DataSupplier` – 接口，数据源通过这个接口访问到 Middleware 以便加载和保存实体。接口的标准实现只是简单的做了 <<dataManager,DataManager>> 的代理。界面可以在 `window` 元素的 `dataSupplier` 属性定义它自己的 `DataSupplier` 实现类。
 
 `DataSupplier` 的引用可以通过注入的方式或者通过 `DsContext` 或 `Datasource` 实例获得。这两种方式下，如果有自定义的实现类，则会使用自定义类。

@@ -3,7 +3,7 @@
 [[web.xml]]
 === web.xml
 
-`web.xml` 是 Java EE web 应用程序的标准描述文件。需要为 Middleware、web 客户端以及 Web Portal 客户端 block 创建此文件。
+`web.xml` 是 Java web 应用程序的标准描述文件。需要为 Middleware、web 客户端以及 Web Portal 客户端 block 创建此文件。
 
 在一个应用程序项目中，`web.xml` 文件在相应<<app_modules,模块>>的 `web/WEB-INF` 目录。
 

@@ -7,7 +7,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/annotation/CaseConversion.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/annotation/CaseConversion.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -54,7 +54,7 @@ protected String countryCode;
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/chile/core/annotations/Composition.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/chile/core/annotations/Composition.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -109,7 +109,7 @@ protected Address address;
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/annotation/EmbeddedParameters.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/annotation/EmbeddedParameters.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -142,7 +142,7 @@ protected Address address;
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/annotation/IgnoreUserTimeZone.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/annotation/IgnoreUserTimeZone.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -243,7 +243,7 @@ private String description;
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/annotation/LocalizedValue.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/annotation/LocalizedValue.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -275,7 +275,7 @@ protected Proc proc;
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/annotation/Lookup.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/annotation/Lookup.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -287,7 +287,7 @@ protected Proc proc;
 
 参数:
 
-* `type` - 默认值为 `SCREEN`，表示从<<screen_lookup,查找界面>>中选择引用。 `DROPDOWN` 表示从下拉列表中选择引用。如果查找类型设置为 `DROPDOWN`，则在创建编辑界面时，Studio 将生成<<datasources,选项数据源>>。因此，应在生成实体编辑界面之前设置查找类型参数。此外，<<gui_Filter,Filter>> 组件将允许用户从下拉列表中而不是查找界面中选择此类型的参数。
+* `type` - 默认值为 `SCREEN`，表示从<<screen_lookup,查找界面>>中选择引用。 `DROPDOWN` 表示从下拉列表中选择引用。如果查找类型设置为 `DROPDOWN`，则在创建编辑界面时，Studio 将生成<<gui_collection_container,集合数据容器>>。因此，应在生成实体编辑界面之前设置查找类型参数。此外，<<gui_Filter,Filter>> 组件将允许用户从下拉列表中而不是查找界面中选择此类型的参数。
 
 * `actions` - 定义默认情况下要在 FieldGroup 内的 PickerField 组件中使用的操作。可能的值：`lookup` 、 `clear` 、 `open`。
 
@@ -363,7 +363,7 @@ protected Customer customer;
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/chile/core/annotations/MetaProperty.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/chile/core/annotations/MetaProperty.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -381,7 +381,7 @@ protected Customer customer;
 
 * `datatype` - 显式定义<<datatype,数据类型>>，将会覆盖根据属性的 Java 类型推断的数据类型。
 
-* `related` - 当此属性包含在<<views,视图>>中时，定义从数据库中提取的相关持久化属性的数组。
+* `related` - 当此属性包含在<<views,视图>>中时，定义从数据库中提取的与该属性相关联的其他持久化属性的数组。还有，如果此注解用在 getter 方法上，比如该属性为只读属性，那么关联属性的改动会为该只读属性产生 `PropertyChangeEvent` 事件。此功能可以帮助展示该只读属性的 UI 组件更新页面。
 
 字段示例:
 
@@ -396,20 +396,16 @@ protected String token;
 
 [source, java]
 ----
-@MetaProperty
-public String getLocValue() {
-    if (!StringUtils.isEmpty(messagesPack)) {
-        return AppBeans.get(Messsages.class).getMessage(messagesPack, value);
-    } else {
-        return value;
-    }
+@MetaProperty(related = "firstName,lastName")
+public String getFullName() {
+    return firstName + " " + lastName;
 }
 ----
 --
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/chile/core/annotations/NumberFormat.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/chile/core/annotations/NumberFormat.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -451,7 +447,7 @@ protected BigDecimal percentNumber;
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/annotation/OnDelete.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/annotation/OnDelete.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -473,7 +469,7 @@ private Set<Constraint> constraints;
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/annotation/OnDeleteInverse.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/annotation/OnDeleteInverse.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 

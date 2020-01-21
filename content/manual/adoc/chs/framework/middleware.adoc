@@ -8,9 +8,9 @@
 .中间件组件
 image::Middleware.png[align="center"]
 
-<<services,服务(Service)>>是<<container,容器>>托管组件，用于形成应用边界并为客户端<<app_tiers,层>>提供接口。服务自身可以包含业务逻辑，也可以将业务逻辑的实现委托给托管 bean。
+<<services,服务(Service)>>是<<managed_beans,Spring beans>>，用于形成应用边界并为客户端<<app_tiers,层>>提供接口。服务自身可以包含业务逻辑，也可以将业务逻辑的实现委托给托管 bean。
 
-<<managed_beans,托管 Bean>>是容器托管组件，包含应用程序的业务逻辑。它们由服务、其它 bean 或通过可选的<<jmx, JMX>>接口调用。
+<<managed_beans,托管 Bean>>是 Spring beans，包含应用程序的业务逻辑。它们由服务、其它 bean 或通过可选的<<jmx, JMX>>接口调用。
 
 <<persistence,Persistence>>是一个基础设施接口，用于访问数据存储功能：<<orm,ORM>>和<<transactions,事务>>管理。
 

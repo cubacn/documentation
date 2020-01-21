@@ -3,65 +3,33 @@
 [[app_home]]
 === 应用程序主目录
 
-应用程序主目录是一个文件系统目录，这里可以存放所有的 <<app_dirs>>。这个目录在除了<<fast_deployment,快速部署>>之外的其它全部<<deployment_variants,部署场景>>都会使用。在后面的例子中，应用程序的目录都在特定的 Tomcat 文件夹中。
+应用程序主目录是一个文件系统目录，CUBA 应用程序在这里保存临时文件，也可以放置<<app_properties_files,local.app.properties>>和<<logging,logback.xml>>这样的配置文件。下面提到的大多数<<app_dirs,应用程序文件夹>>都放在应用程序主目录中。<<file_storage,文件存储>>默认也是用了应用程序主目录下的一个子目录。
 
-应用程序主目录即是所有应用程序目录的根目录。通常在 WAR 或者 UberJAR 包中的 `/WEB-INF/local.app.properties` 文件指定。
+框架从 `app.home` Java 系统参数获取应用程序主目录。一般来说，这个属性使用 `-D` 的命令行参数在启动 Java 时设置。
 
-* 如果构建一个 WAR 包，必须在 <<build.gradle_buildWar,buildWar>> Gradle 任务中定义应用程序主目录的路径。可以设置为绝对路径或者相对路径，如果是相对路径的话，需要提前知道 WAR 将会被部署在服务器的哪个工作目录。如果不知道的话，可以用 Java 系统变量的占位符，然后在运行时提供真实路径。
-+
---
-在运行时设置应用程序主目录的示例：
+如果没有从命令行提供 `app.home` 系统参数，会按照下面的规则自动设置：
 
-** 任务配置：
-+
-[source,groovy]
-----
-task buildWar(type: CubaWarBuilding) {
-    appHome = '${app.home}'
-    // ...
-}
-----
+. 如果应用程序是以 UberJAR 的方式启动，当前工作目录作为应用程序主目录。
 
-** 构建了 WAR 之后 `/WEB-INF/local.app.properties` 文件的内容：
-+
-[source,plain]
-----
-cuba.logDir = ${app.home}/logs
-cuba.confDir = ${app.home}/${cuba.webContextName}/conf
-cuba.tempDir = ${app.home}/${cuba.webContextName}/temp
-cuba.dataDir = ${app.home}/${cuba.webContextName}/work
-...
-----
+. 如果 `catalina.base` 系统参数已设置（即应用程序运行在 Tomcat 中），应用程序主目录设置为 `${catalina.base}/work/app_home`。
 
-** 命令行传递 `app.home` 系统参数：
-+
-[source,plain]
-----
-java -Dapp.home=/opt/app_home ...
-----
-+
-设置 Java 系统参数的方式取决于应用程序服务。对于 Tomcat，推荐设置在 `bin/setenv.sh` （或者 `bin/setenv.bat`）文件内。
+. 其他情况，应用程序主目录设置为用户根目录的 `.app_home` 文件夹。
 
-** 生成的目录结构：
-+
-[source,plain]
-----
-/opt/app_home/
-  app/
-    conf/
-    temp/
-    work/
-  app-core/
-    conf/
-    temp/
-    work/
-  logs/
-----
---
+[WARNING]
+====
+选项 2 和 3 有这个缺点：Logback 初始化的过程会在 `app.home` 属性设置之前，所以在 `logback.xml` 文件中的类似 `${app.home}` 的引用不会生效，日志文件的位置（如果是用这种方式设置的话）也不可确定。还有，此时也不能通过简单的添加 `logback.xml` 至应用程序主目录覆盖日志属性，因为在初始化的时候找不到该文件。
+====
 
-* 对于 UberJAR 的情况，应用程序主目录默认设置为工作目录，但是也可以通过 Java 系统参数 `app.home` 来重定义。所以如果需要跟上面提到的 WAR 的例子一样设定同样的主目录，可以通过命令行执行：
-+
+在开发过程中使用 <<fast_deployment>> 时，从 7.2 版本开始，应用程序主目录会设置为项目目录下的 `deploy/app_home` 目录。如果项目是基于平台旧版本的话，应用程序目录会是在 Tomcat 的 `conf` 和 `work` 目录。
+
+当运行 <<uberjar_deployment,UberJAR>> 时，指定 `-D` 命令行参数或者就把当前目录作为应用程序主目录，示例：
+
 ----
 java -Dapp.home=/opt/app_home -jar app.jar
 ----
 
+当使用 WAR 部署时，在启动脚本的合适位置用 `-D` 命令行参数设置 `app.home`，或者用应用程序服务器的其他推荐方法设置。比如，在 Tomcat 中，在 `bin/setenv.sh` 内添加下面内容：
+
+----
+CATALINA_OPTS="-Dapp.home=\"$CATALINA_BASE/work/app_home\" -Xmx512m -Dfile.encoding=UTF-8"
+----

@@ -5,9 +5,8 @@
 
 . 运行 CUBA Studio，按照 {studio_man_url}/index.html[CUBA Studio 用户指南] 中 {studio_man_url}/create_project.html[创建新项目] 章节的描述创建一个新的项目，项目名称为 `sampler`。
 
-. 在 CUBA Studio 中打开 *Project Properties* : 点击  *CUBA -> Project Properties* 主菜单项。在 *App components* 列表中添加 *charts* 应用程序组件。 Studio 如果建议重新创建 Gradle 脚本的时候，点确定。
+. 按照 <<installation, 安装>> 章节的描述，通过 **CUBA Add-Ons** 窗口为项目添加 *Charts* 扩展。
 
 . 点击 *CUBA* -> *Build Tasks* -> *Deploy* 。这时, 应用程会被装配并部署到位于 `build/tomcat` 的 Tomcat 应用程序服务。
 
 以上步骤完成后，展示图表的功能就可以使用了。
-

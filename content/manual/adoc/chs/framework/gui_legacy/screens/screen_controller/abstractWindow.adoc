@@ -4,6 +4,11 @@
 [[abstractWindow]]
 ====== AbstractWindow
 
+[WARNING]
+====
+这是旧版本的 API。对于从 7.0 开始的新 API，请参阅 <<screen_controllers>>。
+====
+
 `AbstractWindow` 是 <<abstractFrame,AbstractFrame>> 的子类，定义下列方法：
 
 [[dialogOptions]]

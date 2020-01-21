@@ -3,23 +3,21 @@
 [[tomcat_war_deployment_linux]]
 ==== 部署 WAR 至 Tomcat Linux 服务
 
-以下示例在 Ubuntu 16.04 测试通过
+以下示例在 Ubuntu 18.04 测试通过，使用的 tomcat9 和 tomcat8 的包。
 
 . 在 <<build.gradle,build.gradle>> 末尾添加 <<build.gradle_buildWar, buildWar>> 任务。可以指定不同的 `context.xml` 文件来设置生产环境数据库连接：
 +
---
 [source, groovy]
 ----
 include::{sourcesdir}/deployment/warDeployment_2_linux.groovy[]
 ----
-
++
 如果目标 Tomcat 服务的参数跟<<fast_deployment,快速部署>>里用到的本地 Tomcat 的参数不同，需要提供相应的应用程序属性。比如，如果目标 Tomcat 运行在 9999 端口，任务定义会是这样：
-
++
 [source, groovy]
 ----
 include::{sourcesdir}/deployment/warDeployment_3.groovy[]
 ----
---
 
 . 执行 `buildWar` Gradle 任务。会在项目 `build/distributions` 目录生成 `app.war` 文件。
 +
@@ -28,33 +26,131 @@ include::{sourcesdir}/deployment/warDeployment_3.groovy[]
 gradlew buildWar
 ----
 
-. 安装 Tomcat 8 Linux Service:
+. 安装 tomcat9 的包:
 +
 [source, plain]
 ----
-sudo apt-get install tomcat8
+sudo apt install tomcat9
 ----
 
-. 拷贝项目生成的 `app.war` 文件到 Tomcat 服务的 `/var/lib/tomcat8/webapps` 目录。
+. 拷贝项目生成的 `app.war` 文件到 Tomcat 服务的 `/var/lib/tomcat9/webapps` 目录。如果目录下存在示例文件夹，比如 `/var/lib/tomcat9/webapps/ROOT`，可以先删除。
 +
 [TIP]
 ====
-Tomcat 服务默认是使用 `tomcat8` 用户来启动的。所以 `webapps` 目录的所有者也是 `tomcat8`。
+Tomcat 9 服务默认是使用 `tomcat` 用户来启动的。所以 `webapps` 目录的所有者也是 `tomcat`。
 ====
 
-. 创建配置文件 `/usr/share/tomcat8/bin/setenv.sh` 包含以下设置：
+. 创建 <<app_home,应用程序主目录>>。例如，`/opt/app_home`，然后修改 Tomcat 服务用户（`tomcat`）为该目录的所有者：
++
+[source, plain]
+----
+sudo mkdir /opt/app_home
+sudo chown tomcat:tomcat /opt/app_home
+----
+
+. Tomcat 9 服务（跟之前 Tomcat Debian 包不同）是由 systemd 做沙箱管理，因此对于系统文件只有有限的写权限。关于这点，可以阅读 `/usr/share/doc/tomcat9/README.Debian` 了解更多详情。需要修改 systemd 的配置来允许 Tomcat 服务对应用程序主目录有写权限：
++
+.. 在 `/etc/systemd/system/tomcat9.service.d/` 目录创建 `override.conf` 文件：
 +
 [source,plain]
 ----
-export CATALINA_OPTS="$CATALINA_OPTS -Xmx1024m"
+sudo mkdir /etc/systemd/system/tomcat9.service.d/
+sudo nano /etc/systemd/system/tomcat9.service.d/override.conf
+----
++
+.. `override.conf` 文件的内容如下：
++
+[source,plain]
+----
+[Service]
+ReadWritePaths=/opt/app_home/
+----
++
+.. 重加载 systemd 的配置：
++
+[source,plain]
+----
+sudo systemctl daemon-reload
+----
++
+. 创建配置文件 `/usr/share/tomcat9/bin/setenv.sh` 包含以下设置：
++
+[source,plain]
+----
+CATALINA_OPTS="$CATALINA_OPTS -Xmx1024m"
+CATALINA_OPTS="$CATALINA_OPTS -Dapp.home=/opt/app_home"
+----
++
+如果觉得虚拟机（VPS）中的 Tomcat 启动慢，可以在 `setenv.sh` 文件添加这行：
++
+[source, plain]
+----
+CATALINA_OPTS="$CATALINA_OPTS -Djava.security.egd=file:/dev/./urandom"
+----
+
+. 如果想通过服务器上一个本地文件提供生产环境的数据库连接属性的话，可以在 `/var/lib/tomcat9/conf/Catalina/localhost/` 目录创建一个文件。文件的命名需要根据 WAR 文件的名称来定，比如对于单一 WAR，可以命名为 `app.xml`，如果是多个 WAR 部署，则是 `app-core.xml`。然后复制 `context.xml` 文件的内容到这个文件。
+
+. 默认配置下，所有应用程序的日志消息都添加在 `/var/log/syslog` 系统日志中。自定义应用程序的日志配置有两种方法：
+
+* 在项目中创建 logback 配置文件。然后在 Gradle 的<<build.gradle_buildWar, buildWar>>任务中设置 `logbackConfigurationFile` 参数指定为该文件的路径（可以手动设置，或者通过 Studio 的 *WAR Settings* 窗口）。
+* 在生产环境服务器创建日志配置文件。
++
+从开发 Tomcat（`deploy/tomcat/conf` 项目子目录）复制 `logback.xml` 文件至<<app_home,应用程序主目录>>并修改文件内的 `logDir` 属性：
++
+[source, xml]
+----
+<property name="logDir" value="${app.home}/logs"/>
+----
++
+在 `setenv.sh` 脚本添加下面这行，用于指定日志配置文件：
++
+[source,plain]
+----
+CATALINA_OPTS="$CATALINA_OPTS -Dlogback.configurationFile=/opt/app_home/logback.xml"
 ----
 
 . 重启 Tomcat 服务:
 +
 [source, plain]
 ----
-sudo service tomcat8 restart
+sudo systemctl restart tomcat9
 ----
 
 . 在浏览器打开 `++http://localhost:8080/app++`。
+--
 
+使用 tomcat8 安装包的不同之处::
++
+--
+CUBA 支持部署至 Tomcat 9 和 Tomcat 8.5。当部署至 Tomcat 8.5 时，有下列不同点：
+
+* Tomcat 8.5 通过 `tomcat8` 包提供
+* 系统用户名为 `tomcat8`
+* Tomcat base 目录是 `/var/lib/tomcat8`
+* Tomcat home 目录是 `/usr/share/tomcat8`
+* Tomcat 服务不使用 systemd 沙箱机制，所以不需要修改 systemd 配置。
+* 标准的输出和标准错误输出都在 `/var/lib/tomcat8/logs/catalina.out` 文件中。
+--
+
+排查 LibreOffice 报表与 tomcat9 集成的错误::
++
+--
+在部署至 *tomcat9* 包并且集成了 LibreOffice 使用 *Reporting* 扩展时，也许会遇到问题，错误消息可能如下：
+[source, plain]
+----
+2019-12-04 09:52:37.015 DEBUG [OOServer: ERR] com.haulmont.yarg.formatters.impl.doc.connector.OOServer - ERR: (process:10403): dconf-CRITICAL **: 09:52:37.014: unable to create directory '/.cache/dconf': Read-only file system.  dconf will not work properly.
+----
+这个错误的原因是 `tomcat` 用户的 home 目录指向了一个不可写的地址。可以通过修改 `tomcat` 用户的 home 目录为 `/var/lib/tomcat9/work` 进行修复：
+[source, plain]
+----
+# bad value
+echo ~tomcat
+/
+
+# fix
+sudo systemctl stop tomcat9
+sudo usermod -d /var/lib/tomcat9/work tomcat
+sudo systemctl start tomcat9
+----
+
+--

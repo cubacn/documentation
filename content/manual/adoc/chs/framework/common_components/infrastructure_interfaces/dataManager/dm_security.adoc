@@ -15,4 +15,4 @@ DataManager 的 `load()`、`loadList()`、`loadValues()` 和 `getCount()` 方法
 
 请注意，无论上述条件如何始终都会实施访问组<<constraints,约束>> （行级别安全性）。
 
-
+参阅 <<data_access_checks>> 章节全面了解框架中如何使用安全权限和约束。

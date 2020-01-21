@@ -11,7 +11,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/Filter.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/Filter.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -31,9 +31,9 @@
 
 * <<gui_Filter_fts,过滤器的全文搜索模式>>
 
-`Filter` 是一个具有非常多功能的过滤器，可以对展示成列表或者表格形式的数据库实体列表进行过滤。这个组件支持按照任意条件对数据进行快速过滤，同时也支持创建可重复使用的过滤器。
+`Filter` 是一个具有非常多功能的过滤器，可以对表格形式展示的数据库实体列表进行过滤。这个组件支持按照任意条件对数据进行快速过滤，同时也支持创建可重复使用的过滤器。
 
-`Filter` 需要连接到一个包含<<gui_data_loaders,数据加载器>>的<<gui_collection_container,集合型数据容器>>或者包含 JPQL<<datasource_query,查询>>的<<datasources,集合型数据源>>。实现的主要逻辑是按照用户设置的过滤条件对这个 JPQL 查询进行修改。所以，过滤其实是发生在数据库层面，通过执行修改后的 SQL，查询出来的数据被加载到中间件和客户端<<app_tiers,层>>。
+`Filter` 需要连接到一个<<gui_data_loaders,数据加载器>>，该加载器可以是为<<gui_collection_container,CollectionContainer>>或者<<gui_keyvalue_containers,KeyValueCollectionContainer>>定义的。加载器需要包含一个 JPQL 查询语句。过滤器操作的机制是按照用户设置的过滤条件对这个 JPQL 查询进行修改。所以，过滤其实是发生在数据库层面，通过执行修改后的 SQL，查询出来的数据被加载到中间件和客户端<<app_tiers,层>>。
 
 [[gui_Filter_use]]
 *使用过滤器*
@@ -126,7 +126,7 @@ AND 或者 OR 分组条件可以通过相应的按钮添加，所有顶层过滤
 include::{sourcesdir}/gui_vcl/filter_1.xml[]
 ---- 
 
-在上面的例子中，在界面的 `data` 层定义了一个<<gui_data_containers,数据容器>>使用 JPQL 查询 `Car` 实体。在 `filter` 组件的 `loader` 属性中定义了需要被过滤的数据，数据由 <<gui_data_loaders,数据加载器>> 提供。采用<<gui_Table,表格>>组件显示数据，也是关联了相同的数据容器。
+在上面的例子中，<<gui_collection_container,数据容器>>包含 `Car` 实体实例的集合。<<gui_data_loaders,数据加载器>>使用 JPQL 查询语句加载数据集合。过滤器组件会修改加载器的查询语句，因为过滤器是通过 `dataLoader` 连接到加载器。采用<<gui_Table,表格>>组件显示数据，关联了数据容器。
 
 `filter` 可以包含嵌套元素。这些元素主要用来描述用户可以在 *Add Condition* 对话框中能使用的过滤条件：
 
@@ -291,6 +291,16 @@ select c from sample_Car c join c.repairs cr
 where (cr.description like ?)
 order by c.createTs
 ----
++
+还有，可以使用一个不相关的实体创建一个自定义的条件，然后在条件的 `where` 部分使用该实体。
+此时，在 `join` 属性值内，应当使用 `", "` 而不是 `join` 或者 `left join`。
++
+我们可以创建一个自定义的条件，用来搜索在特定日期之后分配给那些司机的车。带有这种条件的过滤器如下：
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/filter_8.xml[]
+----
 
 ** `paramWhere` − 在参数是关联的实体的情况下，用这个参数来设置 JPQL 表达式用以选取条件参数的列表。参考 `property` 元素的同名<<gui_Filter_property_paramWhere,属性>>的描述。
 
@@ -351,6 +361,9 @@ image::gui_filter_apply_to.png[align="center"]
 [[gui_Filter_columnsCount]]
 * `columnsCount` - 定义过滤器区域过滤条件所占的列数。默认是 3。
 
+[[gui_Filter_controlsLayoutTemplate]]
+* `controlsLayoutTemplate` - 定义过滤器控制面板的内部布局。布局模板格式可以用 <<cuba.gui.genericFilterControlsLayout,cuba.gui.genericFilterControlsLayout>> 应用程序属性定义。
+
 [[gui_Filter_defaultMode]]
 * `defaultMode` - 定义过滤器的默认模式。可以选 `generic` 和 `fts`。如果设置的 `fts`，过滤器会用全文检索的模式打开（实体需要建立全文检索的索引）。默认值是 `generic`。
 
@@ -377,6 +390,7 @@ filter 的属性::
 <<gui_Filter_caption,caption>> -
 <<gui_attr_captionAsHtml,captionAsHtml>> -
 <<gui_Filter_columnsCount,columnsCount>> -
+<<gui_Filter_controlsLayoutTemplate,controlsLayoutTemplate>> -
 <<gui_attr_css,css>> -
 <<gui_attr_dataLoader,dataLoader>> -
 <<gui_attr_datasource,datasource>> -
@@ -467,6 +481,8 @@ API::
 
 * <<cuba.gui.genericFilterPopupListSize,cuba.gui.genericFilterPopupListSize>> - 定义 *Search* 按钮弹出框能显示的最多条目数。
 
+* <<cuba.gui.genericFilterPropertiesHierarchyDepth,cuba.gui.genericFilterPropertiesHierarchyDepth>> - 定义“添加查询条件”对话框窗口中属性层级的深度。
+
 * <<cuba.gui.genericFilterTrimParamValues,cuba.gui.genericFilterTrimParamValues>> - 定义所有通用过滤器是否要先清掉输入文本两端的空格。
 --
 
@@ -482,7 +498,7 @@ API::
 
 需要设置过滤器参数值的话，需要传给界面参数的名称跟过滤器的参数名称一致，然后这些参数的值是过滤器的值，需要是字符串类型。
 
-下面是一个在描述文件中定义主菜单项的例子。这里用 `FilterByVIN` 代码为 `sample$Car.browse` 界面 `carsFilter` 组件设置过滤器。同时还给 `component$carsFilter.vin79216` 条件设置了参数值 `TMA`：
+下面是一个在描述文件中定义主菜单项的例子。这里用 `FilterByVIN` 代码为 `sample_Car.browse` 界面 `carsFilter` 组件设置过滤器。同时还给 `component$carsFilter.vin79216` 条件设置了参数值 `TMA`：
 
 [source, xml]
 ----
@@ -530,11 +546,15 @@ image::gui_filter_sequential.png[align="center"]
 
 如果过滤器的数据容器被全文检索子系统（参考 link:{fts_man_url}[CUBA Platform. 全文搜索]）做了全文索引的话，那么这个过滤器可以使用全文检索模式。用 *Full-Text Search* 复选框切换到这个模式。
 
-image::gui_filter_fts.png[align="center"]
+image::gui_filter_fts_2.png[align="center"]
 
 在全文检索模式里，过滤器包含了文本控件用来做搜索规则，搜索也是在 FTS 子系统做了索引的那些实体字段中进行。
 
-如果在 <<gui_Filter_applyTo,applyTo>> 属性定义了一个表格，当把鼠标指针移到表格的某一行的时候，就会提示哪些实体属性支持查询条件。
+如果在 <<gui_Filter_applyTo,applyTo>> 属性定义了一个表格，则可以展示实体的哪个属性满足了搜索条件。如果 `cuba.gui.genericFilterFtsDetailsActionEnabled` 应用程序属性设置为 `true`，表格会添加一个 `Full-Text Search Details - 全文检索详情` 操作。右键点击表格行然后选择这个操作 - 会打开一个对话框，展示全文检索详情。
+
+如果 `cuba.gui.genericFilterFtsTableTooltipsEnabled` 应用程序属性设置为 `true`，当光标放到表格行上时，会显示一个提示窗，展示实体的哪个属性满足了搜索条件。需要注意的是，生成提示窗比较费时，所以默认是关闭的。
+
+image::gui_filter_fts.png[align="center"]
 
 如果要隐藏过滤器模式切换的复选框，可以设置 <<gui_Filter_modeSwitchVisible,modeSwitchVisible>> 为 `false`。
 

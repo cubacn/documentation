@@ -3,9 +3,15 @@
 [[war_deployment]]
 ==== 部署 WAR 至 Jetty
 
-以下是一个部署 WAR 包到 *Jetty* web 服务器的示例，假设应用程序使用的是 PostgreSQL 数据库。
+以下是一个部署 WAR 包到 *Jetty* web 服务器的示例。
 
-. 使用 Studio 中的 *Deployment > WAR settings* 界面或者手动在 <<build.gradle,build.gradle>> 末尾添加 <<build.gradle_buildWar, buildWar>> 任务。
+我们将使用下面的文件目录结构：
+
+* `C:\work\jetty-home\` - Jetty 安装目录
+* `C:\work\jetty-base\` - Jetty 配置目录，用来保存 Jetty 的配置文件，额外的库以及 web 应用程序。
+* `C:\work\app_home\` - CUBA <<app_home,应用程序主目录>>
+
+. 使用 Studio 中的 *CUBA project tree > Project > Deployment > WAR Settings* 对话框或者手动在<<build.gradle,build.gradle>> 末尾添加 <<build.gradle_buildWar, buildWar>> 任务：
 +
 [source, groovy]
 ----
@@ -25,7 +31,13 @@ gradlew buildWar
 
 . 创建一个<<app_home,应用程序主目录>>目录，比如，`c:\work\app_home`。
 
-. 下载并安装 Jetty 到本地目录，比如 `c:\work\jetty-home`。本示例使用 `jetty-distribution-9.3.6.v20151106.zip` 测试通过。
+. 从开发环境的 Tomcat（`deploy/tomcat/conf` 项目子目录）复制 `logback.xml` 到应用程序主目录，并编辑文件中的 `logDir` 属性：
++
+[source, xml]
+----
+<property name="logDir" value="${app.home}/logs"/>
+----
+. 下载并安装 Jetty 到本地目录，比如 `c:\work\jetty-home`。本示例使用 `jetty-distribution-9.4.22.v20191022.zip` 测试通过。
 
 . 创建 `c:\work\jetty-base` 目录，并且在这个目录打开命令行窗口执行以下命令：
 +
@@ -34,7 +46,7 @@ gradlew buildWar
 java -jar c:\work\jetty-home\start.jar --add-to-start=http,jndi,deploy,plus,ext,resources
 ----
 
-. 创建 `c:\work\jetty-base\app-jetty.xml` 文件，添加以下内容（假设使用名为 `test` PostgreSQL 数据库）：
+. 创建 `c:\work\jetty-base\app-jetty.xml` 文件，定义数据库连接池。对于 PostgreSQL 数据库的该文件内容应当基于以下模板：
 +
 [source, xml]
 ----
@@ -48,25 +60,25 @@ MS SQL 数据库的 `app-jetty.xml` 文件需要使用下面这个模板：
 include::{sourcesdir}/deployment/warDeployment_5.xml[]
 ----
 
-. 或许（比如对于 MS SQL 数据库），需要下载以下这些 JAR 并且添加到 `c:\work\jetty-base\lib\ext` 目录。
+. 数据库连接池需要下载以下这些 JAR 并且添加到 `c:\work\jetty-base\lib\ext` 目录。其中有两个文件可以在 `deploy\tomcat\shared\lib` 项目子目录中找到：
 +
 [source, plain]
 ----
-commons-pool2-2.4.2.jar
-commons-dbcp2-2.1.1.jar
+commons-pool2-2.6.2.jar
+commons-dbcp2-2.7.0.jar
 commons-logging-1.2.jar
 ----
 
-. 将下面这些添加到 `c:\work\jetty-base\start.ini` 文件的开头：
+. 从 Jetty 安装目录复制 `start.ini` 文件至 `c:\work\jetty-base` 目录。在 `c:\work\jetty-base\start.ini` 文件开始处添加下列内容：
 +
 [source, plain]
 ----
 include::{sourcesdir}/deployment/warDeployment_3.ini[]
 ----
 
-. 拷贝数据库的 JDBC 驱动到 `c:\work\jetty-base\lib\ext` 目录。可以从 CUBA Studio 的 `lib` 目录或者项目的 `build\tomcat\lib` 目录拷贝这些驱动。比如对于 PostgreSQL，驱动文件是 `postgresql-9.1-901.jdbc4.jar`。
+. 复制数据库的 JDBC 驱动到 `c:\work\jetty-base\lib\ext` 目录。可以从项目的 `deploy\tomcat\lib` 目录复制驱动。比如对于 PostgreSQL，驱动文件是 `postgresql-42.2.5.jar`。
 
-. 拷贝 WAR 文件到 `c:\work\jetty-base\webapps` 目录。
+. 复制 WAR 文件到 `c:\work\jetty-base\webapps` 目录。
 
 . 在 `c:\work\jetty-base` 目录打开命令行窗口并且执行：
 +

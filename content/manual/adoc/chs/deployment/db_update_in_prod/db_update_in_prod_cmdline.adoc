@@ -1,7 +1,7 @@
-:sourcesdir: ../../../../../source
+:sourcesdir: ../../../../source
 
 [[db_update_in_prod_cmdline]]
-===== 从命令行初始化和更新数据库
+==== 从命令行初始化和更新数据库
 
 可以使用平台的中间层 block 中包含的 `com.haulmont.cuba.core.sys.utils.DbUpdaterUtil` 类通过命令行运行数据库创建和更新脚本。在启动时，应指定以下参数：
 
@@ -35,7 +35,7 @@ include::{sourcesdir}/database/dbupdate.sh[]
 ----
 
 
-此脚本用于与本地 *PostgreSQL* 服务器上运行的名为 `mydb` 的数据库一起使用。此脚本应位于 Tomcat 服务的 `bin` 文件夹中，并且应该以 `{username}` 、 `{password}` 和 `{command}` 参数启动，例如：
+此脚本用于与本地 PostgreSQL 服务器上运行的名为 `mydb` 的数据库一起使用。此脚本应位于 Tomcat 服务的 `bin` 文件夹中，并且应该以 `{username}` 、 `{password}` 和 `{command}` 参数启动，例如：
 
 [source]
 ----

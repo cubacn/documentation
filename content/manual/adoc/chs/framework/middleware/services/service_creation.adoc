@@ -23,7 +23,7 @@ include::{sourcesdir}/middleware/service_1.java[]
 include::{sourcesdir}/middleware/service_2.java[]
 ----
 
-作为<<managed_beans,托管 bean>> 的服务类应放在包的树结构中，其根目录需要在<<spring.xml,spring.xml>>文件的 `context:component-scan` 元素中指定。这时，`spring.xml` 文件会包含以下元素：
+作为<<managed_beans, Spring bean>> 的服务类应放在包的树结构中，其根目录需要在<<spring.xml,spring.xml>>文件的 `context:component-scan` 元素中指定。这时，`spring.xml` 文件会包含以下元素：
 
 [source, xml]
 ----
@@ -32,7 +32,7 @@ include::{sourcesdir}/middleware/service_3.xml[]
 
 这意味着将从 `com.sample.sales` 包开始搜索此应用程序 block 中带注解的 bean。
 
-如果不同的服务或其它中间件组件需要调用相同的业务逻辑，则应将其提取并封装在适当的<<managed_beans,托管 Bean>>中。例如：
+如果不同的服务或其它中间件组件需要调用相同的业务逻辑，则应将其提取并封装在适当的<<managed_beans, Spring bean>>中。例如：
 
 [source, java]
 ----

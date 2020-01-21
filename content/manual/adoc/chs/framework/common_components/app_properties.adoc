@@ -23,16 +23,24 @@
 设置应用程序属性::
 +
 --
-应用程序属性的值可以设置在<<app_properties_db,数据库>> 、 <<app_properties_files,属性文件>> ，也可以通过 Java 系统属性设置。此外，文件中设置的值将覆盖数据库中具有相同名称的值，通过 Java 系统属性设置的值将覆盖文件和数据库中的值。
+应用程序属性的值可以设置在<<app_properties_db,数据库>> 、 <<app_properties_files,属性文件>> ，也可以通过 Java 系统属性和操作系统的环境变量设置。如果同样名称的属性在多个地方定义，会按照下面的优先级决定其属性值：
 
-某些属性不支持设置在数据库中，原因是：在应用程序代码还无法访问数据库时就需要使用这些属性值。这些属性是上面提到的配置和部署参数。因此，只能在属性文件中或通过 Java 系统属性定义它们。运行时参数始终设置在数据库中（可能被文件或系统属性中的值覆盖）。
+. Java 系统属性（最高优先级）
+. 操作系统环境变量
+. 属性文件
+. 数据库（最低优先级）
+
+比如，在属性文件中定义的值会覆盖在数据库中定义的值。
+
+对于操作系统环境变量，框架会先尝试寻找严格匹配的属性名称，如果没找到，则会尝试找名称全大写、点被下划线替代的属性名称。举个例子，环境变量 `MYAPP_SOMEPROPERTY` 可以赋值给 `myapp.someProperty` 应用程序属性。如果想禁用这个功能，还是使用严格匹配的话，可以设置 `cuba.disableUppercaseEnvironmentProperties` 应用程序属性为 true。
+
+某些属性不支持设置在数据库中，原因是：在应用程序代码还无法访问数据库时就需要使用这些属性值。这些属性是上面提到的配置和部署参数。因此，只能在属性文件中或通过 Java 系统属性和操作系统环境变量定义它们。运行时参数始终设置在数据库中（可能被文件或系统属性中的值覆盖）。
 
 通常情况下，应用程序属性用于一个或多个应用程序<<app_tiers,block>>。例如<<cuba.persistenceConfig,cuba.persistenceConfig>>仅用于中间件，<<cuba.web.appWindowMode,cuba.web.appWindowMode>>用于 Web 客户端，而<<cuba.springContextConfig,cuba.springContextConfig>>用于所有的 block。这意味着如果你需要为一个属性设置值，就应该在所有使用这个属性的__block__中进行设置。存储在数据库中的属性可自动用于所有 block，因此可以仅在一个位置设置它们的值（在数据库表中），而不用关心哪个 block 将会使用它们。而且，还有一个标准 UI 界面来管理此类属性：请参考 *Administration > Application Properties* 。存储在文件中的属性应分别在各 block 的相应文件中设置。
 
-
 [TIP]
 ====
-当需要为平台属性设置值时，请在<<app_properties_reference,此文档>>中找到相关属性。如果文档声明该属性存储在数据库中，请使用 *Administration > Application Properties* 界面设置其值。否则，找出哪些 block 使用该属性并在这些 block 的 `app.properties` 文件中定义它。例如，如果文档声明该属性在所有 block 中使用，并且应用程序由中间件和 Web 客户端组成，则应在 *core* 模块的 `app.properties` 文件和 *web* 模块的 `web-app.properties` 文件中定义该属性。部署参数也可以在项目文件之外的<<conf_dir,配置>>目录中设置。有关详细信息，请参阅<<app_properties_files>>。
+当需要为平台属性设置值时，请在<<app_properties_reference,文档>>中找到相关属性。如果文档声明该属性存储在数据库中，请使用 *Administration > Application Properties* 界面设置其值。否则，找出哪些 block 使用该属性并在这些 block 的 `app.properties` 文件中定义它。例如，如果文档声明该属性在所有 block 中使用，并且应用程序由中间件和 Web 客户端组成，则应在 *core* 模块的 `app.properties` 文件和 *web* 模块的 `web-app.properties` 文件中定义该属性。部署参数也可以在外部的 `local.app.properties` 文件设置。有关详细信息，请参阅<<app_properties_files>>。
 ====
 --
 

@@ -34,7 +34,7 @@ reporting.openoffice.path = C:/Program Files (x86)/LibreOffice 5/program
 +
 [source, properties]
 ----
-$ sudo apt-get install libreoffice`
+$ sudo apt-get install libreoffice
 ----
     
 * 在 *core* 模块的 `app.properties` 文件中的<<app_properties.adoc#reporting.openoffice.path, reporting.openoffice.path>>应用程序属性中，指定 LibreOffice 的路径：

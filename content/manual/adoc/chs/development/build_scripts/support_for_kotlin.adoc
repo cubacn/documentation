@@ -1,0 +1,23 @@
+:sourcesdir: ../../../../source
+
+[[support_for_kotlin]]
+==== 配置支持 Kotlin
+
+++++
+<div class="manual-since-container">
+    <a href="http://files.cuba-platform.com/cuba/release-notes/7.2/" class="since-btn" target="_blank">
+        <span class="since-btn-caption">最低版本</span><span class="since-btn-version">7.2</span>
+    </a>
+</div>
+++++
+
+如果在 Studio 中创建新项目，在创建项目向导的第一页可以选择语言偏好（Java、Kotlin、Java+Groovy），构建脚本也会相应做配置。
+
+如果想在已有项目添加对于 Kotlin 的支持，可以对 `build.gradle` 文件做一些修改：
+
+[source,groovy]
+----
+include::{sourcesdir}/development/support_for_kotlin_1.groovy[]
+----
+
+项目如果配置了支持 Kotlin 或 Groovy，则可以选择 Studio 生成的代码语言。查看 *Settings/Preferences > Languages & Frameworks > CUBA > Project settings > Scaffolding language*。

@@ -14,18 +14,6 @@
 
 任务参数：
 
-* `coreJettyEnvPath` - 必要参数，设置一个项目根目录的相对路径，这个路径需要指向一个包含 JNDI resource 的配置文件，这些配置是给 Jetty Http Server 用的。配置文件里至少需要包含一份关于主数据库的 JDBC 数据源定义。Studio 可以根据配置的数据库连接参数生成这个文件。
-+
-[source, groovy]
-----
-task buildUberJar(type: CubaUberJarBuilding) {
-    coreJettyEnvPath = 'modules/core/web/META-INF/jetty-env.xml'
-    // ...
-}
-----
-+
-还可以使用不同的 <<jetty-env,jetty-env.xml>> 文件和 `-jettyEnvPath` <<uberjar_deployment,命令行>>参数在运行时为同一个 UberJar 提供不同的数据库设置。
-
 * `appProperties` - 应用程序属性的键值对。这里面提供的属性键值对会以生成的 JAR 包里的 `WEB-INF/local.app.properties` 文件定义的属性为基础添加。
 +
 [source, groovy]
@@ -75,6 +63,16 @@ logbackConfigurationFile = "/modules/global/src/logback.xml"
 
 * `useDefaultLogbackConfiguration` - 当设置成 `true` （也是默认值）的时候，这个任务会拷贝标准的 `logback.xml` 配置文件。
 
+* `coreJettyEnvPath` - 定义一个相对路径（相对于项目根目录），指向包含 JNDI 资源的文件，用来为 Jetty HTTP 服务。
++
+[source, groovy]
+----
+task buildUberJar(type: CubaUberJarBuilding) {
+    coreJettyEnvPath = 'modules/core/web/META-INF/jetty-env.xml'
+    // ...
+}
+----
+
 * `webJettyConfPath` - Jetty Server 配置文件的相对路径，可以给 UberJar（`singleJar=true`）或者 web JAR（`singleJar=false`）配置。参考： https://www.eclipse.org/jetty/documentation/9.4.x/jetty-xml-config.html
 
 * `coreJettyConfPath` - core JAR（`singleJar=false`）的 Jetty Server 配置文件相对目录，要注意跟上面描述的 `coreJettyEnvPath` 相区别。
@@ -99,7 +97,4 @@ logbackConfigurationFile = "/modules/global/src/logback.xml"
 
 * `portalProject` - 用来作为 portal 模块（Web Portal）的 Gradle 项目。如果没定义，则会使用标准的 *portal* 模块。
 
-* `frontProject` - 用来作为 <<front_ui,Polymer UI>> 模块的 Gradle 项目。如果没定义，则会使用标准的 *polymer-client* 模块。
-
-* `polymerBuildDir` - <<polymer_build_and_structure,Polymer UI>> 构建生成的目录名称。默认是 `es6-unbundled`。如果在 `polymer.json` 里面修改了预设的编译参数的话，需要提供这个参数。
-
+* `frontProject` - 用来作为 <<front_ui>> 模块的 Gradle 项目。如果没定义，则会使用标准的 *front* 模块。

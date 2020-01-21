@@ -143,7 +143,7 @@ include::{sourcesdir}/examples_html_11.html[]
 +
 --
 
-目前，CUBA 报表扩展不提供类似于 DOCX/XLSX 报表将图片插入 HTML 报表的方法。图片仍然可以使用 `img` 标签并在 `src` 属性中指定图片链接的方式嵌入。有两种方法可以将图片添加到 HTML 报表中：
+目前，CUBA 报表扩展不提供类似于 DOCX/XLSX 报表将图片插入 HTML 报表的方法。图片仍然可以使用 `img` 标签并在 `src` 属性中指定图片链接的方式嵌入。使用下面的任一种方法都能为 HTML 报表添加图片。
 
 * 通过 URL
 +
@@ -159,6 +159,20 @@ include::{sourcesdir}/examples_html_11.html[]
 [source, html]
 ----
 <img alt="SomePicture.png" src="data:image/png;base64,iVBORw0K ..... AcEP9PwxD0hNKK1FCAAAAAElFTkSuQmCC"/>
+----
+
+* 通过自定义的前缀：
+** 可以使用 `core://` 和 `web://` 前缀引用位于 **web** 或 **core** 模块的图片资源，不需要在模板中硬编码 {main_man_url}/app_properties_reference.html#cuba.webPort[webPort] 和 {main_man_url}/app_properties_reference.html#cuba.webContextName[webContextName] 。比如，如果图片在 `deploy\tomcat\webapps\app\VAADIN\images` 目录，可以通过这种方式插入：
++
+[source, html]
+----
+<img src="web://VAADIN/images/SomeImage.jpg" height="68" width="199" border="0" align="right"/>
+----
+** `fs://` 前缀可以使用特定的 `FileDescriptor` ID 插入图片，示例：
++
+[source, html]
+----
+<img src="fs://fede432a-4f5d-3bab-71a0-b98133759b0f" height="68" width="199" border="0" align="right"/>
 ----
 --
 

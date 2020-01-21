@@ -3,6 +3,11 @@
 [[datasource_decl_creation]]
 ====== 声明式创建
 
+[WARNING]
+====
+这是旧版本的 API。对于从 7.0 开始的新 API，请参阅 <<gui_data>>。
+====
+
 典型的情况下，数据源声明在界面描述文件的 `dsContext` 元素中。根据声明元素相对位置的不同，可以创建两种类型的数据源：
 
 * 如果元素直接落在了 `dsContext` 的范围内，比如一个普通的 `Datasource` 或者 `CollectionDatasource`，会创建一个能独立加载实体或者实体集合的数据源；

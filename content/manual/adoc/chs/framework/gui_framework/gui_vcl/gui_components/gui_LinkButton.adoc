@@ -11,7 +11,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/LinkButton.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/LinkButton.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -22,6 +22,18 @@
 `LinkButton` 可以包含文本或图标（或二者均有）。下图展示了不同类型的按钮：
 
 image::gui_linkButtonTypes.png[align="center"]
+
+默认情况，`LinkButton` 的标题如果超出了<<gui_attr_width,width>>的值，会被分成多行展示。因此，要展示多行的链接按钮，指定其 `width` 为绝对值即可。如果链接按钮的标题过长，而 `width` 又没有设置，此时标题会被截断。
+
+用户可以修改默认行为将 `LinkButton` 的标题展示在一行：
+
+. 创建 <<web_theme_extension,主题扩展>> 或 <<web_theme_creation,自定义主题>>。
+. 定义 SCSS 变量 `$cuba-link-button-caption-wrap`:
++
+[source, code]
+----
+$cuba-link-button-caption-wrap: false
+----
 
 LinkButton 与普通 `Button` 的不同仅在于外观。所有的属性和行为都与 <<gui_Button,Button>> 中描述的一样。
 

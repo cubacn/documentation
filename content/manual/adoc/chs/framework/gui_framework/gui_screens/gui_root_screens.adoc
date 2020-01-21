@@ -69,7 +69,7 @@ cuba.web.mainScreenId = topMenuMainScreen
 
 * `AppWorkArea` – 工作区，如果需要以 `THIS_TAB`、`NEW_TAB` 和 `NEW_WINDOW` 模式打开界面，则需要该组件。
 
-* `FoldersPane` – 应用程序和搜索文件夹的面板。
+* `FoldersPane` – <<folders_pane,应用程序和搜索文件夹>>的面板。
 
 * `UserIndicator` – 显示当前用户的控件，也包括选择替代用户的功能。
 +
@@ -98,9 +98,11 @@ image::userIndicator.png[align="center"]
 
 * <<cuba.web.maxTabCount,cuba.web.maxTabCount>> – 当主界面在标签页式时，使用该属性设置用户能打开的标签页最多个数。默认值为 7。
 
-* <<cuba.web.foldersPaneEnabled,cuba.web.foldersPaneEnabled>> - 为使用 *Main screen with top menu* 模板创建的界面启用显示文件夹面板。
+* <<cuba.web.foldersPaneEnabled,cuba.web.foldersPaneEnabled>> - 为使用 *Main screen with top menu* 模板创建的界面启用显示<<folders_pane,文件夹面板>>。
 
 * <<cuba.web.defaultScreenId,cuba.web.defaultScreenId>> - 设置主窗口自动打开的默认界面。
 
 * <<cuba.web.defaultScreenCanBeClosed,cuba.web.defaultScreenCanBeClosed>> - 定义用户是否可以关闭默认界面。
+
+* <<cuba.web.useDeviceWidthForViewport,cuba.web.useDeviceWidthForViewport>> - 处理 viewport 宽度。如果需要使用设备的宽度作为 viewport 宽度，设置为 `true`。<<cuba.web.pageInitialScale,cuba.web.pageInitialScale>> 属性也可以参考设置。
 --

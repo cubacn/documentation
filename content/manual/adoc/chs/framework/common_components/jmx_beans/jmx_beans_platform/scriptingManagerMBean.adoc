@@ -3,7 +3,7 @@
 [[scriptingManagerMBean]]
 ====== ScriptingManagerMBean
 
-http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/jmx/ScriptingManagerMBean.html[ScriptingManagerMBean] 是 <<scripting,Scripting>> 基础接口的 JMX 外观设计模式实现。
+http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/jmx/ScriptingManagerMBean.html[ScriptingManagerMBean] 是 <<scripting,Scripting>> 基础接口的 JMX 外观设计模式实现。
 
 JMX 对象名: `app-core.cuba:type=ScriptingManager`
 

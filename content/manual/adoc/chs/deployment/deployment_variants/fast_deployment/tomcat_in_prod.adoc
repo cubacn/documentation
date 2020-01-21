@@ -5,7 +5,9 @@
 
 默认情况下，<<fast_deployment,快速部署>>过程会在本地 Tomcat 实例下创建 `app` 和 `app-core` 这两个 web 服务，并且运行在 8080 端口。也就是说 web 客户端可以通过 `++http://localhost:8080/app++` 访问。
 
-这个 Tomcat 可以作为生产环境使用，只需要拷贝 `tomcat` 目录到生产环境服务器，只需要修改 `conf/app/local.app.properties` 和 `conf/app-core/local.app.properties` 里面的服务器名称，这两个文件如果没有的话，需要创建：
+这个 Tomcat 可以作为生产环境使用，只需要拷贝 `tomcat` 目录和 `app_home` 目录到生产环境服务器，运行 Tomcat 的用户需要对这两个目录有读写权限。
+
+之后，在 `app_home/local.app.properties` 文件设置服务器宿主名称：
 
 [source,plain]
 ----
@@ -13,43 +15,6 @@ cuba.webHostName = myserver
 cuba.webAppUrl = http://myserver:8080/app
 ----
 
-另外，如果开发的时候使用的是测试库，那么需要在生产环境修改数据库连接以便使用生产库。可以通过修改 web 应用程序的<<context.xml>> （`webapps/app-core/META-INF/context.xml`）文件。也可以按照前面章节介绍的拷贝这个文件为 `conf/Catalina/localhost/app-core.xml`，这样的话可以分别使用独立的开发和测试库环境配置。
+另外，需要在生产环境修改数据库连接以便使用生产库。可以通过修改 web 应用程序的<<context.xml>> （`tomcat/webapps/app-core/META-INF/context.xml`）文件。也可以按照前面章节介绍的拷贝这个文件为 `tomcat/conf/Catalina/localhost/app-core.xml`，这样的话可以分别使用独立的开发和测试库环境配置。
 
 可以从开发库备份来创建生产库，或者可以配置自动创建和更新生产库，参考<<db_update_in_prod,生产环境更新数据库>>。
-
-可选配置::
-+
---
-. 如果需要更改 Tomcat 端口或者 web 上下文（也就是 URL 里面 `/` 最后的那部分），可通过 *Studio* 进行配置：
-
-** 在 Studio 中打开项目。
-
-** 转到 *Project Properties* 。
-
-** 需要更改 web 上下文，可以编辑 *Modules prefix* 字段
-
-** 需要改变 Tomcat 端口，可以编辑 *Tomcat ports* > *HTTP port* 字段
-
-. 如果希望使用根节点上下文（`++http://myserver:8080/++`），可以将 *Modules prefix* 直接设置成 `ROOT`
-+
-[source, plain]
-----
-tomcat/
-    conf/
-        ROOT/
-            local.app.properties
-        app-core/
-            local.app.properties
-    webapps/
-        ROOT/
-        app-core/
-----
-+
-然后在 `conf/ROOT/local.app.properties` 文件里，使用 `/` 作为 web 上下文名称：
-+
-[source,plain]
-----
-cuba.webContextName = /
-----
---
-

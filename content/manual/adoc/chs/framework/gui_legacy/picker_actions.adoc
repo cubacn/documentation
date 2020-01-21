@@ -3,6 +3,11 @@
 [[picker_actions]]
 ==== 选取器控件的标准行为（历史版本）
 
+[WARNING]
+====
+这是旧版本 API。从 7.0 版本开始的新 API，请参考 <<std_picker_actions>>。
+====
+
 对于 <<gui_PickerField,PickerField>>，<<gui_LookupPickerField,LookupPickerField>> 和 <<gui_SearchPickerField,SearchPickerField>> 组件，一组标准行为是通过 `PickerField.ActionType` 枚举类型来定义的；操作的实现是 `PickerField` 接口的内部类，下面详细介绍这些实现。
 
 在选取器组件中使用标准操作的示例：
@@ -21,7 +26,7 @@ include::{sourcesdir}/gui/pickerActions_1.xml[]
 
 * `setLookupScreenOpenType()` 可以设置实体选择界面的打开模式。默认 `++THIS_TAB - 当前标签页++`。
 
-* `setLookupScreen()` 可以设置实体查找界面的标识符。默认情况下，使用 `++{entity_name}.lookup++`，比如 `sales$Customer.lookup`。如果不存在这种类型的界面，则会尝试打开 `++{entity_name}.browse++` 界面，比如 `sales$Customer.browse`。
+* `setLookupScreen()` 可以设置实体查找界面的标识符。默认情况下，使用 `++{entity_name}.lookup++`，比如 `sales_Customer.lookup`。如果不存在这种类型的界面，则会尝试打开 `++{entity_name}.browse++` 界面，比如 `sales_Customer.browse`。
 
 * `setLookupScreenParams()` 可以设置传递给查找界面的 `init()` 方法的参数。
 
@@ -43,7 +48,7 @@ include::{sourcesdir}/gui/pickerActions_1.xml[]
 
 * `setEditScreenOpenType()` 可以设置实体编辑界面的打开模式。默认 `++THIS_TAB - 当前标签页++`。
 
-* `setEditScreen()` 可以设置实体编辑界面的标识符。默认情况下，使用 `++{entity_name}.edit++`，比如 `sales$Customer.edit`。
+* `setEditScreen()` 可以设置实体编辑界面的标识符。默认情况下，使用 `++{entity_name}.edit++`，比如 `sales_Customer.edit`。
 
 * `setEditScreenParams()` 可以设置传递给编辑界面的 `init()` 方法的参数。
 

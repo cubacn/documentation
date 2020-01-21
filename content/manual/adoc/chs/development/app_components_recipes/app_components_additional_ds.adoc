@@ -3,6 +3,6 @@
 [[app_components_additional_ds]]
 ==== 应用程序组建里的附加数据存储
 
-如果一个应用程序组件使用了 <<data_store,额外的数据存储>>，应用程序必须定义一个同名同类型的数据存储。比如，如果组件使用了 `db1` 连接到 PostgreSQL 的数据存储，应用程序也必须有一个名称为 `db1` 的 PostgreSQL 数据存储。
+如果一个应用程序组件使用了 <<data_store,附加数据存储>>，应用程序必须定义一个同名同类型的数据存储。比如，如果组件使用了 `db1` 连接到 PostgreSQL 的数据存储，应用程序也必须有一个名称为 `db1` 的 PostgreSQL 数据存储。
 
-如果你使用 Studio 的话，可以按照 {studio_man_url}/#data_stores[Studio 文档] 的说明创建额外的数据存储。否则，按照 <<data_store>> 章节的介绍进行配置。
+如果你使用 Studio 的话，可以按照 {studio_man_url}/#data_stores[Studio 文档] 的说明创建附加数据存储。否则，按照 <<data_store>> 章节的介绍进行配置。

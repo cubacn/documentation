@@ -1,0 +1,17 @@
+:sourcesdir: ../../../source
+
+[[history_output_documents]]
+=== 输出文档
+
+该机制提供了将输出文档 - 报表结果文件 - 保存到 {main_man_url}/file_storage.html[文件存储] 的功能。该功能会消耗一定的文件存储空间，需要单独配置，并且默认是关闭的。如要开启，可以在 *Administration > Application Properties* 界面设置 <<reporting.executionHistory.saveOutputDocument,reporting.executionHistory.saveOutputDocument>> 应用程序属性：
+
+[source, properties]
+----
+reporting.executionHistory.saveOutputDocument = true
+----
+
+现在，如果在执行历史表选中一项，*Download document* 会激活。点击即可下载报表结果文件。
+
+使用 <<template_chart,chart>>、<<pivotTable_output,pivot table>> 和 <<table_output,table>> 类型的报表不会有结果文件，所以这些类型的报表执行结果不会保存任何的输出文档。
+
+如果是使用编程的方式调用 `createAndSaveReport()` 方法运行报表，则会为同样的结果文件保存另一份拷贝。这两份文件是互相独立存储在文件存储中的。

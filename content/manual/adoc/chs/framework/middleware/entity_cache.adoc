@@ -12,9 +12,9 @@
 
 要启用实体缓存，请在 *core* 模块的 <<app_properties_files,app.properties>> 文件中设置以下属性：
 
-* `eclipselink.cache.shared.sales$Customer = true` - 启用 `sales$Customer` 实体的缓存。
+* `eclipselink.cache.shared.sales_Customer = true` - 启用 `sales_Customer` 实体的缓存。
 
-* `eclipselink.cache.size.sales$Customer = 500` - 将 `sales$Customer` 的缓存大小设置为 500 个实例。默认大小为 100。
+* `eclipselink.cache.size.sales_Customer = 500` - 将 `sales_Customer` 的缓存大小设置为 500 个实例。默认大小为 100。
 +
 [TIP]
 ====
@@ -31,7 +31,7 @@
 --
 查询缓存存储由 JPQL 查询返回的实体实例的标识符，因此它很自然地补充了实体缓存机制。
 
-例如，如果为实体启用了实体缓存（例如，`sales$Customer`），并且首次执行查询语句 `select c from sales$Customer c where c.grade = :grade`，则会发生以下情况：
+例如，如果为实体启用了实体缓存（例如，`sales_Customer`），并且首次执行查询语句 `select c from sales_Customer c where c.grade = :grade`，则会发生以下情况：
 
 * ORM 在数据库上运行查询。
 
@@ -43,11 +43,11 @@
 
 默认情况下不缓存查询。可以指定应用程序的不同层缓存查询：
 
-* 使用 <<entityManager,EntityManager>> 时，使用 <<query,Query>> 接口的 `setCacheable()` 方法。
+* 使用 <<entityManager,EntityManager>> 时，用 <<query,Query>> 接口的 `setCacheable()` 方法。
 
-* 使用<<dataManager,DataManager>>时，使用 `LoadContext.Query` 接口的 `setCacheable()` 方法。
+* 使用<<dataManager,DataManager>>时，用 `LoadContext.Query` 接口的 `setCacheable()` 方法。
 
-* 使用<<datasources,datasources>>时，使用 `CollectionDatasource` 接口的 `setCacheable()` 方法或 `cacheable` XML 属性
+* 使用<<gui_data_loaders,数据加载器>>时，用 `CollectionLoader` 接口的 `setCacheable()` 方法或 `cacheable` XML 属性
 
 [WARNING]
 ====
@@ -56,7 +56,7 @@
 
 当 <<orm,ORM>> 执行实体的实例的创建、更新或删除时，相应的查询缓存会自动失效，并且会在整个<<cluster_mw,中间件集群>>都失效。
 
-`app-core.cuba:type=QueryCacheSupport` JMX-bean 可用于监视缓存状态并手动释放缓存的查询。例如，如果已直接在数据库中修改了 `sales$Customer` 实体的实例，则应使用带有 `sales$Customer` 参数的 `evict()` 操作释放该实体的所有缓存的查询。
+`app-core.cuba:type=QueryCacheSupport` JMX-bean 可用于监视缓存状态并手动释放缓存的查询。例如，如果已直接在数据库中修改了 `sales_Customer` 实体的实例，则应使用带有 `sales_Customer` 参数的 `evict()` 操作释放该实体的所有缓存的查询。
 
 以下应用程序属性会影响查询缓存：
 

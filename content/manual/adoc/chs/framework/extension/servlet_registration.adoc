@@ -3,9 +3,9 @@
 [[servlet_registration]]
 ==== Servlet 和过滤器的注册
 
-要使用<<app_components,应用程序组件>>中定义的 servlet 和安全过滤器，需要在应用程序中注册它们。servlet 通常在<<web.xml,web.xml>>配置文件中注册，但是，这种配置不会传递到使用此应用程序组件的应用程序中。
+<<app_components,应用程序组件>>中定义的 servlet 和 filter，需要以编程的方式进行注册。一般来说，它们在<<web.xml,web.xml>>配置文件中注册过了，但是组件的 `web.xml` 配置在目标应用程序中不会生效。
 
-`ServletRegistrationManager` bean 能够使用正确的类加载器动态注册 servlet 和过滤器，并允许使用类似于<<appContext,AppContext>>的静态类。它还保证对所有<<deployment_variants,部署选项>>都能正确工作。
+`ServletRegistrationManager` bean 能够使用正确的 `ClassLoader` 动态注册 servlet 和 filter，并允许使用类似于<<appContext,AppContext>>的静态类。它还能保证对于各种<<deployment_variants,部署选项>>，都能正确工作。
 
 `ServletRegistrationManager` 有两个方法:
 
@@ -13,39 +13,18 @@
 
 . `createFilter()` - 以相同的方式创建过滤器.
 
-要使用这个 bean，建议在应用程序组件中创建一个托管的初始化 bean。这个 bean 应该使用 `@Component` 注解，并包含监听应用程序上下文初始化和销毁事件(<<ServletContextInitializedEvent,ServletContextInitializedEvent>> 和 `ServletContextDestroyedEvent`)的监听器。
+要使用这个 bean，建议在应用程序组件中创建一个初始化 bean。这个 bean 需要包含监听 <<ServletContextInitializedEvent,ServletContextInitializedEvent>> 和 `ServletContextDestroyedEvent` 的监听器。
 
-初始化 bean 的一个示例：
+示例：
 
 [source, java]
 ----
 include::{sourcesdir}/extension/WebInitializer.java[]
 ----
 
-这里的 `WebInitializer` 类只有一个事件监听器，用于从应用程序组件中给项目应用程序注册 HTTP servlet。
+这里的 `WebInitializer` 类只有一个事件监听器，用于从组件中为目标应用程序注册 HTTP servlet。
 
-`createServlet()` 方法使用从 `ServletContextInitializedEvent` 获取的应用程序上下文和 HTTP servlet 的完全限定名。然后使用名称（`my_servlet`）注册 servlet 并定义 HTTP-mapping（`/myservlet/`）。现在，如果将此应用程序组件添加到应用程序中，将在初始化 servlet 和应用程序上下文后立即注册 `MyHttpServlet`。
+`createServlet()` 方法使用从 `ServletContextInitializedEvent` 获取的应用程序上下文和 HTTP servlet 的完全限定名。然后使用名称（`my_servlet`）注册 servlet 并定义 HTTP-mapping（`/myservlet/`）。现在，如果将此应用程序组件添加到应用程序中，将在初始化 servlet 和应用程序上下文后会立即注册 `MyHttpServlet`。
 
 相关更复杂的示例，请参阅<<servlet_registration_sample,在应用程序组件中注册 DispatcherServlet>>部分。
-
-[[servlet_registration_single_war]]
-单个 WAR 包部署模式下的 Servlet 注册::
-+
---
-要在<<build.gradle_buildWar_single,单 WAR 部署>>中正确加载自定义过滤器和 servlet，请按照以下步骤操作：
-
-. 创建一个继承 `javax.servlet.ServletContextListener` 的类。这个类将负责 servlet 和过滤器的创建：
-+
-[source, java]
-----
-include::{sourcesdir}/extension/CustomWebListener.java[]
-----
-
-. 在 `single-war-web.xml` 文件中添加一个引用所创建类的新参数 `context-param`：
-+
-[source, xml]
-----
-include::{sourcesdir}/extension/servlet_registration_single_war.xml[]
-----
---
 

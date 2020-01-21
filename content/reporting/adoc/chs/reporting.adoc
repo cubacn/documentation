@@ -6,6 +6,7 @@
 :stylesheet: cuba.css
 :linkcss:
 :source-highlighter: coderay
+:icons: font
 :imagesdir: ./img
 :stylesdir: ./styles
 :sourcesdir: ../../source
@@ -13,12 +14,13 @@
 :sectlinks:
 :sectanchors:
 :lang: en
-:revnumber: 7.1
+:revnumber: 7.2
 :version-label: Version
 :revremark: Copyright (c) 2019 Haulmont (www.haulmont.com)
 :rest_man_url: https://doc.cuba-platform.cn/restapi-{revnumber}
 :rest_swagger_url: http://files.cuba-platform.com/swagger/{revnumber}
 :main_man_url: https://doc.cuba-platform.cn/manual-{revnumber}-chs
+:studio_man_url: https://doc.cuba-platform.cn/studio-chs
 
 :!sectnums:
 
@@ -26,11 +28,15 @@ include::preface.adoc[]
 
 include::reporting_overview.adoc[]
 
+include::installation.adoc[]
+
 include::wizard.adoc[]
 
 include::creation.adoc[]
 
 include::running.adoc[]
+
+include::execution_history.adoc[]
 
 include::examples.adoc[]
 

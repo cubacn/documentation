@@ -7,134 +7,101 @@
 
 下面提供操作(action)类型及其使用示例。
 
-* `com.haulmont.reports.gui.actions.RunReportAction` - 在列表中显示所有可用报表的操作。当用户从列表中选择报表时，将显示参数（如果已定义）输入表单并运行报表。
+[[run_report_action]]
+* `com.haulmont.reports.gui.actions.list.RunReportAction` - 一个 {main_man_url}/standard_actions.html[标准操作] ，展示可用报表列表。需要定义给一个 `Button` 或者列表组件（`Table`、`DataGrid` 等）。
 +
-示例：在界面 XML 描述声明了一个按钮，在按钮中调用此操作
-
-** XML-描述
+下面是 `GroupTable` 使用声明式操作的示例：
 +
 [source, xml]
 ----
-<layout>
-    <groupTable id="booksTable">
-        ...
-        <buttonsPanel id="buttonsPanel">
-            ...
-            <button id="reportButton"
-                    icon="PRINT"/>
-        </buttonsPanel>
-    </groupTable>
+include::{sourcesdir}/run_actions_example1.xml[]
 ----
-
-** 控制器
+<1> - `type` 属性定义了一个特殊的 `runReport` 操作类型，由框架提供。
++
+使用编程式方法创建操作，该操作关联一个在 XML 描述中声明的按钮，示例：
 +
 [source, java]
 ----
-@Inject
-private Button reportButton;
-
-@Subscribe
-private void onInit(InitEvent event) {
-    reportButton.setAction(new RunReportAction("report"));
-}
+include::{sourcesdir}/run_actions_example2.java[]
 ----
-
-** messages.properties
 +
-[source]
-----
-report = Report
-----
+当操作执行时，会打开一个模态的 **Report Run** 对话框展示与当前界面相关的报表。当用户从列表中选择一个报表时，会展示参数输入表单（如果有的话），然后会运行报表。
 
-* `com.haulmont.reports.gui.actions.TablePrintFormAction` - 这个操作可用在一个实体列表表格上。该操作仅选择具有 *Entity* 或 *List of entities* 类型的外部参数的报表，并且参数的实体类型要与表格中显示的实体类型一样。如果只有一个这样的报表可用，会立即调用这个报表。如果多个报表可用，会显示一个列表供用户选择。
+[[list_print_form_action]]
+* `com.haulmont.reports.gui.actions.list.ListPrintFormAction` – 一个 {main_man_url}/standard_actions.html[标准操作] ，用来打印报表，该报表为与列表组件（`Table`、`DataGrid` 等）关联的实体实例集合。
++
+此操作只会选择带有外部 *Entity* 或者 *List of entities* 类型参数的报表，并且要求参数实体类型符合列表组件展示的实体类型。如果最后筛选结果只有一个报表，则会立即调用。如果有多个报表符合条件，则会展示报表列表交于用户选择。
 +
 使用以下规则将外部参数值传递给报表：
 
-** 如果参数是 *List of entities* 类型，会将表格中当前选择的实例列表传递给它。
+** 如果参数是 *List of entities* 类型，会将列表组件中当前选择的实例列表传递给它。
 
-** 如果参数是 *Entity* 类型，并且在表格选择了单个实例（突出显示一行），则选中实例会传递到报表中。
+** 如果参数是 *Entity* 类型，并且在列表组件选择了单个实例（突出显示一行），则选中实例会传递到报表中。
 
-** 如果是 *Entity* 类型的参数，并且表中选择了多行，则报表会根据选择的实例数量运行多次。执行之后，用户将得到一个包含所有生成的报表的 ZIP 文件。
+** 如果是 *Entity* 类型的参数，并且列表组件中选择了多行，则报表会根据选择的实例数量运行多次。执行之后，用户将得到一个包含所有生成的报表的 ZIP 文件。
 +
-下面是在表格按钮和右键菜单中使用操作(action)的示例：
-
-** XML 描述
+下面是 `GroupTable` 使用声明式操作的示例：
 +
 [source, xml]
 ----
-<layout>
-    <groupTable id="booksTable">
-        ...
-        <buttonsPanel id="buttonsPanel">
-            ...
-            <button id="reportButton"
-                    icon="PRINT"/>
-        </buttonsPanel>
-    </groupTable>
+include::{sourcesdir}/run_actions_example5.xml[]
 ----
-
-** 控制器
+<1> - `type` 属性定义了一个特殊的 `listPrintForm` 操作类型，由框架提供。
++
+使用编程式方法创建操作，该操作关联一个在 XML 描述中声明的按钮，示例：
 +
 [source, java]
 ----
-@Inject
-private Button reportButton;
-
-@Inject
-private GroupTable<Book> booksTable;
-
-@Subscribe
-private void onInit(InitEvent event) {
-    TablePrintFormAction action = new TablePrintFormAction("report", booksTable);
-    booksTable.addAction(action);
-    reportButton.setAction(action);
-}
+include::{sourcesdir}/run_actions_example6.java[]
 ----
-
-** messages.properties
 +
-[source, groovy]
-----
-report = Report
-----
+当操作执行时，如果列表组件没有选中实体，会显示一个确认窗口。
++
+.确认窗口
+image::run_actions_listPrint_confirmation.png[align="center"]
++
+之后，会打开一个模态的 **Run reports** 对话框展示与当前界面相关的报表。从该模态窗口，用户可以针对选中的实体运行报表。
 
+[[editor_print_form_action]]
 * `com.haulmont.reports.gui.actions.EditorPrintFormAction` - 与实体编辑器界面关联的操作。该操作仅选择外部参数类型是 *Entity* 或 *List of entities* 的报表，并且参数实体类型要与编辑的实体类型一样。如果只有一个这样的报表，则会立即调用它。如果多个，则会显示一个列表供用户选择。
 +
 外部参数值 - 被编辑的实体实例被传递到报表中。如果参数是 *List of entities* 类型，则会传递一个包含单个条目的列表。
 +
 下面是在一个按钮中使用这个操作的示例，这个按钮位于标准的 *OK* 和 *Cancel* 按钮旁边：
-
++
+--
 ** XML 描述
 +
 [source, xml]
 ----
-<layout expand="editActions" spacing="true">
-    ...
-    <hbox id="editActions" spacing="true">
-        <button action="windowCommitAndClose"/>
-        <button action="windowClose"/>
-        <button id="reportButton" icon="PRINT"/>
-    </hbox>
-</layout>
+include::{sourcesdir}/run_actions_example7.xml[]
 ----
 
 ** 控制器
 +
 [source, java]
 ----
-@Inject
-private Button reportButton;
-
-@Subscribe
-private void onBeforeShow(BeforeShowEvent event) {
-    reportButton.setAction(new EditorPrintFormAction("report", this, null));
-}
+include::{sourcesdir}/run_actions_example8.java[]
 ----
-
-** messages.properties
+--
+[[execution_history_action]]
+* `com.haulmont.reports.gui.actions.list.ExecutionHistoryAction` – 一个 {main_man_url}/standard_actions.html[标准操作] ，用来展示报表的 <<execution_history,执行历史记录>>。需要定义给一个 `Button` 或者列表组件（`Table`、`DataGrid` 等）。
 +
-[source, groovy]
+要查看报表的执行历史，可以在 **Administration > Application Properties** 界面设置 <<reporting.executionHistory.enabled,reporting.executionHistory.enabled>> 应用程序属性为 `true`。
++
+下面是 `GroupTable` 使用声明式操作的示例：
++
+[source, xml]
 ----
-report = Report
+include::{sourcesdir}/run_actions_example3.xml[]
 ----
-
+<1> - `type` 属性定义了一个特殊的 `executionHistory` 操作类型，由框架提供。
++
+使用编程式方法创建操作，该操作关联一个在 XML 描述中声明的按钮，示例：
++
+[source, java]
+----
+include::{sourcesdir}/run_actions_example4.java[]
+----
++
+当操作执行时，会打开一个模态的 **Execution history** 对话框展示与当前界面相关的报表。点击 **Execution History** 之后，会展示选中报表的执行记录。如果未选中任何报表，则会展示与此界面关联的所有报表的执行记录。

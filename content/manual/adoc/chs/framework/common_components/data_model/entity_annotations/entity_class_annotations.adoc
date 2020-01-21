@@ -20,7 +20,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/annotation/EnableRestore.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/annotation/EnableRestore.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -43,19 +43,19 @@
 
 参数:
 
-* `name` – 实体的名称,必须带有前缀，以 `$` 符号分隔前缀。建议使用项目的简称作为前缀来形成单独的命名空间。
+* `name` – 实体的名称,必须带有前缀，以 `_` 符号分隔前缀。建议使用项目的简称作为前缀来形成单独的命名空间。
 
 例如:
 
 [source, java]
 ----
-@Entity(name = "sales$Customer")
+@Entity(name = "sales_Customer")
 ----
 --
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/annotation/Extends.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/annotation/Extends.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -110,7 +110,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/annotation/IdSequence.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/annotation/IdSequence.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -145,7 +145,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/annotation/Listeners.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/annotation/Listeners.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -184,7 +184,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/chile/core/annotations/MetaClass.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/chile/core/annotations/MetaClass.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -196,19 +196,19 @@
 
 参数:
 
-* `name` – 实体名称，必须以一个前缀开头，以 `$` 符号分隔前缀。建议使用项目的简称作为前缀来形成单独的命名空间。
+* `name` – 实体名称，必须以一个前缀开头，以 `_` 符号分隔前缀。建议使用项目的简称作为前缀来形成单独的命名空间。
 
 例如:
 
 [source, java]
 ----
-@MetaClass(name = "sales$Customer")
+@MetaClass(name = "sales_Customer")
 ----
 --
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/chile/core/annotations/NamePattern.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/chile/core/annotations/NamePattern.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -252,7 +252,20 @@
 
 [[postConstruct_entity_annotation]]
 @PostConstruct::
-可以为方法指定此注解。在 <<metadata,Metadata.create()>> 方法创建实体实例之后将立即调用此方法。当实例初始化需要调用<<managed_beans,托管 Bean>> 时非常方便。请参阅 <<init_values_in_class>>。
++
+--
+可以为方法指定此注解。在使用 <<metadata,Metadata.create()>> 或者类似的 `DataManager.create()` 和 `DataContext.create()` 方法创建实体实例之后将立即调用带此注解的方法。
+
+使用此注解的方法可以使用在 `global` 模块可用的 Spring bean 作为参数。示例：
+
+[source,java]
+----
+@PostConstruct
+public void postConstruct(Metadata metadata, SomeBean someBean) {
+    // ...
+}
+----
+--
 
 ++++
 <div class="manual-live-demo-container">
@@ -281,7 +294,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/annotation/PublishEntityChangedEvents.html" class="api-docs-btn" target="_blank">API DOCS</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/annotation/PublishEntityChangedEvents.html" class="api-docs-btn" target="_blank">API DOCS</a>
 </div>
 ++++
 
@@ -291,7 +304,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/annotation/SystemLevel.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/annotation/SystemLevel.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -325,7 +338,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/core/entity/annotation/TrackEditScreenHistory.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/core/entity/annotation/TrackEditScreenHistory.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 

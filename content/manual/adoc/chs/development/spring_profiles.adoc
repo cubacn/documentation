@@ -1,0 +1,54 @@
+:sourcesdir: ../../../source
+
+[[spring_profiles]]
+=== 使用 Spring Profiles
+
+++++
+<div class="manual-since-container">
+    <a href="http://files.cuba-platform.com/cuba/release-notes/7.2/" class="since-btn" target="_blank">
+        <span class="since-btn-caption">最低版本</span><span class="since-btn-version">7.2</span>
+    </a>
+</div>
+++++
+
+使用 Spring profile 可以对应用程序在不同运行环境做定制化。根据生效的 profile 不同，可以对同一个 bean 的不同实现做实例化，并且可以设置不同的应用程序属性值。
+
+如果一个 Spring bean 有 `@Profile` 注解，则只会在匹配到相应的生效 profile 时才会做实例化。下面的例子中，`SomeDevServiceBean` 会在 `dev` profile 生效时使用； `SomeProdServiceBean` 会在 `prod` profile 生效时使用：
+
+[source,java]
+----
+include::{sourcesdir}/development/spring_profile_1.java[]
+----
+
+如需定义一些针对特定 profile 的应用程序属性，需要在基础的 `app.properties` 文件所在包内创建 `<profile>-app.properties` 文件，比如：
+
+[source]
+----
+com/company/demo/app.properties
+com/company/demo/prod-app.properties
+----
+
+针对特定 profile 的配置文件会在基础的配置文件之后加载，所以其中的应用程序属性会覆盖基础配置文件中的属性。下面例子中，我们针对 `prod` profile 定义了指定数据库的连接：
+
+.prod-app.properties
+[source,properties]
+----
+include::{sourcesdir}/development/spring_profile_2.properties[]
+----
+
+生效的 profile 列表可以通过两种方式为应用程序设置：
+
+* 在 `web.xml` 文件内的 `spring.profiles.active` servlet 上下文参数中，示例：
++
+[source,xml]
+----
+include::{sourcesdir}/development/spring_profile_3.xml[]
+----
+
+* 使用 `spring.profiles.active` Java 系统属性。比如，当运行 <<uberjar_deployment,Uber JAR>> 时:
++
+[source]
+----
+java -Dspring.profiles.active=prod -jar app.jar
+----
+

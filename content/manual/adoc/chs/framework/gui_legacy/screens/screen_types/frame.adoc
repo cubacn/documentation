@@ -3,6 +3,11 @@
 [[frame]]
 ====== 界面子框架
 
+[WARNING]
+====
+这是旧版本的 API。对于从 7.0 开始的新 API，请参阅 <<screen_controllers>>。
+====
+
 子框架（Frame）是可重用的界面。界面子框架通过 <<gui_Frame,frame>> XML 元素添加在别的界面中。
 
 子框架的控制器必须扩展 <<abstractFrame,AbstractFrame>> 类。

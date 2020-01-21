@@ -1,13 +1,13 @@
 :sourcesdir: ../../../../source
 
 [[folders_pane]]
-==== 文件夹面板
+==== 快捷文件夹面板
 
 文件夹面板提供对常用信息的快速访问。它是主应用程序窗口左侧的一个包含多级文件夹的面板。点击文件夹会使用特定参数打开相应的系统界面。
 
-在撰写本文时，该面板仅适用于 *Web Client*。
+在撰写本文时，该面板仅适用于 <<app_tiers,Web Client>>。
 
-平台支持三种类型的文件夹：_应用程序文件夹_ 、 _搜索文件夹_ 和 _记录集_。应用程序文件夹作为单独的文件夹树显示在面板顶部；搜索文件夹和记录集显示在面板底部的组合树中。如果设置<<cuba.web.foldersPaneEnabled,cuba.web.foldersPaneEnabled>>属性为 `true`，文件夹将支持键盘<<shortcuts,快捷键>>。
+平台支持三种类型的文件夹：_应用程序文件夹_ 、 _搜索文件夹_ 和 _记录集_。
 
 * 应用程序文件夹:
 
@@ -33,9 +33,31 @@
 
 ** 打开带有过滤器的界面，这个过滤器包含了根据标识符选择特定记录的条件。
 
-** 可以使用专门的表格<<gui_Action,操作>>编辑记录集内容：将记录添加到记录集中或从记录集中删除记录。
+** 可以使用专门的表格<<gui_Action,操作>>编辑记录集内容：*Add to set*、*Add to current set* 和 *Remove from current set*。
 
 ** 记录集仅能供创建它们的用户使用。
+
+应用程序文件夹作为一个单独的树展示在面板的顶部。搜索文件夹和记录集展示在面板底部的组合树中。启用文件夹面板，需要：
+
+. 设置 <<cuba.web.foldersPaneEnabled,cuba.web.foldersPaneEnabled>> 属性为 `true`。
+. 在 Studio 的界面创建向导中使用 **Main screen with top menu** 模板扩展 <<gui_MainScreen,主界面>>。该模板包含一个特殊的 `FoldersPane` 组件。
+
+文件夹面板的文件夹可以在左侧带一个图标。设置 <<cuba.web.foldersPaneEnabled,cuba.web.foldersPaneEnabled>> 属性为 `true` 启用该功能。此时会使用标准的图标。
+
+.应用程序和搜索文件夹 - 使用标准图标
+image::folder_default_icons.png[align="center"]
+
+如要设置其他图标，使用 `FoldersPane` 组件的 `setFolderIconProvider()` 方法。下面的例子展示在自定义的主界面的 `setFolderIconProvider()` 内使用函数的用法。"category" 图标会用在应用程序文件夹上，其他的文件夹，使用 "tag" 图标。
+
+[source, java]
+----
+include::{sourcesdir}/features/setFolderIconProvider.java[]
+----
+
+.应用程序和搜索文件夹 - 使用自定义图标
+image::folder_custom_items.png[align="center"]
+
+要还原标准的图标，只需要给 `setFolderIconProvider()` 方法传递 `null` 参数即可。
 
 通过下列应用程序属性可以定制文件夹面板的功能：
 

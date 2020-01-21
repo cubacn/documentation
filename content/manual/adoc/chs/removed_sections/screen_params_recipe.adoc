@@ -1,4 +1,4 @@
 [[screen_params_recipe]]
-=== Passing Parameters to a Screen
+=== 为界面传递参数
 
-TODO
+参阅 <<opening_screens>>。

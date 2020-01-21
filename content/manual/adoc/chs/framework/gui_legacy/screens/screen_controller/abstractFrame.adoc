@@ -3,6 +3,11 @@
 [[abstractFrame]]
 ====== AbstractFrame
 
+[WARNING]
+====
+这是旧版本的 API。对于从 7.0 开始的新 API，请参阅 <<screen_controllers>>。
+====
+
 `AbstractFrame` 是控制器类结构的根节点基类。以下是其主要方法的介绍：
 
 [[abstractFrame_init]]

@@ -51,40 +51,18 @@ image::query_editor.png[align="center"]
 .参数和格式标签页
 image::query_parameter_rename.png[align="center"]
 
-执行完上述操作后，添加可直接从图书馆图书类目浏览界面运行报表的 *Report* 按钮。
+执行完上述操作后，添加可直接从图书馆图书类目浏览界面运行报表的 *Run report* 按钮。
 
-为此，需要在 `librarydepartment-browse.xml` 界面描述中定义一个按钮：
+为此，需要在 `librarydepartment-browse.xml` 界面描述中定义一个新的 <<run_report_action,RunReportAction>> {main_man_url}/standard_actions.html[标准操作] 以及一个按钮：
 
 [source, xml]
 ----
-<table id="libraryDepartmentsTable"
-    ...
-    <buttonsPanel id="buttonsPanel">
-        ...
-        <button id="reportBtn"
-                caption="msg://reportBtn"/>
-    </buttonsPanel>
-</table>
-----
-
-之后，在界面控制器中注入按钮：
-
-[source, java]
-----
-@Inject
-private Button reportBtn;
-----
-
-并在 `onInit()` 方法中将 `RunReportAction` 分配给按钮：
-
-[source, java]
-----
-reportBtn.setAction(new RunReportAction("report"));
+include::{sourcesdir}/wizard_example_1.xml[]
 ----
 
 如同前面的示例，对于每个报表，需要将 `library$LibraryDepartment.browse` 添加到报表编辑界面的 *Roles and Screens* 标签页上的界面列表中。
 
-*Report* 按钮将显示在图书馆图书类目浏览界面中，只需单击一下即可显示系统中所有可用报表的列表。要运行报表，请在列表中选择 *Recently added book items*，指定日期并单击 *Run report*。
+*Run report* 按钮将显示在图书馆图书类目浏览界面中，只需单击一下即可显示系统中所有可用报表的列表。要运行报表，请在列表中选择 *Recently added book items*，指定日期并单击 *Run report*。
 
 .运行报表
 image::query_running.png[align="center"]

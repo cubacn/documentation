@@ -5,7 +5,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="http://files.cuba-platform.com/javadoc/cuba/7.1/com/haulmont/cuba/gui/components/BulkEditor.html" class="api-docs-btn" target="_blank">API 文档</a>
+    <a href="http://files.cuba-platform.com/javadoc/cuba/7.2/com/haulmont/cuba/gui/components/BulkEditor.html" class="api-docs-btn" target="_blank">API 文档</a>
 </div>
 ++++
 
@@ -17,7 +17,7 @@ image::gui_bulkEdit.png[align="center"]
 
 [WARNING]
 ====
-`BulkEditor` 只能用在使用了<<gui_legacy,遗留 API>>的界面中。最新 API 的类似功能通过<<gui_BulkEditAction,BulkEditAction>>提供。
+`BulkEditor` 只能用在使用了<<gui_legacy,遗留 API>>的界面中。最新 API 的类似功能通过<<BulkEditAction>>提供。
 ====
 
 要使用 `BulkEditor` , 相应的表格或者树组件的 `multiselect`  属性需设置为 `"true"`。
@@ -74,6 +74,16 @@ bulkEditor.setIncludeProperties(Arrays.asList("name", "description"));
 * `useConfirmDialog` 定义保存之前是否弹出确认<<dialogs,对话框>>，默认为 `true`。
 +
 image::gui_BulkEditor_useConfirmDialog.png[align="center"]
+
+[[gui_BulkEditor_columnsMode]]
+* `columnsMode` − 定义批量编辑界面列的数量，是 `ColumnsMode` 枚举的值。默认为 `TWO_COLUMNS`。示例：
++
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/bulkEditor_2.xml[]
+----
+
+批量编辑界面的外观可以通过以 `$c-bulk-editor-*` 开头的 SCSS 变量自定义。在创建了 <<web_theme_extension,主题扩展>> 或 <<web_theme_creation,自定义主题>> 之后可以在可视化编辑器修改这些变量的值。
 --
 
 '''
@@ -82,6 +92,7 @@ bulkEditor 批量编辑器的属性::
 <<gui_attr_align,align>> -
 <<gui_attr_caption,caption>> -
 <<gui_attr_captionAsHtml,captionAsHtml>> -
+<<gui_BulkEditor_columnsMode,columnsMode>> -
 <<gui_attr_css,css>> -
 <<gui_attr_description,description>> -
 <<gui_attr_descriptionAsHtml,descriptionAsHtml>> -

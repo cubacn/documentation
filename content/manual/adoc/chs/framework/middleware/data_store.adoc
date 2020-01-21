@@ -3,39 +3,46 @@
 [[data_store]]
 ==== 数据存储
 
-在 CUBA 应用程序中处理数据的常用方法是操作实体 - 可通过<<datasources,数据源>>和具有数据感知功能的可视化组件进行声明式处理，也可通过 <<dataManager,DataManager>> 或 <<entityManager,EntityManager>> 进行编程式处理。实体映射到数据存储中的数据，数据存储通常是关系型数据库。应用程序可以连接到多个数据存储，因此其<<data_model,数据模型>>将包含映射到位于不同数据库中的数据的实体。
+在 CUBA 应用程序中处理数据的常用方法是操作实体 - 可通过具有数据感知功能的<<gui_components,可视化组件>>进行声明式处理，也可通过 <<dataManager,DataManager>> 或 <<entityManager,EntityManager>> 进行编程式处理。实体映射到数据存储中的数据，数据存储通常是关系型数据库。应用程序可以连接到多个数据存储，因此其<<data_model,数据模型>>将包含映射到位于不同数据库中的数据的实体。
 
 实体只能属于单个数据存储，但是可以在单个 UI 界面上显示来自不同数据存储的实体，`DataManager` 可以确保在保存时将实体分派到适当的数据存储中去。根据实体类型，`DataManager` 选择一个已注册的数据存储，这个数据存储实现了 `DataStore` 接口，然后委托其加载和保存实体。当以编程的方式控制事务并通过 `EntityManager` 使用实体时，必须明确指定要使用的数据存储。有关详细信息，请参阅 <<persistence,Persistence>> 接口方法和 <<transactions_decl,@Transactional>> 注解参数。
 
 平台提供了 `DataStore` 接口的单一实现，名称为 `RdbmsStore`，这个实现的目的是通过 <<orm,ORM>> 层来使用关系型数据库。可以在自己的项目中实现 `DataStore` 接口以进行数据整合，例如，可以与非关系型数据库或具有 REST 接口的外部系统进行数据整合。
 
-在任何 CUBA 应用程序中，必定存在一个主数据存储，它包含系统实体和安全实体，用户登录也是在主数据存储。在本手册中提及数据库时，如果没有明确说明，则指的是主数据存储。主数据存储必须是通过 JDBC 数据源连接的关系型数据库。主数据源位于 JNDI 中，其名称应在 <<cuba.dataSourceJndiName,cuba.dataSourceJndiName>> 应用程序属性中指定，默认情况下为 `jdbc/CubaDS`。
+在任何 CUBA 应用程序中，必定存在一个主数据存储，它包含系统实体和安全实体，用户登录也是在主数据存储。在本手册中提及数据库时，如果没有明确说明，则指的是主数据存储。主数据存储必须是通过 JDBC 数据源连接的关系型数据库。附加数据存储可以是任何 `DataStore` 接口的实现。
 
-可以在 <<cuba.additionalStores,cuba.additionalStores>> 应用程序属性中指定其它附加数据存储名称。如果附加存储是 `RdbmsStore`，需要提供以下属性：
+[TIP]
+====
+使用 CUBA Studio 可以配置附加数据存储，参考 {studio_man_url}/#data_stores[文档] 。会自动创建所有需要的应用程序属性和 JDBC 数据源，并能维护额外添加的 `persistence.xml` 文件。设置好数据存储之后，在实体设计器界面的 *Data store* 字段可以选择其为实体的存储位置。在使用 *Generate Model* 向导为已有数据库 schema 创建映射实体时，也可以选择不同的数据存储。
+====
 
-* `cuba.dataSourceJndiName_{store_name}` - 相应 JDBC 数据源的 JNDI 名称。
-* `cuba.dbmsType_{store_name}` - 数据存储 DBMS 的类型。
-* `cuba.persistenceConfig_{store_name}` - 数据存储 `persistence.xml` 文件的位置。
+如果没有使用 Studio 的话，下面的信息可以帮助你排查问题。
 
-如果在项目中为附加存储实现了 `DataStore` 接口，需要在 `cuba.storeImpl_{store_name}` 应用程序属性中指定实现 bean 的名称。
+附加数据存储的名称通过 <<cuba.additionalStores,cuba.additionalStores>> 应用程序属性指定。如果附加存储是 `RdbmsStore`，还为其定义了下面这些属性:
 
-例如，如果需要使用另外两个数据存储：`db1`（PostgreSQL 数据库）和 `mem1`（由某个项目 bean 实现的内存存储），请在 *core* 模块的 `app.properties` 中指定以下应用程序属性：
+* `cuba.dbmsType_<store_name>` - 数据存储 DBMS 类型。
+* `cuba.persistenceConfig_<store_name>` - 数据存储对应的 `persistence.xml` 文件位置。
+* `cuba.dataSource...` - <<db_connection>>描述的连接参数。
+
+如果项目中实现了 `DataStore` 接口，实现类的名称必须使用 `cuba.storeImpl_<store_name>` 属性定义。
+
+比如，如果使用了两个附加存储 `db1`（PostgreSQL 数据库）和 `mem1`（一个自定义的内存存储，通过某些项目中的 bean 实现），`core` 模块的 `app.properties` 文件必须定义以下属性：
 
 [source,properties]
 ----
 cuba.additionalStores = db1, mem1
-cuba.dataSourceJndiName_db1 = jdbc/db1
+
+# RdbmsStore for Postgres database with data source obtained from JNDI
+
 cuba.dbmsType_db1 = postgres
 cuba.persistenceConfig_db1 = com/company/sample/db1-persistence.xml
+cuba.dataSourceJndiName_db1 = jdbc/db1
+
+# Custom store
 cuba.storeImpl_mem1 = sample_InMemoryStore
 ----
 
 还应在所有应用程序 block 使用的属性文件（`web-app.properties`、 `portal-app.properties` 等）中指定 `cuba.additionalStores` 和 `cuba.persistenceConfig_db1` 属性。
-
-[TIP]
-====
-CUBA Studio 允许在 *CUBA Project Properties* 窗口的 *Data Stores* 标签页上设置其它数据存储。它会自动创建所有必须的应用程序属性和 JDBC 数据源，同时维护额外的 `persistence.xml` 文件。之后，可以在实体设计器的 *Data store* 字段中为实体选择数据存储。当使用 *Generate model* 向导为已有数据库创建实体时，也可以选择数据存储。
-====
 
 [[cross_datastore_ref]]
 来自不同数据存储的实体之间的引用::

@@ -14,7 +14,7 @@
 :sectlinks:
 :sectanchors:
 :lang: en
-:revnumber: 7.1
+:revnumber: 7.2
 :version-label: Version
 :revremark: Copyright (c) 2019 Haulmont (www.haulmont.com)
 :gradleVersion: 4.10.3
@@ -41,8 +41,6 @@ include::development.adoc[]
 include::deployment.adoc[]
 
 include::security_subsystem.adoc[]
-
-include::cookbook.adoc[]
 
 include::config_files.adoc[]
 

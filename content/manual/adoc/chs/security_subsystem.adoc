@@ -1,25 +1,19 @@
 [[security_subsystem]]
 == 安全子系统
 
-CUBA 框架使用下面的方法来控制访问权限：
+CUBA 框架带有成熟的安全子系统，能解决企业级应用中常见的问题：
 
-* 使用<<roles,基于角色>>的系统来分配用户权限。系统管理员在系统部署的时候或者生产环境可以配置一组角色和用户。
+* 使用自带的 <<users,users>> 存储，<<ldap,LDAP>>，<<sso,单点登录>> 或者 <<social_login,社交网站登录>> 进行用户验证。
 
-* 使用具有<<constraints,权限约束>>继承的分级访问组结构。
+* 在数据模型（实体操作和属性）、UI 界面和任何能表达权限许可上（比如，张三可以查看文档，但是不能创建、更新或者删除任何文档，他也可以查看文档的所有属性，但是除了文档的 `amount` 属性），CUBA 提供了 <<roles,基于角色>> 的访问控制。
 
-* 访问权限控制有下列级别：
-
-** 实体的操作（CRUD）：比如，用户 `*Smith*` 可以查看文档，但是不能创建，更改或者删除文档。
-
-** 实体属性（修改，读取，访问禁止）：用户 `*Smith*` 可以查看除了 `amount` 之外的文档的所有属性。
-
-** 对特定实体实例的访问（行级访问控制）：用户 `*Smith*` 只能查看他们部门创建的文档。
-
-* 集成<<ldap,LDAP>>，可以为 *Windows* 用户提供单点登录（Single Sign-On）。更多关于 SSO 的信息，请参阅 IDP 插件 https://github.com/cuba-platform/idp-addon/wiki[文档] 。
+* <<constraints,数据库行级别>>的访问控制 - 针对某个实体实例的权限控制。比如，张三只能查看他所在部门创建的文档。
 
 include::security_subsystem/security_web.adoc[]
 
 include::security_subsystem/security_components.adoc[]
+
+include::security_subsystem/data_access_checks.adoc[]
 
 include::security_subsystem/security_examples.adoc[]
 

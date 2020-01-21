@@ -12,5 +12,5 @@
 注意，在报表查看器（*Reports->Reports* 菜单项）中，能看到所有的系统报表，因为该菜单是管理员菜单。
 ====
 
-界面列表允许指定在调用 `RunReportAction`，`TablePrintFormAction` 或 `EditorPrintFormAction` <<run_actions, actions>>时报表可用的界面。如果未指定任何界面，则报表在任何界面都不可用。
+界面列表可以指定在调用 <<run_report_action,RunReportAction>>、<<list_print_form_action,ListPrintFormAction>>、<<editor_print_form_action,EditorPrintFormAction>> 或 <<execution_history_action,ExecutionHistoryAction>>操作时能使用报表的界面。如果未指定任何界面，则报表在任何界面都不可用。
 

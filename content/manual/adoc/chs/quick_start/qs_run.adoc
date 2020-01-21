@@ -31,7 +31,7 @@ image::quick_start/order_edit.png[align="center"]
 
 现在在 customer 编辑界面显示新的 order：
 
-[[figure_customerEdit]]
+[[figure_customerEdit1]]
 .Customer 编辑界面
 image::quick_start/customer_edit_3.png[align="center"]
 

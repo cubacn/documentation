@@ -1,11 +1,11 @@
-:sourcesdir: ../../../../source
+:sourcesdir: ../../../../../source
 
 [[db_update_gradle]]
-==== Gradle 任务执行数据库脚本
+===== Gradle 任务执行数据库脚本
 
-应用程序开发人员通常使用此机制来更新自己的数据库实例。脚本的执行本质上是通过<<build.gradle,build.gradle>>构建脚本运行特定的 Gradle 任务。这个操作可以通过命令行或 Studio 界面完成。
+应用程序开发人员通常使用此机制来更新自己的数据库实例。脚本的执行本质上是通过运行定义在<<build.gradle,build.gradle>>中特定的 Gradle 任务。这个操作可以通过命令行或 Studio 界面完成。
 
-要运行脚本__创建__数据库，需使用 `createDb` 任务。在 Studio 中，它对应于主菜单中的 *CUBA > Create database* 命令。启动此任务时，会执行以下操作：
+要运行脚本__创建__数据库，需使用 <<build.gradle_createDb,createDb>> 任务。在 Studio 中，它对应于主菜单中的 *CUBA > Create Database* 命令。启动此任务时，会执行以下操作：
 
 . 当前项目的<<app_components,应用程序组件>>的脚本和 *core* 模块的 `++db/**/*.sql++` 脚本被构建到 `modules/core/build/db` 目录中。应用程序组件的脚本集位于有数字前缀的子目录中。前缀用于根据组件之间的依赖关系提供脚本执行的字母排序。
 
@@ -15,7 +15,7 @@
 
 . 类似地，所有当前可用的 `++modules/core/build/db/update/**/*.sql++`  更新脚本会注册在 *SYS_DB_CHANGELOG* 表中。这对于后续进行数据库增量更新是必须的。
 
-要运行脚本__更新__数据库，需使用 `updateDb` 任务。在 Studio 中，它对应于主菜单中的 *CUBA > Update database* 命令。启动此任务时，会执行以下操作：
+要运行脚本__更新__数据库，需使用 <<build.gradle_updateDb,updateDb>> 任务。在 Studio 中，它对应于主菜单中的 *CUBA > Update Database* 命令。启动此任务时，会执行以下操作：
 
 . 脚本的构建方式与上述 `createDb` 命令的构建方式相同。
 

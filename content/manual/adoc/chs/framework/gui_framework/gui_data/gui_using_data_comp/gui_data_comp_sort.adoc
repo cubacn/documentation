@@ -3,6 +3,14 @@
 [[gui_data_comp_sort]]
 ====== 自定义排序
 
+++++
+<div class="manual-since-container">
+    <a href="http://files.cuba-platform.com/cuba/release-notes/7.1/" class="since-btn" target="_blank">
+        <span class="since-btn-caption">最低版本</span><span class="since-btn-version">7.1</span>
+    </a>
+</div>
+++++
+
 UI table 中按照实体属性排序的功能是通过 `CollectionContainerSorter` 实现的，需要为 <<gui_collection_container,CollectionContainer>> 设置该排序器。标准的实现是，如果数据在一页以内能显示，则在内存做数据排序，否则会使用合适的 "order by" 语句发送数据库的请求。"order by" 语句是中间层的 `JpqlSortExpressionProvider` bean创建的。
 
 有些实体属性需要一个特殊的排序实现。下面我们用个例子解释一下如何自定义排序：假设有 `Foo` 实体带有 `String` 类型的 `number` 属性，但是我们知道该属性其实是只保存数字。所以我们希望排序的顺序是 `1, 2, 3, 10, 11`。但是，默认的排序行为会产生这样的结果：`1, 10, 11, 2, 3`。

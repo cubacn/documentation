@@ -3,6 +3,11 @@
 [[entityCombinedScreen]]
 ====== EntityCombinedScreen
 
+[WARNING]
+====
+这是旧版本的 API。对于从 7.0 开始的新 API，请参阅 <<screen_controllers>>。
+====
+
 `EntityCombinedScreen` 是<<screen_combined,组合界面>>控制器的基类，是 <<abstractLookup,AbstractLookup>> 的子类。
 
 `EntityCombinedScreen` 类使用硬编码的标识符查找关键组件，比如表格、字段组或者其它组件。如果给组件做另外不同的命名，需要重写类中保护（protected）的方法并返回自定义的标识符，以便控制器能找到自定义的组件。参考类 JavaDocs 了解细节。

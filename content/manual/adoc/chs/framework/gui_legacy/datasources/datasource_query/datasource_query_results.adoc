@@ -3,27 +3,32 @@
 [[datasource_query_results]]
 ====== 返回值
 
+[WARNING]
+====
+这是旧版本的 API。对于从 7.0 开始的新 API，请参阅 <<gui_data>>。
+====
+
 一个查询语句需要返回在创建数据源时指定类型的实体。在以声明式的方式创建数据源时，返回实体的类型通过 XML 元素的 `class` 属性指定；如果是使用了 `DsBuilder` 以编程的方式创建，那么通过 `setJavaClass()` 或者 `setMetaClass()` 指定。
 
 比如，`Customer` 实体的数据源的查询语句：
 
 [source, sql]
 ----
-select c from sales$Customer c
+select c from sales_Customer c
 ----
 
 或者
 
 [source, sql]
 ----
-select o.customer from sales$Order o
+select o.customer from sales_Order o
 ----
 
 不能使用返回单个属性或者属性聚合值（比如 sum，avg，max 等）的查询语句，示例：
 
 [source, sql]
 ----
-select c.id, c.name from sales$Customer c /* 无效 – 返回了单个字段而不是整个 Customer 对象 */
+select c.id, c.name from sales_Customer c /* 无效 – 返回了单个字段而不是整个 Customer 对象 */
 ----
 
 如果需要执行返回值是纯数值（scalar value）或者属性聚合值（aggregates）的查询语句，并且将返回值通过标准数据绑定显示在可视化组件上，可以使用<<value_datasources,值数据源>>。
