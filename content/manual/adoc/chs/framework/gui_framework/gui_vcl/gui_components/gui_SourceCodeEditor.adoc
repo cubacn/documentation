@@ -5,7 +5,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="https://demo.cuba-platform.cn/sampler/open?screen=simple-codeeditor" class="live-demo-btn" target="_blank">在线示例</a>
+    <a href="https://demo.cuba-platform.cn/sampler/open?screen=dataaware-suggestionfield" class="live-demo-btn" target="_blank">在线示例</a>
 </div>
 ++++
 
@@ -65,6 +65,13 @@ include::{sourcesdir}/gui_vcl/sourceCodeEditor_1.java[]
 
 image::gui_SourceCodeEditor_2.png[align="center"]
 
+[[gui_sourceCodeEditor_suggestOnDot]]
+Ctrl+Space 或者输入 . (点）时会调用智能建议。如需禁用该自动完成功能，设置 `suggestOnDot` 属性为 `false`。其默认值为 `true`。
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/sourceCodeEditor_2.xml[]
+----
+
 `SourceCodeEditor` 的展示可以使用带 `$cuba-sourcecodeeditor-*` 前缀的 SCSS 变量进行自定义。可以在创建一个 <<web_theme_extension,主题扩展>> 或者一个 <<web_theme_creation,自定义主题>> 之后在可视化编辑器里修改这些变量的值。
 
 '''
@@ -95,6 +102,7 @@ sourceCodeEditor 的属性::
 <<gui_attr_required,required>> -
 <<gui_attr_requiredMessage,requiredMessage>> -
 <<gui_attr_rowspan,rowspan>> -
+<<gui_sourceCodeEditor_suggestOnDot,suggestOnDot>> -
 <<gui_sourceCodeEditor_showGutter,showGutter>> -
 <<gui_attr_stylename,stylename>> -
 <<gui_attr_tabIndex,tabIndex>> -

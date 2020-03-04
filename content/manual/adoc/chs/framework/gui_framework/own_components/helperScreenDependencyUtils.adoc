@@ -1,0 +1,35 @@
+:sourcesdir: ../../../../../source
+
+[[helperScreenDependencyUtils]]
+===== ScreenDependencyUtils
+
+为当前界面或者界面片段添加诸如 CSS、JavaScript 或者 HTML 依赖的简单方法就是使用 `ScreenDependencyUtils` 帮助类。可以从下列源中获取依赖：
+
+* <<using_webjars,WebJar 资源>> - 以 `webjar://` 开头
+* 放置在 VAADIN 文件夹的文件 - 以 `vaadin://` 开头
+* Web 资源 - 以 `http://` 或 `https://` 开头
+
+该帮助类有以下方法可以用来添加或者获取依赖：
+
+* `setScreenDependencies` - 设置依赖列表
+* `addScreenDependencies` - 添加多个依赖的路径
+* `addScreenDependency` - 添加单个依赖路径
+* `List<ClientDependency> getScreenDependencies` - 返回已经添加的依赖列表。
+
+下面的例子中，为登录界面添加了一个 CSS 文件：
+
+[source, java]
+----
+include::{sourcesdir}/gui/helperScreenDependencyUtils.java[]
+----
+
+结果会在界面的 header 中添加下列 import：
+
+[source, html]
+----
+include::{sourcesdir}/gui/helperScreenDependencyUtils.html[]
+----
+
+添加的 CSS 文件只作用在登录界面：
+
+image::branding_login_screen.png[align="center"]

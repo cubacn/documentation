@@ -126,7 +126,18 @@ include::{sourcesdir}/gui/web_appStartedEventListener.java[]
 因此，如果用户拥有“PROMO_USER”cookie 并打开应用程序，它们将自动以 `promoUserLogin` 身份登录。
 
 如果要在登录和 UI 初始化后执行其它操作，可以使用 `AppLoggedInEvent`。 需要注意的是，在事件处理程序中必须检查用户是否进行了身份验证，因为所有事件也会对 `anonymous` 用户触发。
+--
 
+[[web_session_events]]
+Web 会话生命周期事件::
++
+--
+框架会发送与 HTTP 会话生命周期相关的两个事件：
+
+- `WebSessionInitializedEvent` - 当 HTTP 会话初始化时。
+- `WebSessionDestroyedEvent` - 当 HTTP 会话销毁时。
+
+可以用这些事件做一些系统级别的动作。注意，在线程中没有可用的 `SecurityContext`。
 --
 
 [[web_login_extension_points]]

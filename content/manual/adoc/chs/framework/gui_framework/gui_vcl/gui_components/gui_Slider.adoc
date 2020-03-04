@@ -3,6 +3,12 @@
 [[gui_Slider]]
 ====== 滑动条
 
+++++
+<div class="manual-live-demo-container">
+    <a href="https://demo.cuba-platform.cn/sampler/open?screen=slider-simple" class="live-demo-btn" target="_blank">在线示例</a>
+</div>
+++++
+
 `Slider` 是一个竖直或水平的条。通过鼠标拖拽条上的小控件可以为其设定某个范围内的一个数值。拖拽小控件同时也会显示值的大小。
 
 image::gui_slider.png[align="center"]

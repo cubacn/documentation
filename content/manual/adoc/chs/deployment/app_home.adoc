@@ -33,3 +33,5 @@ java -Dapp.home=/opt/app_home -jar app.jar
 ----
 CATALINA_OPTS="-Dapp.home=\"$CATALINA_BASE/work/app_home\" -Xmx512m -Dfile.encoding=UTF-8"
 ----
+
+如果您使用<<tomcat_war_deployment,部署至 Tomcat Windows 服务>>，需要将每个属性在 Tomcat 服务设置窗口单独配置一行。

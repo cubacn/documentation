@@ -70,7 +70,7 @@ task buildWar(type: CubaWarBuilding) {
 
 * `useDefaultLogbackConfiguration` - 当设置成 `true` （也是默认值）的时候，这个任务会拷贝标准的 `logback.xml` 配置文件。
 
-* `polymerBuildDir` - <<polymer_build_and_structure,Polymer UI>> 构建生成的目录名称。默认是 `es6-unbundled`。如果在 `polymer.json` 里面修改了预设的编译参数的话，需要提供这个参数。
+* `frontBuildDir` - <<front_ui,Front UI>> 构建生成的目录名称。默认是 `build`。如需自定义，可以修改这个参数。
 --
 
 [[build.gradle_buildWar_single]]

@@ -76,6 +76,7 @@ include::{sourcesdir}/gui/dialogs/gui_input_dialog_1.java[]
 <5> - 指定一组用按钮表示的操作，并放在对话框底部。
 <6> - 在关闭事件监听器中，我们可以检查用户使用了什么操作。
 <7> - 关闭事件包含了输入的值，可以通过参数标识符进行获取。
+<8> - 可以得到一个用 `Optional` 包装的值。
 
 . 自定义参数的输入对话框：
 +
@@ -115,14 +116,4 @@ include::{sourcesdir}/gui/dialogs/gui_input_dialog_5.java[]
 <1> - 指定一个 `FileDescriptor` 参数。
 <2> - 关闭事件包含输入的值，可以用参数标识符获取。
 
-. 带有 `Optional` 类型结果值的输入对话框：
-+
-[source, java]
-----
-include::{sourcesdir}/gui/dialogs/gui_input_dialog_6.java[]
-----
-<1> - `getOptional()` 方法返回一个 `Optional` 结果值，可以用参数标识符获取。
-+
-用户可以从 `InputDialog`、`InputDialogCloseEvent`、`InputDialogResult` 和 `ValidationContext` 获取 `Optional` 类型结果值。
 --
-

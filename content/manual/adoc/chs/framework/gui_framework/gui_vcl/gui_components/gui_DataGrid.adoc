@@ -574,7 +574,7 @@ image::gui_dataGrid_12.png[align="center"]
 
 *数据网格样式：*
 
-在 Web 客户端，可以在 XML 描述中使用 `stylename` 属性为 `DataGrid` 组件设置预定义样式。
+可以在 XML 描述中使用 `stylename` 属性为 `DataGrid` 组件设置预定义样式。
 
 [source, xml]
 ----

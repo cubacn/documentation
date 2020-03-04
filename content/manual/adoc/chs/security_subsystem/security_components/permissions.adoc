@@ -3,73 +3,74 @@
 [[permissions]]
 ==== 权限许可
 
-_permission -权限许可_ 定义用户对系统对象或功能的权限，例如界面，实体操作等。可以定义允许的权限，也可以定义 _prohibition - 拒绝_ 的权限。
+_permission - 权限许可_ 定义用户对系统对象或功能的权限，例如 UI 界面，实体操作等。在讨论权限许可时，这些对象成为 _target - 客体_。
+
+通过给用户分配<<roles,角色>>为用户赋予权限。
 
 [TIP]
 ====
-默认情况下，用户对对象拥有允许的权限，除非显式的定义了拒绝权限。
+在通过角色为用户赋予特定的权限之前，用户对客体无任何权限。因此，无角色的用户没有任何权限，不能通过通用 UI 或 REST API 访问系统。
 ====
 
-权限许可通过 `sec$Permission` 实体实例控制，包含以下属性：
-
-* `type` – 许可类型，许可施加的对象类型。
-
-* `target` – 许可对象，许可施加的对象。该属性的格式基于许可类型。
-
-* `value` – 许可值，可选值基于许可类型。
+根据客体的不同，有以下类型的权限许可：
 
 许可类型描述如下：
 
-* `PermissionType.SCREEN` – 界面许可
+界面权限::
 +
-界面标识在 `target` 属性中指定，`value` 属性值可以为 0（拒绝） 或 1（允许）。
+界面可以被允许或者拒绝。
 +
-界面许可检查发生在组建系统主菜单，和每次调用 <<abstractFrame,Frame>> 接口的 `openWindow()`, `openEditor()`, `openLookup()` 方法时。
-+
-在应用程序中检查界面许可时，可以使用 <<security,Security>> 接口的 `isScreenPermitted()` 方法。
+在构建主菜单和使用 `Screens` 接口的 `create()` 方法创建界面时，框架都会检查界面权限。如需在代码中检查界面权限，可以使用 <<security,Security>> 接口的 `isScreenPermitted()` 方法。
 
-* `++PermissionType.ENTITY_OP++` – 实体操作许可
-+
-在 `target` 属性中指定 实体名 + “:” + 操作类型，操作类型有： `create`, `read`, `update`, `delete`。例如：`*library_Book:delete*`。`value` 属性值可以为 0（拒绝）或 1（允许）。
-+
-参阅 <<data_access_checks>> 章节了解框架中不同机制如何使用实体操作权限。
-+
-在应用程序中检查实体操作许可时，可以使用 <<security,Security>> 接口的 `isEntityOpPermitted()` 方法。
 
-* `++PermissionType.ENTITY_ATTR++` – 实体属性许可
+实体操作权限::
 +
-在 `target` 属性中指定 实体名 + “:” + 属性名，例如：`*library_Book:name*`。`value` 属性值可以为 0（不可见）, 1（只读） 或 2（读写）。
+对每个实体，可以设置以下权限：Create、Read、Update、Delete.
 +
-参阅 <<data_access_checks>> 章节了解框架中不同机制如何使用实体属性权限。
-+
-在应用程序中检查实体属性许可时，可以使用 <<security,Security>> 接口的 `isEntityAttrPermitted()` 方法。
+参阅 <<data_access_checks>> 章节了解框架中的不同机制如何使用实体操作权限。如需在代码中检查实体操作权限，可以使用 <<security,Security>> 接口的 `isEntityOpPermitted()` 方法。
 
-* `PermissionType.SPECIFIC` – 特定功能许可。特定的许可可以用来取代角色对项目功能的许可/禁止，因为角色是许可的合集。
+实体属性权限::
 +
-在 `target` 属性中指定功能标识，`value` 属性值可以为 0（拒绝）或 1（允许）。
+每个实体的每个属性都可以被赋予查看或者修改的权限。
 +
-项目中特定的许可在配置文件 <<permissions.xml,permissions.xml>> 中设置。
+参阅 <<data_access_checks>> 章节了解框架中不同机制如何使用实体属性权限。在应用程序中检查实体属性许可时，可以使用 <<security,Security>> 接口的 `isEntityAttrPermitted()` 方法。
+
+
+特定功能权限::
 +
-例如：
+这些是任意功能的权限许可配置。项目中特定的权限是在 <<permissions.xml,permissions.xml>> 配置文件中设置。
++
+检查特定功能权限的示例：
 +
 [source, java]
 ----
 @Inject
 private Security security;
 
-private void calculateBalance() {
+public void calculateBalance() {
     if (!security.isSpecificPermitted("myapp.calculateBalance"))
         return;
-    ...
+    //...
 }
 ----
 
-* `PermissionType.UI` – 界面组件许可
+界面组件权限::
 +
-在 `target` 属性中指定 界面标识 + “:" + 组件路径。组件路径格式描述详见下一章节。
+--
+界面组件权限可以用来隐藏或者将界面中的特定 UI 组件设为只读状态，不论这些组件是否绑定了实体。界面组件权限会在框架发送 <<screen_AfterInitEvent,AfterInitEvent>> 和 <<screen_BeforeShowEvent,BeforeShowEvent>> 消息之间生效。
 
 [TIP]
 ====
-检查许可的时候，不要直接使用 `UserSession` 的方法，建议使用 <<security,Security>> 接口中同样名字的方法，<<security,Security>> 接口也支持可能发生的<<entity_extension,实体扩展>>。
+界面组件权限与其他类型权限不同的地方在于，只限制其指定的客体的权限。也就是说除非为组件客体定义了隐藏/只读权限，否则该组件客户对于用户来说没有任何限制。
 ====
 
+客体组件按照下列规则通过其路径指定：
+
+* 如果该组件属于界面，只需要简单的指定其组件标识符。
+
+* 如果该组件属于界面内使用的界面片段，则指定为“界面片段标识符.组件标识符”的格式。
+
+* 如需为<<gui_TabSheet>>标签页或者<<gui_Form>>字段配置，则指定为“组件标识符[标签页或字段标识符]”的格式。
+
+* 如需配置界面<<gui_Action,操作>>权限，则指定为“组件标识符<操作标识符>”的格式，比如：`customersTable<changeGrade>`。
+--

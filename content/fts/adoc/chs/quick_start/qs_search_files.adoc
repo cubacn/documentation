@@ -5,10 +5,12 @@
 
 现在需要为每本图书出版物提供文件上传的功能，并将上传的文件添加到 `BookPublication` 浏览界面。
 
-自定义 `BookPublication` 实体。首先，添加一个新的 `file` 属性，它与 `FileDescriptor` 实体多对一关联。`FileDescriptor` 是上传的文件的描述（不要与 `java.io.FileDescriptor` 混淆），它允许从数据模型对象中引用文件。保存更改，然后在 Studio 中将新属性附加到现有的 `bookPublication.full` 界面以及 `BookPublication` 的浏览和编辑界面。
+自定义 `BookPublication` 实体。首先，添加一个新的 `file` 属性，它与 `FileDescriptor` 实体多对一关联。`FileDescriptor` 是上传的文件的描述（不要与 `java.io.FileDescriptor` 混淆），它允许从数据模型对象中引用文件。
 
 .BookPublication 实体的新属性
 image::book_publication_new_attribute.png[align="center"]
+
+保存更改，然后将新属性附加到现有的 `bookPublication.full` 视图。之后，需要在 `BookPublication` 浏览和编辑界面添加 `File` 属性，将光标定位在包含属性的那行，然后按下 Alt+Enter。选择 *Add entity attribute to screens*，然后在弹出对话框中选择需要添加的页面。
 
 生成新的 DB 脚本，更新数据库并重新启动应用程序服务。如果重新创建了 DB，则默认情况下将禁用全文搜索。在 *JMX Console* 复选框中再次选中 *Value* ，对所有文件重建索引，处理索引队列，注销并重新登录。
 

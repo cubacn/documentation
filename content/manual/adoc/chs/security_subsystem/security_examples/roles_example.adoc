@@ -3,41 +3,17 @@
 [[roles_example]]
 ==== 配置角色
 
-建议按以下方式配置<<roles,角色>>和<<permissions,权限许可>> ：
-
-. 创建一个 `*Default - 默认*` 角色，取消所有的应用程序权限。最简单的方法是创建一个 *Denying - 拒绝* 或 *Strictly denying - 严格拒绝* 类型的角色。如果是使用 {rest_man_url}[REST API] 访问应用程序数据则推荐使用后面这种角色。参考 <<data_access_checks>> 了解合适会检查数据访问权限。
-+
-然后为其勾选 *Default role* 默认复选框，这样所有新用户都默认带有该角色。
-
-. 为各类用户类别创建一系列允许特定权限的角色，有两种策略：
-+
---
-* 粗放化（Coarse-grained）角色 – 每个角色中都配置上某类用户责任范畴所需的所有权限，例如 `*Sales Manager*` 销售经理，`*Accountant*` 会计。这样的话，除了 `*Default*` 默认角色，每个用户只分配一个角色。
-
-* 精细化（Fine-grained）角色 – 每个角色都配置为可以操作某类功能。例如 `*Task Creator*` 任务创建，`*References Editor*` 引用编辑。这样的话，每个用户基于他的责任范畴会分配到多个角色。
-
-两种策略也可以组合使用。为不同的用户类别创建一系列角色来分配权限。
---
-
-. 系统管理员可能会不需要分配任何角色，他们拥有所有系统对象的所有权限。也可以为其分配一个 *Super* 类型的角色，覆盖所有其它角色指定的限制。
-
-[[roles_example_permissions]]
-*管理功能访问权限*
-
-需要给 *Denying - 拒绝* 角色提供访问管理功能的时候，需要放开一些权限，以下是快速参考。比如，只开放<<entity_log,实体日志>>功能，在相应部分设置提到的权限。
+下面是权限配置的快速参考，以配置访问 *Administration - 管理* 功能为例。
+比如，只开放<<entity_log,实体日志>>功能，在相应部分设置提到的权限。
 
 推荐至少提供 `sys$FileDescriptor` 实体的只读权限，因为这个实体在平台很多地方都会用到：邮件、附件、日志等。
-
-下面提到的权限可以通过相应标签页的 `Role` 编辑窗口进行配置：*Entity - 实体*, *Screen - 界面* 或者 *Specific - 特殊功能*。
-
-另外，可以通过 <<cuba.defaultPermissionValuesConfig,cuba.defaultPermissionValuesConfig>> 应用程序属性配置系统实体的默认访问权限。
 
 Users - 用户::
 +
 --
 <<users,User>> 实体可以在数据模型中用来做关联引用实体。需要在查询组件或者下拉框组件使用用户实体，只需要设置 `sec$User` 实体的权限就足够。
 
-如果需要使用 *Denying - 拒绝* 角色创建或者编辑 `User` 实体，还需要设置以下权限：
+如果需要创建或者编辑 `User` 实体，还需要设置以下权限：
 
 * 实体: `sec$User`, `sec$Group`; (可选) `sec$Role`, `sec$UserRole`, `sec$UserSubstitution`.
 
@@ -122,7 +98,7 @@ Entity Inspector - 实体探查::
 Entity Log - 实体日志::
 +
 --
-在<<entity_listeners,实体监听器>>级别<<entity_log,记录>>实体持久化操作。
+<<entity_log,记录>>实体变化。
 
 * 实体: `sec$EntityLog`, `sec$User`, `sec$EntityLogAttr`, `sec$LoggedAttribute`, `sec$LoggedEntity`, 以及数据模型需要的其它实体。
 

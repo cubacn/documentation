@@ -49,7 +49,7 @@ include::{sourcesdir}/list_of_entities_report_example.xml[]
 .添加界面
 image::list_of_entities_screens.png[align="center"]
 
-现在，可以从书籍条目浏览界面的表格中选中要打印的条目并点击 *Print list* 按钮来运行报表。*Print selected* 选项导出所选条目，*Print all* 选项打印当前过滤器选择的所有实例。
+现在，可以从书籍条目浏览界面运行。如需获取报表中的条目列表，首先切换到 *Library -> Accession Register* 界面，然后从下拉列表选择书籍生成条目。然后切换至 *Library -> Publications* 界面，选择之前生成过条目的书籍，点击 *Show items* 按钮。在 *BookInstances* 界面选择表格中需要生成报表的条目然后点击 *Print list* 按钮。*Print selected* 选项会导出选中的条目，*Print all* 会导出当前过滤器选中的所有实例。
 
 .打印选中的
 image::list_of_entities_running.png[align="center"]

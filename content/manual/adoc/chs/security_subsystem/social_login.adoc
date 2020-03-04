@@ -7,6 +7,13 @@
 
 社交网站登录也是<<sso,单点登录（SSO）>> 的一种形式，可以通过社交网站的账号（比如 Facebook，Twitter 或者 Google+）来登录 CUBA 系统，而不需要为 CUBA 应用程序创建特定的账号。
 
+[TIP]
+====
+也可以参考 https://www.cuba-platform.cn/guides/anonymous-access-and-social-login[匿名访问和社交网站登录] 向导。
+
+此向导包含了为 CUBA 应用程序设置公共访问，以及使用 Google、Facebook 或 GitHub 账号自定义登录的实现。
+====
+
 下面将使用 Facebook 来作为社交网络登录的示例。Facebook 使用 OAuth2 认证机制，想了解更多细节请参考 Facebook API 和 Facebook Login Flow： https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow 。
 
 示例项目代码在这里： https://github.com/cuba-platform/sample-social-login[GitHub]，以下列出关键点的实现。

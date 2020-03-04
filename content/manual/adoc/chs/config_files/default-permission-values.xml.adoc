@@ -3,11 +3,16 @@
 [[default-permission-values.xml]]
 === default-permission-values.xml
 
-这种类型的文件用来定义用户的默认<<permissions,权限>>值。如果没有<<roles,角色>>为需要权限的目标显式定义权限值的时候，就会使用默认权限值。对于有拒绝访问权限的用户来说，这个文件很多时候是需要的：因为如果没有这个文件，有拒绝访问角色的用户默认情况下是连<<main_window_layout,主窗口>>界面和<<gui_Filter,过滤器>>界面都不能访问的。
+[WARNING]
+====
+这种类型的文件用在 CUBA 版本 _小于_ 7.2 的项目中，或者用于迁移到新平台的项目，需要保留之前计算有效权限的方法，参阅<<legacy_roles>>章节。
+====
 
-这种类型的文件是不能通过 Studio 自动生成的，需要在 *core* 模块手动创建。
+如果没有<<roles,角色>>为需要权限的目标显式定义权限值的时候，就会使用默认权限值。对于有拒绝访问权限的用户来说，这个文件很多时候是需要的：因为如果没有这个文件，有拒绝访问角色的用户默认情况下是连<<main_window_layout,主窗口>>界面和<<gui_Filter,过滤器>>界面都不能访问的。
 
-文件的地址通过 <<cuba.defaultPermissionValuesConfig,>> 应用程序属性定义。如果应用程序中这个属性没有定义，则会使用默认的 `cuba-default-permission-values.xml` 文件。
+该文件需要在 *core* 模块创建。
+
+文件的地址通过 <<cuba.defaultPermissionValuesConfig,cuba.defaultPermissionValuesConfig>> 应用程序属性定义。如果应用程序中这个属性没有定义，则会使用默认的 `cuba-default-permission-values.xml` 文件。
 
 XML schema： http://schemas.haulmont.com/cuba/default-permission-values.xsd
 

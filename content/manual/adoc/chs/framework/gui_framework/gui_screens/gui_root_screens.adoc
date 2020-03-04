@@ -41,11 +41,21 @@ cuba.web.loginScreenId = myLogin
 主界面::
 +
 --
-主界面是用户登录之后看到的应用程序的根界面。框架提供的带有侧边菜单的标准主界面使用 `main` 作为 id。
+主界面是用户登录之后看到的应用程序的根界面。默认情况下，框架使用<<gui_MainScreenSideMenu,带侧边菜单的主界面>>。
 
 Studio 有一些创建自定义主界面的模板，这些模板都使用相同的 `MainScreen` 类作为控制器的基类。
 
-* *Main screen with side menu* 创建一个标准主界面的扩展，使用 `main` id。
+[[gui_MainScreenSideMenu]]
+* *Main screen with side menu* 创建标准主界面的扩展，并使用 `main` id。带有侧边菜单的主界面，默认可以使用左下角的 *Collapse* 按钮展开或者收起侧边菜单。
++
+可以使用 SCSS 变量自定义侧边菜单的行为（在创建了<<web_theme_extension,主题扩展>>或者<<web_theme_creation,自定义主题>>后，可以用可视化编辑器修改这些变量。）：
++
+** `$cuba-sidemenu-layout-collapse-enabled` 启用或禁用侧边菜单收起模式。默认为 `true`。
+** `$cuba-sidemenu-layout-collapsed-width` 指定收起后侧边菜单的宽度。
+** `$cuba-sidemenu-layout-expanded-width` 指定展开后侧边菜单的宽度。
+** `$cuba-sidemenu-layout-collapse-animation-time` 指定侧边菜单展开收起的动画时间。
++
+当 `$cuba-sidemenu-layout-collapse-enabled` 变量设置为 `false` 时，会隐藏 *Collapse* 按钮，侧边菜单呈展开状态。
 
 * *Main screen with responsive side menu* 创建一个类似的界面，但是侧边菜单是响应式的，能在窄的显示环境中自动收起。该界面会带有自己生成的 id，因此，必须在 `web-app.properties` 里面进行注册：
 +
@@ -84,7 +94,15 @@ image::userIndicator.png[align="center"]
 
 * `NewWindowButton` – 在单独的浏览器标签页打开新主界面的按钮。
 
+[[gui_MainScreen_UserActionsButton]]
 * `UserActionsButton` – 如果用户会话没有认证，显示登录界面的链接。否则，显示一个菜单：用户设置界面的链接和登出操作。
++
+可以在主界面控制器装载 `LoginHandler` 或 `LogoutHandler` 以实现自定义逻辑：
++
+[source, java]
+----
+include::{sourcesdir}/gui/screens/main_screen_userActionsButton.java[]
+----
 
 * `LogoutButton` – 应用程序登出按钮。
 
@@ -94,7 +112,7 @@ image::userIndicator.png[align="center"]
 
 下列应用程序属性可能影响主界面：
 
-* <<cuba.web.appWindowMode,cuba.web.appWindowMode>> – 设置主窗口的默认模式：标签页式的还是单独界面式（`TABBED` 或 `SINGLE`）。用户可以使用 `UserActionsButton` 提供的 *Settings - 设置* 界面进行修改。
+* <<cuba.web.appWindowMode,cuba.web.appWindowMode>> – 设置主窗口的默认模式：标签页式的还是单独界面式（`TABBED` 或 `SINGLE`）。用户可以使用 <<gui_MainScreen_UserActionsButton,UserActionsButton>> 提供的 *Settings - 设置* 界面进行修改。
 
 * <<cuba.web.maxTabCount,cuba.web.maxTabCount>> – 当主界面在标签页式时，使用该属性设置用户能打开的标签页最多个数。默认值为 7。
 

@@ -44,10 +44,36 @@ include::{sourcesdir}/gui_vcl/gui_form_1.xml[]
 
 如果要在界面控制器注入嵌套的组件，可以在 XML 中指定其 `id` 属性。组件会使用其具体的类型进行注入，比如 `TextField`。如果在界面中注入了一个通用控件，则其会是 `Field` 类型，该类是表单能展示的所有可视化组件的父类。
 
+[[gui_Form_span]]
+`form` 组件支持 <<gui_attr_colspan,colspan>> 和 <<gui_attr_rowspan,rowspan>> 属性。这些属性用来设置对应的内嵌组件占据的列数和行数。下面的例子演示 `Field1` 如何占据两列：
+
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/gui_form_5.xml[]
+----
+
+组件会按照下面的方式排布：
+
+image::gui_Form_2.png[align="center"]
+
+类似的，`Field 1` 也可以扩展至两行：
+
+[source, xml]
+----
+include::{sourcesdir}/gui_vcl/gui_form_6.xml[]
+----
+
+组件会按照下面的方式排布：
+
+image::gui_Form_3.png[align="center"]
+
 `form` 的属性：
 
 [[gui_Form_childrenCaptionWidth]]
 * `childrenCaptionWidth` – 为所有嵌套列及其子元素指定固定标题宽度。设置 `-1` 使用自动大小。
+
+[[gui_Form_childrenCaptionAlignment]]
+* `childrenCaptionAlignment` – 定义内嵌所有子组件标题的对齐方式。有两个可选项：`LEFT` 和 `RIGHT`。默认值为 `LEFT`。只有当<<gui_Form_captionPosition,captionPosition>>设置为 `LEFT` 是才能有效。
 
 [[gui_Form_captionPosition]]
 * `captionPosition` - 定义字段的标题位置：`TOP` 或 `LEFT`。
@@ -78,12 +104,15 @@ include::{sourcesdir}/gui_vcl/gui_form_2.xml[]
 
 [[gui_Form_column_childrenCaptionWidth]]
 * `childrenCaptionWidth` – 为嵌套字段指定固定的标题宽度。设置 `-1` 使用自动大小。
+
+[[gui_Form_column_childrenCaptionAlignment]]
+* `childrenCaptionAlignment` – 定义内嵌字段标题的对齐方式。有两个可选项：`LEFT` 和 `RIGHT`。默认值为 `LEFT`。只有当<<gui_Form_captionPosition,captionPosition>>设置为 `LEFT` 是才能有效。
 --
 
 `Form` 接口的方法：
 
 [[gui_Form_add]]
-* `add()` - 允许在向 `Form` 添加字段。它接受一个 `Component` 实例作为参数，也可以通过添加 `column` 和 `row` 索引来定义新字段的位置。
+* `add()` - 允许在向 `Form` 添加字段。它接受一个 `Component` 实例作为参数，也可以通过添加 `column` 和 `row` 索引来定义新字段的位置。另外，还有一个重载方法可以使用 <<gui_Form_span,rowspan>> 和 <<gui_Form_span,colspan>> 作为参数。
 +
 框架不会为使用编程方式添加的组件指定数据容器，所以需要使用 `setValueSource()` 方法进行数据绑定。
 +
@@ -101,6 +130,11 @@ include::{sourcesdir}/gui_vcl/gui_form_3.xml[]
 include::{sourcesdir}/gui_vcl/gui_form_4.java[]
 ----
 
+[[gui_Form_setChildrenCaptionAlignment]]
+* `setChildrenCaptionAlignment(CaptionAlignment alignment)` – 设置所有列中子组件的标题对齐方式。
+
+* `setChildrenCaptionAlignment(int column, CaptionAlignment alignment)` – 设置给定 index 列的子组件标题对齐方式。
+
 '''
 
 form 的属性::
@@ -109,8 +143,9 @@ form 的属性::
 <<gui_attr_caption,caption>> -
 <<gui_attr_captionAsHtml,captionAsHtml>> -
 <<gui_Form_captionPosition,captionPosition>> -
+<<gui_Form_childrenCaptionAlignment,childrenCaptionAlignment>> -
 <<gui_Form_childrenCaptionWidth,childrenCaptionWidth>> -
-<<gui_attr_colspan,colspan>> -
+<<gui_Form_span,colspan>> -
 <<gui_attr_contextHelpText,contextHelpText>> -
 <<gui_attr_contextHelpTextHtmlEnabled,contextHelpTextHtmlEnabled>> -
 <<gui_attr_css,css>> -
@@ -123,17 +158,19 @@ form 的属性::
 <<gui_attr_icon,icon>> -
 <<gui_attr_id,id>> -
 <<gui_attr_responsive,responsive>> -
-<<gui_attr_rowspan,rowspan>> -
+<<gui_Form_span,rowspan>> -
 <<gui_attr_stylename,stylename>> -
 <<gui_attr_visible,visible>> -
 <<gui_attr_width,width>>
 
 column 的属性::
+<<gui_Form_column_childrenCaptionAlignment,childrenCaptionAlignment>> -
 <<gui_Form_column_childrenCaptionWidth,childrenCaptionWidth>> -
 <<gui_FieldGroup_column_id,id>> -
 <<gui_FieldGroup_column_width,width>>
 
 API::
-<<gui_Form_add,add>>
+<<gui_Form_add,add>> -
+<<gui_Form_setChildrenCaptionAlignment,setChildrenCaptionAlignment>>
 
 '''

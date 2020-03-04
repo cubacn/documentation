@@ -40,9 +40,7 @@ image::quick_start/email_validation_dialog.png[align="center"]
 
 现在切换到 *Text* 标签页，这里包含了 `Customer` 类的源代码。
 
-点击类名称，然后用 Studio 的检查功能(inspection)来为 `Customer` 实体指定<<namePattern_annotation,实例名称>>。在可选的属性列表中选择 `name`。然后会生成类注解： `@NamePattern("%s|name")` 。
-
-image::quick_start/name_pattern.png[align="center"]
+image::quick_start/customer_code.png[align="center"]
 
 现在 Customer 实体创建完了。
 

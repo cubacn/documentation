@@ -39,7 +39,7 @@ cuba.allowQueryFromSelected::
 cuba.anonymousLogin::
 +
 --
-用来创建匿名用户会话的用户名称。（参考 <<cuba.anonymousSessionId,cuba.anonymousSessionId>>）。
+用来创建匿名用户会话的用户名称。
 
 默认值： `anonymous`
 
@@ -48,17 +48,6 @@ cuba.anonymousLogin::
 配置接口： `ServerConfig`
 
 可以在 Middleware block 使用。
---
-
-[[cuba.anonymousSessionId]]
-cuba.anonymousSessionId::
-+
---
-定义匿名用户会话的 UUID，此会话可以在没有用户登录的状态下使用。在服务启动的时候，会自动创建这个匿名会话。参考 <<cuba.anonymousLogin,cuba.anonymousLogin>>。
-
-配置接口： `GlobalConfig`
-
-在所有标准的 <<app_tiers,blocks>> 中都可以使用。
 --
 
 [[cuba.automaticDatabaseUpdate]]
@@ -470,7 +459,7 @@ cuba.dbmsVersion::
 cuba.defaultPermissionValuesConfig::
 +
 --
-定义包含用户默认权限的一组文件。当没有为许可对象设置<<roles,角色>>的时候，会使用默认权限值。通常用来为“拒绝”角色使用，参考 <<default-permission-values.xml,default-permission-values.xml>> 章节了解更多信息。
+当使用<<legacy_roles>>时，定义包含用户默认权限的一组文件。当没有为许可对象设置<<roles,角色>>的时候，会使用默认权限值。通常用来为“拒绝”角色使用，参考 <<default-permission-values.xml,default-permission-values.xml>> 章节了解更多信息。
 
 默认值： `cuba-default-permission-values.xml`
 
@@ -1431,6 +1420,37 @@ cuba.schedulingActive::
 可以在 Middleware block 使用。
 --
 
+[[cuba.security.defaultPermissionValuesConfigEnabled]]
+cuba.security.defaultPermissionValuesConfigEnabled::
++
+--
+如需向后兼容，开启使用 <<default-permission-values.xml>> 配置文件。参阅 <<legacy_roles>> 了解细节。
+
+默认值： `false`
+
+配置接口： `ServerConfig`
+
+可以在 Middleware block 使用。
+--
+
+[[cuba.security.rolesPolicyVersion]]
+cuba.security.rolesPolicyVersion::
++
+--
+如需向后兼容，该参数决定安全角色的行为。参阅 <<legacy_roles>> 了解细节。
+
+可能值：
+
+* 1 - CUBA 7.2 之前：如果未定义某种许可，则可访问许可目标；使用角色类型。
+* 2 - CUBA 7.2 之后：如果未定义某种许可，则拒绝访问许可目标；只能使用 “允许” 许可；可使用设计时角色。
+
+默认值： 2
+
+配置接口： `ServerConfig`
+
+可以在 Middleware block 使用。
+--
+
 [[cuba.serialization.impl]]
 cuba.serialization.impl::
 +
@@ -1975,6 +1995,19 @@ cuba.web.foldersPaneVisibleByDefault::
 设置是否要默认展开<<folders_pane,文件夹面板>>。
 
 默认值： `false`
+
+配置接口： `WebConfig`
+
+可以在 web 客户端 block 使用。
+--
+
+[[cuba.web.htmlSanitizerEnabled]]
+cuba.web.htmlSanitizerEnabled::
++
+--
+设置实现了 `HasHtmlSanitizer` 接口的 UI 组件是否使用 `HtmlSanitizer` bean 在 HTML 中防止跨站脚本（XSS）。该配置也可以在单独的组件中启用或禁用。
+
+默认值： `true`
 
 配置接口： `WebConfig`
 

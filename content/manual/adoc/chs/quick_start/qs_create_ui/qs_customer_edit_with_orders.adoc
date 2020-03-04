@@ -27,16 +27,16 @@ select e from sales_Order e where e.customer = :customer
 include::{sourcesdir}/qs/ordersCt.xml[]
 ----
 
-从工具箱将 `Table` 组件拖至组件树面板，放置在 `label` 和 `editActions` 中间。在组件结构（Hierarchy）面板选中此组件，然后在 *Properties* 标签页设定表格的大小：在 *width* 字段设置 `300px`，在 *height* 字段设置 `200px`。从可用的数据容器中选择 `ordersDc`。然后使用 *id* 字段边上的 image:generate_id.png[] 按钮来生成表格的标识符：`ordersTable`。
-
-接下来，右键点击表格并选择 *Wrap Into > Group Box*。切换到 group box 属性面板的 *Properties* 标签页然后在 *caption* 字段输入 `Orders` 并设置 group box的宽度为 320 px。
+然后，从组件工具箱拖拽 `Label` 至组件层级树面板，放置于 `form` 和 `editActions` 之间。在属性面板切换至 *Properties* 标签页，在 *value* 字段输入 `Orders`。
 
 [TIP]
 ====
 如果应用程序需要使用多国语言，用 *caption* 字段旁边的 image:localization.png[] 按钮来创建新的<<messages,语言消息>> `msg://orders` 然后按照需要的语言给标签定义值。
 ====
 
-image::quick_start/customer_edit.png[align="center"]
+从工具箱将 `Table` 组件拖至组件树面板，放置在 `label` 和 `editActions` 中间。在组件结构（Hierarchy）面板选中此组件，然后在 *Properties* 标签页设定表格的大小：在 *width* 字段设置 `300px`，在 *height* 字段设置 `200px`。从可用的数据容器中选择 `ordersDc`。然后使用 *id* 字段边上的 image:generate_id.png[] 按钮来生成表格的标识符：`ordersTable`。
+
+接下来，右键点击表格并选择 *Wrap Into > Group Box*。切换到 group box 属性面板的 *Properties* 标签页然后在 *caption* 字段输入 `Orders` 并设置 group box的宽度为 320 px。image::quick_start/customer_edit.png[align="center"]
 
 最后，*Text* 标签页的 `customer-edit.xml` 代码如下：
 
@@ -57,7 +57,7 @@ include::{sourcesdir}/qs/customer-edit.xml[]
 private CollectionLoader<Order> ordersDl;
 ----
 
-然后，订阅 `BeforeLoadDataEvent` 事件，为 `ordersDl` 数据加载器设置 `customer` 参数：按下 Alt+Insert 然后在 *Generate* 菜单中选择 *Subscribe to Event > BeforeShowEvent*。或者，也可以直接使用下面的代码：
+然后，订阅 `BeforeShowEvent` 事件，为 `ordersDl` 数据加载器设置 `customer` 参数：按下 Alt+Insert 然后在 *Generate* 菜单中选择 *Subscribe to Event > BeforeShowEvent*。或者，也可以直接使用下面的代码：
 
 [source, java]
 ----

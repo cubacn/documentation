@@ -26,5 +26,7 @@ include::{sourcesdir}/extension/WebInitializer.java[]
 
 `createServlet()` 方法使用从 `ServletContextInitializedEvent` 获取的应用程序上下文和 HTTP servlet 的完全限定名。然后使用名称（`my_servlet`）注册 servlet 并定义 HTTP-mapping（`/myservlet/`）。现在，如果将此应用程序组件添加到应用程序中，将在初始化 servlet 和应用程序上下文后会立即注册 `MyHttpServlet`。
 
+如果应用程序上下文是 `/app`，且 servlet 是用 `myservlet` 映射进行注册的，则访问路径为： `/app/myservlet`。
+
 相关更复杂的示例，请参阅<<servlet_registration_sample,在应用程序组件中注册 DispatcherServlet>>部分。
 

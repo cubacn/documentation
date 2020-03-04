@@ -8,12 +8,6 @@
 从 CUBA Platform 6.8 开始这个 `Embedded` 组件就不推荐使用了。替换方案是使用 <<gui_Image,Image>> 组件来显示图片，用 <<gui_BrowserFrame,BrowserFrame>> 组件来嵌入网页。
 ====
 
-++++
-<div class="manual-live-demo-container">
-    <a href="https://demo.cuba-platform.cn/sampler/open?screen=image-embedded" class="live-demo-btn" target="_blank">在线示例</a>
-</div>
-++++
-
 `Embedded` 组件是用来显示图片和在应用程序界面中嵌入任何形式的网页。
 
 该组件对应的 XML 名称： `embedded`

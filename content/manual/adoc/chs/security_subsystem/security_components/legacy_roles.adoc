@@ -1,0 +1,40 @@
+:sourcesdir: ../../../../source
+
+[[legacy_roles]]
+==== 遗留版本角色和权限许可
+
+在 CUBA 7.2 之前，计算有效权限的方法与现在不同：
+
+. 有两种类型的权限许可："allow - 允许" 和 "deny - 拒绝"。
+. 如果对于某个客体，未指定拒绝权限，则允许对其访问。
+. 可以显式的使用针对客体的 “allow/deny” 赋予权限或者通过某种类型的角色来赋予。比如，“Denying” 角色赋予除了实体属性之外所有客体的 “deny” 权限。如果客体没有对其的特殊许可设置，或者没有配置角色类型对其的许可，则用户具有对该客体的完全控制权。因此，如果一个用户没有配置角色，则其拥有系统的所有权限。
+
+那时推荐为普通用户首先分配一个 “Denying” 角色，然后再为其分配一组其他带有特殊允许权限的角色。现在不需要 “Denying” 角色了，因为除非通过角色赋予其特殊的访问权限，否则用户对于任何客体都是无权限的。
+
+还有，之前的版本中，没有<<security_scope,安全范围>>，以至于对角色的配置影响既通用界面也影响 REST API 客户端。
+
+安全子系统的行为通过一些应用程序属性控制，这些属性默认设置为新行为的对应参数。如果您从之前的版本迁移至 CUBA 7.2，Studio 会添加下列属性切换至之前的行为并保留您已有的安全配置。如果希望使用新功能（比如设计时角色定义），重新配置安全子系统，可以删除这些属性。
+
+在 `core` 模块中，用之前版本的安全策略、<<default-permission-values.xml>>配置文件以及忽略新的 `system-minimal` 角色的配置属性：
+
+.app.properties
+[source,properties]
+----
+cuba.security.rolesPolicyVersion = 1
+cuba.security.defaultPermissionValuesConfigEnabled = true
+cuba.security.minimalRoleIsDefault = false
+----
+
+如果您的系统使用 REST API 插件，会在 `web` 和 `portal` 模块设置下列属性，将 REST 安全范围配置成与通用 UI 一样：
+
+.web-app.properties
+[source,properties]
+----
+cuba.rest.securityScope = GENERIC_UI
+----
+
+.portal-app.properties
+[source,properties]
+----
+cuba.rest.securityScope = GENERIC_UI
+----

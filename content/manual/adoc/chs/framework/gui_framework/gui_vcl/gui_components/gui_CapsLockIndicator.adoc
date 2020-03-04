@@ -3,6 +3,12 @@
 [[gui_CapsLockIndicator]]
 ====== 大小写锁定提示器
 
+++++
+<div class="manual-live-demo-container">
+    <a href="https://demo.cuba-platform.cn/sampler/open?screen=capslock-indicator" class="live-demo-btn" target="_blank">在线示例</a>
+</div>
+++++
+
 这个组件在用户使用 <<gui_PasswordField,PasswordField>> 输入密码的时候提示用户是否开启了大小写锁定。
 
 该组件对应的 XML 名称: `capsLockIndicator`

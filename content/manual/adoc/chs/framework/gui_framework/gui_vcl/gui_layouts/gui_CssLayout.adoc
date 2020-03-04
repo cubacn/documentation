@@ -5,7 +5,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="https://demo.cuba-platform.com/dashboard" class="live-demo-btn" target="_blank">示例程序</a>
+    <a href="https://demo.cuba-platform.cn/dashboard" class="live-demo-btn" target="_blank">示例程序</a>
 </div>
 ++++
 

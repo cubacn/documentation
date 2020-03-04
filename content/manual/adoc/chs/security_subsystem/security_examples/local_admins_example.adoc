@@ -3,7 +3,7 @@
 [[local_admins_example]]
 ==== 创建本地管理员
 
-在<<groups,访问组>>的树形层级结构加上<<constraints,约束>>能够支持创建 _本地管理员_，可以用来在组织部门内代理做一些创建、配置用户和权限管理的工作。
+在<<groups,访问组>>的树形层级结构加上<<constraints,约束>>能够支持创建 _本地管理员（部门管理员）_，可以用来在组织部门内代理做一些创建、配置用户和权限管理的工作。
 
 本地管理员可以访问安全子系统的界面，但是他们只能看到自己访问组或以下的用户和访问组。本地管理员还可以创建子访问组、用户以及能<<roles,分配>>系统上的角色。其创建的新用户也至少有跟创建他们的本地管理员一样的权限限制。
 
@@ -22,8 +22,6 @@ image::local_admins_groups.png[align="center"]
 方案是：
 
 * 在 `*Departments*` 里添加以下约束：
-+
-image::local_admins_constraints.png[align="center"]
 
 ** 对于 `sec$Group` 实体：
 +
@@ -49,26 +47,31 @@ image::local_admins_constraints.png[align="center"]
 +
 这样，用户不会看到比自己所在组层级高的组里的用户。
 
-** 对于 `sec$Role` 实体：
+** 对于 `sec$Role` 实体（一个在内存中检查的 Groovy 约束）：
 +
 [source, plain]
 ----
-({E}.description is null or {E}.description not like '[hide]')
+!['system-full-access', 'Some Role to Hide 1', 'Some Role to Hide 2'].contains({E}.name)
 ----
 +
-这样，用户不会看到 `description` 属性里包含 `*[hide]*` 的角色。
+有了这个约束，用户将无法查看和分配不想要的角色。
 
-* 创建一个拒绝编辑角色和权限许可的角色：
+* 为本地管理员创建一个 `Department Administrator` 角色：
 +
 --
-image::local_admins_role.png[align="center"]
+** 在 *Screens - 界面权限* 标签页，允许如下界面：
++
+`Administration`、`Users`、`Access Groups`、`Roles`、`sec$Group.edit`、`sec$Group.lookup`、`sec$Role.lookup`、`sec$User.changePassword`、`sec$User.copySettings`、`sec$User.edit`、`sec$User.lookup`、`sec$User.newPasswords`、`sec$User.resetPasswords`、`sec$UserSubstitution.edit`。
 
-** 勾选 *Default* 默认角色复选框。
+** 在 *Entities - 实体权限* 标签页，允许对下列实体的所有操作：`sec$Group`、`sec$User`、`sec$UserRole` 实体，允许 *Read* 操作实体 `sec$Role`（需要选中 *System level* 才能为 `sec$UserRole 添加权限）。
 
-** 把 `*[hide]*` 字符加到 *Description* 属性。
-
-** 在 *Entities* 实体标签页，为 `sec$Role` 配置拒绝 *create*, *update* 和 *delete* 操作。（给 `sec$Permission` 对象添加权限许可的时候，需要勾选 *System level - 系统级* 复选框 ）。
-
-所有创建的用户，包括本地管理员，会分配 `*local_user*` 角色。这个角色对 `*Departments*` 组的用户不可见，所以本地管理员也不能把这个角色从用户移除。本地管理员只能操作全局管理员给他们创建的角色。显然，department 用户可见的其它角色也不能移除 `*local_user*` 角色指定的限制。
+** 在 *Attributes - 属性权限* 标签页，为这些实体选择 "*"：`sec$Group`、`sec$User`、`sec$Role`。
 --
 
+* 按照上面的截屏在他们的部门内创建本地管理员并为其分配 `Department Administrator` 角色。
+
+当本地管理员登录系统之后，他们只能看到自己的部门分组以及子分组：
+
+image::local_admins_res.png[align="center"]
+
+本地管理员可以创建新用户并且为其分配已有的角色，当然，除了那些约束中列举的角色。

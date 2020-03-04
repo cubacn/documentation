@@ -5,7 +5,7 @@
 
 ++++
 <div class="manual-live-demo-container">
-    <a href="https://demo.cuba-platform.cn/sampler/open?screen=normal-progressbar" class="live-demo-btn" target="_blank">在线示例</a>
+    <a href="https://demo.cuba-platform.cn/sampler/open?screen=standard-progressbar" class="live-demo-btn" target="_blank">在线示例</a>
 </div>
 ++++
 
