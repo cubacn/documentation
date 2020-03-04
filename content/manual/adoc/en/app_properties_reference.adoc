@@ -39,7 +39,7 @@ Used in the Web Client and the Middleware blocks.
 cuba.anonymousLogin::
 +
 --
-Login name of the user on behalf of which the anonymous session is created (see <<cuba.anonymousSessionId,cuba.anonymousSessionId>>).
+Login name of the user on behalf of which the anonymous session is created.
 
 Default value: `anonymous`
 
@@ -48,17 +48,6 @@ Stored in the database.
 Interface: `ServerConfig`
 
 Used in the Middleware block.
---
-
-[[cuba.anonymousSessionId]]
-cuba.anonymousSessionId::
-+
---
-Defines the UUID of the anonymous user session which is available before user login. This session is always created automatically on the server startup. See also <<cuba.anonymousLogin,cuba.anonymousLogin>>.
-
-Interface: `GlobalConfig`
-
-Used in all standard <<app_tiers,blocks>>.
 --
 
 [[cuba.automaticDatabaseUpdate]]
@@ -470,7 +459,7 @@ Used in the Middleware block.
 cuba.defaultPermissionValuesConfig::
 +
 --
-Defines the set of files with the user's default permissions. Default permission values are used when no <<roles,role>> defines an explicit value for permission target. Used mostly for denying roles, see more in the <<default-permission-values.xml,default-permission-values.xml>> section.
+When using <<legacy_roles>>, defines the set of files with the user's default permissions. Default permission values are used when no <<roles,role>> defines an explicit value for permission target. Used mostly for denying roles, see more in the <<default-permission-values.xml,default-permission-values.xml>> section.
 
 Default value: `cuba-default-permission-values.xml`
 
@@ -1431,6 +1420,37 @@ Interface: `ServerConfig`
 Used in the Middleware block.
 --
 
+[[cuba.security.defaultPermissionValuesConfigEnabled]]
+cuba.security.defaultPermissionValuesConfigEnabled::
++
+--
+For backward compatibility, enables using <<default-permission-values.xml>> configuration file. See <<legacy_roles>> for details.
+
+Default value: `false`
+
+Interface: `ServerConfig`
+
+Used in the Middleware block.
+--
+
+[[cuba.security.rolesPolicyVersion]]
+cuba.security.rolesPolicyVersion::
++
+--
+For backward compatibility, determines the security roles behavior. See <<legacy_roles>> for details.
+
+Available values:
+
+* 1 - before CUBA 7.2: if a permission is not defined, the target is allowed; roles types are used.
+* 2 - CUBA 7.2 and later: if a permission is not defined, the target is denied; the only possible permission is "allow"; design-time roles can be used.
+
+Default value: 2
+
+Interface: `ServerConfig`
+
+Used in the Middleware block.
+--
+
 [[cuba.serialization.impl]]
 cuba.serialization.impl::
 +
@@ -1974,6 +1994,19 @@ cuba.web.foldersPaneVisibleByDefault::
 Determines whether the <<folders_pane,folders panel>> should be expanded by default.
 
 Default value: `false`
+
+Interface: `WebConfig`
+
+Used in the Web Client block.
+--
+
+[[cuba.web.htmlSanitizerEnabled]]
+cuba.web.htmlSanitizerEnabled::
++
+--
+Determines whether the `HtmlSanitizer` bean should be used by the UI components implementing the `HasHtmlSanitizer` interface to to prevent cross-site scripting (XSS) in HTML content. The sanitization can also be enabled or disabled by individual components.
+
+Default value: `true`
 
 Interface: `WebConfig`
 

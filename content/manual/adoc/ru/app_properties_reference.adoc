@@ -39,7 +39,7 @@ cuba.allowQueryFromSelected::
 cuba.anonymousLogin::
 +
 --
-Логин пользователя, от имени которого создается анонимная сессия (см. <<cuba.anonymousSessionId,cuba.anonymousSessionId>>).
+Логин пользователя, от имени которого создается анонимная сессия.
 
 Значение по умолчанию: `anonymous`
 
@@ -48,17 +48,6 @@ cuba.anonymousLogin::
 Интерфейс: `ServerConfig`
 
 Используется в блоке Middleware.
---
-
-[[cuba.anonymousSessionId]]
-cuba.anonymousSessionId::
-+
---
-Задает UUID анонимной пользовательской сессии, которая доступна до логина пользователя. Данная сессия всегда создается автоматически на старте сервера. См. также <<cuba.anonymousLogin,cuba.anonymousLogin>>.
-
-Интерфейс: `GlobalConfig`
-
-Используется во всех стандартных <<app_tiers,блоках>>.
 --
 
 [[cuba.automaticDatabaseUpdate]]
@@ -468,7 +457,7 @@ cuba.dbmsVersion::
 cuba.defaultPermissionValuesConfig::
 +
 --
-Определяет набор файлов, описывающих разрешения пользователя по умолчанию. Разрешения по умолчанию используются тогда, когда ни одна из имеющихся <<roles,ролей>> не задаёт разрешения на конкретный экран или функциональность. Разрешения необходимы по большей части для запрещающих ролей, подробнее см. <<default-permission-values.xml,default-permission-values.xml>>.
+При использовании <<legacy_roles,предыдущей реализации ролей и разрешений>>, определяет набор файлов, описывающих разрешения пользователя по умолчанию. Разрешения по умолчанию используются тогда, когда ни одна из имеющихся <<roles,ролей>> не задаёт разрешения на конкретный экран или функциональность. Разрешения необходимы по большей части для запрещающих ролей, подробнее см. <<default-permission-values.xml,default-permission-values.xml>>.
 
 Значение по умолчанию: `cuba-default-permission-values.xml`
 
@@ -1427,6 +1416,37 @@ cuba.schedulingActive::
 Используется в блоке Middleware.
 --
 
+[[cuba.security.defaultPermissionValuesConfigEnabled]]
+cuba.security.defaultPermissionValuesConfigEnabled::
++
+--
+Для обеспечения обратной совместимости, включает использование конфигурации <<default-permission-values.xml>>. Подробнее см. <<legacy_roles>>.
+
+Значение по умолчанию: `false`
+
+Интерфейс: `ServerConfig`
+
+Используется в блоке Middleware.
+--
+
+[[cuba.security.rolesPolicyVersion]]
+cuba.security.rolesPolicyVersion::
++
+--
+Для обеспечения обратной совместимости, определяет режим работы ролей подсистемы безопасности. Подробнее см. <<legacy_roles>>.
+
+Возможные значения:
+
+* 1 - режим до CUBA 7.2: если разрешение не определено, то доступ есть; используются типы ролей.
+* 2 - CUBA 7.2 и новее: если разрешение не определено, то доступ отсутствует; единственный тип разрешения - "allow"; поддерживается определение ролей во время разработки приложения.
+
+Значение по умолчанию: 2
+
+Интерфейс: `ServerConfig`
+
+Используется в блоке Middleware.
+--
+
 [[cuba.serialization.impl]]
 cuba.serialization.impl::
 +
@@ -1969,6 +1989,19 @@ cuba.web.foldersPaneVisibleByDefault::
 Если `true`, то при первом входе пользователя в систему <<folders_pane,панель папок>> будет отображаться в развернутом состоянии, если `false` - то в свернутом.
 
 Значение по умолчанию: `false`
+
+Интерфейс: `WebConfig`
+
+Используется в блоке Web Client.
+--
+
+[[cuba.web.htmlSanitizerEnabled]]
+cuba.web.htmlSanitizerEnabled::
++
+--
+Задает использование бина `HtmlSanitizer` компонентами, реализующими интерфейс `HasHtmlSanitizer`, для предотвращения cross-site scripting (XSS) в HTML-содержимом. Санитизация может быть также включена или выключена в каждом компоненте по отдельности.
+
+Значение по умолчанию: `true`
 
 Интерфейс: `WebConfig`
 

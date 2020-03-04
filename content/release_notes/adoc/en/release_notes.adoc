@@ -15,7 +15,7 @@
 :lang: en
 :revnumber: 7.2
 :version-label: Version
-:revremark: Copyright (c) 2019 Haulmont
+:revremark: Copyright (c) 2020 Haulmont
 :youtrack: https://youtrack.cuba-platform.com
 :manual: https://doc.cuba-platform.com/manual-{revnumber}
 :restapi: https://doc.cuba-platform.com/restapi-{revnumber}
@@ -33,6 +33,11 @@
 
 This document highlights major changes in CUBA Platform version {revnumber}.
 
+[WARNING]
+====
+Please note that in order to work with CUBA 7.2, you need to https://www.cuba-platform.com/tools[install] Studio 13 or newer. Older versions of Studio don't have correct support for project creation, migration and hot deployment.
+====
+
 == All Resolved Issues
 
 * {githubissueslog}/release_7.2.0.md[Platform 7.2.0 Resolved Issues]
@@ -41,6 +46,64 @@ This document highlights major changes in CUBA Platform version {revnumber}.
 == Breaking Changes
 
 . Due to changes in the "remember me" login mechanism (see <<gui,below>>) all application users will have to enter their credentials when logging in, as if their browser cookies were removed.
+
+. The `LoginScreen` class has been refactored to simplify creation of https://github.com/cuba-platform/cuba/issues/2455[alternative login screen] implementations. The `AuthInfo` inner class has been moved into `LoginScreenAuthDelegate`, so if you have extended login screen in your project and overridden methods with this class in the signature, make the proper import to fix compilation, for example:
++
+[source,java]
+----
+public class ExtLoginScreen extends LoginScreen {
+    @Override
+    protected void setAuthInfo(LoginScreenAuthDelegate.AuthInfo authInfo) {
+    // ...
+----
+
+. Due to changes in {manual}/gui_SideMenu.html[SideMenu] component, the main screen using such menu should have `cssLayout` as a root container. If you have the main screen with non-responsive side menu in your project, Studio will replace the root `hbox` with `cssLayout` upon automatic migration. If something is wrong with your main screen layout, make sure the root container is correct, for example:
++
+[source,xml]
+----
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        extends="/com/haulmont/cuba/web/app/main/main-screen.xml">
+    <layout>
+        <cssLayout id="horizontalWrap">
+            <workArea id="workArea">
+            <!-- -->
+----
+
+. Due to introducing {manual}/roles.html#security_scope[security scopes], the `cuba.anonymousSessionId` application property has been removed. Now anonymous sessions for all scopes are created with random identifiers.
+
+. The following changes have been made in the `UserSession` class:
+
+.. In the constructors, the collection of `Role` has been replaced with the collection of `RoleDefinition`.
+
+.. The `addPermission()` and `removePermission()` methods have been removed. The direct replacement for these methods is the manipulation with explicit permissions maps obtained from `UserSession`, for example:
++
+[source,java]
+----
+RoleDefinition joinedRole = userSession.getJoinedRole();
+Map<String, Integer> screenExplicitPermissions = joinedRole.screenPermissions().getExplicitPermissions();
+screenExplicitPermissions.put("demo_Customer.browse", 1);
+----
++
+Another option is to create a new `RoleDefinition` using `BasicRoleDefinition.builder()` and then join with existing roles using `RoleDefinitionsJoiner`:
++
+[source,java]
+----
+RoleDefinition joinedRole = RoleDefinitionsJoiner.join(userSession.getJoinedRole(), myRole);
+userSession.setJoinedRole(joinedRole);
+----
+
+.. The following methods have been removed: `getConstraints(entityName)`, `hasConstraints()`, `addConstraint()`, `removeConstraint()`. To find a particular constraint, use `getConstraints().findConstraintsByEntity()`. To add or remove constraints, use `AccessConstraintsBuilder`:
++
+[source,java]
+----
+ConstraintsContainer constraintsContainer = AccessConstraintsBuilder.create()
+                    .join(userSession.getConstraints())
+                    .withJpql(MyEntity.class, "{E}.createdBy = :session$userLogin")
+                    .build();
+userSession.setConstraints(constraintsContainer);
+----
+
+. The HTML content of many UI components (such as `Label` value and `TextField` caption) is now sanitized by default to prevent cross-site scripting (XSS). If you have any problems with displaying custom HTML, try to turn off the sanitization using the {manual_app_props}cuba.web.htmlSanitizerEnabled[cuba.web.htmlSanitizerEnabled] application property or in individual components using their `setHtmlSanitizerEnabled()` method.
 
 . When using {manual}/folders_pane.html[Folders Panel], the _Add to set_ action and button do not appear automatically in the tables linked to the generic filter. If you need this action, add it explicitly as described in the {manual}/record_set.html[Record Sets] section.
 
@@ -57,6 +120,17 @@ This document highlights major changes in CUBA Platform version {revnumber}.
 . The `DataContext.evictAll()` has been renamed to `evictModified()`, which is a more appropriate name for the method evicting only modified and removed instances. Use the new `clear()` method to evict all instances including modified ones.
 
 . The `Icons.Icon.name()` method has been renamed to `iconName()`.
+
+. `Calendar` has been generified and requires specifying particular datatype to work with corresponding date API (previously `java.util.Date` used directly).
+
+[[security]]
+== Security Subsystem
+
+. The security subsystem {manual}/permissions.html[permissions] and {manual}/roles.html[roles] have been reworked to provide "denied by default" model instead of the previous "allowed by default". Newly created with CUBA 7.2 projects will use the new model by default. If you migrate a project from the previous CUBA version, Studio will add the application properties explained in {manual}/legacy_roles.html[Legacy Roles and Permissions] to keep your existing security configuration intact.
+
+. Now security {manual}/roles.html[roles] and {manual}/groups.html[access groups] together with permissions and constraints can be defined at design time using annotated Java classes. It makes the access control more robust and eliminates difficulties with transferring the configuration between application instances (e.g. from the development environment to production). Please note that design-time roles will work only in new projects created with CUBA 7.2. If you are migrating from a previous version and want to create roles at design time, you have to remove the properties explained in {manual}/legacy_roles.html[Legacy Roles and Permissions] and reconfigure all your existing roles and permissions.
+
+. {manual}/roles.html#security_scope[Security scopes] have been introduced to allow you to define different sets of roles for users logging in through different clients. The motivation behind this feature is that REST API clients should normally have more restrictions than Generic UI, because Generic UI is more safe by its nature.
 
 [[deployment]]
 == Deployment
@@ -83,13 +157,10 @@ Getting data sources from JNDI is supported as before, so no migration is requir
 . Redeployment of web applications without restarting the application server works more reliably as a result of using the
 https://github.com/mjiderhamn/classloader-leak-prevention[Classloader Leak Prevention] library.
 
-[[security]]
-== Security Subsystem
-
-. The new _Strictly denying_ {manual}/roles.html[role] type has been introduced. Unlike _Denying_ role, it denies all permissions _including_ entity attributes. Consider using a default role of this type if your application exposes data through {restapi}[REST API].
-
 [[gui]]
 == Generic UI
+
+. {manual}/gui_SideMenu.html[SideMenu] is now collapsible, which saves horizontal space. Also, the branding image and other components of the menu have been rearranged. See also the <<breaking_changes>> section for possible issues on migration.
 
 . The "remember me" login mechanism has been completely reworked:
 
@@ -142,6 +213,8 @@ https://github.com/mjiderhamn/classloader-leak-prevention[Classloader Leak Preve
 
 . Now you can provide database migration scripts for additional data stores in `/db/init_<datastore_name>` and `/db/update_<datastore_name>` directories of the `core` module. The scripts will be executed by the {manual}/build.gradle_createDb.html[createDb] and {manual}/build.gradle_updateDb.html[updateDb] Gradle tasks having the `storeName` parameter, as well as by the application server if the {manual_app_props}cuba.automaticDatabaseUpdate[cuba.automaticDatabaseUpdate] property is configured accordingly.
 
+. Gradle 5.6.4 is used for migrated and new projects. Studio automatically sets the proper version in the `gradle/wrapper/gradle-wrapper.properties` file. Check it in case of any troubles with project building.
+
 . JUnit 5 is used in new projects for tests. The {manual}/testing.html[documentation] has been updated accordingly.
 
 . {manual}/views_creation.html[ViewBuilder] simplifies creation of views in the business logic and tests.
@@ -157,8 +230,49 @@ https://github.com/mjiderhamn/classloader-leak-prevention[Classloader Leak Preve
 
 Core framework:
 ----
+com.fasterxml.jackson = 2.10.1
+com.fasterxml.jackson-databind = 2.10.1
+com.google.code.gson/gson = 2.8.6
+com.google.guava/guava = 28.1-jre
+com.microsoft.sqlserver/mssql-jdbc = 7.2.2.jre8
+com.sun.mail/javax.mail = 1.6.2
+com.vaadin = 8.9.2-0-cuba
+commons-codec/commons-codec = 1.13
+de.javakaffee/kryo-serializers = 0.45
+mysql/mysql-connector-java = 8.0.17
+org.apache.commons/commons-collections4 = 4.4
+org.apache.commons/commons-compress = 1.19
+org.apache.commons/commons-dbcp2 = 2.7.0
+org.apache.commons/commons-pool2 = 2.7.0
+org.apache.commons/commons-text = 1.8
+org.apache.httpcomponents/httpclient = 4.5.10
+org.apache.poi/poi = 4.1.1
+org.aspectj/aspectjrt = 1.9.4
+org.aspectj/aspectjweaver = 1.9.4
+org.codehaus.groovy = 2.5.8
+org.freemarker/freemarker = 2.3.29
+org.hibernate.validator/hibernate-validator = 6.1.1.Fin`al
+org.hsqldb/hsqldb = 2.5.0
+org.jgroups/jgroups = 4.1.8.Final
+org.jmockit/jmockit = 1.48
+org.jsoup/jsoup = 1.12.1
+org.postgresql/postgresql = 42.2.8
+org.slf4j/log4j-over-slf4j = 1.7.29
+org.slf4j/slf4j-api = 1.7.29
+org.springframework = 5.2.1.RELEASE
+org.springframework.security = 5.2.1.RELEASE
+tomcat = 9.0.27
+----
+
+FTS add-on:
+----
+org.apache.lucene = 8.2.0
+org.apache.tika/tika-parsers = 1.22
 ----
 
 Reports add-on:
 ----
+com.haulmont.yarg = 2.2.4
+org.apache.poi/ooxml-schemas = 1.4
+org.apache.xmlbeans/xmlbeans = 3.1.0
 ----
