@@ -9,7 +9,7 @@
 
 这样，在用户登录系统时创建的会话标识符用于在每次中间件调用期间进行用户验证。
 
-`UserSession` 对象还包含当前用户_验证相关_的方法 - 验证对系统对象的访问权限： `isScreenPermitted()`、`isEntityOpPermitted()`、`isEntityAttrPermitted()`和`isSpecificPermitted()`。但是，建议使用 <<security,Security>> 基础接口以编程的方式进行权限验证。
+`UserSession` 对象还包含当前用户_验证相关_的方法 - 验证对系统对象的访问权限： `isScreenPermitted()`、`isEntityOpPermitted()`、`isEntityAttrPermitted()` 和 `isSpecificPermitted()`。但是，建议使用 <<security,Security>> 基础接口以编程的方式进行权限验证。
 
 
 `UserSession` 对象可以包含任意可序列化类型的命名属性。属性由 `setAttribute()` 方法设置，并由 `getAttribute()` 方法获取。后者也能够像属性一样返回以下会话参数：

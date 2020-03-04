@@ -61,9 +61,9 @@ image::local_admins_groups.png[align="center"]
 --
 ** 在 *Screens - 界面权限* 标签页，允许如下界面：
 +
-`Administration`、`Users`、`Access Groups`、`Roles`、`sec$Group.edit`、`sec$Group.lookup`、`sec$Role.lookup`、`sec$User.changePassword`、`sec$User.copySettings`、`sec$User.edit`、`sec$User.lookup`、`sec$User.newPasswords`、`sec$User.resetPasswords`、`sec$UserSubstitution.edit`。
+`Administration`、 `Users`、 `Access Groups`、 `Roles`、 `sec$Group.edit`、 `sec$Group.lookup`、 `sec$Role.lookup`、 `sec$User.changePassword`、 `sec$User.copySettings`、 `sec$User.edit`、 `sec$User.lookup`、 `sec$User.newPasswords`、 `sec$User.resetPasswords`、 `sec$UserSubstitution.edit`。
 
-** 在 *Entities - 实体权限* 标签页，允许对下列实体的所有操作：`sec$Group`、`sec$User`、`sec$UserRole` 实体，允许 *Read* 操作实体 `sec$Role`（需要选中 *System level* 才能为 `sec$UserRole 添加权限）。
+** 在 *Entities - 实体权限* 标签页，允许对下列实体的所有操作：`sec$Group`、`sec$User`、`sec$UserRole` 实体，允许 *Read* 操作实体 `sec$Role`（需要选中 *System level* 才能为 `sec$UserRole` 添加权限）。
 
 ** 在 *Attributes - 属性权限* 标签页，为这些实体选择 "*"：`sec$Group`、`sec$User`、`sec$Role`。
 --

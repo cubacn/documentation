@@ -2,7 +2,7 @@
 
 [[tomcat_war_deployment_linux]]
 ==== 部署 WAR 至 Tomcat Linux 服务
-
+--
 以下示例在 Ubuntu 18.04 测试通过，使用的 tomcat9 和 tomcat8 的包。
 
 . 在 <<build.gradle,build.gradle>> 末尾添加 <<build.gradle_buildWar, buildWar>> 任务。可以指定不同的 `context.xml` 文件来设置生产环境数据库连接：

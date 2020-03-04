@@ -191,7 +191,7 @@ cuba.checkPasswordOnClient::
 
 当设置为 false（默认值）时，客户端块 block 的 `LoginPasswordLoginProvider` 将用户密码明文发送给中间件的 `AuthenticationService.login()` 方法。在客户端和中间件 block 共同位于同一 JVM 中的情况下，这是合适的处理方式。对于客户端块(block)位于网络上的其它计算机上的分布式部署的情况，客户端和中间件之间的连接应使用 SSL 加密。
 
-如果设置为 true，`LoginPasswordLoginProvider`本身将通过输入的登录名加载 `User` 实体并检查密码。如果密码与加载的密码哈希匹配，则提供程序使用<<cuba.trustedClientPassword,cuba.trustedClientPassword>> 属性中指定的密码作为可信客户端执行登录。此模式使您无需在受信任网络中的客户端和中间件之间设置 SSL 连接，同时不会向网络公开用户密码：仅传输哈希值。但请注意，可信客户端密码仍然通过网络传输，因此受 SSL 保护的连接仍然更加安全。
+如果设置为 true，`LoginPasswordLoginProvider` 本身将通过输入的登录名加载 `User` 实体并检查密码。如果密码与加载的密码哈希匹配，则提供程序使用<<cuba.trustedClientPassword,cuba.trustedClientPassword>> 属性中指定的密码作为可信客户端执行登录。此模式使您无需在受信任网络中的客户端和中间件之间设置 SSL 连接，同时不会向网络公开用户密码：仅传输哈希值。但请注意，可信客户端密码仍然通过网络传输，因此受 SSL 保护的连接仍然更加安全。
 
 默认值： `false`
 

@@ -5,7 +5,7 @@
 
 平台支持以下开箱即用的属性类型：
 
-* `String`, 原始类型及其封装类型(`boolean` 、 `Boolean` 、 `int` 、 `Integer`等)
+* `String`, 原始类型及其封装类型（`boolean`、`Boolean`、`int`、`Integer` 等）
 
 * `enum`，属性值作为枚举的值名称存储在文件或数据库中。
 +

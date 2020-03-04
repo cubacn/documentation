@@ -9,3 +9,5 @@
 include::dbms/db_connection.adoc[]
 
 include::dbms/dbms_types.adoc[]
+
+include::dbms/db_scripts.adoc[]

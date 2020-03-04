@@ -376,7 +376,7 @@ include::{sourcesdir}/gui_vcl/nullname_3.java[]
 openType - 界面打开类型::
 +
 --
-定义一个界面要以什么方式打开。对应 `WindowManager.OpenType` 枚举类型的值： `NEW_TAB` 、 `THIS_TAB` 、 `NEW_WINDOW` 、 `DIALOG ` 。默认是 `THIS_TAB`.
+定义一个界面要以什么方式打开。对应 `WindowManager.OpenType` 枚举类型的值：`NEW_TAB`、`THIS_TAB`、`NEW_WINDOW`、`DIALOG`。默认是 `THIS_TAB`。
 --
 
 [[gui_attr_optionsContainer]]
