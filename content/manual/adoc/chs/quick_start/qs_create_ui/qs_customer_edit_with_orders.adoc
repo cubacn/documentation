@@ -34,7 +34,7 @@ include::{sourcesdir}/qs/ordersCt.xml[]
 如果应用程序需要使用多国语言，用 *caption* 字段旁边的 image:localization.png[] 按钮来创建新的<<messages,语言消息>> `msg://orders` 然后按照需要的语言给标签定义值。
 ====
 
-从工具箱将 `Table` 组件拖至组件树面板，放置在 `label` 和 `editActions` 中间。在组件结构（Hierarchy）面板选中此组件，然后在 *Properties* 标签页设定表格的大小：在 *width* 字段设置 `300px`，在 *height* 字段设置 `200px`。从可用的数据容器中选择 `ordersDc`。然后使用 *id* 字段边上的 image:generate_id.png[] 按钮来生成表格的标识符：`ordersTable`。
+从工具箱将 `Table` 组件拖至组件树面板，放置在 `layout` 和 `editActions` 中间。在组件结构（Hierarchy）面板选中此组件，然后在 *Properties* 标签页设定表格的大小：在 *width* 字段设置 `300px`，在 *height* 字段设置 `200px`。从可用的数据容器中选择 `ordersDc`。然后使用 *id* 字段边上的 image:generate_id.png[] 按钮来生成表格的标识符：`ordersTable`。
 
 接下来，右键点击表格并选择 *Wrap Into > Group Box*。切换到 group box 属性面板的 *Properties* 标签页然后在 *caption* 字段输入 `Orders` 并设置 group box的宽度为 320 px。image::quick_start/customer_edit.png[align="center"]
 
