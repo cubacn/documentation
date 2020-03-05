@@ -12,227 +12,267 @@
 :doctype: book
 :sectlinks:
 :sectanchors:
-:lang: zh
+:lang: en
 :revnumber: 7.2
 :version-label: Version
-:revremark: Copyright (c) 2019 Haulmont
+:revremark: Copyright (c) 2020 Haulmont
 :youtrack: https://youtrack.cuba-platform.com
-:manual: https://doc.cuba-platform.cn/manual-{revnumber}
-:restapi: https://doc.cuba-platform.cn/restapi-{revnumber}
-:studio: https://doc.cuba-platform.cn/studio
-:manual_app_props: https://doc.cuba-platform.cn/manual-{revnumber}/app_properties_reference.html#
-:reporting: https://doc.cuba-platform.cn/reporting-{revnumber}
-:charts: https://doc.cuba-platform.cn/charts-{revnumber}
-:bpm: https://doc.cuba-platform.cn/bpm-{revnumber}
+:manual: https://doc.cuba-platform.cn/manual-{revnumber}-chs
+:restapi: https://doc.cuba-platform.cn/restapi-{revnumber}-chs
+:studio: https://doc.cuba-platform.cn/studio-chs
+:manual_app_props: https://doc.cuba-platform.cn/manual-{revnumber}-chs/app_properties_reference.html#
+:reporting: https://doc.cuba-platform.cn/reporting-{revnumber}-chs
+:charts: https://doc.cuba-platform.cn/charts-{revnumber}-chs
+:bpm: https://doc.cuba-platform.cn/bpm-{revnumber}-chs
 :githubissueslog: https://github.com/cuba-platform/documentation/blob/master/content/release_notes/issues
 
 :!sectnums:
 
 [[overview]]
-== 概要
+== 概览
 
-该文档列出了 CUBA 平台版本 {revnumber} 的主要改动。
+该文档列出 CUBA 平台版本 {revnumber} 的主要改动。
+
+[WARNING]
+====
+请注意，如要使用 CUBA 7.2，您需要先 https://www.cuba-platform.cn/tools[安装] Studio 13 或更新的版本。之前的 Studio 版本不能正确处理新版本的项目创建、迁移以及热部署。
+====
 
 == 所有解决的问题
 
-* {githubissueslog}/release_7.1.2.md[Platform 7.1.2 解决的问题]
-* {githubissueslog}/release_7.1.1.md[Platform 7.1.1 解决的问题]
-* {githubissueslog}/release_7.1.0.md[Platform 7.1.0 解决的问题]
+* {githubissueslog}/release_7.2.0.md[Platform 7.2.0 解决的问题]
 
 [[breaking_changes]]
 == 破坏性改动
 
-. `SYS_SCHEDULED_TASK` 表的 `PERIOD` 字段重命名为 `PERIOD_`。如果您在数据库初始化脚本中创建定时任务，需要修改脚本使用新的列名。
+. 由于登录的 "remember me - 记住我" 机制发生了变化（参考<<gui,下面>>介绍），在升级后所有用户都需要在登录时重新输入凭证，现象与 cookie 被删除一样。
 
-. 删除了之前已经废弃的 `LoginService` 和 `LoginWorker` 类。使用 `AuthenticationService` 和 `TrustedClientService` 中的相应方法：
-** `LoginService.login()` -> `AuthenticationService.login()` 使用 `LoginPasswordCredentials`
-** `LoginService.loginTrusted()` -> `AuthenticationService.login()` 使用 `TrustedClientCredentials`
-** `LoginService.loginByRememberMe()` -> `AuthenticationService.login()` 使用 `RememberMeCredentials`
-** `LoginService.loginByRememberMe()` -> `AuthenticationService.login()` 使用 `RememberMeCredentials`
-** `LoginService.substituteUser()` -> `AuthenticationService.substituteUser()`
-** `LoginService.getSession()` -> `TrustedClientService.findSession()`
-** `LoginService.getSystemSession()` -> `TrustedClientService.getSystemSession()`
-
-. 删除了之前已经废弃的 `CubaAuthProvider` 接口、该接口的实现类以及 `cuba.web.externalAuthentication` 和 `cuba.web.externalAuthenticationProviderClass` 应用程序属性。按照 {manual}/web_login.html[文档] 的描述使用事件、`LoginProvider` 和 `HttpRequestFilter`。
-
-. 在 `Table` 和 `GroupTable` 接口中，删除了之前已经废弃的操作列的方法：
-+
-[source, java]
-----
-// 从 Table 删除
-void setColumnCaption(String columnId, String caption);
-void setColumnCaption(Table.Column column, String caption);
-void setColumnDescription(String columnId, String description);
-void setColumnDescription(Table.Column column, String description);
-void setColumnCollapsed(String columnId, boolean collapsed);
-void setColumnCollapsed(Table.Column column, boolean collapsed);
-void setColumnWidth(String columnId, int width);
-void setColumnWidth(Table.Column column, int width);
-void setColumnAlignment(String columnId, ColumnAlignment alignment);
-void setColumnAlignment(Column column, ColumnAlignment alignment);
-void addAggregationProperty(String columnId, AggregationInfo.Type type);
-void addAggregationProperty(Column columnId, AggregationInfo.Type type);
-void removeAggregationProperty(String columnId);
-void setColumnSortable(String columnId, boolean sortable);
-boolean getColumnSortable(String columnId);
-void setColumnSortable(Column column, boolean sortable);
-boolean getColumnSortable(Column column);
-void setColumnCaptionAsHtml(String columnId, boolean captionAsHtml);
-void setColumnCaptionAsHtml(Table.Column column, boolean captionAsHtml);
-boolean getColumnCaptionAsHtml(String columnId);
-boolean getColumnCaptionAsHtml(Table.Column column);
-
-// 从 GroupTable 删除
-boolean getColumnGroupAllowed(String columnId);
-void setColumnGroupAllowed(String columnId, boolean allowed);
-boolean getColumnGroupAllowed(Table.Column column);
-void setColumnGroupAllowed(Table.Column column, boolean allowed);
-----
-+
-作为删除方法的替代方案，使用以下方法：
-+
-[source, java]
-----
-Table.Column<Foo> numberColumn = fooTable.getColumn("number"); // get Column object by column id
-numberColumn.setCaption("Num"); // invoke Column's methods
-----
-
-. `DataContext.PostCommitEvent` 现在是在合并提交的实体回界面的数据上下文 _之后_ 才触发，参阅 https://github.com/cuba-platform/cuba/issues/1981[相应问题] 。
-
-. REST API 功能已经迁移到 https://github.com/cuba-platform/restapi[REST API] 扩展，参阅其 {restapi}[文档] 。Studio 迁移程序会自动在项目中包含该扩展，如果项目带有一些 REST 配置文件或者使用了 Frontend UI 模块。否则，会从 `web` 模块的 `web.xml` 中删除 REST servlet 和 filter。
-
-. 由于 REST API 迁移到了扩展里面，web 客户端的 {manual}/health_check_url.html[健康检查] URL改到了 `/dispatch/health`，比如 `\http://localhost:8080/app/dispatch/health`。如果在项目中包含了 REST API 扩展，则在 web 和 portal block 还会跟之前版本一样，有 `/rest/health` API 端点。portal 模块现在有了它自己的健康检查端点。
-
-. 遗留的 REST API v1 功能已经迁移到 https://github.com/cuba-platform/jpawebapi[JPA Web API] 扩展。Studio 并不提供任何自动的迁移过程，所以如果项目中需要该功能，请使用 README 中的安装向导。
-
-. _Application Log - 应用程序日志_ 和 _History - 界面历史_ 菜单项已经从默认的主菜单中删除。如果您还需要，在项目的 `web-menu.xml` 中添加如下元素：
-+
-[source, xml]
-----
-<item id="logWindow" class="com.haulmont.cuba.web.log.LogWindowLauncher" insertAfter="settings"/>
-<item id="sec$ScreenHistory.browse" insertAfter="settings"/>
-----
-
-[[gui]]
-== 通用 UI
-
-. 现在可以通过组合已存在的可视化组件来创造新的可视化组件了，参阅 {manual}/composite_components.html[组合组件] 。
-
-. 非可视化组件的概念已经归纳出来并且支持扩展，参阅 {manual}/gui_facets.html[非可视化组件] 。除了 {manual}/gui_Timer.html[Timer] 之外，框架提供了新的非可视化组件：{manual}/gui_ClipboardTrigger.html[ClipboardTrigger] 和 `DataLoadCoordinator`。
-
-. {manual}/gui_DataLoadCoordinator.html[DataLoadCoordinator] 组件设计用来声明式的将数据加载器和数据容器、可视化组件、界面事件进行连接。可以使用该组件而不必再 Java 代码中写事件处理器了。
-
-. {manual}/gui_Form.html[Form - 表单] 组件现在可以包含使用 `field` 元素定义的通用的字段了。框架会根据对应的实体属性和已有的组件生成策略选择合适的可视化组件。
-
-. 引入了 {manual}/gui_dialogs.html#gui_input_dialog[输入对话框] ，可以使用 API 构建输入表单。可以用这个替换输入数据的界面。
-
-. 现在可以将应用程序的部分界面开放给非认证用户，参阅 {manual}/gui_anonymous_access.html[匿名访问界面] 。
-
-. 标准的登录界面和主窗口已经用新的界面 API 重写了，细节参阅 {manual}/gui_root_screens.html[Root Screens] 。主界面布局带有侧边菜单栏，所以新项目会默认使用这个。对于从之前版本框架迁移过来的项目，Studio 迁移程序会在 `web-app.properties` 中添加以下应用程序属性：
-+
-----
-cuba.web.loginScreenId = loginWindow
-cuba.web.mainScreenId = mainWindow
-----
-+
-这可以保证迁移过来的项目仍旧使用旧版的登录页和主界面。如果需要切换到新界面，可以删除这些应用程序属性。
-
-. 标准主界面上的登出按钮已经使用 `UserActionsButton` 组件进行了替换。如果用户未认证，该组件允许用户跳转到登录界面；当用户完成认证后，该组件提供显示 *Settings - 配置* 界面和登出的操作。
-
-. 可以为应用程序界面生成 URL 了，参阅 {manual}/url_routes_generator.html[URL 路由生成器] 。
-
-. 如果一个界面控制器有公共的 setters 用来接收参数，则可以从主菜单传递参数，参阅 {manual}/menu.xml.html#menu.xml_screen_properties[menu.xml] 。
-
-. 如果一个界面片段控制器有公共的 setters 用来接收参数，则可以在父界面的 XML 中设置，参阅 {manual}/using_screen_fragments.html#using_screen_fragment_params[给界面片段传递参数] 。
-
-. 当界面片段被添加/移除到父界面时，可以触发 attach/detach 生命周期事件，参阅 {manual}/screen_fragment_events.html[ScreenFragment 事件] 。另外，当用编程的方式创建界面片段时，不在需要手动调用 `init()` 方法了，因为片段的生命周期事件会在片段被添加到界面时自动触发。
-
-. UI 表格的实体属性排序可以 {manual}/gui_data_comp_sort.html[自定义] 了。
-
-. 为 {manual}/gui_data_loaders.html[Data Loaders] 添加了 `PreLoadEvent` 和 `PostLoadEvent` 事件。
-
-. 引入了 `DynamicAttributesPanel` 可视化组件，设计用来在基于新 API 的界面中显示带有动态属性的 {manual}/categorized_entity.html[分类的实体] 。
-
-. `Table` 组件的列现在有 {manual}/gui_Table.html#gui_Table_column_expandRatio[expandRatio] 属性。
-
-. 通用过滤器现在可以在改变了条件或者其它参数时，不需要按搜索按钮马上生效。你可以使用过滤器的 {manual}/gui_Filter.html#gui_filter_immediately[applyImmediately] 属性或者全局的 {manual_app_props}cuba.gui.genericFilterApplyImmediately[cuba.gui.genericFilterApplyImmediately] 应用程序属性来控制该功能。Studio 迁移过程会默认设置该值为 `false`，以保持现有系统的用户体验不变。
-
-. {manual}/html_attributes.html[HtmlAttributes] 的功能已经扩展，现在可以操控嵌套的 HTML 元素了。
-
-. 为了简化从框架的 6 版本迁移的难度，我们恢复了之前没有文档的使用遗留 API 界面作为 frame 的功能。现在支持 `AbstractWindow`、`AbstractLookup` 和 `EntityCombinedScreen`（`AbstractEditor` 不支持）的子类了。界面的 `init()` 方法会自动调用，而 `ready()` 不会，跟之前一样。
-
-. 框架现在提供了基础设施，以便在 web 层写集成测试，用来在全功能的 Spring 容器中测试 UI，参阅 {manual}/integration_tests_client.html[Web 集成测试] 。
-
-[[misc]]
-== 其他
-
-. 动态属性的功能显著加强了，包括：一种新的类型 - fixed-point number；自定义验证；自动计算和依赖属性。参阅 {manual}/dynamic_attributes_mgmt.html[管理动态属性] 了解细节。
-
-. 框架现在带有一些启动时对运行环境和数据模型的检查：
-* 如果有下面的环境问题，日志会记录一个警告：
-** Java 版本低于 8
-** {manual}/work_dir.html[work] 或者 {manual}/temp_dir.html[temp] 目录没有读写权限
-** 无法连接到主数据存储（如果设置 {manual_app_props}cuba.checkConnectionToAdditionalDataStoresOnStartup[cuba.checkConnectionToAdditionalDataStoresOnStartup] 应用程序属性为 `true`，也会检查附加数据存储）
-** 主数据存储中没有 `SEC_USER` 表
-* 如果一个本地属性使用了 `@Basic(fetch = FetchType.LAZY)` 注解，读取类型换成 `EAGER` 会记录一个警告
-* 如果一个引用属性使用了 `@ManyToOne(fetch = FetchType.EAGER)`（或者类似引用注解使用了 `EAGER` 读取类型），读取类型切换成 `LAZY` 会记录一个警告
-* 如果一个实体没有正确加强，会抛出异常，应用程序不会启动。如果有任何关于这点的疑问，可以设置 `cuba.disableEntityEnhancementCheck` 为 `false` 禁用该功能
-
-. 引入了 {manual}/entityPersistingEvent.html[EntityPersistingEvent] ，可以用来在新实体持久化到数据库之前初始化其属性。
-
-. `DataManager` 现在可以为保存的实体实例执行 {manual}/bean_validation_running.html#bean_validation_in_DataManager[bean 验证]。使用 {manual}/app_properties_reference.html#cuba.dataManagerBeanValidation[cuba.dataManagerBeanValidation] 属性来控制是否默认执行验证。
-+
-当升级一个现有项目至 7.1，Studio 迁移程序会设置该属性为 `false` 以关闭验证。
-
-. `DataManager` 现在默认使用 `_base` 视图（之前是 `_local`）。所以，如果在执行请求时未指定视图，比如 `dataManager.load(Person.class).id(someId).one()`，将会获取到实体的本地属性和 `@NamePattern` 中指定的属性。如果 `@NamePattern` 包含引用属性，则会比之前获取更多的数据。
-
-. 引入了 `LoadContext.setIds()` 方法，接收实体标识符的集合。该方法被 `DataManager.loadList()` 方法以更高的优先级使用，相比传递的查询语句和单一 id 来说。流式接口也有接收多个 id 的方法：
+. 对 `LoginScreen` 类进行了重构，简化了创建 https://github.com/cuba-platform/cuba/issues/2455[新登录窗口] 的实现过程。内部类 `AuthInfo` 移至 `LoginScreenAuthDelegate`，所以如果您已经扩展了登录界面并且重写这个同名方法，需要对 import 做一定修改，例如：
 +
 [source,java]
 ----
-dataManager.load(Customer.class).ids(customer1Id, customer2Id).list();
-
-List<UUID> idList = Arrays.asList(customer1Id, customer2Id);
-dataManager.load(Customer.class).ids(idList).list();
+public class ExtLoginScreen extends LoginScreen {
+    @Override
+    protected void setAuthInfo(LoginScreenAuthDelegate.AuthInfo authInfo) {
+    // ...
 ----
 
-. `@JmxBean` 注解可以用来注册 {manual}/jmx_beans_creation.html[JMX bean] ，而不需要在 `spring.xml` 文件中注册了。
+. 由于 {manual}/gui_SideMenu.html[SideMenu] 组件的改动，使用了这种菜单的主界面需要使用 `cssLayout` 作为根容器。如果您的项目中有非响应式侧边菜单的主界面，Studio 会在自动迁移中将根容器 `hbox` 替换为 `cssLayout`。如果主界面的布局有问题，请确认根容器是否正确，示例：
++
+[source,xml]
+----
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        extends="/com/haulmont/cuba/web/app/main/main-screen.xml">
+    <layout>
+        <cssLayout id="horizontalWrap">
+            <workArea id="workArea">
+            <!-- -->
+----
 
-. {manual}/query.html#query_hints[查询提示] 可以用来针对数据库特性对查询语句做优化。提示可以传递给 `Query` 和 `LoadContext`。
+. 由于引入了 {manual}/roles.html#security_scope[安全范围]，删除了 `cuba.anonymousSessionId` 应用程序属性。现在所有范围的匿名会话都使用随机标识符创建。
+
+. `UserSession` 类有了如下改动：
+
+.. 在构造器中，`Role` 的集合替换成 `RoleDefinition` 的集合。
+
+.. 删除了 `addPermission()` 和 `removePermission()` 方法。替换这些方法的办法就是直接操作从 `UserSession` 获取的权限许可关系图，示例：
++
+[source,java]
+----
+RoleDefinition joinedRole = userSession.getJoinedRole();
+Map<String, Integer> screenExplicitPermissions = joinedRole.screenPermissions().getExplicitPermissions();
+screenExplicitPermissions.put("demo_Customer.browse", 1);
+----
++
+另一个办法是用 `BasicRoleDefinition.builder()` 创建一个新的 `RoleDefinition`，然后用 `RoleDefinitionsJoiner` 与已有的角色做 join：
++
+[source,java]
+----
+RoleDefinition joinedRole = RoleDefinitionsJoiner.join(userSession.getJoinedRole(), myRole);
+userSession.setJoinedRole(joinedRole);
+----
+
+.. 删除了这些方法： `getConstraints(entityName)`、 `hasConstraints()`、 `addConstraint()`、 `removeConstraint()`。如需查找特殊的约束，使用 `getConstraints().findConstraintsByEntity()`。如需添加或删除约束，使用 `AccessConstraintsBuilder`：
++
+[source,java]
+----
+ConstraintsContainer constraintsContainer = AccessConstraintsBuilder.create()
+                    .join(userSession.getConstraints())
+                    .withJpql(MyEntity.class, "{E}.createdBy = :session$userLogin")
+                    .build();
+userSession.setConstraints(constraintsContainer);
+----
+
+. 许多 UI 组件（比如 `Label` 的值和 `TextField` 的标题）的 HTML 内容现在默认会做清理以防止跨站脚本（XSS）。如果发现显示自定义的 HTML 有问题，可以先关掉这个清理功能，使用 {manual_app_props}cuba.web.htmlSanitizerEnabled[cuba.web.htmlSanitizerEnabled] 应用程序属性，或者在单独的组件内使用其 `setHtmlSanitizerEnabled()` 方法。
+
+. 当使用 {manual}/folders_pane.html[文件夹面板] 时，_Add to set - 添加至集合_ 操作和按钮不会在关联了通用过滤器的表格中自动显示。如果需要该操作，按照 {manual}/record_set.html[记录集] 章节的介绍显式添加。
+
+. Amazon S3 {manual}/file_storage.html[文件存储] 实现已经移至单独的插件。参阅插件的 https://github.com/cuba-platform/cuba-aws[README] 了解细节。
+
+. JGroups 升级至 4.1.8.Final。如果您使用 {manual}/cluster_mw.html[中间件集群]，需要对您的 JGroup 配置文件做如下改动：
+** 对于 UDP 配置，替换：
+*** `MERGE2` -> `MERGE3`
+*** `pbcast.NAKACK` -> `pbcast.NAKACK2`，并删除 `retransmit_timeout` 属性。
+*** `UNICAST` -> `UNICAST3`
+*** `FC` -> `MFC`
+** 对于 TCP 配置，删除属性 `timer_type, timer.min_threads, timer.max_threads, timer.keep_alive_time, timer.queue_max_size, thread_pool.queue_enabled, thread_pool.queue_max_size, thread_pool.rejection_policy, oob_thread_pool.min_threads, oob_thread_pool.max_threads, oob_thread_pool.keep_alive_time, oob_thread_pool.queue_enabled, oob_thread_pool.queue_max_size, oob_thread_pool.rejection_policy` 并添加属性 `thread_pool.enabled="true"`。更多细节参阅 http://belaban.blogspot.com/2016/09/removing-thread-pools-in-jgroups-40.html[这篇文章]。
+
+. `DataContext.evictAll()` 重命名为 `evictModified()`，这个名字更加匹配其功能，只是用来清除修改过和删除的实例。如果需要清除包括修改的实例在内的所有实例，可以使用新的 `clear()` 方法。
+
+. `Icons.Icon.name()` 方法重命名为 `iconName()`。
+
+. 对 `Calendar` 做了泛化，需要指定特定的数据类型以便使用对应的日期类型 API（之前是直接使用 `java.util.Date`）。 
+
+[[security]]
+== 安全子系统
+
+. 重新实现了安全子系统的 {manual}/permissions.html[权限] 和 {manual}/roles.html[角色]，以便提供 "默认拒绝" 的模型替换之前的 "默认许可" 模型。使用 CUBA 7.2 新建的项目会默认直接使用新模型。如果从之前版本的 CUBA 迁移过来，Studio 会添加应用程序属性以保持现有的安全配置不变，参阅 {manual}/legacy_roles.html[遗留版本角色和许可]。
+
+. 现在安全 {manual}/roles.html[角色] 和 {manual}/groups.html[访问组] 以及权限和角色可以在设计时进行定义，通过使用带特定注解的 Java 类实现。这将使得访问控制更加健壮，并能避免在不同的应用程序实例之间同步配置（比如，从开发环境到生产环境）。注意，设计时角色只能在新的 CUBA 7.2 项目生效。如果从之前版本迁移过来，想使用设计时角色，则需要删除一些应用程序属性，并重新配置您的现有角色和许可，参阅 {manual}/legacy_roles.html[遗留版本角色和许可]
+
+. 引入了 {manual}/roles.html#security_scope[安全范围] 的概念，可以为通过不同客户端登录的用户配置不同的角色组。这个功能背后的动机是因为，REST API 客户端应当比通用 UI 的用户有更多的限制，因为通用 UI 本质上更安全。
+
+[[deployment]]
+== 部署
+
+. 在开发和部署环境使用 {manual}/app_home.html[应用程序主目录] 已经标准化。当在 Studio 启动应用程序时，应用程序主目录创建在 `deploy/app_home` 目录。包含为所有应用程序 block 服务的 `conf`、`temp` 和 `work` 文件夹，以及通用的 `logs` 目录。应用程序主目录还包含一个空的 `local.app.properties` 文件和带有默认配置的 `logback.xml`。
++
+[WARNING]
+====
+为了正确的使用应用程序主目录，开发阶段的 Tomcat 需要在 `setenv.*` 脚本中定义 `app.home` Java 系统属性。所以在升级到 CUBA 7.2 之后，需要删除旧的 `deploy/tomcat` 目录，然后才能启动应用程序。会自动安装新的 Tomcat 。
+====
++
+对于各种部署环境，都推荐设置 `app.home` Java 系统属性，好在框架为此事做了明智的备用方案：使用 UberJAR 时，主目录为其工作目录；在 Tomcat 中使用 WAR 时，主目录为 `${catalina.base}/work/app_home`，其他情况则为 `~/.app_home`。
+
+. 可以很方便的为开发环境提供您自己的 {manual}/logging.html[日志配置] ：只需要在项目内创建 `etc/logback.xml` 文件，当您启动项目时，该文件会被拷贝至 `deploy/app_home`，然后日志初始化程序会识别此文件。
+
+. 现在可以用应用程序属性配置数据库连接了，参阅 {manual}/db_connection.html[连接至数据库]。这种方式能简化整体的配置，因为 `app.properties` 文件定义了包括数据源参数在内的所有配置信息。还有，这能使您的 WAR 文件与应用程序服务环境完全独立。
++
+依然支持从 JNDI 获取数据源，所以对现有项目来说，这里不需要迁移。
+
+. 可以使用 {manual}/spring_profiles.html[Spring profiles] 自定义应用程序在不同环境的行为。
+
+. 操作系统环境变量可以作为 {manual}/app_properties.html#setting_app_properties[应用程序属性] 值的来源。
+
+. 在不重启应用程序服务的情况下对 Web 应用程序进行重部署变得更加可靠了，由于使用了 https://github.com/mjiderhamn/classloader-leak-prevention[Classloader Leak Prevention] 库。
+
+[[gui]]
+== 通用用户界面
+
+. {manual}/gui_SideMenu.html[SideMenu] 现在可以进行收放了，这样能节省水平方向的空间。另外，菜单的品牌图片和其他组件也重新排布了。参阅 <<breaking_changes>> 部分了解项目迁移可能出现的问题。
+
+. 登录的 "remember me - 记住我" 机制完全重新实现了：
+
+** 使用新的应用程序属性 {manual_app_props}cuba.rememberMeExpirationTimeoutSec[cuba.rememberMeExpirationTimeoutSec] 定义 “记住我” cookie 以及 `RememberMeToken` 实体实例的超时时限。默认设置为 30 天。
+
+** 如果用户在登录界面选择了 _Remember Me - 记住我_ 复选框，下次打开应用程序时不会显示登录界面而直接登录。
+
+** 如果用户主动退出系统，或者 cookie 过期了，下次打开应用程序则会显示登录界面。
+
+. 界面中加载数据用的 {manual}/views_creation.html[视图] 可以在界面描述中直接定义了，参考 {manual}/gui_data_comp_decl.html[这个] 例子。使用该功能将不必在 `views.xml` 文件中定义共享视图了。
+
+. {manual}/standard_actions.html[标准操作] 现在提供可以在 XML 和 Java 中配置的参数。因此，如果只是需要以对话框的模式打开编辑界面或者指定不同的界面类，不需要重新编写整个操作了。使用 Studio 中的 *Component Inspector* 查找并分配操作属性和处理器，也可以从文档复制代码片段。
+
+. {manual}/ViewAction.html[ViewAction - 查看操作] 可以在编辑界面以只读模式打开实体。可以使用可选参数 `enableEditing` 切换至编辑模式而不需要重新打开界面。
+
+. 引入了 {manual}/opening_screens.html#screen_return_values[StandardOutcome] 和 {manual}/gui_dialogs.html#gui_input_dialog[DialogOutcome] 枚举，
+可以用来在关闭界面时替换 `CloseAction` 常量，并检查界面或者对话框是如何关闭的。
+
+. {manual}/gui_Form.html[Form - 表单] 现在支持控件位置的灵活摆放了，参考 `colspan` 和 `rowspan` XML 属性以及 `add()` 方法中对应的参数。
+
+. 除了通用过滤器的全局布局模板之外，也可以为每个单独的过滤器实例设置布局，参阅 {manual}/gui_Filter.html#gui_Filter_controlsLayoutTemplate[controlsLayoutTemplate] 属性。
+
+. {manual}/gui_BulkEditor.html[BulkEditor - 批量编辑器] 添加了响应式布局，可以使用 `columnsMode` 属性控制。
+
+. {manual}/gui_DateField.html[DateField - 日期控件]，如果设置新的 `autofill` 属性为 true，会在输入了日期之后自动填充当前的月和年。
+
+. {manual}/gui_TimeField.html[TimeField - 时间控件] 能使用 12h AM/PM 格式，需要设置 `timeMode` 属性为 `H_12`。
+
+. 在 {manual}/gui_Table.html[Table - 表格] 和 {manual}/gui_DataGrid.html[DataGrid - 数据网格] 中，可以通过使用 `column` 元素的 `sort` 属性声明式的设置初始化的排序规则。
+
+. 对 {manual}/gui_DataGrid.html[DataGrid - 数据网格] 和 {manual}/gui_TreeDataGrid.html[TreeDataGrid - 树形数据网格]，可以使用下列预定义的样式：`borderless`、 `no-horizontal-lines`、 `no-vertical-lines`、 `no-stripes`。
+
+. {manual}/gui_PopupView.html[PopupView - 弹窗控件] 支持使用 `popupPosition`、 `popupTop`、 `popupLeft` 属性设置其弹出位置。
+
+. 所有的表格和数据网格现在都支持 _Select all - 全选_ / _Deselect all - 取消全选_ 命令，该命令可以通过列弹窗操作，能简化对列的超长列表管理。
+
+. 为 `LookupField - 下拉框控件` 和 `LookupPickerField - 下拉选择器` 添加了 {manual}/gui_LookupField.html#gui_LookupField_setOptionImageProvider[setOptionImageProvider] 方法。现在可以为控件的选项显示图片了（之前只能使用图标）。在 Studio 的组件检查器中，切换至 _Handlers_ 标签页然后双击 _optionImageProvider_ 即可生成处理器代码。
+
+. {manual}/gui_Button.html[Button - 按钮控件] 已经自带 `shortcut` 属性了，即使该按钮不关联操作，也可以为其分配快捷键。
+
+. 添加了新的 {manual}/gui_components.html[Slider - 滑动条] 组件。
+
+. 如果设置 {manual}/gui_Table.html#gui_Table_rowsCount[RowsCount] 的 `autoLoad` 属性为 true，该组件会在后台加载行数并自动显示。
+
+. {manual}/gui_Filter.html[Filter - 过滤器] 组件现在能使用 {manual}/gui_keyvalue_containers.html[KeyValueCollectionContainer] 加载器了。
+
+[[misc]]
+== 其它改动
+
+. 已经完全 {manual}/support_for_kotlin.html[支持] Kotlin，意味着可以在项目的所有地方都使用该语言：实体、bean、界面控制器等等。对 Kotlin 编写的界面控制器热部署也已经支持。
+
+. 现在可以在 `core` 模块的 `/db/init_<datastore_name>` 和 `/db/update_<datastore_name>` 目录为附加数据存储提供数据库迁移脚本了。脚本可以在 {manual}/build.gradle_createDb.html[createDb] 和 {manual}/build.gradle_updateDb.html[updateDb] Gradle 任务中执行，但是任务需要带有 `storeName` 参数。另外，应用程序服务也可以执行这些脚本，如果配置了 {manual_app_props}cuba.automaticDatabaseUpdate[cuba.automaticDatabaseUpdate] 属性。
+
+. 新项目和迁移项目使用 Gradle 5.6.4 。Studio 会在 `gradle/wrapper/gradle-wrapper.properties` 文件配置合适的版本，如果遇到了项目构建问题，可以检查这里。
+
+. 新项目使用 JUnit 5 做测试。 {manual}/testing.html[文档] 也已更新。
+
+. {manual}/views_creation.html[ViewBuilder] 简化了在业务逻辑和测试中创建视图。
+
+. {manual}/dataManager.html#dm_query[DataManager] 的流式操作接口可以指定简化格式的 JPQL 语句，允许省略部分语句，这些省略的部分能从上下文推断出来。
+
+. {manual}/entity_attr_annotations.html#metaProperty_annotation[只读的 transient 属性] 监听器会在关联的属性改动时发出消息。当展示只读属性时，如果这些属性依赖其他可变属性，那么这个机制有助于检测发生变化时更新 UI 展示。
+
+. {manual}/entity_class_annotations.html#postConstruct_entity_annotation[@PostConstruct] 方法可以接收 `global` 模块定义的 Spring beans 作为参数。
 
 [[upd_dep]]
 == 依赖更新
 
 核心框架：
 ----
-com.google.guava/guava = 27.1-jre
-com.microsoft.sqlserver/mssql-jdbc = 7.2.1.jre8
-commons-codec/commons-codec = 1.12
-commons-fileupload/commons-fileupload = 1.4
-mysql/mysql-connector-java = 8.0.15
-org.apache.commons/commons-collections4 = 4.3
-org.apache.commons/commons-compress = 1.18
-org.apache.commons/commons-dbcp2 = 2.6.0
-org.apache.commons/commons-lang3 = 3.9
-org.apache.commons/commons-pool2 = 2.6.2
-org.apache.commons/commons-text = 1.6
-org.apache.httpcomponents/fluent-hc = 4.5.8
-org.apache.httpcomponents/httpclient = 4.5.8
-org.apache.httpcomponents/httpcore = 4.4.11
-org.apache.httpcomponents/httpmime = 4.5.8
-org.aspectj/aspectjrt = 1.9.2
-org.aspectj/aspectjweaver = 1.9.2
-org.codehaus.groovy = 2.5.6
-org.eclipse.persistence/org.eclipse.persistence.jpa = 2.7.3-6-cuba
-org.freemarker/freemarker = 2.3.28
-org.hibernate.validator/hibernate-validator = 6.0.16.Final
-org.hsqldb/hsqldb = 2.4.1
-org.jgroups/jgroups = 3.6.17.Final
-org.postgresql/postgresql = 42.2.5
-org.spockframework/spock-core = 1.3-groovy-2.5
+com.fasterxml.jackson = 2.10.1
+com.fasterxml.jackson-databind = 2.10.1
+com.google.code.gson/gson = 2.8.6
+com.google.guava/guava = 28.1-jre
+com.microsoft.sqlserver/mssql-jdbc = 7.2.2.jre8
+com.sun.mail/javax.mail = 1.6.2
+com.vaadin = 8.9.2-0-cuba
+commons-codec/commons-codec = 1.13
+de.javakaffee/kryo-serializers = 0.45
+mysql/mysql-connector-java = 8.0.17
+org.apache.commons/commons-collections4 = 4.4
+org.apache.commons/commons-compress = 1.19
+org.apache.commons/commons-dbcp2 = 2.7.0
+org.apache.commons/commons-pool2 = 2.7.0
+org.apache.commons/commons-text = 1.8
+org.apache.httpcomponents/httpclient = 4.5.10
+org.apache.poi/poi = 4.1.1
+org.aspectj/aspectjrt = 1.9.4
+org.aspectj/aspectjweaver = 1.9.4
+org.codehaus.groovy = 2.5.8
+org.freemarker/freemarker = 2.3.29
+org.hibernate.validator/hibernate-validator = 6.1.1.Fin`al
+org.hsqldb/hsqldb = 2.5.0
+org.jgroups/jgroups = 4.1.8.Final
+org.jmockit/jmockit = 1.48
+org.jsoup/jsoup = 1.12.1
+org.postgresql/postgresql = 42.2.8
+org.slf4j/log4j-over-slf4j = 1.7.29
+org.slf4j/slf4j-api = 1.7.29
+org.springframework = 5.2.1.RELEASE
+org.springframework.security = 5.2.1.RELEASE
+tomcat = 9.0.27
 ----
 
-报表扩展：
+FTS 插件：
 ----
-com.haulmont.yarg = 2.1.5
+org.apache.lucene = 8.2.0
+org.apache.tika/tika-parsers = 1.22
+----
+
+Reports 插件：
+----
+com.haulmont.yarg = 2.2.4
+org.apache.poi/ooxml-schemas = 1.4
+org.apache.xmlbeans/xmlbeans = 3.1.0
 ----
